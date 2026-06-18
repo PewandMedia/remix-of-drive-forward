@@ -18,6 +18,7 @@ import { Route as ImpressumRouteImport } from './routes/impressum'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ErsteHilfeKursRouteImport } from './routes/erste-hilfe-kurs'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AngeboteRouteImport } from './routes/angebote'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -66,6 +67,11 @@ const DatenschutzRoute = DatenschutzRouteImport.update({
   path: '/datenschutz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AngeboteRoute = AngeboteRouteImport.update({
   id: '/angebote',
   path: '/angebote',
@@ -80,6 +86,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/angebote': typeof AngeboteRoute
+  '/auth': typeof AuthRoute
   '/datenschutz': typeof DatenschutzRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
   '/faq': typeof FaqRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/angebote': typeof AngeboteRoute
+  '/auth': typeof AuthRoute
   '/datenschutz': typeof DatenschutzRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
   '/faq': typeof FaqRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/angebote': typeof AngeboteRoute
+  '/auth': typeof AuthRoute
   '/datenschutz': typeof DatenschutzRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
   '/faq': typeof FaqRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/angebote'
+    | '/auth'
     | '/datenschutz'
     | '/erste-hilfe-kurs'
     | '/faq'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/angebote'
+    | '/auth'
     | '/datenschutz'
     | '/erste-hilfe-kurs'
     | '/faq'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/angebote'
+    | '/auth'
     | '/datenschutz'
     | '/erste-hilfe-kurs'
     | '/faq'
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AngeboteRoute: typeof AngeboteRoute
+  AuthRoute: typeof AuthRoute
   DatenschutzRoute: typeof DatenschutzRoute
   ErsteHilfeKursRoute: typeof ErsteHilfeKursRoute
   FaqRoute: typeof FaqRoute
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DatenschutzRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/angebote': {
       id: '/angebote'
       path: '/angebote'
@@ -258,6 +278,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AngeboteRoute: AngeboteRoute,
+  AuthRoute: AuthRoute,
   DatenschutzRoute: DatenschutzRoute,
   ErsteHilfeKursRoute: ErsteHilfeKursRoute,
   FaqRoute: FaqRoute,
