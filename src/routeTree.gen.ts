@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PreiseRouteImport } from './routes/preise'
 import { Route as LeistungenRouteImport } from './routes/leistungen'
 import { Route as ErsteHilfeKursRouteImport } from './routes/erste-hilfe-kurs'
+import { Route as AngeboteRouteImport } from './routes/angebote'
 import { Route as IndexRouteImport } from './routes/index'
 
 const PreiseRoute = PreiseRouteImport.update({
@@ -29,6 +30,11 @@ const ErsteHilfeKursRoute = ErsteHilfeKursRouteImport.update({
   path: '/erste-hilfe-kurs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AngeboteRoute = AngeboteRouteImport.update({
+  id: '/angebote',
+  path: '/angebote',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/angebote': typeof AngeboteRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
   '/leistungen': typeof LeistungenRoute
   '/preise': typeof PreiseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/angebote': typeof AngeboteRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
   '/leistungen': typeof LeistungenRoute
   '/preise': typeof PreiseRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/angebote': typeof AngeboteRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
   '/leistungen': typeof LeistungenRoute
   '/preise': typeof PreiseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/erste-hilfe-kurs' | '/leistungen' | '/preise'
+  fullPaths: '/' | '/angebote' | '/erste-hilfe-kurs' | '/leistungen' | '/preise'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/erste-hilfe-kurs' | '/leistungen' | '/preise'
-  id: '__root__' | '/' | '/erste-hilfe-kurs' | '/leistungen' | '/preise'
+  to: '/' | '/angebote' | '/erste-hilfe-kurs' | '/leistungen' | '/preise'
+  id:
+    | '__root__'
+    | '/'
+    | '/angebote'
+    | '/erste-hilfe-kurs'
+    | '/leistungen'
+    | '/preise'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AngeboteRoute: typeof AngeboteRoute
   ErsteHilfeKursRoute: typeof ErsteHilfeKursRoute
   LeistungenRoute: typeof LeistungenRoute
   PreiseRoute: typeof PreiseRoute
@@ -92,6 +108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ErsteHilfeKursRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/angebote': {
+      id: '/angebote'
+      path: '/angebote'
+      fullPath: '/angebote'
+      preLoaderRoute: typeof AngeboteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AngeboteRoute: AngeboteRoute,
   ErsteHilfeKursRoute: ErsteHilfeKursRoute,
   LeistungenRoute: LeistungenRoute,
   PreiseRoute: PreiseRoute,
