@@ -1,11 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import carAsset from "@/assets/miro-car.png.asset.json";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
+import { OfferFlyer, type OfferFlyerData } from "@/components/site/OfferFlyer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -42,6 +45,22 @@ const reasons = [
 ];
 
 function Index() {
+  const { data: homeOffers = [] } = useQuery({
+    queryKey: ["home-offers"],
+    queryFn: async () => {
+      const nowIso = new Date().toISOString();
+      const { data, error } = await supabase
+        .from("offers")
+        .select("*")
+        .eq("active", true)
+        .eq("show_on_home", true)
+        .or(`valid_from.is.null,valid_from.lte.${nowIso}`)
+        .or(`valid_until.is.null,valid_until.gte.${nowIso}`)
+        .order("sort_order");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
   return (
     <SiteLayout>
       {/* HERO */}
@@ -111,6 +130,29 @@ function Index() {
           {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
         </div>
       </section>
+
+      {/* CURRENT OFFERS */}
+      {homeOffers.length > 0 && (
+        <section className="bg-muted/30 py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 max-w-2xl">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Aktuelle Angebote</span>
+              <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Spar jetzt bei deiner Anmeldung.</h2>
+              <p className="mt-4 text-muted-foreground">Unsere laufenden Aktions-Angebote – nur für kurze Zeit verfügbar.</p>
+            </div>
+            <div className="grid gap-8 lg:grid-cols-2">
+              {homeOffers.map((o) => (
+                <OfferFlyer key={o.id} offer={o as unknown as OfferFlyerData} compact />
+              ))}
+            </div>
+            <div className="mt-8 text-center">
+              <Link to="/angebote" className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-primary">
+                Alle Angebote ansehen
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* WHY */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">

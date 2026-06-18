@@ -1,52 +1,61 @@
-## Online-Anmeldung entfernen + 2 Standorte mit Navigation hinzufügen
+## Ziel
 
-### Was sich ändert
+Admin kann **Aktions-Angebote** (Promo-Flyer) selbst anlegen, mit Bild, beliebigen Preis-Zeilen und Gültigkeitszeitraum. Aktive Angebote erscheinen automatisch auf `/angebote` **und** auf der Startseite. Nach Ablauf des Zeitraums verschwinden sie automatisch.
 
-**1. Alle Online-Anmelde- und Anfrage-Formulare entfernen**
-- `InquiryForm`-Komponente wird überall ausgebaut (Startseite, Preise, Leistungen, Erste-Hilfe, Angebote, Kontakt, FAQ, Über uns).
-- Datei `src/components/site/InquiryForm.tsx` wird gelöscht.
-- CTAs wie „Jetzt anmelden", „Angebot anfragen", „Online Anmelden" werden durchgehend ersetzt durch: **„In der Filiale anmelden"** + Hinweis-Text: „Die Anmeldung erfolgt persönlich in einer unserer Filialen — komm einfach während der Bürozeiten vorbei."
-- Statt Formularen: Buttons für **Anrufen**, **WhatsApp**, **Route planen**.
-- Admin-Panel: Tab „Anfragen" verschwindet aus dem UI (Tabelle `inquiries` bleibt in der DB unangetastet, falls später doch wieder gebraucht).
+Das bestehende Konzept "Angebote = Pakete-Karten" wird durch **Promo-Angebote im Flyer-Stil** ersetzt (passend zum hochgeladenen Beispiel).
 
-**2. Neue zentrale Daten-Datei `src/lib/locations.ts`**
-Beide Standorte als typisierte Konstanten mit Adresse, Öffnungszeiten und Koordinaten-/Such-String für die Navigation:
+## Datenbank
 
-- **Standort 1 — Bochum Zentrum (Brückstraße)**
-  - Brückstraße 53, 44787 Bochum
-  - Di.–Do. 14:00–20:00 · Fr. 14:00–18:00 · Sa.–Mo. geschlossen
-- **Standort 2 — Bochum Riemke (Herner Str.)**
-  - Herner Straße 365, 44807 Bochum
-  - Di.–Do. 14:00–20:00 · Fr. 14:00–18:00 · Sa.–Mo. geschlossen
+Tabelle `offers` wird erweitert (Migration, kein Datenverlust):
 
-**3. Neue Komponente `LocationCard`**
-Eine Karte pro Standort mit:
-- Standort-Name + Adresse + Öffnungszeiten-Tabelle
-- Buttons: **„Route planen"**, **„Anrufen"**, **„WhatsApp"**
-- „Route planen" öffnet ein universelles Navi-Link:
-  - iOS → `maps://?daddr=…` (Apple Maps, fallback Google Maps)
-  - Android/Desktop → `https://www.google.com/maps/dir/?api=1&destination=…`
-  - Erkennung per `navigator.userAgent`; Link wird beim Klick aufgelöst (sicheres `window.open` mit `noopener`).
+- `image_url` (text, optional) – Flyer-/Auto-Bild
+- `headline` (text, optional) – große Überschrift (z. B. "Starte jetzt in deine Fahrzukunft!")
+- `subline` (text, optional) – kleiner Text darunter (z. B. "Unser Mega-Angebot")
+- `price_blocks` (jsonb) – Liste der großen Preis-Boxen:
+  `[{ label: "Einzeln anmelden", old_price: "299€", new_price: "149€", suffix: "pro Person" }, …]`
+- `extra_line` (text, optional) – Zusatzzeile (z. B. "Fahrschulwechsel Angebot: 49€ statt 299€")
+- `valid_from` (timestamptz, optional)
+- `valid_until` (timestamptz, optional)
+- `show_on_home` (boolean, default true)
 
-**4. Kontakt-Seite (`/kontakt`) neu strukturiert**
-- Kein Formular mehr.
-- Hero-Text: „Anmeldung nur persönlich in der Filiale".
-- Beide Standorte als große Karten nebeneinander mit allen Kontakt-Möglichkeiten (Telefon, WhatsApp, Route).
-- Optional Footer-Hinweis: bei allgemeinen Fragen WhatsApp oder Anruf.
+Die alten Felder `items`, `price_label`, `button_text`, `short_desc` bleiben für Abwärtskompatibilität, werden aber im neuen UI nicht mehr verwendet.
 
-**5. Footer + Navbar**
-- Footer zeigt beide Standorte kompakt (Adresse + Bürozeiten + Route-Link).
-- WhatsApp-Float bleibt.
+Sichtbarkeits-Regel im Query (Frontend):
+`active = true AND (valid_from IS NULL OR valid_from <= now()) AND (valid_until IS NULL OR valid_until >= now())`
 
-**6. Startseite**
-- CTA-Sektion umgebaut: statt Formular → zwei Standort-Vorschauen + „Route planen" + Bürozeiten.
+## Admin-UI (`/admin`, Tab "Angebote")
 
-### Offene Punkte
-- **Telefonnummer**: Welche soll ich für beide Standorte verwenden? (Aktuell ist ein Platzhalter in `src/lib/contact.ts`.) Soll für jede Filiale eine eigene Nummer hinterlegt werden, oder eine zentrale Nummer?
-- **WhatsApp-Nummer**: Gleiche Frage — eine zentrale oder pro Filiale?
-- Falls du keine eigene Nummer pro Filiale hast, nutze ich die zentrale Nummer aus `contact.ts` für beide.
+Formular pro Angebot:
 
-### Technische Details
-- Keine DB-Änderungen nötig.
-- Keine Google-Maps-Embeds (kein API-Key nötig) — nur Deep-Links in die nativen Karten-Apps des Nutzers.
-- Falls du später eine eingebettete Karte willst: kann ich später via Google-Maps-Connector ergänzen.
+- Bild-Upload (Lovable Storage bucket `offers`, public read)
+- Headline / Subline / Extra-Zeile (Text)
+- Dynamische Liste **Preis-Blöcke** (hinzufügen/entfernen) mit Feldern: Titel, alter Preis, neuer Preis, Suffix
+- Gültig von / bis (Datepicker, beide optional)
+- "Auf Startseite anzeigen" (Switch)
+- Aktiv (Switch), Sortierung
+- Speichern / Löschen / Duplizieren
+
+Storage-Bucket `offers` wird in der Migration angelegt (public read, admin write).
+
+## Frontend
+
+**`/angebote`**: Rendert aktive Angebote im **Flyer-Look** – großes Bild oben, Headline, Preis-Boxen nebeneinander (rot/weiß-Stil), Extra-Zeile, Gültigkeitsdatum, darunter CTAs (WhatsApp, Anrufen, Filiale besuchen). Kein Anmelde-Button.
+
+**`/` (Startseite)**: Neue Section "Aktuelle Angebote" zeigt alle aktiven Angebote mit `show_on_home = true` als kompakte Karten mit Bild + Headline + erstem Preis-Block + Link auf `/angebote`. Wird komplett ausgeblendet, wenn keine aktiv sind.
+
+Bestehende Karten-Logik (`items`, `price_label`) wird entfernt.
+
+## Technische Details
+
+- Datums-Filter zusätzlich client-seitig anwenden (SSR-Query mit `gte`/`lte`).
+- Bild über `<img loading="lazy">`, alt = Headline.
+- Storage-Upload im Admin via `supabase.storage.from('offers').upload(...)`, gespeichert wird nur die `image_url`.
+- Migration legt Bucket + Policies an (public SELECT, admin INSERT/UPDATE/DELETE).
+
+## Geänderte / neue Dateien
+
+- Migration: `offers`-Spalten + Storage-Bucket `offers` + Policies
+- `src/routes/_authenticated/admin.tsx` – Angebote-Tab umbauen (Bildupload, Preis-Blöcke, Datumsfelder)
+- `src/routes/angebote.tsx` – Flyer-Layout, Datums-Filter
+- `src/routes/index.tsx` – neue Home-Section "Aktuelle Angebote"
+- `src/integrations/supabase/types.ts` – auto-regeneriert

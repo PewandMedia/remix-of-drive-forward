@@ -91,37 +91,61 @@ export type Database = {
           active: boolean
           button_text: string
           created_at: string
+          extra_line: string | null
+          headline: string | null
           id: string
+          image_url: string | null
           items: string[]
+          price_blocks: Json
           price_label: string | null
-          short_desc: string
+          short_desc: string | null
+          show_on_home: boolean
           sort_order: number
-          title: string
+          subline: string | null
+          title: string | null
           updated_at: string
+          valid_from: string | null
+          valid_until: string | null
         }
         Insert: {
           active?: boolean
           button_text?: string
           created_at?: string
+          extra_line?: string | null
+          headline?: string | null
           id?: string
+          image_url?: string | null
           items?: string[]
+          price_blocks?: Json
           price_label?: string | null
-          short_desc: string
+          short_desc?: string | null
+          show_on_home?: boolean
           sort_order?: number
-          title: string
+          subline?: string | null
+          title?: string | null
           updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
         }
         Update: {
           active?: boolean
           button_text?: string
           created_at?: string
+          extra_line?: string | null
+          headline?: string | null
           id?: string
+          image_url?: string | null
           items?: string[]
+          price_blocks?: Json
           price_label?: string | null
-          short_desc?: string
+          short_desc?: string | null
+          show_on_home?: boolean
           sort_order?: number
-          title?: string
+          subline?: string | null
+          title?: string | null
           updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
         }
         Relationships: []
       }
