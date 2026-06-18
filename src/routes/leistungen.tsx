@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import { Car, GraduationCap, BookOpen, Steering, Sun, RotateCcw, Heart, Gift } from "lucide-react";
+import { Car, GraduationCap, BookOpen, Wrench, Sun, RotateCcw, Heart, Gift } from "lucide-react";
 
 export const Route = createFileRoute("/leistungen")({
   head: () => ({
@@ -20,7 +20,7 @@ const services = [
   { icon: GraduationCap, title: "Führerscheinausbildung Klasse B", text: "Komplette Ausbildung für deinen Autoführerschein – von der Anmeldung bis zur praktischen Prüfung.", cta: "Anmelden", to: "/kontakt" },
   { icon: Car, title: "B197 Ausbildung", text: "Automatik fahren lernen und trotzdem Schaltwagen fahren dürfen – moderne Ausbildung mit maximaler Flexibilität.", cta: "Beratung anfragen", to: "/kontakt" },
   { icon: BookOpen, title: "Theorieunterricht", text: "Strukturierter Theorieunterricht mit klaren Erklärungen, praxisnahen Beispielen und guter Prüfungsvorbereitung.", cta: "Termine erfragen", to: "/kontakt" },
-  { icon: Steering, title: "Praxisstunden", text: "Individuelle Fahrstunden mit geduldiger Betreuung und klaren Lernzielen.", cta: "Stunde buchen", to: "/kontakt" },
+  { icon: Wrench, title: "Praxisstunden", text: "Individuelle Fahrstunden mit geduldiger Betreuung und klaren Lernzielen.", cta: "Stunde buchen", to: "/kontakt" },
   { icon: Sun, title: "Sonderfahrten", text: "Autobahn-, Überland- und Nachtfahrt professionell vorbereitet.", cta: "Mehr erfahren", to: "/kontakt" },
   { icon: RotateCcw, title: "Auffrischungsstunden", text: "Für alle, die länger nicht gefahren sind oder wieder mehr Sicherheit gewinnen möchten.", cta: "Termin anfragen", to: "/kontakt" },
   { icon: Heart, title: "Erste-Hilfe-Kurs", text: "Informationen und Anmeldung zum Erste-Hilfe-Kurs direkt über die Website oder WhatsApp.", cta: "Kurs anfragen", to: "/erste-hilfe-kurs" },
