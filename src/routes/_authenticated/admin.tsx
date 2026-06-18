@@ -65,13 +65,11 @@ function AdminPage() {
             <TabsTrigger value="offers">Angebote</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="first_aid">Erste-Hilfe</TabsTrigger>
-            <TabsTrigger value="inquiries">Anfragen</TabsTrigger>
           </TabsList>
           <TabsContent value="prices"><PricesAdmin /></TabsContent>
           <TabsContent value="offers"><OffersAdmin /></TabsContent>
           <TabsContent value="team"><TeamAdmin /></TabsContent>
           <TabsContent value="first_aid"><FirstAidAdmin /></TabsContent>
-          <TabsContent value="inquiries"><InquiriesAdmin /></TabsContent>
         </Tabs>
       </div>
     </SiteLayout>
