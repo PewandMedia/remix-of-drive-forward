@@ -1,38 +1,52 @@
-## Team-Seite mit echten MIRO-DRIVE Personen befüllen
+## Online-Anmeldung entfernen + 2 Standorte mit Navigation hinzufügen
 
-Die hochgeladenen Bilder sind Referenz-Screenshots der bestehenden Team-Übersicht. Ich übernehme **Namen, Rollen und Sprachen** in die Datenbank. Die Portrait-Fotos werden NICHT übernommen (Screenshots, keine sauberen Einzelbilder) — stattdessen werden die Karten mit stilvollen Initialen-Avataren im MIRO-Branding (schwarz/rot) dargestellt. Echte Fotos können später jederzeit über das Admin-Panel hochgeladen werden.
+### Was sich ändert
 
-### Schritt 1: Bestehende Team-Einträge entfernen
-Platzhalter-Einträge in `team_members` werden gelöscht.
+**1. Alle Online-Anmelde- und Anfrage-Formulare entfernen**
+- `InquiryForm`-Komponente wird überall ausgebaut (Startseite, Preise, Leistungen, Erste-Hilfe, Angebote, Kontakt, FAQ, Über uns).
+- Datei `src/components/site/InquiryForm.tsx` wird gelöscht.
+- CTAs wie „Jetzt anmelden", „Angebot anfragen", „Online Anmelden" werden durchgehend ersetzt durch: **„In der Filiale anmelden"** + Hinweis-Text: „Die Anmeldung erfolgt persönlich in einer unserer Filialen — komm einfach während der Bürozeiten vorbei."
+- Statt Formularen: Buttons für **Anrufen**, **WhatsApp**, **Route planen**.
+- Admin-Panel: Tab „Anfragen" verschwindet aus dem UI (Tabelle `inquiries` bleibt in der DB unangetastet, falls später doch wieder gebraucht).
 
-### Schritt 2: Echte Team-Daten einfügen
+**2. Neue zentrale Daten-Datei `src/lib/locations.ts`**
+Beide Standorte als typisierte Konstanten mit Adresse, Öffnungszeiten und Koordinaten-/Such-String für die Navigation:
 
-**Kategorie „Fahrlehrer:innen"** (sort_order 1–7):
-| Name | Rolle | Sprachen |
-|------|-------|----------|
-| Ilkay | Inhaber & Fahrlehrer | Deutsch, Türkisch, Englisch |
-| Azad | Fahrlehrer | Deutsch, Arabisch, Kurdisch |
-| Lukman | Fahrlehrer | Deutsch, Arabisch, Kurdisch |
-| Alan | Fahrlehrer | Deutsch, Arabisch, Kurdisch |
-| Burak | Fahrlehrer | Deutsch, Englisch, Türkisch |
-| Derya | Fahrlehrerin | Deutsch, Englisch, Türkisch |
-| Renas | Fahrlehreranwärter | Deutsch, Kurdisch, Arabisch, Türkisch |
+- **Standort 1 — Bochum Zentrum (Brückstraße)**
+  - Brückstraße 53, 44787 Bochum
+  - Di.–Do. 14:00–20:00 · Fr. 14:00–18:00 · Sa.–Mo. geschlossen
+- **Standort 2 — Bochum Riemke (Herner Str.)**
+  - Herner Straße 365, 44807 Bochum
+  - Di.–Do. 14:00–20:00 · Fr. 14:00–18:00 · Sa.–Mo. geschlossen
 
-**Kategorie „Bürokräfte"** (sort_order 8–12):
-| Name | Rolle | – |
-|------|-------|---|
-| Bahar | Organisation und Buchhaltung | – |
-| Rawshan | Bürokraft | – |
-| Dilan | Bürokraft | – |
-| Dalaa | Bürokraft | – |
-| Jiyan | Auszubildende für Büromanagement | – |
+**3. Neue Komponente `LocationCard`**
+Eine Karte pro Standort mit:
+- Standort-Name + Adresse + Öffnungszeiten-Tabelle
+- Buttons: **„Route planen"**, **„Anrufen"**, **„WhatsApp"**
+- „Route planen" öffnet ein universelles Navi-Link:
+  - iOS → `maps://?daddr=…` (Apple Maps, fallback Google Maps)
+  - Android/Desktop → `https://www.google.com/maps/dir/?api=1&destination=…`
+  - Erkennung per `navigator.userAgent`; Link wird beim Klick aufgelöst (sicheres `window.open` mit `noopener`).
 
-Sprachen werden im Feld `bio` als „Sprachen: …" gespeichert (passt zum bestehenden Schema, kein DB-Schema-Change nötig).
+**4. Kontakt-Seite (`/kontakt`) neu strukturiert**
+- Kein Formular mehr.
+- Hero-Text: „Anmeldung nur persönlich in der Filiale".
+- Beide Standorte als große Karten nebeneinander mit allen Kontakt-Möglichkeiten (Telefon, WhatsApp, Route).
+- Optional Footer-Hinweis: bei allgemeinen Fragen WhatsApp oder Anruf.
 
-### Schritt 3: Team-Seite anpassen
-- Gruppierung in zwei Sektionen: **Fahrlehrer:innen** und **Bürokräfte** (Kategorie-Feld nutzen).
-- Avatar-Fallback: runde Karten mit Initialen auf schwarzem Hintergrund + rotem Akzentring, falls kein Foto vorhanden.
-- Sprachen als kleine Badges unter dem Namen.
+**5. Footer + Navbar**
+- Footer zeigt beide Standorte kompakt (Adresse + Bürozeiten + Route-Link).
+- WhatsApp-Float bleibt.
 
-### Offen
-Falls du echte Portrait-Fotos hast, lade sie bitte einzeln hoch — dann ersetze ich die Initialen-Avatare durch die echten Bilder.
+**6. Startseite**
+- CTA-Sektion umgebaut: statt Formular → zwei Standort-Vorschauen + „Route planen" + Bürozeiten.
+
+### Offene Punkte
+- **Telefonnummer**: Welche soll ich für beide Standorte verwenden? (Aktuell ist ein Platzhalter in `src/lib/contact.ts`.) Soll für jede Filiale eine eigene Nummer hinterlegt werden, oder eine zentrale Nummer?
+- **WhatsApp-Nummer**: Gleiche Frage — eine zentrale oder pro Filiale?
+- Falls du keine eigene Nummer pro Filiale hast, nutze ich die zentrale Nummer aus `contact.ts` für beide.
+
+### Technische Details
+- Keine DB-Änderungen nötig.
+- Keine Google-Maps-Embeds (kein API-Key nötig) — nur Deep-Links in die nativen Karten-Apps des Nutzers.
+- Falls du später eine eingebettete Karte willst: kann ich später via Google-Maps-Connector ergänzen.

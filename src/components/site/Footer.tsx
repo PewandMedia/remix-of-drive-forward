@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Phone, Mail, MapPin } from "lucide-react";
+import { Instagram, Phone, Mail, MapPin, Navigation } from "lucide-react";
 import logoAsset from "@/assets/miro-logo.png.asset.json";
 import { CONTACT, NAV_LINKS } from "@/lib/contact";
+import { LOCATIONS, navigationUrl, fullAddress } from "@/lib/locations";
 
 function TikTokIcon({ className }: { className?: string }) {
   return (
@@ -21,8 +22,8 @@ function WhatsAppIcon({ className }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="mt-24 bg-[#0a0a0a] text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-4 lg:px-8">
-        <div>
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:px-8">
+        <div className="lg:col-span-3">
           <div className="rounded-lg bg-white p-3 inline-block">
             <img src={logoAsset.url} alt="MIRO-DRIVE" className="h-10 w-auto" />
           </div>
@@ -42,7 +43,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div>
+        <div className="lg:col-span-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-white">Navigation</h3>
           <ul className="mt-4 space-y-2 text-sm text-white/70">
             {NAV_LINKS.map((l) => (
@@ -55,22 +56,46 @@ export function Footer() {
           </ul>
         </div>
 
-        <div>
+        <div className="lg:col-span-3">
           <h3 className="text-sm font-bold uppercase tracking-wider text-white">Kontakt</h3>
           <ul className="mt-4 space-y-3 text-sm text-white/70">
-            <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 text-primary" />{CONTACT.address}</li>
             <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /><a href={`tel:${CONTACT.phone}`} className="hover:text-white">{CONTACT.phoneDisplay}</a></li>
             <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /><a href={`mailto:${CONTACT.email}`} className="hover:text-white">{CONTACT.email}</a></li>
+            <li className="text-xs text-white/50">Anmeldung nur persönlich in der Filiale.</li>
           </ul>
         </div>
 
-        <div>
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white">Öffnungszeiten</h3>
-          <ul className="mt-4 space-y-2 text-sm text-white/70">
-            {CONTACT.hours.map((h) => (
-              <li key={h.day} className="flex justify-between"><span>{h.day}</span><span>{h.time}</span></li>
+        <div className="lg:col-span-4">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-white">Unsere Standorte</h3>
+          <div className="mt-4 space-y-4">
+            {LOCATIONS.map((loc) => (
+              <div key={loc.id} className="rounded-xl border border-white/10 p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-primary">{loc.label}</div>
+                    <div className="mt-0.5 text-sm font-bold text-white">{loc.name}</div>
+                    <div className="mt-1 flex items-start gap-1.5 text-xs text-white/70">
+                      <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
+                      <span>{fullAddress(loc)}</span>
+                    </div>
+                  </div>
+                  <a
+                    href={navigationUrl(loc)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[10px] font-bold uppercase text-primary-foreground"
+                  >
+                    <Navigation className="h-3 w-3" /> Route
+                  </a>
+                </div>
+                <ul className="mt-3 space-y-1 text-xs text-white/60">
+                  {loc.hours.map((h) => (
+                    <li key={h.day} className="flex justify-between"><span>{h.day}</span><span className="text-white/80">{h.time}</span></li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
 

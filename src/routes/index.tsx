@@ -3,7 +3,9 @@ import { Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import carAsset from "@/assets/miro-car.png.asset.json";
-import { CheckCircle2, Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap } from "lucide-react";
+import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin } from "lucide-react";
+import { LocationCard } from "@/components/site/LocationCard";
+import { LOCATIONS } from "@/lib/locations";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,15 +64,18 @@ function Index() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03]">
-                Jetzt per WhatsApp anmelden
+                <MessageCircle className="h-4 w-4" /> WhatsApp schreiben
               </a>
+              <Link to="/kontakt" className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-bold text-white hover:bg-foreground/90">
+                <MapPin className="h-4 w-4" /> Standorte & Route
+              </Link>
               <Link to="/preise" className="inline-flex items-center gap-2 rounded-full border-2 border-foreground bg-white px-6 py-3.5 text-sm font-bold text-foreground transition-colors hover:bg-foreground hover:text-white">
                 Preise ansehen
               </Link>
-              <Link to="/angebote" className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-bold text-white hover:bg-foreground/90">
-                Angebot anfragen
-              </Link>
             </div>
+            <p className="mt-5 text-xs uppercase tracking-wider text-muted-foreground">
+              Anmeldung nur persönlich in einer unserer Filialen
+            </p>
           </div>
           <div className="relative">
             <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
@@ -88,6 +93,22 @@ function Index() {
               <span className="text-xs font-semibold text-white/80">{t.label}</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* LOCATIONS */}
+      <section id="standorte" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Unsere Standorte</span>
+            <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Zwei Filialen in Bochum.</h2>
+            <p className="mt-4 text-muted-foreground">
+              Die Anmeldung erfolgt persönlich in einer unserer beiden Filialen. Plane direkt deine Route – per Apple oder Google Maps.
+            </p>
+          </div>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
         </div>
       </section>
 
@@ -147,14 +168,14 @@ function Index() {
           <div className="relative max-w-xl">
             <h2 className="text-3xl uppercase sm:text-4xl lg:text-5xl">Starte deinen Führerschein noch heute.</h2>
             <p className="mt-4 text-white/70">
-              Schreib uns direkt per WhatsApp – wir melden uns schnellstmöglich und planen mit dir die ersten Schritte.
+              Schreib uns per WhatsApp oder komm direkt in einer unserer Filialen vorbei – wir freuen uns auf dich.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground">
                 WhatsApp öffnen
               </a>
               <Link to="/kontakt" className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10">
-                Zum Kontaktformular
+                Standorte ansehen
               </Link>
             </div>
           </div>

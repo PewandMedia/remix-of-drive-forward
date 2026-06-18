@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Pencil, Trash2, Plus, LogOut } from "lucide-react";
@@ -54,7 +53,7 @@ function AdminPage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-3xl uppercase">Admin-Panel</h1>
-            <p className="text-sm text-muted-foreground">Verwalte Preise, Angebote, Team, Erste-Hilfe-Kurs und Anfragen.</p>
+          <p className="text-sm text-muted-foreground">Verwalte Preise, Angebote, Team und den Erste-Hilfe-Kurs.</p>
           </div>
           <Button variant="outline" onClick={signOut} className="rounded-full"><LogOut className="h-4 w-4" /> Abmelden</Button>
         </div>
@@ -65,13 +64,11 @@ function AdminPage() {
             <TabsTrigger value="offers">Angebote</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="first_aid">Erste-Hilfe</TabsTrigger>
-            <TabsTrigger value="inquiries">Anfragen</TabsTrigger>
           </TabsList>
           <TabsContent value="prices"><PricesAdmin /></TabsContent>
           <TabsContent value="offers"><OffersAdmin /></TabsContent>
           <TabsContent value="team"><TeamAdmin /></TabsContent>
           <TabsContent value="first_aid"><FirstAidAdmin /></TabsContent>
-          <TabsContent value="inquiries"><InquiriesAdmin /></TabsContent>
         </Tabs>
       </div>
     </SiteLayout>
@@ -364,48 +361,3 @@ function FirstAidAdmin() {
 }
 
 /* ============== INQUIRIES ============== */
-const STATUS_LABEL: Record<string, string> = { neu: "Neu", in_bearbeitung: "In Bearbeitung", erledigt: "Erledigt" };
-function InquiriesAdmin() {
-  const qc = useQueryClient();
-  const { data = [] } = useQuery({
-    queryKey: ["admin-inquiries"],
-    queryFn: async () => { const { data, error } = await supabase.from("inquiries").select("*").order("created_at", { ascending: false }); if (error) throw error; return data; },
-  });
-  const setStatus = useMutation({
-    mutationFn: async (p: { id: string; status: "neu" | "in_bearbeitung" | "erledigt" }) => { const { error } = await supabase.from("inquiries").update({ status: p.status }).eq("id", p.id); if (error) throw error; },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inquiries"] }),
-  });
-  const del = useMutation({
-    mutationFn: async (id: string) => { const { error } = await supabase.from("inquiries").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-inquiries"] }),
-  });
-  return (
-    <div className="mt-6 space-y-3">
-      {data.length === 0 && <p className="rounded-xl border bg-muted/30 p-6 text-sm text-muted-foreground">Noch keine Anfragen.</p>}
-      {data.map((i) => (
-        <div key={i.id} className="rounded-xl border bg-white p-5">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-bold">{i.name}</h3>
-                <Badge variant="outline" className="capitalize">{i.type}</Badge>
-                <span className="text-xs text-muted-foreground">{new Date(i.created_at).toLocaleString("de-DE")}</span>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {i.email && <>📧 {i.email} · </>}{i.phone && <>📞 {i.phone} · </>}{i.license_class && <>Klasse {i.license_class} · </>}{i.contact_pref && <>Kontakt: {i.contact_pref}</>}
-              </p>
-              {i.first_aid_interest && <Badge className="mt-2 bg-primary">+ Erste-Hilfe-Kurs Interesse</Badge>}
-              {i.message && <p className="mt-3 whitespace-pre-wrap text-sm">{i.message}</p>}
-            </div>
-            <div className="flex items-center gap-2">
-              <select value={i.status} onChange={(e) => setStatus.mutate({ id: i.id, status: e.target.value as any })} className="h-9 rounded-md border bg-background px-2 text-xs">
-                {Object.entries(STATUS_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-              </select>
-              <Button size="icon" variant="ghost" onClick={() => del.mutate(i.id)}><Trash2 className="h-4 w-4" /></Button>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
