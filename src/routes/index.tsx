@@ -131,6 +131,29 @@ function Index() {
         </div>
       </section>
 
+      {/* CURRENT OFFERS */}
+      {homeOffers.length > 0 && (
+        <section className="bg-muted/30 py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 max-w-2xl">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Aktuelle Angebote</span>
+              <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Spar jetzt bei deiner Anmeldung.</h2>
+              <p className="mt-4 text-muted-foreground">Unsere laufenden Aktions-Angebote – nur für kurze Zeit verfügbar.</p>
+            </div>
+            <div className="grid gap-8 lg:grid-cols-2">
+              {homeOffers.map((o) => (
+                <OfferFlyer key={o.id} offer={o as unknown as OfferFlyerData} compact />
+              ))}
+            </div>
+            <div className="mt-8 text-center">
+              <Link to="/angebote" className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-primary">
+                Alle Angebote ansehen
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* WHY */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
