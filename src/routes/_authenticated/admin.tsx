@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Pencil, Trash2, Plus, LogOut } from "lucide-react";
@@ -54,7 +53,7 @@ function AdminPage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-3xl uppercase">Admin-Panel</h1>
-            <p className="text-sm text-muted-foreground">Verwalte Preise, Angebote, Team, Erste-Hilfe-Kurs und Anfragen.</p>
+          <p className="text-sm text-muted-foreground">Verwalte Preise, Angebote, Team und den Erste-Hilfe-Kurs.</p>
           </div>
           <Button variant="outline" onClick={signOut} className="rounded-full"><LogOut className="h-4 w-4" /> Abmelden</Button>
         </div>
