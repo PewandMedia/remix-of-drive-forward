@@ -45,6 +45,22 @@ const reasons = [
 ];
 
 function Index() {
+  const { data: homeOffers = [] } = useQuery({
+    queryKey: ["home-offers"],
+    queryFn: async () => {
+      const nowIso = new Date().toISOString();
+      const { data, error } = await supabase
+        .from("offers")
+        .select("*")
+        .eq("active", true)
+        .eq("show_on_home", true)
+        .or(`valid_from.is.null,valid_from.lte.${nowIso}`)
+        .or(`valid_until.is.null,valid_until.gte.${nowIso}`)
+        .order("sort_order");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
   return (
     <SiteLayout>
       {/* HERO */}
