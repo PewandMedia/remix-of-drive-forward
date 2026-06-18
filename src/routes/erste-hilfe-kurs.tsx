@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import { InquiryForm } from "@/components/site/InquiryForm";
 import { supabase } from "@/integrations/supabase/client";
 import { ErrorBox } from "@/components/site/QueryFallbacks";
 import { CONTACT } from "@/lib/contact";
-import { Heart, Calendar, Clock, FileText, GraduationCap } from "lucide-react";
+import { LocationCard } from "@/components/site/LocationCard";
+import { LOCATIONS } from "@/lib/locations";
+import { Heart, Calendar, Clock, FileText, GraduationCap, Phone } from "lucide-react";
 
 const faQuery = queryOptions({
   queryKey: ["first_aid_info"],
@@ -43,7 +44,8 @@ function FAPage() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Erste-Hilfe-Kurs" title="Erste-Hilfe-Kurs für deinen Führerschein" subtitle="Bei MIRO-DRIVE kannst du dich einfach über Erste-Hilfe-Kurse informieren und direkt eine Anfrage stellen." />
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-16">
+        <div className="grid gap-12 lg:grid-cols-2">
         <div>
           <h2 className="font-display text-2xl uppercase sm:text-3xl">Was du bekommst</h2>
           <ul className="mt-6 space-y-3">
@@ -54,9 +56,14 @@ function FAPage() {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div>
+          <h2 className="font-display text-2xl uppercase sm:text-3xl">Anmeldung & Infos</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Die Anmeldung zum Erste-Hilfe-Kurs erfolgt persönlich in einer unserer Filialen. Für Termine und Verfügbarkeit erreichst du uns telefonisch oder per WhatsApp.</p>
 
           {info && (
-            <div className="mt-8 rounded-2xl border bg-muted/30 p-6">
+            <div className="mt-6 rounded-2xl border bg-muted/30 p-6">
               <h3 className="font-display text-lg">Kursinfo</h3>
               <p className="mt-2 text-sm text-muted-foreground">{info.description}</p>
               <dl className="mt-4 grid grid-cols-3 gap-3 text-sm">
@@ -67,20 +74,22 @@ function FAPage() {
             </div>
           )}
 
-          <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="mt-8 inline-flex rounded-full bg-[#25D366] px-6 py-3 text-sm font-bold text-white">
-            Per WhatsApp Kurs anfragen
-          </a>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-bold text-white">
+              Per WhatsApp anfragen
+            </a>
+            <a href={`tel:${CONTACT.phone}`} className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-bold text-white">
+              <Phone className="h-4 w-4" /> Anrufen
+            </a>
+          </div>
+        </div>
         </div>
 
         <div>
-          <h2 className="font-display text-2xl uppercase sm:text-3xl">Anfrageformular</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Wir melden uns schnellstmöglich bei dir.</p>
-          <div className="mt-6">
-            <InquiryForm
-              type="erste_hilfe"
-              fields={["phone", "email", "preferred_period", "message"]}
-              submitLabel="Erste-Hilfe-Kurs anfragen"
-            />
+          <h2 className="font-display text-2xl uppercase sm:text-3xl">Komm vorbei – unsere Standorte</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Anmeldung direkt in einer unserer Filialen während der Bürozeiten.</p>
+          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+            {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
           </div>
         </div>
       </div>
