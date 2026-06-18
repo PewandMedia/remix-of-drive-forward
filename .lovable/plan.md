@@ -1,28 +1,38 @@
-Datenbank-Update: Preisliste auf echte MIRO-DRIVE Preise setzen
+## Team-Seite mit echten MIRO-DRIVE Personen befüllen
 
-## Was truncated summary
-Die Preistabelle `prices` wird von Platzhalterdaten auf die tatsächlichen Preise aktualisiert, die vom Betreiber genannt wurden.
+Die hochgeladenen Bilder sind Referenz-Screenshots der bestehenden Team-Übersicht. Ich übernehme **Namen, Rollen und Sprachen** in die Datenbank. Die Portrait-Fotos werden NICHT übernommen (Screenshots, keine sauberen Einzelbilder) — stattdessen werden die Karten mit stilvollen Initialen-Avataren im MIRO-Branding (schwarz/rot) dargestellt. Echte Fotos können später jederzeit über das Admin-Panel hochgeladen werden.
 
-## Änderungen
+### Schritt 1: Bestehende Team-Einträge entfernen
+Platzhalter-Einträge in `team_members` werden gelöscht.
 
-### Schritt 1: Alte Preise entfernen
-Alle bestehenden Einträge in der Tabelle `prices` werden gelöscht, damit keine veralteten Platzhalterpreise mehr angezeigt werden.
+### Schritt 2: Echte Team-Daten einfügen
 
-### Schritt 2: Neue Preise einfügen
-Folgende Positionen werden als aktive Einträge neu angelegt:
+**Kategorie „Fahrlehrer:innen"** (sort_order 1–7):
+| Name | Rolle | Sprachen |
+|------|-------|----------|
+| Ilkay | Inhaber & Fahrlehrer | Deutsch, Türkisch, Englisch |
+| Azad | Fahrlehrer | Deutsch, Arabisch, Kurdisch |
+| Lukman | Fahrlehrer | Deutsch, Arabisch, Kurdisch |
+| Alan | Fahrlehrer | Deutsch, Arabisch, Kurdisch |
+| Burak | Fahrlehrer | Deutsch, Englisch, Türkisch |
+| Derya | Fahrlehrerin | Deutsch, Englisch, Türkisch |
+| Renas | Fahrlehreranwärter | Deutsch, Kurdisch, Arabisch, Türkisch |
 
-| Titel | Preis | Kategorie | Beschreibung |
-|-------|-------|-----------|-------------|
-| Grundbetrag | 299 € | Klasse B | Einmaliger Grundbetrag für die Anmeldung |
-| Lernprogramm | 80 € | Klasse B | Digitales Lernprogramm |
-| Übungsstunde | 65 € | Klasse B | Reguläre Fahrstunde (45 Min.) |
-| Sonderfahrten | 65 € | Klasse B | Autobahn, Überland, Nacht (45 Min.) |
-| Vorstellung Theorieprüfung | 85 € | Klasse B | Gebühr für Vorstellung zur Theorieprüfung |
-| Vorstellung Praxisprüfung | 240 € | Klasse B | Gebühr für Vorstellung zur Praxisprüfung |
-| Externe TÜV-Gebühren Theorieprüfung | 24,99 € | TÜV Gebühren | Externe Gebühren für die Theorieprüfung |
-| Externe TÜV-Gebühren Praxisprüfung | 129,83 € | TÜV Gebühren | Externe Gebühren für die Praxisprüfung |
+**Kategorie „Bürokräfte"** (sort_order 8–12):
+| Name | Rolle | – |
+|------|-------|---|
+| Bahar | Organisation und Buchhaltung | – |
+| Rawshan | Bürokraft | – |
+| Dilan | Bürokraft | – |
+| Dalaa | Bürokraft | – |
+| Jiyan | Auszubildende für Büromanagement | – |
 
-Die Preise werden nach Kategorie gruppiert (Klasse B, TÜV Gebühren) und mit aufsteigender Sortierung angelegt, damit sie auf der Preis-Seite übersichtlich dargestellt werden.
+Sprachen werden im Feld `bio` als „Sprachen: …" gespeichert (passt zum bestehenden Schema, kein DB-Schema-Change nötig).
 
-### Schritt 3: Verifikation
-Nach dem Einspielen wird geprüft, ob alle 8 Einträge korrekt in der Datenbank vorhanden sind und die Preis-Seite sie korrekt rendert.
+### Schritt 3: Team-Seite anpassen
+- Gruppierung in zwei Sektionen: **Fahrlehrer:innen** und **Bürokräfte** (Kategorie-Feld nutzen).
+- Avatar-Fallback: runde Karten mit Initialen auf schwarzem Hintergrund + rotem Akzentring, falls kein Foto vorhanden.
+- Sprachen als kleine Badges unter dem Namen.
+
+### Offen
+Falls du echte Portrait-Fotos hast, lade sie bitte einzeln hoch — dann ersetze ich die Initialen-Avatare durch die echten Bilder.
