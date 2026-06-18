@@ -20,7 +20,9 @@ import { Route as ErsteHilfeKursRouteImport } from './routes/erste-hilfe-kurs'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AngeboteRouteImport } from './routes/angebote'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const UeberUnsRoute = UeberUnsRouteImport.update({
   id: '/ueber-uns',
@@ -77,10 +79,19 @@ const AngeboteRoute = AngeboteRouteImport.update({
   path: '/angebote',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -96,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/preise': typeof PreiseRoute
   '/team': typeof TeamRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -110,10 +122,12 @@ export interface FileRoutesByTo {
   '/preise': typeof PreiseRoute
   '/team': typeof TeamRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/angebote': typeof AngeboteRoute
   '/auth': typeof AuthRoute
   '/datenschutz': typeof DatenschutzRoute
@@ -125,6 +139,7 @@ export interface FileRoutesById {
   '/preise': typeof PreiseRoute
   '/team': typeof TeamRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,6 +156,7 @@ export interface FileRouteTypes {
     | '/preise'
     | '/team'
     | '/ueber-uns'
+    | '/admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -155,9 +171,11 @@ export interface FileRouteTypes {
     | '/preise'
     | '/team'
     | '/ueber-uns'
+    | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/angebote'
     | '/auth'
     | '/datenschutz'
@@ -169,10 +187,12 @@ export interface FileRouteTypes {
     | '/preise'
     | '/team'
     | '/ueber-uns'
+    | '/_authenticated/admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AngeboteRoute: typeof AngeboteRoute
   AuthRoute: typeof AuthRoute
   DatenschutzRoute: typeof DatenschutzRoute
@@ -265,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AngeboteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -272,11 +299,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AngeboteRoute: AngeboteRoute,
   AuthRoute: AuthRoute,
   DatenschutzRoute: DatenschutzRoute,
