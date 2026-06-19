@@ -4,7 +4,7 @@ import { useQuery, useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import carAsset from "@/assets/miro-car-hero.jpg.asset.json";
+import heroCar from "@/assets/hero-car.png";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
@@ -114,9 +114,9 @@ function Index() {
     <SiteLayout>
       {/* HERO */}
       <section className="relative overflow-hidden bg-white">
-        <div className="pointer-events-none absolute right-0 top-0 hidden h-full w-[55%] -skew-x-12 bg-primary/5 lg:block" />
-        <div className="pointer-events-none absolute right-0 top-1/3 h-3 w-[55%] -skew-x-12 bg-primary lg:top-1/2" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24 lg:px-8">
+        <div className="pointer-events-none absolute right-0 top-0 hidden h-full w-[58%] -skew-x-12 bg-primary/[0.04] lg:block" />
+        <div className="pointer-events-none absolute right-0 top-1/2 h-3 w-[60%] -skew-x-12 bg-primary" />
+        <div className="relative mx-auto grid min-h-[600px] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:min-h-[720px] lg:grid-cols-[1.05fr_1.25fr] lg:py-24 lg:px-8">
           <div className="animate-fade-up">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" /> Fahrschule MIRO-DRIVE
@@ -145,9 +145,18 @@ function Index() {
               Anmeldung nur persönlich in einer unserer Filialen
             </p>
           </div>
-          <div className="relative overflow-hidden">
-            <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
-            <img src={carAsset.url} alt="MIRO-DRIVE Fahrschulauto" className="animate-drive-in-left w-full drop-shadow-2xl" />
+          <div className="relative lg:-mr-12 xl:-mr-24">
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,theme(colors.primary/25),transparent_65%)] blur-2xl" />
+            <div className="pointer-events-none absolute -right-6 top-8 -z-10 hidden h-2 w-40 bg-foreground lg:block" />
+            <img
+              src={heroCar}
+              alt="MIRO-DRIVE Fahrschulauto – moderner weißer Mercedes A-Klasse"
+              width={1600}
+              height={1024}
+              loading="eager"
+              fetchPriority="high"
+              className="animate-drive-in-left relative w-full drop-shadow-[0_30px_40px_rgba(0,0,0,0.25)]"
+            />
           </div>
         </div>
       </section>
