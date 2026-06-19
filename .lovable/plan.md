@@ -1,54 +1,56 @@
-# Preise-Seite – Redesign & echtes Angebot abbilden
+# Startseite – Teaser für alle Unterseiten
 
-## Problem
-- Aktuell wird **nur eine schmale Karte** (Klasse B) angezeigt, weil in der Datenbank nur Preise für `Klasse B` und `Externe TÜV-Gebühren` existieren. B78 und B197 fehlen komplett, deshalb wirkt die Seite leer und "an der Seite geklebt".
-- "Externe TÜV-Gebühren" werden aktuell gar nicht gerendert (Kategorie nicht in der Anzeigeliste).
-- "Jetzt anmelden"-Button widerspricht der Regel: **keine Online-Anmeldung**, nur in den Filialen.
-- Design ist generisch (weiße Karte, dünner roter Strich) – keine Hierarchie, kein "Wow".
+## Ziel
+Die Startseite soll von **jeder Unterseite einen Vorgeschmack** zeigen – so wird Interesse geweckt und ein Klick führt direkt zur passenden Seite. Aktuell teasern wir nur Standorte, Leistungen und Angebote.
 
-## Fahrschul-Angebot (laut deiner Nachricht)
-Die Fahrschule bietet ausschließlich:
-1. **Klasse B** (Standard PKW)
-2. **Klasse B78** (Automatik)
-3. **Klasse B197** (Automatik-Ausbildung, manueller Führerschein)
+## Unterseiten & jeweiliger Teaser auf der Startseite
 
-Zusätzlich werden weiterhin angezeigt: **Externe TÜV-Gebühren** und Hinweis auf **Erste-Hilfe-Kurs** (eigene Seite).
+| Unterseite | Was wird angeteasert | CTA |
+| --- | --- | --- |
+| `/preise` | 3 Preis-Klassen (B / B197 / B78) mit Grundbetrag-Preis als Vorschau, "ab 65 € pro Fahrstunde" | "Alle Preise ansehen" |
+| `/leistungen` | bestehender Block bleibt, leicht aufgewertet | "Alle Leistungen ansehen" |
+| `/angebote` | bestehende Live-Offers-Sektion bleibt; falls keine aktiv: kleiner Teaser "Aktuell keine Aktion – schau bald wieder vorbei" + Link | "Alle Angebote" |
+| `/erste-hilfe-kurs` | eigene Sektion mit kurzem Pitch (Dauer, was lernt man, Preis ab) + Bild/Icon | "Zum Erste-Hilfe-Kurs" |
+| `/team` | horizontale Team-Vorschau (Avatare + Namen + Rolle, max. 4, aus DB) | "Ganzes Team ansehen" |
+| `/ueber-uns` | kurzer "Wer wir sind"-Block (2–3 Sätze + Bild/Icon) | "Mehr über uns" |
+| `/faq` | 3 häufigste Fragen als kleines Accordion | "Alle FAQ ansehen" |
+| `/kontakt` | Standorte-Block (bleibt, ist schon top) | bleibt |
 
-## Was passiert
+## Aufbau der neuen Startseite (in Reihenfolge)
 
-### 1. Datenbank: B78 + B197 + B-Preise spiegeln
-Migration, die für **B78** und **B197** dieselbe Preisstruktur wie Klasse B anlegt (Grundbetrag, Lernprogramm, Übungsstunde, Sonderfahrten, Vorstellung Theorie/Praxis). Preise initial = Klasse B; Inhaber kann jederzeit im Admin anpassen. B78 bekommt zusätzlich Position "Umschreibung/Schlüsselzahl-Fahrten". Bestehende Klasse-B-Einträge bleiben unverändert.
+```
+1. HERO            (bleibt, leicht entschlackt – nur 2 Buttons: WhatsApp + Standorte)
+2. TRUST STRIP     (bleibt)
+3. PREISE-TEASER   ← NEU: 3 Mini-Karten Klasse B / B197 / B78 + "Preise ansehen"
+4. LEISTUNGEN-TEASER (bestehender Block, leicht aufgewertet)
+5. ANGEBOTE        (bleibt – mit Empty-State-Teaser falls leer)
+6. ERSTE-HILFE-KURS-TEASER ← NEU: eigene Sektion mit Pitch + CTA
+7. TEAM-TEASER     ← NEU: 4 Mitglieder horizontal + CTA
+8. ÜBER-UNS-TEASER ← NEU: kompakter Block + CTA
+9. FAQ-TEASER      ← NEU: Top-3 Fragen + CTA
+10. STANDORTE      (bleibt)
+11. WHY-Sektion    (gekürzt auf 3 Punkte statt 6, damit Seite nicht zu lang wird)
+12. FINAL CTA      (bleibt)
+```
 
-### 2. `/preise` – Redesign
-Drei zentrale Kategorien als **gleichwertige, große Karten** in einem 3-Spalten-Grid (1 col mobil, 3 col ab `lg`) – mittig zentriert, volle Breite des Containers, nicht mehr links angepinnt.
+## Was passiert technisch
 
-Pro Karte:
-- Farbiger Gradient-Header mit Kategorie-Icon (Auto / Automatik-Symbol)
-- Großer Kategorie-Titel + ein-Satz-Beschreibung ("Manuelles Schalten", "Automatik-Klasse", "Automatik-Ausbildung – manueller Führerschein")
-- Preis-Liste mit Hover-Trennlinien, Preis als auffälliger Pill rechts
-- Karte **"Klasse B197" als empfohlen** markiert (Badge "Beliebt", leichter Ring + stärkerer Schatten, hebt sich heraus)
-- CTA-Buttons: **"Per WhatsApp fragen"** + **"Standorte ansehen"** (Link zu `/kontakt`) – kein "Jetzt anmelden" mehr
-- Subtile Effekte: Hover-Lift, Glow am Rand, animierter Gradient-Header, Border-Beam-artiger Akzent auf der empfohlenen Karte
+- **`src/routes/index.tsx`** wird erweitert: zusätzliche Queries für `prices` (für Vorschau-Grundbeträge), `team_members` (Top 4 nach `sort_order`), `first_aid_info` (1 Eintrag für Pitch & Preis). FAQ-Daten werden – falls bisher hardcoded auf `/faq` – als kleines Top-3-Array zentralisiert (oder kurz aus der FAQ-Seite importiert).
+- **Neue kleine Komponenten** inline in `index.tsx` (keine neuen Dateien, hält Footprint klein):
+  - `PriceTeaserCard` – pro Klasse: Icon, Name, "ab X €", 2–3 Bullet-Highlights
+  - `TeamTeaser` – horizontaler Avatar-Grid
+  - `FaqTeaserItem` – Mini-Accordion (3 Stück)
+- **Design-Sprache**: gleiche Tokens wie restliche Seite (primary-Rot, dunkler `#0a0a0a`-Block, `rounded-3xl`, Hover-Lift). Konsistente Section-Header (Eyebrow + H2 + Untertitel-Muster wie schon vorhanden).
+- **Performance**: Alle zusätzlichen Daten in **einem `useQueries`-Block** parallel laden; Section nur rendern wenn Daten da sind (kein Layout-Shift).
+- **Bestehende Sektionen bleiben funktional unverändert** (Standorte, Offers, Hero, Final-CTA).
 
-Darunter:
-- **Externe TÜV-Gebühren** als eigener, kompakter Streifen (zwei kleine Zellen Theorie/Praxis) – klar abgegrenzt, weil das keine Fahrschulpreise sind
-- **Hinweis-Banner** (Info-Box) bleibt, aber kleiner und oben rechts mit Icon-Akzent
-- **CTA-Bereich unten** wird zu einem stärkeren dunklen Block mit zwei großen Buttons: WhatsApp + Filialen/Route (verlinkt auf `/kontakt`)
-
-### 3. Verhalten / Inhalt
-- Keine "Anmelden"-Wording mehr; überall "Beratung / WhatsApp / Filiale besuchen"
-- Hero-Untertitel wird klarer: "Anmeldung ausschließlich vor Ort in unseren Filialen in Bochum"
-- Wenn eine Kategorie in der DB leer ist, wird sie nicht angezeigt (kein leerer Slot)
-
-## Technische Details
-- Migration: `INSERT INTO public.prices (category, title, description, price, sort_order, active) VALUES …` für B78 und B197. Keine Schemaänderung.
-- `src/routes/preise.tsx`: neue Komponenten-Struktur, `CATEGORY_ORDER` = `["Klasse B", "Klasse B197", "Klasse B78"]`, separater Render-Block für `Externe TÜV-Gebühren`, "Erste-Hilfe-Kurs" wird nicht mehr hier gemischt, sondern als kleiner Verweislink unter den Karten.
-- `CATEGORY_CTA` entfernt, ersetzt durch einheitliche WhatsApp/Kontakt-CTAs (`CONTACT.whatsapp` + `<Link to="/kontakt">`).
-- Effekte mit Tailwind + bestehenden Tokens (Gradient, Shadow, Ring, Hover) – keine neuen npm-Pakete nötig.
-- Admin-Bereich bleibt unverändert; neue Kategorien tauchen automatisch im bestehenden Preise-Tab auf.
+## Was sich nicht ändert
+- Keine Anmelde-Formulare auf der Startseite (Regel bleibt: Anmeldung nur in Filiale).
+- Routing-Struktur, Footer, Navbar, Admin – unangetastet.
+- Andere Unterseiten – unangetastet.
 
 ## Geänderte Dateien
-- `supabase/migrations/<timestamp>_seed_b78_b197_prices.sql` (neu, Daten-Seed)
-- `src/routes/preise.tsx` (Redesign)
+- `src/routes/index.tsx` (erweitert)
 
-Keine Änderungen an Footer, Navbar, Admin-Logik, anderen Routen.
+## Offene Frage
+Soll ich beim **FAQ-Teaser die Top-3-Fragen aus der bestehenden FAQ-Seite übernehmen** (ich lese die Liste dann aus `src/routes/faq.tsx`), oder möchtest du 3 konkrete Fragen vorgeben?

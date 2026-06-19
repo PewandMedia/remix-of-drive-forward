@@ -1,14 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import carAsset from "@/assets/miro-car.png.asset.json";
-import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin } from "lucide-react";
+import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { OfferFlyer, type OfferFlyerData } from "@/components/site/OfferFlyer";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,10 +39,19 @@ const trustItems = [
 const reasons = [
   { title: "Stressfrei lernen", text: "Wir begleiten dich Schritt für Schritt bis zur Prüfung – geduldig, verständlich und professionell." },
   { title: "Moderne Ausbildung", text: "Klare Abläufe, digitale Kommunikation und moderne Fahrzeuge sorgen für eine angenehme Fahrausbildung." },
-  { title: "Transparente Preise", text: "Alle Kosten werden verständlich dargestellt. Zusätzlich können individuelle Angebote direkt angefragt werden." },
-  { title: "Erste-Hilfe-Kurs möglich", text: "Bei MIRO-DRIVE kannst du dich auch über Erste-Hilfe-Kurse informieren und direkt eine Anfrage stellen." },
-  { title: "Schneller Kontakt", text: "Über WhatsApp kannst du uns direkt schreiben und deine Anmeldung unkompliziert starten." },
-  { title: "Individuelle Beratung", text: "Jeder Fahrschüler ist anders. Deshalb bieten wir individuelle Angebote und Beratungspakete." },
+  { title: "Individuelle Beratung", text: "Jeder Fahrschüler ist anders – wir passen Tempo und Schwerpunkte an dich an." },
+];
+
+const PRICE_CLASSES = [
+  { key: "Klasse B", short: "B", icon: Car, tagline: "Schalter – der klassische Führerschein.", highlights: ["Manuelles Schalten", "Volle Fahrzeugauswahl"] },
+  { key: "Klasse B197", short: "B197", icon: Sparkles, tagline: "Automatik lernen, Schalter fahren dürfen.", highlights: ["Ausbildung auf Automatik", "Führerschein gilt auch für Schalter"], featured: true },
+  { key: "Klasse B78", short: "B78", icon: Cog, tagline: "Reine Automatik – einfach & entspannt.", highlights: ["Nur Automatik-Fahrzeuge", "Schnellerer Lernfortschritt"] },
+];
+
+const FAQ_TOP = [
+  { q: "Welche Führerscheinklassen bietet MIRO-DRIVE an?", a: "Wir bilden in den Klassen B (Schalter), B197 (Automatik mit Schaltberechtigung) und B78 (reine Automatik) aus." },
+  { q: "Wie melde ich mich an?", a: "Die Anmeldung erfolgt ausschließlich persönlich in einer unserer Filialen in Bochum Zentrum oder Riemke." },
+  { q: "Wie erreiche ich euch am schnellsten?", a: "Am schnellsten erreichst du uns per WhatsApp – wir antworten in der Regel innerhalb kürzester Zeit." },
 ];
 
 function Index() {
@@ -61,6 +71,45 @@ function Index() {
       return data ?? [];
     },
   });
+
+  const [pricesQ, teamQ, faQ] = useQueries({
+    queries: [
+      {
+        queryKey: ["home-prices"],
+        queryFn: async () => {
+          const { data, error } = await supabase.from("prices").select("category,title,price").eq("active", true);
+          if (error) throw error;
+          return data ?? [];
+        },
+      },
+      {
+        queryKey: ["home-team"],
+        queryFn: async () => {
+          const { data, error } = await supabase.from("team_members").select("id,name,role,image_url").eq("active", true).order("sort_order").limit(4);
+          if (error) throw error;
+          return data ?? [];
+        },
+      },
+      {
+        queryKey: ["home-first-aid"],
+        queryFn: async () => {
+          const { data, error } = await supabase.from("first_aid_info").select("*").eq("active", true).order("updated_at", { ascending: false }).limit(1);
+          if (error) throw error;
+          return data?.[0] ?? null;
+        },
+      },
+    ],
+  });
+
+  const prices = pricesQ.data ?? [];
+  const team = teamQ.data ?? [];
+  const faInfo = faQ.data;
+
+  const priceFor = (cat: string) => {
+    const grund = prices.find((p) => p.category === cat && /grundbetrag/i.test(p.title));
+    return grund?.price ?? prices.find((p) => p.category === cat)?.price ?? "";
+  };
+
   return (
     <SiteLayout>
       {/* HERO */}
@@ -115,6 +164,265 @@ function Index() {
         </div>
       </section>
 
+      {/* PREISE TEASER */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise & Klassen</span>
+            <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Drei Klassen, transparente Preise.</h2>
+            <p className="mt-4 text-muted-foreground">
+              Wir bilden in Klasse B, B197 und B78 aus – wähle die, die zu dir passt. Alle Preise sind offen einsehbar.
+            </p>
+          </div>
+          <Link to="/preise" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+            Alle Preise ansehen <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {PRICE_CLASSES.map((c) => {
+            const grund = priceFor(c.key);
+            return (
+              <Link
+                key={c.key}
+                to="/preise"
+                className={[
+                  "group relative flex flex-col overflow-hidden rounded-3xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl",
+                  c.featured ? "border-primary/40 ring-1 ring-primary/20" : "border-border",
+                ].join(" ")}
+              >
+                {c.featured && (
+                  <span className="absolute right-4 top-4 rounded-full bg-primary px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-primary-foreground">
+                    Beliebt
+                  </span>
+                )}
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-foreground text-white">
+                  <c.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-display text-xl">Klasse {c.short}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{c.tagline}</p>
+                <ul className="mt-4 space-y-1.5 text-sm">
+                  {c.highlights.map((h) => (
+                    <li key={h} className="flex items-center gap-2 text-foreground/80">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary" /> {h}
+                    </li>
+                  ))}
+                </ul>
+                {grund && (
+                  <div className="mt-5 flex items-end justify-between border-t pt-4">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Grundbetrag ab</p>
+                      <p className="font-display text-2xl text-primary">{grund}</p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-foreground/40 transition-transform group-hover:translate-x-1 group-hover:text-primary" />
+                  </div>
+                )}
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* CURRENT OFFERS */}
+      <section className="bg-muted/30 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Aktuelle Angebote</span>
+              <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">
+                {homeOffers.length > 0 ? "Spar jetzt bei deiner Anmeldung." : "Bald wieder neue Aktionen."}
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                {homeOffers.length > 0
+                  ? "Unsere laufenden Aktions-Angebote – nur für kurze Zeit verfügbar."
+                  : "Aktuell läuft keine Aktion. Schau bald wieder vorbei – wir machen regelmäßig neue Angebote."}
+              </p>
+            </div>
+            <Link to="/angebote" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+              Alle Angebote <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          {homeOffers.length > 0 ? (
+            <div className="grid gap-8 lg:grid-cols-2">
+              {homeOffers.map((o) => (
+                <OfferFlyer key={o.id} offer={o as unknown as OfferFlyerData} compact />
+              ))}
+            </div>
+          ) : (
+            <Link
+              to="/angebote"
+              className="flex items-center justify-between rounded-3xl border bg-white p-8 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              <div className="flex items-center gap-4">
+                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-display text-lg">Keine aktive Aktion gerade</p>
+                  <p className="text-sm text-muted-foreground">Aber unsere Standardpreise sind fair – schau dir die Klassen an.</p>
+                </div>
+              </div>
+              <ArrowRight className="h-5 w-5 text-foreground/40" />
+            </Link>
+          )}
+        </div>
+      </section>
+
+      {/* ERSTE HILFE KURS TEASER */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl border bg-white">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+          <div className="relative grid gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Erste-Hilfe-Kurs</span>
+              <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Pflichtkurs für deinen Führerschein.</h2>
+              <p className="mt-4 text-muted-foreground">
+                {faInfo?.description ?? "Bei uns kannst du dich direkt über Erste-Hilfe-Kurse informieren – kompakt, verständlich und perfekt abgestimmt auf deine Fahrausbildung."}
+              </p>
+              <div className="mt-6 grid grid-cols-3 gap-3">
+                {faInfo?.price && (
+                  <InfoStat icon={Euro} label="Preis" value={faInfo.price} />
+                )}
+                {faInfo?.duration && (
+                  <InfoStat icon={Clock} label="Dauer" value={faInfo.duration} />
+                )}
+                {faInfo?.dates && (
+                  <InfoStat icon={Calendar} label="Termine" value={faInfo.dates} />
+                )}
+                {!faInfo && (
+                  <>
+                    <InfoStat icon={Heart} label="Kompakt" value="1 Tag" />
+                    <InfoStat icon={FileText} label="Anerkannt" value="für TÜV" />
+                    <InfoStat icon={Calendar} label="Anmeldung" value="vor Ort" />
+                  </>
+                )}
+              </div>
+              <Link to="/erste-hilfe-kurs" className="mt-7 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-primary">
+                Zum Erste-Hilfe-Kurs <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="relative">
+              <div className="aspect-[4/3] rounded-3xl bg-gradient-to-br from-primary/15 via-primary/5 to-transparent p-8">
+                <div className="grid h-full place-items-center">
+                  <Heart className="h-32 w-32 text-primary/80" strokeWidth={1.2} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TEAM TEASER */}
+      {team.length > 0 && (
+        <section className="bg-muted/30 py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+              <div className="max-w-2xl">
+                <span className="text-xs font-bold uppercase tracking-wider text-primary">Dein Team</span>
+                <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Lerne deine Fahrlehrer kennen.</h2>
+                <p className="mt-4 text-muted-foreground">
+                  Erfahren, geduldig und immer ansprechbar – das ist das Team hinter MIRO-DRIVE.
+                </p>
+              </div>
+              <Link to="/team" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+                Ganzes Team ansehen <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {team.map((m) => (
+                <Link key={m.id} to="/team" className="group rounded-3xl border bg-white p-5 text-center transition-all hover:-translate-y-1 hover:shadow-lg">
+                  <div className="mx-auto mb-4">
+                    <MiniAvatar name={m.name} src={m.image_url} />
+                  </div>
+                  <p className="font-display text-base">{m.name}</p>
+                  {m.role && <p className="mt-0.5 text-xs uppercase tracking-wider text-muted-foreground">{m.role}</p>}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ÜBER UNS TEASER */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-5 lg:items-center">
+          <div className="lg:col-span-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Über uns</span>
+            <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Eine Fahrschule, die zuhört.</h2>
+            <p className="mt-4 text-muted-foreground">
+              MIRO-DRIVE steht für eine moderne Fahrausbildung mit Herz: zwei Standorte in Bochum, ein eingespieltes Team, klare Preise und ein Ablauf, der wirklich auf dich zugeschnitten ist – egal ob Anfänger oder Auffrischer.
+            </p>
+            <Link to="/ueber-uns" className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-foreground bg-white px-6 py-3 text-sm font-bold text-foreground transition-colors hover:bg-foreground hover:text-white">
+              Mehr über uns <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid gap-3 lg:col-span-2 lg:grid-cols-2">
+            {reasons.map((r, i) => (
+              <div key={r.title} className="rounded-2xl border bg-white p-5">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <span className="font-display text-xs">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <p className="mt-3 text-sm font-bold">{r.title}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{r.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ TEASER */}
+      <section className="bg-muted/30 py-20">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
+                <HelpCircle className="h-4 w-4" /> FAQ
+              </span>
+              <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Schnelle Antworten.</h2>
+            </div>
+            <Link to="/faq" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+              Alle FAQ ansehen <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <Accordion type="single" collapsible className="space-y-3">
+            {FAQ_TOP.map((f, i) => (
+              <AccordionItem key={i} value={`q-${i}`} className="rounded-2xl border bg-white px-5">
+                <AccordionTrigger className="text-left text-base font-bold hover:no-underline">{f.q}</AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* SERVICES TEASER */}
+      <section className="py-20">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Unsere Leistungen</span>
+            <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Von der Anmeldung bis zur Prüfung.</h2>
+            <p className="mt-4 max-w-lg text-muted-foreground">
+              Komplette Führerscheinausbildung Klasse B, B197 & B78, strukturierter Theorieunterricht, individuelle Praxisstunden, Sonderfahrten und Auffrischungskurse – alles aus einer Hand.
+            </p>
+            <Link to="/leistungen" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-foreground/90">
+              Alle Leistungen ansehen <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              { icon: GraduationCap, label: "Klasse B" },
+              { icon: Sparkles, label: "Klasse B197" },
+              { icon: Cog, label: "Klasse B78" },
+              { icon: Clock, label: "Auffrischungs­stunden" },
+            ].map((s) => (
+              <div key={s.label} className="rounded-2xl border bg-white p-6">
+                <s.icon className="h-7 w-7 text-primary" />
+                <p className="mt-4 font-bold">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* LOCATIONS */}
       <section id="standorte" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
@@ -128,78 +436,6 @@ function Index() {
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
           {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
-        </div>
-      </section>
-
-      {/* CURRENT OFFERS */}
-      {homeOffers.length > 0 && (
-        <section className="bg-muted/30 py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-10 max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Aktuelle Angebote</span>
-              <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Spar jetzt bei deiner Anmeldung.</h2>
-              <p className="mt-4 text-muted-foreground">Unsere laufenden Aktions-Angebote – nur für kurze Zeit verfügbar.</p>
-            </div>
-            <div className="grid gap-8 lg:grid-cols-2">
-              {homeOffers.map((o) => (
-                <OfferFlyer key={o.id} offer={o as unknown as OfferFlyerData} compact />
-              ))}
-            </div>
-            <div className="mt-8 text-center">
-              <Link to="/angebote" className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-primary">
-                Alle Angebote ansehen
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* WHY */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <span className="text-xs font-bold uppercase tracking-wider text-primary">Warum MIRO-DRIVE?</span>
-          <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Eine Fahrschule, die wirklich begleitet.</h2>
-        </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {reasons.map((r, i) => (
-            <div key={r.title} className="group relative overflow-hidden rounded-2xl border bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-xl">
-              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/0 transition-colors group-hover:bg-primary/10" />
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <span className="font-display text-sm">{String(i + 1).padStart(2, "0")}</span>
-              </div>
-              <h3 className="relative mt-5 text-xl font-bold">{r.title}</h3>
-              <p className="relative mt-2 text-sm text-muted-foreground">{r.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SERVICES TEASER */}
-      <section className="bg-muted/30 py-20">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Unsere Leistungen</span>
-            <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Von der Anmeldung bis zur Prüfung.</h2>
-            <p className="mt-4 max-w-lg text-muted-foreground">
-              Komplette Führerscheinausbildung Klasse B & B197, strukturierter Theorieunterricht, individuelle Praxisstunden, Sonderfahrten und Auffrischungskurse – alles aus einer Hand.
-            </p>
-            <Link to="/leistungen" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-foreground/90">
-              Alle Leistungen ansehen
-            </Link>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              { icon: GraduationCap, label: "Klasse B" },
-              { icon: Car, label: "Klasse B197" },
-              { icon: Clock, label: "Auffrischungs­stunden" },
-              { icon: ShieldCheck, label: "Erste-Hilfe-Kurs" },
-            ].map((s) => (
-              <div key={s.label} className="rounded-2xl border bg-white p-6">
-                <s.icon className="h-7 w-7 text-primary" />
-                <p className="mt-4 font-bold">{s.label}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -224,5 +460,25 @@ function Index() {
         </div>
       </section>
     </SiteLayout>
+  );
+}
+
+function InfoStat({ icon: Icon, label, value }: { icon: typeof Heart; label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border bg-white p-3">
+      <Icon className="h-4 w-4 text-primary" />
+      <p className="mt-2 text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="text-sm font-bold">{value}</p>
+    </div>
+  );
+}
+
+function MiniAvatar({ name, src }: { name: string; src?: string | null }) {
+  if (src) return <img src={src} alt={name} className="h-20 w-20 rounded-full object-cover" />;
+  const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
+  return (
+    <div className="grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-xl text-white">
+      {initials}
+    </div>
   );
 }
