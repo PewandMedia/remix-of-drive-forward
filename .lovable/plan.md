@@ -1,33 +1,26 @@
 ## Ziel
-Das Hero-Bild auf der Startseite wirkt klein, verpixelt und passt nicht zum Layout. Es soll durch ein neues, hochwertiges KI-generiertes Bild ersetzt und die Hero-Sektion visuell aufgewertet werden.
+Das Hero-Bild soll exakt das echte MIRO-DRIVE-Fahrschulauto zeigen (so wie auf dem Original-Foto, das in `src/assets/miro-car-hero.jpg.asset.json` hinterlegt ist) – aber in höherer Qualität und freigestellt, damit es im Hero nicht mehr klein/pixelig wirkt.
 
 ## Umsetzung
 
-### 1. Neues KI-Hero-Bild generieren
-- Tool: `imagegen--generate_image` mit `standard` Qualität
-- Format: 1536×1024 (breit, hochauflösend statt klein/pixelig)
-- Pfad: `src/assets/hero-car.jpg`
-- Motiv: Modernes weißes Mercedes-A-Klasse-Fahrschulauto im 3/4-Frontwinkel, dynamische Pose, dezente rote Akzente (passend zur Brand), saubere Studio-Lichter, weicher Schatten, transparenter/heller Hintergrund passend zum hellen Hero-Bereich
-- Realistische Fotografie-Optik, keine Schrift im Bild
+### 1. Hochwertige Version des echten Autos erzeugen
+- Tool: `imagegen--edit_image`
+- Input: das vorhandene Original-Bild über die CDN-URL aus `miro-car-hero.jpg.asset.json` (`/__l5e/assets-v1/9b065a9a-…/miro-car-hero.jpg` → vollständige Lovable-Preview-URL)
+- Prompt: „Recreate this exact MIRO-DRIVE driving school car (white Mercedes A-Class with red MIRO-DRIVE branding/decals, red arrow stripe, identical livery and decals) in much higher resolution, photorealistic studio shot, sharp focus, soft contact shadow, 3/4 front angle. Keep the MIRO-DRIVE branding, red arrow design and overall look identical to the reference."
+- `transparent_background: true`, Pfad: `src/assets/hero-car.png` (überschreibt die KI-Version aus dem vorherigen Schritt)
+- aspect_ratio: 16:9
 
-### 2. Hero-Layout in `src/routes/index.tsx` (Zeilen 116–153) verbessern
-- Bild **größer und dominanter** darstellen: aus der schmalen Spalte ausbrechen, leichte Überlappung mit der rechten Bildschirmkante (z. B. `lg:-mr-12 xl:-mr-24`)
-- `aspect`-Wrapper entfernen, Bild als `object-contain` in voller Höhe
-- Neuer dekorativer Hintergrund hinter dem Bild: großer roter Kreis-Glow + diagonaler schwarzer Streifen für mehr Visualgewicht
-- Mindesthöhe des Hero-Bereichs (`min-h-[600px] lg:min-h-[720px]`), damit Bild nicht winzig wirkt
-- Bild-Asset wechseln von `miro-car-hero.jpg.asset.json` auf das neue `@/assets/hero-car.jpg`
-- `drive-in-left` Animation beibehalten
+### 2. Falls die Markierung/Decals nicht überzeugend rekonstruiert werden
+- Fallback: das Original-Foto verwenden und einfach im Hero größer/dominanter platzieren (wie bereits in der Layout-Änderung umgesetzt). Dazu Import zurück auf `miro-car-hero.jpg.asset.json` umstellen.
 
-### 3. Bildqualität sicherstellen
-- `loading="eager"` und `fetchPriority="high"` für Hero
-- `width`/`height` Attribute setzen, damit kein Layout-Shift
-- Kein `drop-shadow-2xl` auf transparentes PNG (bleibt aber bei JPG ok)
+### 3. Hero-Layout bleibt wie aktuell
+- Keine Layout-Änderungen nötig – die größeren Spalten, der rote Glow und der schwarze Akzent-Strich bleiben.
+- Bild-Größe, `loading="eager"`, `fetchPriority="high"` bleiben.
 
 ## Dateien
-- **neu**: `src/assets/hero-car.jpg` (KI-generiert)
-- **geändert**: `src/routes/index.tsx` (nur HERO-Section, Zeilen 116–153)
+- **überschrieben**: `src/assets/hero-car.png` (neue, dem Original treue Version)
+- ggf. `src/routes/index.tsx` (nur falls Fallback auf Originalbild nötig)
 
 ## Nicht im Scope
-- Keine Änderung an Headline-Texten, CTAs oder Trust-Strip
-- Keine Änderung an anderen Sektionen
-- Altes Asset `miro-car-hero.jpg.asset.json` bleibt unangetastet (kann später aufgeräumt werden)
+- Keine weiteren Layout-Änderungen
+- Kein neues Auto-Design, kein generisches Mercedes-Bild mehr
