@@ -1,61 +1,54 @@
-## Ziel
+# Preise-Seite – Redesign & echtes Angebot abbilden
 
-Admin kann **Aktions-Angebote** (Promo-Flyer) selbst anlegen, mit Bild, beliebigen Preis-Zeilen und Gültigkeitszeitraum. Aktive Angebote erscheinen automatisch auf `/angebote` **und** auf der Startseite. Nach Ablauf des Zeitraums verschwinden sie automatisch.
+## Problem
+- Aktuell wird **nur eine schmale Karte** (Klasse B) angezeigt, weil in der Datenbank nur Preise für `Klasse B` und `Externe TÜV-Gebühren` existieren. B78 und B197 fehlen komplett, deshalb wirkt die Seite leer und "an der Seite geklebt".
+- "Externe TÜV-Gebühren" werden aktuell gar nicht gerendert (Kategorie nicht in der Anzeigeliste).
+- "Jetzt anmelden"-Button widerspricht der Regel: **keine Online-Anmeldung**, nur in den Filialen.
+- Design ist generisch (weiße Karte, dünner roter Strich) – keine Hierarchie, kein "Wow".
 
-Das bestehende Konzept "Angebote = Pakete-Karten" wird durch **Promo-Angebote im Flyer-Stil** ersetzt (passend zum hochgeladenen Beispiel).
+## Fahrschul-Angebot (laut deiner Nachricht)
+Die Fahrschule bietet ausschließlich:
+1. **Klasse B** (Standard PKW)
+2. **Klasse B78** (Automatik)
+3. **Klasse B197** (Automatik-Ausbildung, manueller Führerschein)
 
-## Datenbank
+Zusätzlich werden weiterhin angezeigt: **Externe TÜV-Gebühren** und Hinweis auf **Erste-Hilfe-Kurs** (eigene Seite).
 
-Tabelle `offers` wird erweitert (Migration, kein Datenverlust):
+## Was passiert
 
-- `image_url` (text, optional) – Flyer-/Auto-Bild
-- `headline` (text, optional) – große Überschrift (z. B. "Starte jetzt in deine Fahrzukunft!")
-- `subline` (text, optional) – kleiner Text darunter (z. B. "Unser Mega-Angebot")
-- `price_blocks` (jsonb) – Liste der großen Preis-Boxen:
-  `[{ label: "Einzeln anmelden", old_price: "299€", new_price: "149€", suffix: "pro Person" }, …]`
-- `extra_line` (text, optional) – Zusatzzeile (z. B. "Fahrschulwechsel Angebot: 49€ statt 299€")
-- `valid_from` (timestamptz, optional)
-- `valid_until` (timestamptz, optional)
-- `show_on_home` (boolean, default true)
+### 1. Datenbank: B78 + B197 + B-Preise spiegeln
+Migration, die für **B78** und **B197** dieselbe Preisstruktur wie Klasse B anlegt (Grundbetrag, Lernprogramm, Übungsstunde, Sonderfahrten, Vorstellung Theorie/Praxis). Preise initial = Klasse B; Inhaber kann jederzeit im Admin anpassen. B78 bekommt zusätzlich Position "Umschreibung/Schlüsselzahl-Fahrten". Bestehende Klasse-B-Einträge bleiben unverändert.
 
-Die alten Felder `items`, `price_label`, `button_text`, `short_desc` bleiben für Abwärtskompatibilität, werden aber im neuen UI nicht mehr verwendet.
+### 2. `/preise` – Redesign
+Drei zentrale Kategorien als **gleichwertige, große Karten** in einem 3-Spalten-Grid (1 col mobil, 3 col ab `lg`) – mittig zentriert, volle Breite des Containers, nicht mehr links angepinnt.
 
-Sichtbarkeits-Regel im Query (Frontend):
-`active = true AND (valid_from IS NULL OR valid_from <= now()) AND (valid_until IS NULL OR valid_until >= now())`
+Pro Karte:
+- Farbiger Gradient-Header mit Kategorie-Icon (Auto / Automatik-Symbol)
+- Großer Kategorie-Titel + ein-Satz-Beschreibung ("Manuelles Schalten", "Automatik-Klasse", "Automatik-Ausbildung – manueller Führerschein")
+- Preis-Liste mit Hover-Trennlinien, Preis als auffälliger Pill rechts
+- Karte **"Klasse B197" als empfohlen** markiert (Badge "Beliebt", leichter Ring + stärkerer Schatten, hebt sich heraus)
+- CTA-Buttons: **"Per WhatsApp fragen"** + **"Standorte ansehen"** (Link zu `/kontakt`) – kein "Jetzt anmelden" mehr
+- Subtile Effekte: Hover-Lift, Glow am Rand, animierter Gradient-Header, Border-Beam-artiger Akzent auf der empfohlenen Karte
 
-## Admin-UI (`/admin`, Tab "Angebote")
+Darunter:
+- **Externe TÜV-Gebühren** als eigener, kompakter Streifen (zwei kleine Zellen Theorie/Praxis) – klar abgegrenzt, weil das keine Fahrschulpreise sind
+- **Hinweis-Banner** (Info-Box) bleibt, aber kleiner und oben rechts mit Icon-Akzent
+- **CTA-Bereich unten** wird zu einem stärkeren dunklen Block mit zwei großen Buttons: WhatsApp + Filialen/Route (verlinkt auf `/kontakt`)
 
-Formular pro Angebot:
-
-- Bild-Upload (Lovable Storage bucket `offers`, public read)
-- Headline / Subline / Extra-Zeile (Text)
-- Dynamische Liste **Preis-Blöcke** (hinzufügen/entfernen) mit Feldern: Titel, alter Preis, neuer Preis, Suffix
-- Gültig von / bis (Datepicker, beide optional)
-- "Auf Startseite anzeigen" (Switch)
-- Aktiv (Switch), Sortierung
-- Speichern / Löschen / Duplizieren
-
-Storage-Bucket `offers` wird in der Migration angelegt (public read, admin write).
-
-## Frontend
-
-**`/angebote`**: Rendert aktive Angebote im **Flyer-Look** – großes Bild oben, Headline, Preis-Boxen nebeneinander (rot/weiß-Stil), Extra-Zeile, Gültigkeitsdatum, darunter CTAs (WhatsApp, Anrufen, Filiale besuchen). Kein Anmelde-Button.
-
-**`/` (Startseite)**: Neue Section "Aktuelle Angebote" zeigt alle aktiven Angebote mit `show_on_home = true` als kompakte Karten mit Bild + Headline + erstem Preis-Block + Link auf `/angebote`. Wird komplett ausgeblendet, wenn keine aktiv sind.
-
-Bestehende Karten-Logik (`items`, `price_label`) wird entfernt.
+### 3. Verhalten / Inhalt
+- Keine "Anmelden"-Wording mehr; überall "Beratung / WhatsApp / Filiale besuchen"
+- Hero-Untertitel wird klarer: "Anmeldung ausschließlich vor Ort in unseren Filialen in Bochum"
+- Wenn eine Kategorie in der DB leer ist, wird sie nicht angezeigt (kein leerer Slot)
 
 ## Technische Details
+- Migration: `INSERT INTO public.prices (category, title, description, price, sort_order, active) VALUES …` für B78 und B197. Keine Schemaänderung.
+- `src/routes/preise.tsx`: neue Komponenten-Struktur, `CATEGORY_ORDER` = `["Klasse B", "Klasse B197", "Klasse B78"]`, separater Render-Block für `Externe TÜV-Gebühren`, "Erste-Hilfe-Kurs" wird nicht mehr hier gemischt, sondern als kleiner Verweislink unter den Karten.
+- `CATEGORY_CTA` entfernt, ersetzt durch einheitliche WhatsApp/Kontakt-CTAs (`CONTACT.whatsapp` + `<Link to="/kontakt">`).
+- Effekte mit Tailwind + bestehenden Tokens (Gradient, Shadow, Ring, Hover) – keine neuen npm-Pakete nötig.
+- Admin-Bereich bleibt unverändert; neue Kategorien tauchen automatisch im bestehenden Preise-Tab auf.
 
-- Datums-Filter zusätzlich client-seitig anwenden (SSR-Query mit `gte`/`lte`).
-- Bild über `<img loading="lazy">`, alt = Headline.
-- Storage-Upload im Admin via `supabase.storage.from('offers').upload(...)`, gespeichert wird nur die `image_url`.
-- Migration legt Bucket + Policies an (public SELECT, admin INSERT/UPDATE/DELETE).
+## Geänderte Dateien
+- `supabase/migrations/<timestamp>_seed_b78_b197_prices.sql` (neu, Daten-Seed)
+- `src/routes/preise.tsx` (Redesign)
 
-## Geänderte / neue Dateien
-
-- Migration: `offers`-Spalten + Storage-Bucket `offers` + Policies
-- `src/routes/_authenticated/admin.tsx` – Angebote-Tab umbauen (Bildupload, Preis-Blöcke, Datumsfelder)
-- `src/routes/angebote.tsx` – Flyer-Layout, Datums-Filter
-- `src/routes/index.tsx` – neue Home-Section "Aktuelle Angebote"
-- `src/integrations/supabase/types.ts` – auto-regeneriert
+Keine Änderungen an Footer, Navbar, Admin-Logik, anderen Routen.
