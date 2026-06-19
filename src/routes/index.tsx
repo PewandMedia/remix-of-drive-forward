@@ -4,7 +4,7 @@ import { useQuery, useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import carAsset from "@/assets/miro-car.png.asset.json";
+import carAsset from "@/assets/miro-car-hero.jpg.asset.json";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
@@ -145,9 +145,9 @@ function Index() {
               Anmeldung nur persönlich in einer unserer Filialen
             </p>
           </div>
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
-            <img src={carAsset.url} alt="MIRO-DRIVE Fahrschulauto" className="w-full drop-shadow-2xl" />
+            <img src={carAsset.url} alt="MIRO-DRIVE Fahrschulauto" className="animate-drive-in-left w-full drop-shadow-2xl" />
           </div>
         </div>
       </section>
