@@ -46,51 +46,79 @@ function FAPage() {
     <SiteLayout>
       <PageHero eyebrow="Erste-Hilfe-Kurs" title="Erste-Hilfe-Kurs für deinen Führerschein" subtitle="Mach deinen Erste-Hilfe-Kurs direkt bei MIRO-DRIVE – 8 Stunden an einem Tag (8:00–16:00 Uhr), jeden Monat in der Fahrschule." />
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:items-start">
-        <div className="space-y-10">
-        <div>
-          <h2 className="font-display text-2xl uppercase sm:text-3xl">Was du bekommst</h2>
-          <ul className="mt-6 space-y-3">
-            {benefits.map((b) => (
-              <li key={b.label} className="flex items-start gap-3 rounded-xl border bg-white p-4">
-                <b.icon className="mt-0.5 h-5 w-5 text-primary" />
-                <span className="text-sm font-medium">{b.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h2 className="font-display text-2xl uppercase sm:text-3xl">Anmeldung & Infos</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Der Kurs läuft von 8:00 bis 16:00 Uhr und findet jeden Monat in unserer Fahrschule statt. Sichere dir deinen Platz – schnell und unkompliziert per WhatsApp oder Anruf.</p>
-
-          {info && (
-            <div className="mt-6 rounded-2xl border bg-muted/30 p-6">
-              <h3 className="font-display text-lg">Kursinfo</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{info.description}</p>
-              <dl className="mt-4 grid grid-cols-3 gap-3 text-sm">
-                {info.price && <div><dt className="text-xs uppercase text-muted-foreground">Preis</dt><dd className="font-bold text-primary">{info.price}</dd></div>}
-                {info.duration && <div><dt className="text-xs uppercase text-muted-foreground">Dauer</dt><dd className="font-bold">{info.duration}</dd></div>}
-                {info.dates && <div><dt className="text-xs uppercase text-muted-foreground">Termine</dt><dd className="font-bold">{info.dates}</dd></div>}
-              </dl>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start">
+          <div className="space-y-10 lg:col-span-7">
+            <header className="space-y-4">
+              <div className="h-2 w-24 bg-primary" />
+              <h2 className="font-display text-4xl uppercase leading-none tracking-tighter sm:text-5xl md:text-6xl">
+                Was du<br />bekommst
+              </h2>
+            </header>
+            <div className="border-t-4 border-foreground">
+              {benefits.map((b) => (
+                <div key={b.label} className="group flex items-center gap-6 border-b border-border px-2 py-6 transition-colors hover:bg-muted/40">
+                  <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center bg-primary text-primary-foreground transition-transform group-hover:scale-110">
+                    <b.icon className="h-6 w-6" strokeWidth={2} />
+                  </span>
+                  <p className="text-lg font-bold tracking-tight sm:text-xl">{b.label}</p>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-bold text-white">
-              Per WhatsApp anfragen
-            </a>
-            <a href={`tel:${CONTACT.phone}`} className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-bold text-white">
-              <Phone className="h-4 w-4" /> Anrufen
-            </a>
+          <div className="flex flex-col gap-10 lg:col-span-5">
+            <div className="group relative">
+              <div className="absolute -inset-3 rotate-1 rounded-2xl bg-muted transition-transform duration-500 group-hover:rotate-0" />
+              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-foreground shadow-2xl">
+                <img src={ersteHilfeImg} alt="Erste-Hilfe-Koffer mit rotem Kreuz" loading="lazy" width={1024} height={1280} className="absolute inset-0 h-full w-full object-cover" />
+                <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <div className="absolute bottom-8 left-8 right-8 z-20">
+                  <span className="mb-4 inline-block bg-primary px-3 py-1 font-display text-[10px] uppercase tracking-widest text-primary-foreground">Safe First</span>
+                  <p className="max-w-xs text-sm leading-relaxed text-white/85">Professionelle Ausrüstung und Experten-Wissen direkt vor Ort in unserer Fahrschule.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl bg-foreground p-8 text-white">
+              <div className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-primary opacity-20 blur-[100px]" />
+              <div className="relative z-10">
+                <h2 className="mb-4 font-display text-2xl uppercase leading-none tracking-tight sm:text-3xl">Anmeldung & Infos</h2>
+                <p className="mb-8 text-sm leading-relaxed text-white/60">
+                  Der Kurs läuft von 8:00 bis 16:00 Uhr und findet jeden Monat in unserer Fahrschule statt. Sichere dir deinen Platz – unkompliziert per WhatsApp oder Anruf.
+                </p>
+                {info && (
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-6 border-t border-white/10 pt-8">
+                    {info.price && (
+                      <div>
+                        <span className="mb-1 block font-display text-[10px] uppercase tracking-widest text-primary">Preis</span>
+                        <p className="text-2xl font-bold tracking-tighter">{info.price}</p>
+                      </div>
+                    )}
+                    {info.dates && (
+                      <div>
+                        <span className="mb-1 block font-display text-[10px] uppercase tracking-widest text-primary">Termine</span>
+                        <p className="text-base font-bold leading-tight tracking-tight">{info.dates}</p>
+                      </div>
+                    )}
+                    {info.duration && (
+                      <div className="col-span-2">
+                        <span className="mb-1 block font-display text-[10px] uppercase tracking-widest text-primary">Dauer</span>
+                        <p className="text-lg font-bold tracking-tight">{info.duration}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                  <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex flex-1 items-center justify-center gap-2 bg-[#25D366] px-6 py-4 font-display text-xs uppercase tracking-widest text-white transition-all hover:brightness-110 active:scale-95">
+                    WhatsApp
+                  </a>
+                  <a href={`tel:${CONTACT.phone}`} className="inline-flex flex-1 items-center justify-center gap-2 border-2 border-white bg-white px-6 py-4 font-display text-xs uppercase tracking-widest text-foreground transition-all hover:bg-white/90 active:scale-95">
+                    <Phone className="h-4 w-4" /> Anrufen
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        </div>
-        <aside className="lg:sticky lg:top-24">
-          <div className="overflow-hidden rounded-2xl border shadow-sm">
-            <img src={ersteHilfeImg} alt="Erste-Hilfe-Koffer mit rotem Kreuz" width={1024} height={1280} loading="lazy" className="aspect-[4/5] w-full object-cover" />
-          </div>
-        </aside>
         </div>
 
         <div>
