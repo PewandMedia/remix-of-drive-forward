@@ -28,19 +28,28 @@ export const Route = createFileRoute("/team")({
   errorComponent: ErrorBox,
 });
 
-function Avatar({ name, src }: { name: string; src?: string | null }) {
-  if (src) return <img src={src} alt={name} className="h-32 w-32 rounded-full object-cover" />;
+function Avatar({ name, src, size = "md" }: { name: string; src?: string | null; size?: "md" | "lg" }) {
+  const dim = size === "lg" ? "h-44 w-44" : "h-32 w-32";
+  const textSize = size === "lg" ? "text-5xl" : "text-3xl";
+  if (src) return <img src={src} alt={name} className={`${dim} rounded-full object-cover`} />;
   const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-3xl text-white">
+    <div className={`flex ${dim} items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display ${textSize} text-white`}>
       {initials}
     </div>
   );
 }
 
+function renderLanguages(description: string | null | undefined) {
+  if (!description?.startsWith("Sprachen:")) return [];
+  return description.replace("Sprachen:", "").split(",").map((s) => s.trim()).filter(Boolean);
+}
+
 function TeamPage() {
   const { data: team } = useSuspenseQuery(teamQuery);
-  const instructors = team.filter((m) => (m.sort_order ?? 0) < 8);
+  const allInstructors = team.filter((m) => (m.sort_order ?? 0) < 8);
+  const owner = allInstructors.find((m) => m.name.toLowerCase().includes("ilkay"));
+  const otherInstructors = allInstructors.filter((m) => m !== owner);
   const office = team.filter((m) => (m.sort_order ?? 0) >= 8);
 
   const renderGroup = (members: typeof team) => (

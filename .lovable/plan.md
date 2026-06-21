@@ -1,38 +1,31 @@
-## Ziel
-Die Headlines (H1–H3 und große Überschriften) sollen erstklassig und qualitativ wirken:
-- Kein `uppercase` mehr bei Hauptüberschriften – stattdessen normal geschriebener Text (Sentence Case / Title Case)
-- Deutlich größere Schriftgrößen für mehr Präsenz
-- Roter Hover-/Glow-Effekt auf Überschriften als edles Detail
-- Alle kleinen Labels/Tags dürfen `uppercase` behalten (die sind als dekorative Eyecatcher gut)
+## Änderung: Team-Seite Layout-Restrukturierung
 
-## Scope
-Alle Seiten-Routen und wiederverwendbare Komponenten mit sichtbaren Headlines.
+### Ziel
+Ilkay (Inhaber & Fahrlehrer) soll prominent über allen anderen Teammitgliedern stehen. Die übrigen Fahrlehrer:innen kommen in einem Grid nebeneinander darunter. Ilkays Karte soll etwas größer sein als die anderen.
 
-### 1. Globale Stile (`src/styles.css`)
-- `@utility headline-glow` anlegen: Roter Text-Schatten + sanfter Farbübergang auf Hover, der bei Mausberührung einen leuchtenden Glow erzeugt
-- H1/H2/H3 im `@layer base` vergrößern (z. B. H1 von `text-4xl/5xl/6xl` auf `text-5xl/6xl/7xl`, H2 von `text-3xl/4xl/5xl` auf `text-4xl/5xl/6xl`)
-- `text-transform: uppercase` aus den globalen `h1, h2, h3`-Regeln entfernen
+### Umsetzung
+1. **Datenaufbereitung in `src/routes/team.tsx`**
+   - Aus der `instructors`-Liste Ilkay (anhand von `sort_order === 0` oder Name-Check) separat herausfiltern.
+   - Die verbleibenden Instruktoren als `otherInstructors` behandeln.
 
-### 2. Startseite (`src/routes/index.tsx`)
-- Hero-H1: `uppercase` entfernen, Schriftgröße hochschrauben
-- Alle Sektions-H2s: `uppercase` entfernen, ggf. vergrößern
-- Preis- und Angebotskarten: `uppercase` bei H3 entfernen
+2. **Featured-Karte für Ilkay**
+   - Eigenes Layout: zentriert, breiter als die Standardkarten (z. B. `max-w-md` oder `max-w-lg`).
+   - Größerer Avatar (`h-40 w-40` statt `h-32 w-32`).
+   - Größere Schrift für Name und Rolle.
+   - Evtl. zusätzliches Styling (z. B. leichterer Rahmen oder Schatten) um ihn als Inhaber zu kennzeichnen.
 
-### 3. Weitere Routen (sequentielle Bearbeitung)
-- `preise.tsx`, `angebote.tsx`, `erste-hilfe-kurs.tsx`, `kontakt.tsx`, `faq.tsx`, `leistungen.tsx`, `team.tsx`, `ueber-uns.tsx`, `impressum.tsx`, `datenschutz.tsx`, `auth.tsx`
-- Jeweils Hauptüberschriften (`h1`/`h2`) von `uppercase` befreien und mit der globalen Utility verknüpfen
+3. **Grid für die übrigen Instruktoren**
+   - `otherInstructors` im bestehenden `renderGroup`-Grid rendern.
+   - `xl:grid-cols-4` beibehalten.
 
-### 4. Wiederverwendbare Komponenten
-- `SiteLayout.tsx`: Page-Title H1 ohne `uppercase`
-- `OfferFlyer.tsx`: Headline ohne `uppercase`
-- `LocationCard.tsx`: Headline ohne `uppercase`
-- `Footer.tsx`: Footer-Headlines bleiben klein; bei Bedarf anpassen
+4. **Bürokräfte-Sektion**
+   - Unverändert bleiben, wird unter dem Instruktoren-Grid angezeigt.
 
-### 5. Hover/Glow-Anwendung
-- Die neue `headline-glow`-Utility wird auf alle großen Überschriften (`h1`, `h2`, wichtige `h3`) angewendet
-- Effekt: Beim Hover leuchtet der Text leicht in der Brand-Farbe (`--primary`) auf mit einem weichen Schatten/Glow
+### Technische Details
+- Datei: `src/routes/team.tsx`
+- Keine Backend-Änderungen nötig (Sortierung via `sort_order` in Supabase).
+- Keine neuen Abhängigkeiten.
 
-## Nicht im Scope
-- Buttons, kleine Tags/Labels (die bleiben `uppercase`, wenn sie das gerade sind)
-- Farbschema oder Layout-Änderungen außerhalb der Headlines
-- Neue Bilder oder Inhalte
+### Nicht im Scope
+- Keine Änderungen an Farben, Schriftarten oder Animationen (Headlines bleiben wie aktuell).
+- Keine Änderungen an der Bürokräfte-Sektion.
