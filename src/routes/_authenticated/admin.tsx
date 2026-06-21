@@ -40,7 +40,7 @@ function AdminPage() {
   if (!isAdmin) return (
     <SiteLayout>
       <div className="mx-auto max-w-md p-16 text-center">
-        <h2 className="font-display text-xl uppercase">Kein Admin-Zugriff</h2>
+        <h2 className="font-display text-xl">Kein Admin-Zugriff</h2>
         <p className="mt-2 text-sm text-muted-foreground">Dein Konto hat keine Admin-Rolle. Bitte vom Inhaber freigeben lassen.</p>
         <Button onClick={signOut} className="mt-6 rounded-full">Abmelden</Button>
       </div>
@@ -52,7 +52,7 @@ function AdminPage() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="font-display text-3xl uppercase">Admin-Panel</h1>
+            <h1 className="font-display text-3xl">Admin-Panel</h1>
           <p className="text-sm text-muted-foreground">Verwalte Preise, Angebote, Team und den Erste-Hilfe-Kurs.</p>
           </div>
           <Button variant="outline" onClick={signOut} className="rounded-full"><LogOut className="h-4 w-4" /> Abmelden</Button>

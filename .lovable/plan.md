@@ -1,29 +1,38 @@
 ## Ziel
-Erstklassige, moderne Typografie im Apple-Stil – klar, sachlich, hochwertig. Weg von der Serifenschrift, hin zu einer feinen, geometrischen Sans-Serif wie auf apple.com.
+Die Headlines (H1–H3 und große Überschriften) sollen erstklassig und qualitativ wirken:
+- Kein `uppercase` mehr bei Hauptüberschriften – stattdessen normal geschriebener Text (Sentence Case / Title Case)
+- Deutlich größere Schriftgrößen für mehr Präsenz
+- Roter Hover-/Glow-Effekt auf Überschriften als edles Detail
+- Alle kleinen Labels/Tags dürfen `uppercase` behalten (die sind als dekorative Eyecatcher gut)
 
-## Schriftwahl
-Apple nutzt **SF Pro Display / SF Pro Text** – diese sind nicht frei über Google Fonts verfügbar. Beste, lizenzfrei einsetzbare Alternativen, die nahezu identisch wirken:
+## Scope
+Alle Seiten-Routen und wiederverwendbare Komponenten mit sichtbaren Headlines.
 
-- **Headlines:** `Inter` (Gewichte 600, 700) mit enger Laufweite (-0.03em) – kommt SF Pro Display am nächsten
-- **Body & UI:** `Inter` (Gewichte 400, 500) – derselbe Familienstamm sorgt für ein konsistentes Apple-Gefühl
+### 1. Globale Stile (`src/styles.css`)
+- `@utility headline-glow` anlegen: Roter Text-Schatten + sanfter Farbübergang auf Hover, der bei Mausberührung einen leuchtenden Glow erzeugt
+- H1/H2/H3 im `@layer base` vergrößern (z. B. H1 von `text-4xl/5xl/6xl` auf `text-5xl/6xl/7xl`, H2 von `text-3xl/4xl/5xl` auf `text-4xl/5xl/6xl`)
+- `text-transform: uppercase` aus den globalen `h1, h2, h3`-Regeln entfernen
 
-Alternative falls gewünscht: System-Font-Stack (`-apple-system, BlinkMacSystemFont, "SF Pro Display", ...`) → nutzt auf macOS/iOS automatisch echtes SF Pro.
+### 2. Startseite (`src/routes/index.tsx`)
+- Hero-H1: `uppercase` entfernen, Schriftgröße hochschrauben
+- Alle Sektions-H2s: `uppercase` entfernen, ggf. vergrößern
+- Preis- und Angebotskarten: `uppercase` bei H3 entfernen
 
-**Mein Vorschlag:** Kombination beider Ansätze
-→ System-Font-Stack zuerst (echtes SF Pro auf Apple-Geräten), Inter als Fallback (Windows/Android/Linux).
+### 3. Weitere Routen (sequentielle Bearbeitung)
+- `preise.tsx`, `angebote.tsx`, `erste-hilfe-kurs.tsx`, `kontakt.tsx`, `faq.tsx`, `leistungen.tsx`, `team.tsx`, `ueber-uns.tsx`, `impressum.tsx`, `datenschutz.tsx`, `auth.tsx`
+- Jeweils Hauptüberschriften (`h1`/`h2`) von `uppercase` befreien und mit der globalen Utility verknüpfen
 
-## Geplante Änderungen
+### 4. Wiederverwendbare Komponenten
+- `SiteLayout.tsx`: Page-Title H1 ohne `uppercase`
+- `OfferFlyer.tsx`: Headline ohne `uppercase`
+- `LocationCard.tsx`: Headline ohne `uppercase`
+- `Footer.tsx`: Footer-Headlines bleiben klein; bei Bedarf anpassen
 
-### 1. `src/routes/__root.tsx`
-- Google-Fonts-Link auf nur `Inter` (Gewichte 400, 500, 600, 700) reduzieren
-- Playfair Display entfernen
-
-### 2. `src/styles.css`
-- `--font-sans`: `-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif`
-- `--font-display`: gleicher Stack (eine einzige Familie für die ganze Seite – Apple-typisch)
-- Headlines: `font-weight: 600` (Apple nutzt Semibold, nicht Bold), `letter-spacing: -0.03em` für große Größen, `-0.02em` für mittlere
-- Body: `font-weight: 400`, normale Laufweite, leicht erhöhte Zeilenhöhe (1.5)
-- `-webkit-font-smoothing: antialiased` und `text-rendering: optimizeLegibility` ergänzen für sauberes Rendering
+### 5. Hover/Glow-Anwendung
+- Die neue `headline-glow`-Utility wird auf alle großen Überschriften (`h1`, `h2`, wichtige `h3`) angewendet
+- Effekt: Beim Hover leuchtet der Text leicht in der Brand-Farbe (`--primary`) auf mit einem weichen Schatten/Glow
 
 ## Nicht im Scope
-Farben, Layout, Hero-Bild, Spacing, Komponenten – nur Schrift.
+- Buttons, kleine Tags/Labels (die bleiben `uppercase`, wenn sie das gerade sind)
+- Farbschema oder Layout-Änderungen außerhalb der Headlines
+- Neue Bilder oder Inhalte
