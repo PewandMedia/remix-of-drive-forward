@@ -1,26 +1,29 @@
 ## Ziel
-Die gesamte Seite soll eine einheitlich klassische, serifenbetonte Schrift erhalten — nicht nur die Headlines, sondern auch Fließtext, Navigation, Buttons und UI-Elemente.
+Erstklassige, moderne Typografie im Apple-Stil – klar, sachlich, hochwertig. Weg von der Serifenschrift, hin zu einer feinen, geometrischen Sans-Serif wie auf apple.com.
 
-## Aktueller Stand
-- Headlines: `Playfair Display` (Serif)
-- Body/UI: `Inter` (Sans-Serif)
+## Schriftwahl
+Apple nutzt **SF Pro Display / SF Pro Text** – diese sind nicht frei über Google Fonts verfügbar. Beste, lizenzfrei einsetzbare Alternativen, die nahezu identisch wirken:
+
+- **Headlines:** `Inter` (Gewichte 600, 700) mit enger Laufweite (-0.03em) – kommt SF Pro Display am nächsten
+- **Body & UI:** `Inter` (Gewichte 400, 500) – derselbe Familienstamm sorgt für ein konsistentes Apple-Gefühl
+
+Alternative falls gewünscht: System-Font-Stack (`-apple-system, BlinkMacSystemFont, "SF Pro Display", ...`) → nutzt auf macOS/iOS automatisch echtes SF Pro.
+
+**Mein Vorschlag:** Kombination beider Ansätze
+→ System-Font-Stack zuerst (echtes SF Pro auf Apple-Geräten), Inter als Fallback (Windows/Android/Linux).
 
 ## Geplante Änderungen
 
-### 1. Google Fonts in `src/routes/__root.tsx`
-- Entfernen: `Inter`
-- Erweitern: `Playfair Display` um die Gewichte 400, 500, 600, 700, 800 (damit alle Schriftstufen von dünn bis fett abgedeckt sind)
-- Ein einzelner Font-Request für `Playfair Display` reicht dann für die komplette Seite
+### 1. `src/routes/__root.tsx`
+- Google-Fonts-Link auf nur `Inter` (Gewichte 400, 500, 600, 700) reduzieren
+- Playfair Display entfernen
 
-### 2. Design-Tokens in `src/styles.css`
-- `--font-sans` auf `"Playfair Display", Georgia, "Times New Roman", serif` setzen
-- `--font-display` bleibt auf `Playfair Display` (keine Änderung nötig)
-- Body-Font in `@layer base` auf `var(--font-sans)` belassen — dadurch wird automatisch die Serif überall angewendet
-- Headline-Styles (h1, h2, h3, .font-display) bleiben erhalten
+### 2. `src/styles.css`
+- `--font-sans`: `-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif`
+- `--font-display`: gleicher Stack (eine einzige Familie für die ganze Seite – Apple-typisch)
+- Headlines: `font-weight: 600` (Apple nutzt Semibold, nicht Bold), `letter-spacing: -0.03em` für große Größen, `-0.02em` für mittlere
+- Body: `font-weight: 400`, normale Laufweite, leicht erhöhte Zeilenhöhe (1.5)
+- `-webkit-font-smoothing: antialiased` und `text-rendering: optimizeLegibility` ergänzen für sauberes Rendering
 
-### 3. Visuelle Feinabstimmung (optional, falls nötig)
-- Falls Buttons/Navigation mit Serif zu "buchstäblich" wirken, leichte Anpassung der `letter-spacing`-Werte oder `font-weight` prüfen
-
-## Was sich NICHT ändert
-- Farben, Layout, Spacing, Hero-Bild, Komponenten-Struktur
-- Dark-Mode-Variablen
+## Nicht im Scope
+Farben, Layout, Hero-Bild, Spacing, Komponenten – nur Schrift.
