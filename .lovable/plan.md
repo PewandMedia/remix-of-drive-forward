@@ -1,31 +1,41 @@
-## Änderung: Team-Seite Layout-Restrukturierung
+## Ziel
+Eine prominente Bewertungs-Sektion auf der Startseite, die das Google-Rating von Miro-Drive als Vertrauenssignal nutzt und Besucher direkt zum Google-Bewertungsformular leitet.
 
-### Ziel
-Ilkay (Inhaber & Fahrlehrer) soll prominent über allen anderen Teammitgliedern stehen. Die übrigen Fahrlehrer:innen kommen in einem Grid nebeneinander darunter. Ilkays Karte soll etwas größer sein als die anderen.
+## Wichtig zu wissen
+Eine Bewertung **direkt von der Webseite an Google Maps zu senden ist nicht möglich**. Google bietet dafür keine API – Bewertungen können ausschließlich von eingeloggten Google-Nutzern direkt auf Google Maps abgegeben werden. Das ist auf allen Webseiten so (auch bei großen Marken).
 
-### Umsetzung
-1. **Datenaufbereitung in `src/routes/team.tsx`**
-   - Aus der `instructors`-Liste Ilkay (anhand von `sort_order === 0` oder Name-Check) separat herausfiltern.
-   - Die verbleibenden Instruktoren als `otherInstructors` behandeln.
+Lösung: Ein "Jetzt bei Google bewerten"-Button, der direkt das Google-Bewertungsformular für Miro-Drive öffnet (vorausgefüllt, mit 1 Klick auf Sterne klickbar). Das ist der schnellste legitime Weg.
 
-2. **Featured-Karte für Ilkay**
-   - Eigenes Layout: zentriert, breiter als die Standardkarten (z. B. `max-w-md` oder `max-w-lg`).
-   - Größerer Avatar (`h-40 w-40` statt `h-32 w-32`).
-   - Größere Schrift für Name und Rolle.
-   - Evtl. zusätzliches Styling (z. B. leichterer Rahmen oder Schatten) um ihn als Inhaber zu kennzeichnen.
+## Was gebaut wird
 
-3. **Grid für die übrigen Instruktoren**
-   - `otherInstructors` im bestehenden `renderGroup`-Grid rendern.
-   - `xl:grid-cols-4` beibehalten.
+### 1. Neue Sektion auf der Startseite (`src/routes/index.tsx`)
+Platzierung: zwischen "TRUST STRIP" und "PREISE TEASER" – also weit oben, sichtbar ohne Scrollen auf Desktop.
 
-4. **Bürokräfte-Sektion**
-   - Unverändert bleiben, wird unter dem Instruktoren-Grid angezeigt.
+Inhalt:
+- Großes Eyebrow: "Bewertet von unseren Fahrschülern"
+- Headline: "5,0 ★ bei über 549 Google-Bewertungen"
+- 5 große rote Sterne (Lucide `Star` ausgefüllt)
+- Untertitel: kurze Vertrauensaussage ("Die bestbewertete Fahrschule in Bochum…")
+- 3 echte Beispiel-Reviews als Karten (aus Screenshot: Shahin Rahman, U. Mur., S.) mit Avatar-Initialen, Sternen, Auszug, "Google"-Badge
+- Zwei CTAs:
+  - **Primary:** "Jetzt bei Google bewerten" → öffnet Google-Bewertungsdialog
+  - **Secondary:** "Alle 549 Rezensionen lesen" → öffnet Google-Profil
 
-### Technische Details
-- Datei: `src/routes/team.tsx`
-- Keine Backend-Änderungen nötig (Sortierung via `sort_order` in Supabase).
-- Keine neuen Abhängigkeiten.
+### 2. Eigene Mini-Sektion auf der Team-Seite (`src/routes/team.tsx`)
+Kompakter 5,0★-Badge unter dem Page-Hero ("Ausgezeichnet vom Team mit 5,0★ bei 549 Bewertungen") – verstärkt das Vertrauenssignal genau dort, wo Besucher das Team kennenlernen.
 
-### Nicht im Scope
-- Keine Änderungen an Farben, Schriftarten oder Animationen (Headlines bleiben wie aktuell).
-- Keine Änderungen an der Bürokräfte-Sektion.
+### 3. Konstanten in `src/lib/contact.ts`
+Hinzufügen:
+- `googleReviewUrl` – direkter Link zum Bewertungsformular
+- `googleProfileUrl` – Link zum Google-Profil mit allen Reviews
+- `googleRating: "5.0"`, `googleReviewCount: 549`
+
+Die Bewertungs-URLs werden anhand der Google Place ID von "Fahrschule Miro-Drive Inh. Ilkay Altin" gebaut (Standard-Format: `https://search.google.com/local/writereview?placeid=…` bzw. `https://search.google.com/local/reviews?placeid=…`). Falls die Place ID nicht eindeutig auffindbar ist, nutze ich als Fallback den Google-Maps-Such-Link auf den Geschäftsnamen.
+
+### 4. Optional / nice-to-have
+JSON-LD `AggregateRating` Schema im `head()` der Startseite – dadurch zeigt Google in den Suchergebnissen die Sterne unter dem Link an (SEO-Boost). Lokal definiert via `scripts: [{ type: "application/ld+json", children: ... }]`.
+
+## Out of Scope
+- Keine eigene Review-Datenbank, kein eigenes Formular, kein Speichern von Bewertungen im Backend.
+- Keine automatische Synchronisation der Reviews von Google (Google Places API erlaubt nur 5 Reviews und das gegen Bezahlung – für später, wenn gewünscht).
+- Keine Änderung an Farben/Fonts/Layout anderer Sektionen.

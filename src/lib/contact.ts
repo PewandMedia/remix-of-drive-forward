@@ -12,6 +12,12 @@ export const CONTACT = {
     { day: "Sa", time: "10:00 – 14:00" },
     { day: "So", time: "geschlossen" },
   ],
+  googleRating: "5,0",
+  googleReviewCount: 549,
+  googleProfileUrl:
+    "https://www.google.com/maps/search/?api=1&query=Fahrschule+Miro-Drive+Inh.+Ilkay+Altin+Bochum",
+  googleReviewUrl:
+    "https://www.google.com/maps/search/?api=1&query=Fahrschule+Miro-Drive+Inh.+Ilkay+Altin+Bochum",
 } as const;
 
 export const NAV_LINKS = [
