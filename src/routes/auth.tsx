@@ -61,7 +61,7 @@ function AuthPage() {
   return (
     <SiteLayout>
       <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-16">
-        <h1 className="font-display text-3xl uppercase">Admin-Bereich</h1>
+        <h1 className="font-display text-3xl">Admin-Bereich</h1>
         <p className="mt-2 text-sm text-muted-foreground">Login für den Inhaber der Fahrschule. Der erste registrierte Nutzer wird automatisch zum Admin.</p>
         <Tabs defaultValue="login" className="mt-8">
           <TabsList className="grid w-full grid-cols-2">

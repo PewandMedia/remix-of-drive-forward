@@ -121,7 +121,7 @@ function Index() {
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" /> Fahrschule MIRO-DRIVE
             </div>
-            <h1 className="text-4xl uppercase leading-[1.02] sm:text-5xl lg:text-6xl xl:text-7xl">
+            <h1 className="text-5xl leading-[1.02] sm:text-6xl lg:text-7xl xl:text-8xl">
               Dein Führerschein <br />
               <span className="text-primary">startet hier</span> – <br />
               modern, sicher <br />
@@ -178,7 +178,7 @@ function Index() {
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise & Klassen</span>
-            <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Drei Klassen, transparente Preise.</h2>
+            <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Drei Klassen, transparente Preise.</h2>
             <p className="mt-4 text-muted-foreground">
               Wir bilden in Klasse B, B197 und B78 aus – wähle die, die zu dir passt. Alle Preise sind offen einsehbar.
             </p>
@@ -216,7 +216,7 @@ function Index() {
                   >
                     <c.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="mb-2 font-display text-3xl uppercase leading-tight tracking-tighter">
+                  <h3 className="mb-2 font-display text-3xl leading-tight tracking-tighter">
                     Klasse {c.short}
                   </h3>
                   <p
@@ -278,7 +278,7 @@ function Index() {
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Aktuelle Angebote</span>
-              <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">
+              <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">
                 {homeOffers.length > 0 ? "Spar jetzt bei deiner Anmeldung." : "Bald wieder neue Aktionen."}
               </h2>
               <p className="mt-4 text-muted-foreground">
@@ -324,7 +324,7 @@ function Index() {
           <div className="relative grid gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Erste-Hilfe-Kurs</span>
-              <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Pflichtkurs für deinen Führerschein.</h2>
+              <h2 className="mt-2 text-4xl sm:text-5xl">Pflichtkurs für deinen Führerschein.</h2>
               <p className="mt-4 text-muted-foreground">
                 {faInfo?.description ?? "Bei uns kannst du dich direkt über Erste-Hilfe-Kurse informieren – kompakt, verständlich und perfekt abgestimmt auf deine Fahrausbildung."}
               </p>
@@ -368,7 +368,7 @@ function Index() {
             <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
               <div className="max-w-2xl">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary">Dein Team</span>
-                <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Lerne deine Fahrlehrer kennen.</h2>
+                <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Lerne deine Fahrlehrer kennen.</h2>
                 <p className="mt-4 text-muted-foreground">
                   Erfahren, geduldig und immer ansprechbar – das ist das Team hinter MIRO-DRIVE.
                 </p>
@@ -397,7 +397,7 @@ function Index() {
         <div className="grid gap-10 lg:grid-cols-5 lg:items-center">
           <div className="lg:col-span-3">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">Über uns</span>
-            <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Eine Fahrschule, die zuhört.</h2>
+            <h2 className="mt-2 text-4xl sm:text-5xl">Eine Fahrschule, die zuhört.</h2>
             <p className="mt-4 text-muted-foreground">
               MIRO-DRIVE steht für eine moderne Fahrausbildung mit Herz: zwei Standorte in Bochum, ein eingespieltes Team, klare Preise und ein Ablauf, der wirklich auf dich zugeschnitten ist – egal ob Anfänger oder Auffrischer.
             </p>
@@ -427,7 +427,7 @@ function Index() {
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
                 <HelpCircle className="h-4 w-4" /> FAQ
               </span>
-              <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Schnelle Antworten.</h2>
+              <h2 className="mt-2 text-4xl sm:text-5xl">Schnelle Antworten.</h2>
             </div>
             <Link to="/faq" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
               Alle FAQ ansehen <ArrowRight className="h-4 w-4" />
@@ -449,7 +449,7 @@ function Index() {
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-primary">Unsere Leistungen</span>
-            <h2 className="mt-2 text-3xl uppercase sm:text-4xl">Von der Anmeldung bis zur Prüfung.</h2>
+            <h2 className="mt-2 text-4xl sm:text-5xl">Von der Anmeldung bis zur Prüfung.</h2>
             <p className="mt-4 max-w-lg text-muted-foreground">
               Komplette Führerscheinausbildung Klasse B, B197 & B78, strukturierter Theorieunterricht, individuelle Praxisstunden, Sonderfahrten und Auffrischungskurse – alles aus einer Hand.
             </p>
@@ -478,7 +478,7 @@ function Index() {
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">Unsere Standorte</span>
-            <h2 className="mt-2 text-3xl uppercase sm:text-4xl lg:text-5xl">Zwei Filialen in Bochum.</h2>
+            <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Zwei Filialen in Bochum.</h2>
             <p className="mt-4 text-muted-foreground">
               Die Anmeldung erfolgt persönlich in einer unserer beiden Filialen. Plane direkt deine Route – per Apple oder Google Maps.
             </p>
@@ -494,7 +494,7 @@ function Index() {
         <div className="relative overflow-hidden rounded-3xl bg-[#0a0a0a] p-10 text-white sm:p-16">
           <div className="pointer-events-none absolute -right-20 top-0 h-full w-1/2 -skew-x-12 bg-primary/30" />
           <div className="relative max-w-xl">
-            <h2 className="text-3xl uppercase sm:text-4xl lg:text-5xl">Starte deinen Führerschein noch heute.</h2>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl">Starte deinen Führerschein noch heute.</h2>
             <p className="mt-4 text-white/70">
               Schreib uns per WhatsApp oder komm direkt in einer unserer Filialen vorbei – wir freuen uns auf dich.
             </p>

@@ -249,7 +249,7 @@ function PricesPage() {
           <div className="pointer-events-none absolute -bottom-24 -left-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h3 className="font-display text-2xl uppercase sm:text-3xl">Noch Fragen zu den Klassen?</h3>
+              <h3 className="font-display text-2xl sm:text-3xl">Noch Fragen zu den Klassen?</h3>
               <p className="mt-2 max-w-xl text-white/70">
                 Schreib uns per WhatsApp – wir beraten dich kurz, welche Klasse für dich passt. Die Anmeldung selbst läuft entspannt vor Ort in der Filiale.
               </p>

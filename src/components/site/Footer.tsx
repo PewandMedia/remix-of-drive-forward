@@ -44,7 +44,7 @@ export function Footer() {
         </div>
 
         <div className="lg:col-span-2">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white">Navigation</h3>
+          <h3 className="text-sm font-bold tracking-wider text-white">Navigation</h3>
           <ul className="mt-4 space-y-2 text-sm text-white/70">
             {NAV_LINKS.map((l) => (
               <li key={l.to}>
@@ -57,7 +57,7 @@ export function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white">Kontakt</h3>
+          <h3 className="text-sm font-bold tracking-wider text-white">Kontakt</h3>
           <ul className="mt-4 space-y-3 text-sm text-white/70">
             <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /><a href={`tel:${CONTACT.phone}`} className="hover:text-white">{CONTACT.phoneDisplay}</a></li>
             <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /><a href={`mailto:${CONTACT.email}`} className="hover:text-white">{CONTACT.email}</a></li>
@@ -66,7 +66,7 @@ export function Footer() {
         </div>
 
         <div className="lg:col-span-4">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white">Unsere Standorte</h3>
+          <h3 className="text-sm font-bold tracking-wider text-white">Unsere Standorte</h3>
           <div className="mt-4 space-y-4">
             {LOCATIONS.map((loc) => (
               <div key={loc.id} className="rounded-xl border border-white/10 p-4">

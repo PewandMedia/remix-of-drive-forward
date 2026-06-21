@@ -37,7 +37,7 @@ export function PageHero({
             {eyebrow}
           </div>
         )}
-        <h1 className="max-w-3xl text-4xl uppercase leading-[1.05] sm:text-5xl lg:text-6xl">{title}</h1>
+        <h1 className="max-w-3xl text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">{title}</h1>
         {subtitle && <p className="mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">{subtitle}</p>}
       </div>
     </section>

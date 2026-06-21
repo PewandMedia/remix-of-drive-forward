@@ -50,7 +50,7 @@ function FAPage() {
           <div className="space-y-10 lg:col-span-7">
             <header className="space-y-4">
               <div className="h-2 w-24 bg-primary" />
-              <h2 className="font-display text-4xl uppercase leading-none tracking-tighter sm:text-5xl md:text-6xl">
+              <h2 className="font-display text-4xl leading-none tracking-tighter sm:text-5xl md:text-6xl">
                 Was du<br />bekommst
               </h2>
             </header>
@@ -82,7 +82,7 @@ function FAPage() {
             <div className="relative overflow-hidden rounded-2xl bg-foreground p-8 text-white">
               <div className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-primary opacity-20 blur-[100px]" />
               <div className="relative z-10">
-                <h2 className="mb-4 font-display text-2xl uppercase leading-none tracking-tight sm:text-3xl">Anmeldung & Infos</h2>
+                <h2 className="mb-4 font-display text-2xl leading-none tracking-tight sm:text-3xl">Anmeldung & Infos</h2>
                 <p className="mb-8 text-sm leading-relaxed text-white/60">
                   Der Kurs läuft von 8:00 bis 16:00 Uhr und findet jeden Monat in unserer Fahrschule statt. Sichere dir deinen Platz – unkompliziert per WhatsApp oder Anruf.
                 </p>
@@ -122,7 +122,7 @@ function FAPage() {
         </div>
 
         <div>
-          <h2 className="font-display text-2xl uppercase sm:text-3xl">Komm vorbei – unsere Standorte</h2>
+          <h2 className="font-display text-2xl sm:text-3xl">Komm vorbei – unsere Standorte</h2>
           <p className="mt-2 text-sm text-muted-foreground">Anmeldung direkt in einer unserer Filialen während der Bürozeiten.</p>
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
             {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}

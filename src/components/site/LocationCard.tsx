@@ -15,7 +15,7 @@ export function LocationCard({ location, compact = false }: { location: Location
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
             {location.label}
           </span>
-          <h3 className="mt-3 font-display text-xl uppercase leading-tight">{location.name}</h3>
+          <h3 className="mt-3 font-display text-xl leading-tight">{location.name}</h3>
         </div>
         <div className="rounded-full bg-foreground p-2.5 text-white">
           <MapPin className="h-4 w-4" />

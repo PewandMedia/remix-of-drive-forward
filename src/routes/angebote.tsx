@@ -58,7 +58,7 @@ function OffersPage() {
         <div className="mt-16 rounded-3xl bg-[#0a0a0a] p-8 text-white sm:p-12">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
             <div>
-              <h2 className="font-display text-3xl uppercase">Individuelles Angebot? Komm vorbei.</h2>
+              <h2 className="font-display text-3xl">Individuelles Angebot? Komm vorbei.</h2>
               <p className="mt-3 text-white/70">Die Anmeldung und persönliche Beratung erfolgen ausschließlich in unseren Filialen. Online buchen ist nicht möglich – dafür bekommst du bei uns vor Ort ein wirklich passendes Paket.</p>
               <ul className="mt-6 space-y-2 text-sm text-white/80">
                 <li className="flex gap-2"><Check className="h-4 w-4 text-primary" /> Persönliche Beratung in der Filiale</li>
