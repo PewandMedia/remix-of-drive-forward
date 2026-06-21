@@ -3,6 +3,7 @@ import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { ErrorBox } from "@/components/site/QueryFallbacks";
+import { ReviewsBadge } from "@/components/site/ReviewsSection";
 
 const teamQuery = queryOptions({
   queryKey: ["team_members"],
@@ -88,6 +89,7 @@ function TeamPage() {
     <SiteLayout>
       <PageHero eyebrow="Team" title="Lerne das Team von MIRO-DRIVE kennen." subtitle="Geduldig, erfahren und immer an deiner Seite – unser Team begleitet dich sicher bis zum Führerschein." />
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-16 sm:px-6 lg:px-8">
+        <ReviewsBadge />
         {(owner || otherInstructors.length > 0) && (
           <section>
             <h2 className="mb-10 text-center font-display text-2xl text-primary sm:text-3xl">
