@@ -1,41 +1,44 @@
 ## Ziel
-Eine prominente Bewertungs-Sektion auf der Startseite, die das Google-Rating von Miro-Drive als Vertrauenssignal nutzt und Besucher direkt zum Google-Bewertungsformular leitet.
+- "Angebote"-Seite & -Sektion komplett entfernen. Angebote werden ab jetzt direkt in den Preisen verwaltet/markiert.
+- Inhaber kann im Admin-Panel die Preise mit einem optionalen Angebots-Status versehen (z. B. alter Preis durchgestrichen + neuer Aktionspreis). Ist ein Angebot aktiv, wird das auf der Preise-Seite, auf den Preis-Karten der Startseite und im Header sichtbar gemacht.
+- Reviews-Sektion ist aktuell sehr weit oben. Sie wandert weiter nach unten. Stattdessen kommt weiter oben ein dezenter "5,0★ · 549 Google-Bewertungen"-Hinweis (Inline-Badge), der nebenbei auf die guten Bewertungen aufmerksam macht.
 
-## Wichtig zu wissen
-Eine Bewertung **direkt von der Webseite an Google Maps zu senden ist nicht möglich**. Google bietet dafür keine API – Bewertungen können ausschließlich von eingeloggten Google-Nutzern direkt auf Google Maps abgegeben werden. Das ist auf allen Webseiten so (auch bei großen Marken).
+## Was geändert wird
 
-Lösung: Ein "Jetzt bei Google bewerten"-Button, der direkt das Google-Bewertungsformular für Miro-Drive öffnet (vorausgefüllt, mit 1 Klick auf Sterne klickbar). Das ist der schnellste legitime Weg.
+### 1. Angebote entfernen
+- `src/routes/angebote.tsx` löschen.
+- Aus `src/lib/contact.ts` `NAV_LINKS` den Eintrag "Angebote" entfernen (Header- und Footer-Nav).
+- Aus `src/routes/index.tsx` die ganze Sektion `CURRENT OFFERS` entfernen, inkl. `homeOffers`-Query, `OfferFlyer`-Import und nicht mehr benötigter Lucide-Icons.
+- Aus dem Admin-Panel (`src/routes/_authenticated/admin.tsx`) den `Angebote`-Tab + `OffersAdmin`/`OfferDialog` entfernen.
+- Tabelle `offers` bleibt in der DB unangetastet (kein Migration-Risiko), wird aber nirgendwo mehr gelesen/geschrieben.
 
-## Was gebaut wird
+### 2. Angebot pro Preis (neues Feature)
+Migration auf `public.prices`: drei neue optionale Spalten:
+- `old_price text` — durchgestrichener Originalpreis
+- `offer_label text` — kurzes Label, z. B. "Aktion", "-30%", "Sommer-Special"
+- `offer_active boolean default false` — Schalter
 
-### 1. Neue Sektion auf der Startseite (`src/routes/index.tsx`)
-Platzierung: zwischen "TRUST STRIP" und "PREISE TEASER" – also weit oben, sichtbar ohne Scrollen auf Desktop.
+Admin-Panel `PriceDialog` bekommt zusätzliche Felder: "Angebot aktiv" (Switch), "Aktionspreis-Label", "Alter Preis". Wenn `offer_active` an ist und `old_price` gefüllt, wird im Frontend in `preise.tsx` und in den Preis-Karten der Startseite (`PRICE_CLASSES` in `index.tsx`) der alte Preis durchgestrichen, der neue Preis rot/auffällig dargestellt, plus kleines "Aktion"-Badge.
 
-Inhalt:
-- Großes Eyebrow: "Bewertet von unseren Fahrschülern"
-- Headline: "5,0 ★ bei über 549 Google-Bewertungen"
-- 5 große rote Sterne (Lucide `Star` ausgefüllt)
-- Untertitel: kurze Vertrauensaussage ("Die bestbewertete Fahrschule in Bochum…")
-- 3 echte Beispiel-Reviews als Karten (aus Screenshot: Shahin Rahman, U. Mur., S.) mit Avatar-Initialen, Sternen, Auszug, "Google"-Badge
-- Zwei CTAs:
-  - **Primary:** "Jetzt bei Google bewerten" → öffnet Google-Bewertungsdialog
-  - **Secondary:** "Alle 549 Rezensionen lesen" → öffnet Google-Profil
+Globaler Indikator: Ein neuer kleiner Query (`active_offer_prices`) liefert die Anzahl der Preise mit `offer_active = true`.
+- **Header (`Navbar.tsx`)**: Wenn > 0, erscheint neben dem "Preise"-Link ein kleiner roter Punkt + dezentes "Aktion"-Pill.
+- **Startseite (`index.tsx`)**: Im "Preise & Klassen"-Block oben ein kleines pulsierendes "Aktuelle Aktion läuft"-Badge neben dem Eyebrow.
 
-### 2. Eigene Mini-Sektion auf der Team-Seite (`src/routes/team.tsx`)
-Kompakter 5,0★-Badge unter dem Page-Hero ("Ausgezeichnet vom Team mit 5,0★ bei 549 Bewertungen") – verstärkt das Vertrauenssignal genau dort, wo Besucher das Team kennenlernen.
+### 3. Reviews neu positionieren
+- `<ReviewsSection />` wird in `src/routes/index.tsx` **weiter unten** platziert (nach "ERSTE HILFE KURS TEASER", vor "TEAM TEASER" oder ganz unten vor dem CTA – konkret: direkt nach dem Erste-Hilfe-Teaser).
+- Oben im Hero-Bereich (rechts unter den CTA-Buttons) kommt ein dezenter Inline-Badge: kleines Google-G-Icon + "5,0 ★ · 549 Google-Bewertungen" als Link zum Google-Profil. Nicht aufdringlich, eher "by the way".
+- Optional zusätzlich in der Navbar später – ist aber **nicht** Teil dieses Plans, um den Header nicht zu überladen.
 
-### 3. Konstanten in `src/lib/contact.ts`
-Hinzufügen:
-- `googleReviewUrl` – direkter Link zum Bewertungsformular
-- `googleProfileUrl` – Link zum Google-Profil mit allen Reviews
-- `googleRating: "5.0"`, `googleReviewCount: 549`
-
-Die Bewertungs-URLs werden anhand der Google Place ID von "Fahrschule Miro-Drive Inh. Ilkay Altin" gebaut (Standard-Format: `https://search.google.com/local/writereview?placeid=…` bzw. `https://search.google.com/local/reviews?placeid=…`). Falls die Place ID nicht eindeutig auffindbar ist, nutze ich als Fallback den Google-Maps-Such-Link auf den Geschäftsnamen.
-
-### 4. Optional / nice-to-have
-JSON-LD `AggregateRating` Schema im `head()` der Startseite – dadurch zeigt Google in den Suchergebnissen die Sterne unter dem Link an (SEO-Boost). Lokal definiert via `scripts: [{ type: "application/ld+json", children: ... }]`.
+### 4. Saubere Aufräumarbeiten
+- Aus `OfferFlyer.tsx` bleibt im Repo, aber wird nirgends mehr importiert (keine Code-Pflicht, kann später entfernt werden).
+- Trust-Strip-Eintrag "Individuelle Angebote" bleibt – passt weiter inhaltlich.
 
 ## Out of Scope
-- Keine eigene Review-Datenbank, kein eigenes Formular, kein Speichern von Bewertungen im Backend.
-- Keine automatische Synchronisation der Reviews von Google (Google Places API erlaubt nur 5 Reviews und das gegen Bezahlung – für später, wenn gewünscht).
-- Keine Änderung an Farben/Fonts/Layout anderer Sektionen.
+- Keine Änderung an Reviews-Texten oder Optik der Sektion selbst.
+- Kein Löschen der `offers`-DB-Tabelle.
+- Keine Änderung an Team-/FAQ-/Kontakt-/Erste-Hilfe-Routen.
+- Keine Änderung an Farben/Fonts/globalem Layout.
+
+## Technische Hinweise
+- Eine einzige Supabase-Migration für die drei neuen Spalten + ggf. Re-Grant.
+- Schemaänderung → Typen werden danach regeneriert; Code, der die neuen Felder liest, folgt nach Migration.
