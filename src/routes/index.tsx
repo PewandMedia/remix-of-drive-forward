@@ -5,10 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import heroCar from "@/assets/hero-car.png";
-import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle } from "lucide-react";
+import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
-import { OfferFlyer, type OfferFlyerData } from "@/components/site/OfferFlyer";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ReviewsSection } from "@/components/site/ReviewsSection";
 
@@ -68,29 +67,12 @@ const FAQ_TOP = [
 ];
 
 function Index() {
-  const { data: homeOffers = [] } = useQuery({
-    queryKey: ["home-offers"],
-    queryFn: async () => {
-      const nowIso = new Date().toISOString();
-      const { data, error } = await supabase
-        .from("offers")
-        .select("*")
-        .eq("active", true)
-        .eq("show_on_home", true)
-        .or(`valid_from.is.null,valid_from.lte.${nowIso}`)
-        .or(`valid_until.is.null,valid_until.gte.${nowIso}`)
-        .order("sort_order");
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
-
   const [pricesQ, teamQ, faQ] = useQueries({
     queries: [
       {
         queryKey: ["home-prices"],
         queryFn: async () => {
-          const { data, error } = await supabase.from("prices").select("category,title,price").eq("active", true);
+          const { data, error } = await supabase.from("prices").select("category,title,price,old_price,offer_label,offer_active").eq("active", true);
           if (error) throw error;
           return data ?? [];
         },
@@ -117,6 +99,8 @@ function Index() {
   const prices = pricesQ.data ?? [];
   const team = teamQ.data ?? [];
   const faInfo = faQ.data;
+
+  const hasActiveOffer = prices.some((p: any) => p.offer_active);
 
   const priceFor = (cat: string) => {
     const grund = prices.find((p) => p.category === cat && /grundbetrag/i.test(p.title));

@@ -19,7 +19,6 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ErsteHilfeKursRouteImport } from './routes/erste-hilfe-kurs'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AngeboteRouteImport } from './routes/angebote'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -74,11 +73,6 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AngeboteRoute = AngeboteRouteImport.update({
-  id: '/angebote',
-  path: '/angebote',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -96,7 +90,6 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/angebote': typeof AngeboteRoute
   '/auth': typeof AuthRoute
   '/datenschutz': typeof DatenschutzRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
@@ -111,7 +104,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/angebote': typeof AngeboteRoute
   '/auth': typeof AuthRoute
   '/datenschutz': typeof DatenschutzRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
@@ -128,7 +120,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/angebote': typeof AngeboteRoute
   '/auth': typeof AuthRoute
   '/datenschutz': typeof DatenschutzRoute
   '/erste-hilfe-kurs': typeof ErsteHilfeKursRoute
@@ -145,7 +136,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/angebote'
     | '/auth'
     | '/datenschutz'
     | '/erste-hilfe-kurs'
@@ -160,7 +150,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/angebote'
     | '/auth'
     | '/datenschutz'
     | '/erste-hilfe-kurs'
@@ -176,7 +165,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/angebote'
     | '/auth'
     | '/datenschutz'
     | '/erste-hilfe-kurs'
@@ -193,7 +181,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AngeboteRoute: typeof AngeboteRoute
   AuthRoute: typeof AuthRoute
   DatenschutzRoute: typeof DatenschutzRoute
   ErsteHilfeKursRoute: typeof ErsteHilfeKursRoute
@@ -278,13 +265,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/angebote': {
-      id: '/angebote'
-      path: '/angebote'
-      fullPath: '/angebote'
-      preLoaderRoute: typeof AngeboteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -323,7 +303,6 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AngeboteRoute: AngeboteRoute,
   AuthRoute: AuthRoute,
   DatenschutzRoute: DatenschutzRoute,
   ErsteHilfeKursRoute: ErsteHilfeKursRoute,
