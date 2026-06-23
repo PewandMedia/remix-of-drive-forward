@@ -25,7 +25,6 @@ export const NAV_LINKS = [
   { to: "/preise", label: "Preise" },
   { to: "/leistungen", label: "Leistungen" },
   { to: "/erste-hilfe-kurs", label: "Erste-Hilfe-Kurs" },
-  { to: "/angebote", label: "Angebote" },
   { to: "/team", label: "Team" },
   { to: "/kontakt", label: "Kontakt" },
 ] as const;
