@@ -32,7 +32,7 @@ export const Route = createFileRoute("/team")({
 function Avatar({ name, src, size = "md" }: { name: string; src?: string | null; size?: "md" | "lg" }) {
   const dim = size === "lg" ? "h-44 w-44" : "h-32 w-32";
   const textSize = size === "lg" ? "text-5xl" : "text-3xl";
-  if (src) return <img src={src} alt={name} className={`${dim} rounded-full object-cover`} />;
+  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className={`${dim} rounded-full object-cover`} />;
   const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
   return (
     <div className={`flex ${dim} items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display ${textSize} text-white`}>

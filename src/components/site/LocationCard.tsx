@@ -9,7 +9,7 @@ export function LocationCard({ location, compact = false }: { location: Location
   };
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-3xl border bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-xl">
+    <div className="group flex h-full flex-col overflow-hidden rounded-3xl border bg-white p-7 transition-transform hover:-translate-y-1">
       <div className="flex items-start justify-between gap-3">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">

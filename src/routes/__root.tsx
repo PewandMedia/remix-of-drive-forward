@@ -118,6 +118,26 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    const onChunkError = (e: Event) => {
+      const msg = (e as ErrorEvent).message || "";
+      if (
+        msg.includes("Failed to fetch dynamically imported module") ||
+        msg.includes("Importing a module script failed") ||
+        msg.includes("error loading dynamically imported module")
+      ) {
+        window.location.reload();
+      }
+    };
+    const onPreloadError = () => window.location.reload();
+    window.addEventListener("error", onChunkError);
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () => {
+      window.removeEventListener("error", onChunkError);
+      window.removeEventListener("vite:preloadError", onPreloadError);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}

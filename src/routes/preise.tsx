@@ -106,9 +106,7 @@ function PricesPage() {
                     : "border-border bg-white hover:-translate-y-1 hover:shadow-2xl",
                 ].join(" ")}
               >
-                {featured && (
-                  <div className="pointer-events-none absolute -inset-px rounded-3xl bg-[conic-gradient(from_0deg,theme(colors.primary/0),theme(colors.primary/40),theme(colors.primary/0)_50%)] opacity-40 blur-sm" />
-                )}
+                {/* Removed continuous conic-gradient overlay for scroll perf */}
 
                 <div
                   className={[
@@ -234,7 +232,7 @@ function PricesPage() {
         <div className="mt-12 grid gap-4 sm:grid-cols-2">
           <Link
             to="/erste-hilfe-kurs"
-            className="group flex items-center justify-between rounded-3xl border bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg"
+            className="group flex items-center justify-between rounded-3xl border bg-white p-6 transition-transform hover:-translate-y-0.5"
           >
             <div>
               <div className="text-[11px] font-bold uppercase tracking-wider text-primary">Pflichtkurs</div>
@@ -245,7 +243,7 @@ function PricesPage() {
           </Link>
           <Link
             to="/kontakt"
-            className="group flex items-center justify-between rounded-3xl border bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg"
+            className="group flex items-center justify-between rounded-3xl border bg-white p-6 transition-transform hover:-translate-y-0.5"
           >
             <div>
               <div className="text-[11px] font-bold uppercase tracking-wider text-primary">Standorte</div>
@@ -257,8 +255,8 @@ function PricesPage() {
         </div>
 
         <div className="relative mt-12 overflow-hidden rounded-3xl bg-[#0a0a0a] p-10 text-white">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 -left-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/30 hidden lg:block blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -left-10 h-64 w-64 rounded-full bg-primary/20 hidden lg:block blur-3xl" />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h3 className="font-display text-2xl sm:text-3xl">Noch Fragen zu den Klassen?</h3>

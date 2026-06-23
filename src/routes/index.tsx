@@ -193,7 +193,7 @@ function Index() {
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise & Klassen</span>
               {hasActiveOffer && (
-                <Link to="/preise" className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary-foreground shadow animate-pulse">
+                <Link to="/preise" className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary-foreground shadow">
                   <Sparkles className="h-3 w-3" /> Aktion läuft
                 </Link>
               )}
@@ -295,7 +295,7 @@ function Index() {
       {/* ERSTE HILFE KURS TEASER */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl border bg-white">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/15 hidden lg:block blur-3xl" />
           <div className="relative grid gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Erste-Hilfe-Kurs</span>
@@ -354,7 +354,7 @@ function Index() {
             </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {team.map((m) => (
-                <Link key={m.id} to="/team" className="group rounded-3xl border bg-white p-5 text-center transition-all hover:-translate-y-1 hover:shadow-lg">
+                <Link key={m.id} to="/team" className="group rounded-3xl border bg-white p-5 text-center transition-transform hover:-translate-y-1">
                   <div className="mx-auto mb-4">
                     <MiniAvatar name={m.name} src={m.image_url} />
                   </div>
@@ -502,7 +502,7 @@ function InfoStat({ icon: Icon, label, value }: { icon: typeof Heart; label: str
 }
 
 function MiniAvatar({ name, src }: { name: string; src?: string | null }) {
-  if (src) return <img src={src} alt={name} className="h-20 w-20 rounded-full object-cover" />;
+  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className="h-20 w-20 rounded-full object-cover" />;
   const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
   return (
     <div className="grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-xl text-white">

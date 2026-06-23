@@ -46,8 +46,8 @@ function Stars({ size = 18 }: { size?: number }) {
 export function ReviewsSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white via-primary/[0.03] to-white py-20">
-      <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-32 bottom-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-primary/10 hidden lg:block blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-72 w-72 rounded-full bg-primary/10 hidden lg:block blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
@@ -75,7 +75,7 @@ export function ReviewsSection() {
           {SAMPLE_REVIEWS.map((r) => (
             <article
               key={r.name}
-              className="group relative flex flex-col rounded-3xl border border-black/5 bg-white p-7 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl"
+              className="group relative flex flex-col rounded-3xl border border-black/5 bg-white p-7 shadow-sm transition-transform hover:-translate-y-1"
             >
               <div className="flex items-center gap-3">
                 <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-sm text-white">
@@ -131,7 +131,7 @@ export function ReviewsBadge() {
       href={CONTACT.googleProfileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="mx-auto flex w-fit items-center gap-3 rounded-full border border-primary/20 bg-white px-5 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+      className="mx-auto flex w-fit items-center gap-3 rounded-full border border-primary/20 bg-white px-5 py-3 shadow-sm transition-transform hover:-translate-y-0.5"
     >
       <GoogleLogo className="h-5 w-5" />
       <span className="font-display text-lg text-foreground">{CONTACT.googleRating}</span>

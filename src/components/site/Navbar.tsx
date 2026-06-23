@@ -21,13 +21,30 @@ export function Navbar() {
         .eq("offer_active", true);
       return (count ?? 0) > 0;
     },
-    staleTime: 60_000,
+    staleTime: 5 * 60_000,
+    gcTime: 10 * 60_000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    let ticking = false;
+    let last = window.scrollY > 8;
+    setScrolled(last);
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const now = window.scrollY > 8;
+        if (now !== last) {
+          last = now;
+          setScrolled(now);
+        }
+        ticking = false;
+      });
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -55,7 +72,7 @@ export function Navbar() {
             >
               {l.label}
               {l.to === "/preise" && hasOffer && (
-                <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground animate-pulse">
+                <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground">
                   <Sparkles className="h-2.5 w-2.5" /> Aktion
                 </span>
               )}
