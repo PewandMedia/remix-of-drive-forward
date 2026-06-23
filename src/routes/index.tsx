@@ -112,13 +112,12 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden bg-white">
         <div className="pointer-events-none absolute right-0 top-0 h-full w-[58%] -skew-x-12 bg-primary/[0.04]" />
-        <div className="pointer-events-none absolute right-0 top-1/2 h-2 w-[60%] -skew-x-12 bg-primary sm:h-3" />
-        <div className="relative mx-auto grid min-h-[420px] max-w-7xl grid-cols-[1.1fr_1fr] items-center gap-3 px-3 py-8 sm:min-h-[600px] sm:gap-8 sm:px-6 sm:py-16 lg:min-h-[720px] lg:grid-cols-[1.05fr_1.25fr] lg:gap-12 lg:py-24 lg:px-8">
+        <div className="relative mx-auto grid min-h-[420px] max-w-7xl grid-cols-[1fr_1.2fr] items-center gap-3 px-3 py-8 sm:min-h-[600px] sm:gap-8 sm:px-6 sm:py-16 lg:min-h-[720px] lg:grid-cols-[1fr_1.4fr] lg:gap-12 lg:py-24 lg:px-8">
           <div className="animate-fade-up min-w-0">
             <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary sm:mb-5 sm:gap-2 sm:px-3 sm:py-1 sm:text-xs">
               <span className="h-1 w-1 rounded-full bg-primary sm:h-1.5 sm:w-1.5" /> Fahrschule MIRO-DRIVE
             </div>
-            <h1 className="text-2xl leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
+            <h1 className="text-xl leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               Dein Führerschein <br />
               <span className="text-primary">startet hier</span> – <br />
               modern, sicher <br />
@@ -157,7 +156,7 @@ function Index() {
               <span>{CONTACT.googleReviewCount} Bewertungen</span>
             </a>
           </div>
-          <div className="relative -mr-3 sm:-mr-6 lg:-mr-12 xl:-mr-24">
+          <div className="relative -mr-6 sm:-mr-10 lg:-mr-20 xl:-mr-32">
             <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,theme(colors.primary/25),transparent_65%)] blur-2xl" />
             <div className="pointer-events-none absolute -right-6 top-8 -z-10 hidden h-2 w-40 bg-foreground lg:block" />
             <img
@@ -167,7 +166,7 @@ function Index() {
               height={1024}
               loading="eager"
               fetchPriority="high"
-              className="animate-drive-in-left relative w-full scale-125 object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)] sm:scale-110 lg:scale-100 lg:drop-shadow-[0_30px_40px_rgba(0,0,0,0.25)]"
+              className="animate-drive-in-right relative w-full scale-150 object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)] sm:scale-125 lg:scale-110 lg:drop-shadow-[0_30px_40px_rgba(0,0,0,0.25)]"
             />
           </div>
         </div>
