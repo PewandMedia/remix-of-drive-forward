@@ -484,6 +484,9 @@ function Index() {
           </div>
         </div>
       </section>
+
+      {/* REVIEWS – moved down to keep above-the-fold focused on services */}
+      <ReviewsSection />
     </SiteLayout>
   );
 }
