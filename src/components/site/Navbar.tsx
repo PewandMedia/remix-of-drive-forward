@@ -1,6 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import logoAsset from "@/assets/miro-logo.png.asset.json";
 import { NAV_LINKS } from "@/lib/contact";
 import { cn } from "@/lib/utils";
@@ -9,6 +11,18 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { data: hasOffer = false } = useQuery({
+    queryKey: ["nav-active-offer"],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from("prices")
+        .select("id", { count: "exact", head: true })
+        .eq("active", true)
+        .eq("offer_active", true);
+      return (count ?? 0) > 0;
+    },
+    staleTime: 60_000,
+  });
 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
@@ -35,11 +49,16 @@ export function Navbar() {
             <Link
               key={l.to}
               to={l.to}
-              className="px-3 py-2 text-sm font-semibold text-foreground/80 transition-colors hover:text-foreground"
+              className="relative px-3 py-2 text-sm font-semibold text-foreground/80 transition-colors hover:text-foreground"
               activeProps={{ className: "text-primary" }}
               activeOptions={{ exact: l.to === "/" }}
             >
               {l.label}
+              {l.to === "/preise" && hasOffer && (
+                <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground animate-pulse">
+                  <Sparkles className="h-2.5 w-2.5" /> Aktion
+                </span>
+              )}
             </Link>
           ))}
           <Link
