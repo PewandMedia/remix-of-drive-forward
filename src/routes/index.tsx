@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { useQuery, useQueries } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
@@ -141,6 +141,21 @@ function Index() {
             <p className="mt-5 text-xs uppercase tracking-wider text-muted-foreground">
               Anmeldung nur persönlich in einer unserer Filialen
             </p>
+            <a
+              href={CONTACT.googleProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <span className="flex">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-primary text-primary" />
+                ))}
+              </span>
+              <span className="font-bold text-foreground">{CONTACT.googleRating}</span>
+              <span>·</span>
+              <span>{CONTACT.googleReviewCount} Google-Bewertungen</span>
+            </a>
           </div>
           <div className="relative lg:-mr-12 xl:-mr-24">
             <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,theme(colors.primary/25),transparent_65%)] blur-2xl" />
