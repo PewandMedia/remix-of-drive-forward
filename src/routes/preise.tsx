@@ -149,17 +149,29 @@ function PricesPage() {
                           {it.description && (
                             <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{it.description}</p>
                           )}
+                          {it.offer_active && it.offer_label && (
+                            <span className="mt-1 inline-block rounded-full bg-primary px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground">
+                              {it.offer_label}
+                            </span>
+                          )}
                         </div>
-                        <span
-                          className={[
-                            "shrink-0 rounded-full px-3 py-1 font-display text-sm",
-                            featured
-                              ? "bg-primary/10 text-primary"
-                              : "bg-foreground/5 text-foreground",
-                          ].join(" ")}
-                        >
-                          {it.price}
-                        </span>
+                        <div className="flex shrink-0 flex-col items-end gap-0.5">
+                          {it.offer_active && it.old_price && (
+                            <span className="text-xs text-muted-foreground line-through">{it.old_price}</span>
+                          )}
+                          <span
+                            className={[
+                              "rounded-full px-3 py-1 font-display text-sm",
+                              it.offer_active
+                                ? "bg-primary text-primary-foreground"
+                                : featured
+                                ? "bg-primary/10 text-primary"
+                                : "bg-foreground/5 text-foreground",
+                            ].join(" ")}
+                          >
+                            {it.price}
+                          </span>
+                        </div>
                       </li>
                     ))}
                   </ul>

@@ -156,6 +156,9 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          offer_active: boolean
+          offer_label: string | null
+          old_price: string | null
           price: string
           sort_order: number
           title: string
@@ -167,6 +170,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          offer_active?: boolean
+          offer_label?: string | null
+          old_price?: string | null
           price: string
           sort_order?: number
           title: string
@@ -178,6 +184,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          offer_active?: boolean
+          offer_label?: string | null
+          old_price?: string | null
           price?: string
           sort_order?: number
           title?: string

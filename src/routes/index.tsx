@@ -1,14 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { useQuery, useQueries } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import heroCar from "@/assets/hero-car.png";
-import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle } from "lucide-react";
+import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
-import { OfferFlyer, type OfferFlyerData } from "@/components/site/OfferFlyer";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ReviewsSection } from "@/components/site/ReviewsSection";
 
@@ -68,29 +67,12 @@ const FAQ_TOP = [
 ];
 
 function Index() {
-  const { data: homeOffers = [] } = useQuery({
-    queryKey: ["home-offers"],
-    queryFn: async () => {
-      const nowIso = new Date().toISOString();
-      const { data, error } = await supabase
-        .from("offers")
-        .select("*")
-        .eq("active", true)
-        .eq("show_on_home", true)
-        .or(`valid_from.is.null,valid_from.lte.${nowIso}`)
-        .or(`valid_until.is.null,valid_until.gte.${nowIso}`)
-        .order("sort_order");
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
-
   const [pricesQ, teamQ, faQ] = useQueries({
     queries: [
       {
         queryKey: ["home-prices"],
         queryFn: async () => {
-          const { data, error } = await supabase.from("prices").select("category,title,price").eq("active", true);
+          const { data, error } = await supabase.from("prices").select("category,title,price,old_price,offer_label,offer_active").eq("active", true);
           if (error) throw error;
           return data ?? [];
         },
@@ -117,6 +99,8 @@ function Index() {
   const prices = pricesQ.data ?? [];
   const team = teamQ.data ?? [];
   const faInfo = faQ.data;
+
+  const hasActiveOffer = prices.some((p: any) => p.offer_active);
 
   const priceFor = (cat: string) => {
     const grund = prices.find((p) => p.category === cat && /grundbetrag/i.test(p.title));
@@ -157,6 +141,21 @@ function Index() {
             <p className="mt-5 text-xs uppercase tracking-wider text-muted-foreground">
               Anmeldung nur persönlich in einer unserer Filialen
             </p>
+            <a
+              href={CONTACT.googleProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <span className="flex">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-primary text-primary" />
+                ))}
+              </span>
+              <span className="font-bold text-foreground">{CONTACT.googleRating}</span>
+              <span>·</span>
+              <span>{CONTACT.googleReviewCount} Google-Bewertungen</span>
+            </a>
           </div>
           <div className="relative lg:-mr-12 xl:-mr-24">
             <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,theme(colors.primary/25),transparent_65%)] blur-2xl" />
@@ -187,13 +186,18 @@ function Index() {
       </section>
 
       {/* REVIEWS */}
-      <ReviewsSection />
-
       {/* PREISE TEASER */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise & Klassen</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise & Klassen</span>
+              {hasActiveOffer && (
+                <Link to="/preise" className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary-foreground shadow animate-pulse">
+                  <Sparkles className="h-3 w-3" /> Aktion läuft
+                </Link>
+              )}
+            </div>
             <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Drei Klassen, transparente Preise.</h2>
             <p className="mt-4 text-muted-foreground">
               Wir bilden in Klasse B, B197 und B78 aus – wähle die, die zu dir passt. Alle Preise sind offen einsehbar.
@@ -285,51 +289,6 @@ function Index() {
               </Link>
             );
           })}
-        </div>
-      </section>
-
-      {/* CURRENT OFFERS */}
-      <section className="bg-muted/30 py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-            <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Aktuelle Angebote</span>
-              <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">
-                {homeOffers.length > 0 ? "Spar jetzt bei deiner Anmeldung." : "Bald wieder neue Aktionen."}
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                {homeOffers.length > 0
-                  ? "Unsere laufenden Aktions-Angebote – nur für kurze Zeit verfügbar."
-                  : "Aktuell läuft keine Aktion. Schau bald wieder vorbei – wir machen regelmäßig neue Angebote."}
-              </p>
-            </div>
-            <Link to="/angebote" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
-              Alle Angebote <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          {homeOffers.length > 0 ? (
-            <div className="grid gap-8 lg:grid-cols-2">
-              {homeOffers.map((o) => (
-                <OfferFlyer key={o.id} offer={o as unknown as OfferFlyerData} compact />
-              ))}
-            </div>
-          ) : (
-            <Link
-              to="/angebote"
-              className="flex items-center justify-between rounded-3xl border bg-white p-8 transition-all hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              <div className="flex items-center gap-4">
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="font-display text-lg">Keine aktive Aktion gerade</p>
-                  <p className="text-sm text-muted-foreground">Aber unsere Standardpreise sind fair – schau dir die Klassen an.</p>
-                </div>
-              </div>
-              <ArrowRight className="h-5 w-5 text-foreground/40" />
-            </Link>
-          )}
         </div>
       </section>
 
@@ -525,6 +484,9 @@ function Index() {
           </div>
         </div>
       </section>
+
+      {/* REVIEWS – moved down to keep above-the-fold focused on services */}
+      <ReviewsSection />
     </SiteLayout>
   );
 }
