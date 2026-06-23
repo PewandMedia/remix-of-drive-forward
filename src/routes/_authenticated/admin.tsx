@@ -315,3 +315,86 @@ function FirstAidAdmin() {
 }
 
 /* ============== INQUIRIES ============== */
+
+/* ============== INSTAGRAM ============== */
+function InstagramAdmin() {
+  const qc = useQueryClient();
+  const { data = [] } = useQuery({
+    queryKey: ["admin-instagram"],
+    queryFn: async () => { const { data, error } = await supabase.from("instagram_posts").select("*").order("sort_order"); if (error) throw error; return data; },
+  });
+  const del = useMutation({
+    mutationFn: async (id: string) => { const { error } = await supabase.from("instagram_posts").delete().eq("id", id); if (error) throw error; },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-instagram"] }); qc.invalidateQueries({ queryKey: ["instagram-posts"] }); },
+  });
+  const toggleActive = useMutation({
+    mutationFn: async (p: { id: string; active: boolean }) => { const { error } = await supabase.from("instagram_posts").update({ active: p.active }).eq("id", p.id); if (error) throw error; },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-instagram"] }); qc.invalidateQueries({ queryKey: ["instagram-posts"] }); },
+  });
+  return (
+    <div className="mt-6">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <p className="text-xs text-muted-foreground">Lade Instagram-Beiträge hoch (z. B. frisch bestandene Fahrschüler). Die ersten 6 aktiven Beiträge erscheinen auf der Startseite.</p>
+        <InstagramDialog />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {data.map((p) => (
+          <div key={p.id} className="rounded-xl border bg-white p-4">
+            <div className="aspect-square overflow-hidden rounded-lg bg-muted">
+              {p.image_url ? <img src={p.image_url} alt="" className="h-full w-full object-cover" /> : null}
+            </div>
+            <div className="mt-3 flex items-start justify-between gap-2">
+              <p className="line-clamp-2 text-xs text-muted-foreground">{p.caption ?? "—"}</p>
+              <Switch checked={p.active} onCheckedChange={(v) => toggleActive.mutate({ id: p.id, active: v })} />
+            </div>
+            <p className="mt-1 truncate text-[10px] text-muted-foreground">Sortierung: {p.sort_order}</p>
+            <div className="mt-3 flex justify-end gap-2">
+              <InstagramDialog initial={p} />
+              <Button size="icon" variant="ghost" onClick={() => del.mutate(p.id)}><Trash2 className="h-4 w-4" /></Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function InstagramDialog({ initial }: { initial?: any }) {
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const isEdit = !!initial;
+  const save = useMutation({
+    mutationFn: async (form: FormData) => {
+      const row = {
+        image_url: String(form.get("image_url") || ""),
+        caption: String(form.get("caption") || "") || null,
+        post_url: String(form.get("post_url") || "https://www.instagram.com/miro_drive/"),
+        sort_order: Number(form.get("sort_order") || 0),
+        active: form.get("active") === "on",
+      };
+      if (isEdit) { const { error } = await supabase.from("instagram_posts").update(row).eq("id", initial.id); if (error) throw error; }
+      else { const { error } = await supabase.from("instagram_posts").insert(row); if (error) throw error; }
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-instagram"] }); qc.invalidateQueries({ queryKey: ["instagram-posts"] }); toast.success("Gespeichert"); setOpen(false); },
+    onError: (e: any) => toast.error(e.message),
+  });
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {isEdit ? <Button size="icon" variant="ghost"><Pencil className="h-4 w-4" /></Button>
+               : <Button className="rounded-full"><Plus className="h-4 w-4" /> Beitrag</Button>}
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader><DialogTitle>{isEdit ? "Beitrag bearbeiten" : "Neuer Instagram-Beitrag"}</DialogTitle></DialogHeader>
+        <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3">
+          <div><Label>Bild-URL</Label><Input name="image_url" required defaultValue={initial?.image_url} placeholder="https://…/bild.jpg" /></div>
+          <div><Label>Beschreibung / Caption</Label><Textarea name="caption" rows={2} defaultValue={initial?.caption ?? ""} placeholder="z. B. Glückwunsch Lisa zur bestandenen Prüfung!" /></div>
+          <div><Label>Instagram-Post-URL</Label><Input name="post_url" defaultValue={initial?.post_url ?? "https://www.instagram.com/miro_drive/"} placeholder="https://www.instagram.com/p/…" /></div>
+          <div><Label>Sortierung (niedriger = weiter vorne)</Label><Input name="sort_order" type="number" defaultValue={initial?.sort_order ?? 0} /></div>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
+          <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
