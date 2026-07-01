@@ -1,25 +1,17 @@
-## Ziel
-Die 9 aktuellen Bilder in der Instagram-Sektion der Startseite entfernen und nur die 4 neu hochgeladenen Fotos anzeigen. Weitere Bilder folgen später und werden dann ergänzt.
+## Erste-Hilfe-Kurs Sektion auf der Startseite optimieren
 
-## Vorgehen
+### Änderungen in `src/routes/index.tsx` (Zeilen 443-475)
 
-### 1. Neue Bilder als Assets ablegen
-- Die 4 Uploads über `lovable-assets` als CDN-Pointer unter `src/assets/insta/` ablegen:
-  - `bestanden-neu-1.jpg` (Mercedes CLA, Daumen hoch)
-  - `bestanden-neu-2.jpg` (Mercedes GLA grau, Filialen-Aufkleber)
-  - `bestanden-neu-3.jpg` (VW Tiguan silber)
-  - `bestanden-neu-4.jpg` (Mercedes A-Klasse schwarz, Hijab)
+1. Die gesamte rechte Bento-Grafik entfernen (rotes Kreuz-Motiv + „50 € Kursgebühr" Card + „Monatlich Neue Termine" Card + „Offiziell anerkannt / Für TÜV & Führerschein-Antrag" Balken) — diese Infos stehen ohnehin bereits im linken Textblock und den InfoStats.
+2. Stattdessen **ein einziges KI-generiertes Bild** rechts platzieren: großformatig, `aspect-[4/3]`, `rounded-3xl`, mit dezentem Primary-Glow dahinter.
 
-### 2. Alte Bilder entfernen
-- Die 9 alten `bestanden-1.jpg` … `bestanden-9.jpg` unter `src/assets/insta/` löschen (jeweils der `.asset.json`-Pointer per `lovable-assets delete`).
+### KI-Bild generieren
 
-### 3. `InstagramSection.tsx` anpassen
-- Imports auf die 4 neuen Bilder umstellen.
-- `POSTS`-Array auf 4 Einträge reduzieren.
-- Grid bleibt `grid-cols-2 md:grid-cols-3`, quadratische Karten — mit 4 Bildern ergibt das auf Mobile 2×2, auf Desktop eine Reihe à 3 + 1.
+- Tool: `imagegen--generate_image` (premium quality, weil realistisch/hochwertig)
+- Motiv: Erste-Hilfe-Kurs im MIRO-DRIVE Kontext — junge Fahrschüler:innen in modernem, hellem Kursraum, eine Person übt Herzdruckmassage an einer Übungspuppe, freundliche Atmosphäre, subtile rote Akzente (passend zur Brand), moderne Optik.
+- Speicherpfad: `src/assets/erste-hilfe-hero.jpg`
+- Format: 1280×960 (4:3, passend zum Container)
 
-### 4. Nicht betroffen
-- `index.tsx`, Layout, restliche Sektionen — keine Änderung.
+### Ergebnis
 
-## Ergebnis
-Insta-Sektion zeigt nur noch die 4 neuen echten Bestanden-Fotos, sauber im Grid. Weitere Bilder können später einfach an das `POSTS`-Array angehängt werden.
+Rechte Seite zeigt nur noch ein sauberes, professionelles Foto — links bleibt Titel, Beschreibung, 3 InfoStats und CTA-Button unverändert. Weniger visuelles Rauschen, keine doppelten Infos.
