@@ -1,10 +1,19 @@
-Ziel
-Auf der /leistungen-Seite sollen die 8 Service-Karten (Führerschein Klasse B, B197, Theorie, etc.) auch auf Mobile in 2 Spalten nebeneinander stehen, damit der Nutzer weniger scrollen muss.
+## Team-Seite – Mobile Optimierung
 
-Änderung
-In `src/routes/leistungen.tsx`:
-- Das Grid der Service-Karten von `grid gap-6 sm:grid-cols-2 lg:grid-cols-4` auf `grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4` ändern.
-- Optional: Padding/Abstände innerhalb der Karten leicht reduzieren (z. B. `p-4` statt `p-6`), damit bei halber Bildschirmbreite der Text nicht zu eng wird.
-- Keine inhaltlichen oder funktionalen Änderungen.
+### Ziel
+Die Team-Seite auf Mobile kompakter gestalten (weniger Scrollen) und Birtan korrekt den Fahrlehrern zuordnen.
 
-Zeitaufwand: < 5 Minuten.
+### Änderungen
+1. **Birtan umkategorisieren**  
+   Im Code wird Birtan aktuell dem Büro-Personal (sort_order ≥ 8) zugeordnet. Er soll stattdessen in die Fahrlehrer-Gruppe (sort_order < 8) verschoben werden, damit er unter "Fahrlehrer" gelistet wird.
+
+2. **Mobile Layout: 2er-Reihen**  
+   - Fahrlehrer (inkl. Birtan): Grid auf Mobile von 1 Spalte auf **`grid-cols-2`** umstellen.  
+   - Bürokräfte: Gleichermaßen **`grid-cols-2`** auf Mobile.  
+   - Ilkay bleibt als einzelnes, hervorgehobenes Element ganz oben (Owner-Card).
+
+3. **Desktop unverändert**  
+   Ab `sm`/`lg`/`xl` bleiben die bestehenden Spaltenanzahlen (2 / 3 / 4) wie gehabt.
+
+### Datei
+- `src/routes/team.tsx`

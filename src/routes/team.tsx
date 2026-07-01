@@ -51,8 +51,11 @@ function TeamPage() {
   const { data: team } = useSuspenseQuery(teamQuery);
   const allInstructors = team.filter((m) => (m.sort_order ?? 0) < 8);
   const owner = allInstructors.find((m) => m.name.toLowerCase().includes("ilkay"));
-  const otherInstructors = allInstructors.filter((m) => m !== owner);
+  let otherInstructors = allInstructors.filter((m) => m !== owner);
   const office = team.filter((m) => (m.sort_order ?? 0) >= 8);
+  const birtan = office.find((m) => m.name.toLowerCase().includes("birtan"));
+  const officeWithoutBirtan = birtan ? office.filter((m) => m !== birtan) : office;
+  if (birtan) otherInstructors = [...otherInstructors, birtan];
 
   const renderGroup = (members: typeof team) => (
     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
