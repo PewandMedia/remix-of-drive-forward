@@ -14,12 +14,15 @@ export function Navbar() {
   const { data: hasOffer = false } = useQuery({
     queryKey: ["nav-active-offer"],
     queryFn: async () => {
-      const { count } = await supabase
+      const nowIso = new Date().toISOString();
+      const { data } = await supabase
         .from("prices")
-        .select("id", { count: "exact", head: true })
+        .select("offer_valid_from,offer_valid_until")
         .eq("active", true)
-        .eq("offer_active", true);
-      return (count ?? 0) > 0;
+        .eq("offer_active", true)
+        .or(`offer_valid_from.is.null,offer_valid_from.lte.${nowIso}`)
+        .or(`offer_valid_until.is.null,offer_valid_until.gte.${nowIso}`);
+      return (data?.length ?? 0) > 0;
     },
     staleTime: 5 * 60_000,
     gcTime: 10 * 60_000,
