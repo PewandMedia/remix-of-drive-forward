@@ -640,7 +640,7 @@ function Index() {
             </p>
           </div>
         </div>
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
           {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
         </div>
       </section>
