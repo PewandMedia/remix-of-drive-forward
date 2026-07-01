@@ -1,16 +1,11 @@
 import { Instagram, ArrowRight, ExternalLink } from "lucide-react";
 import { CONTACT } from "@/lib/contact";
-import img1 from "@/assets/insta/bestanden-1.jpg";
-import img2 from "@/assets/insta/bestanden-2.jpg";
-import img3 from "@/assets/insta/bestanden-3.jpg";
-import img4 from "@/assets/insta/bestanden-4.jpg";
-import img5 from "@/assets/insta/bestanden-5.jpg";
-import img6 from "@/assets/insta/bestanden-6.jpg";
-import img7 from "@/assets/insta/bestanden-7.jpg";
-import img8 from "@/assets/insta/bestanden-8.jpg";
-import img9 from "@/assets/insta/bestanden-9.jpg";
+import img1 from "@/assets/insta/bestanden-neu-1.jpg.asset.json";
+import img2 from "@/assets/insta/bestanden-neu-2.jpg.asset.json";
+import img3 from "@/assets/insta/bestanden-neu-3.jpg.asset.json";
+import img4 from "@/assets/insta/bestanden-neu-4.jpg.asset.json";
 
-const POSTS = [img1, img2, img3, img4, img5, img6, img7, img8, img9];
+const POSTS = [img1.url, img2.url, img3.url, img4.url];
 
 export function InstagramSection() {
   return (

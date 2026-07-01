@@ -1,24 +1,25 @@
 ## Ziel
-Die 9 hochgeladenen Instagram-Screenshots als echte Bestanden-Posts auf der Startseite anzeigen — statt der aktuell DB-gelieferten Bilder. Jedes Screenshot wird auf den reinen Foto-Bereich zugeschnitten (linkes Panel), sodass das rechte Kommentar-Panel nicht mehr zu sehen ist. Anzeige in 2er-Reihen (2 Spalten auf Mobile, 3 auf Desktop).
+Die 9 aktuellen Bilder in der Instagram-Sektion der Startseite entfernen und nur die 4 neu hochgeladenen Fotos anzeigen. Weitere Bilder folgen später und werden dann ergänzt.
 
 ## Vorgehen
 
-### 1. Bilder zuschneiden
-- Alle 9 Uploads (`Bildschirmfoto_2026-07-01_um_19.22.xx.png`, außer der letzte Screenshot 19.23.36-2 — das ist die Lovable-Vorschau, gehört nicht dazu) mit Python/PIL zuschneiden.
-- Crop-Box: das Instagram-Foto-Panel (links). Wird pro Bild individuell erkannt (weißer Modal-Bereich vs. dunkler Overlay-Hintergrund), Fallback ~x: 225–1190, y: 140–1140.
-- Ergebnis als quadratische JPGs (aspect-fill center) unter `src/assets/insta/bestanden-1.jpg` … `bestanden-9.jpg`.
+### 1. Neue Bilder als Assets ablegen
+- Die 4 Uploads über `lovable-assets` als CDN-Pointer unter `src/assets/insta/` ablegen:
+  - `bestanden-neu-1.jpg` (Mercedes CLA, Daumen hoch)
+  - `bestanden-neu-2.jpg` (Mercedes GLA grau, Filialen-Aufkleber)
+  - `bestanden-neu-3.jpg` (VW Tiguan silber)
+  - `bestanden-neu-4.jpg` (Mercedes A-Klasse schwarz, Hijab)
 
-### 2. `InstagramSection.tsx` umbauen
-- DB-Query + horizontaler Scroller entfernen.
-- Statisches Array aus den 9 lokalen Bild-Imports.
-- Grid: `grid-cols-2 md:grid-cols-3` mit `gap-3 sm:gap-5`, quadratische Karten (`aspect-square`), `object-cover`, gerundete Ecken, Hover-Zoom + Instagram-Overlay.
-- Karten verlinken auf `CONTACT.instagram` (Profil) — konkrete Post-URLs sind nicht sicher zuzuordnen.
-- Header, "Auf Instagram folgen"-Button und Section-Struktur bleiben unverändert.
+### 2. Alte Bilder entfernen
+- Die 9 alten `bestanden-1.jpg` … `bestanden-9.jpg` unter `src/assets/insta/` löschen (jeweils der `.asset.json`-Pointer per `lovable-assets delete`).
 
-### 3. Nicht betroffen
-- `index.tsx` (nutzt `<InstagramSection />` weiter, keine Änderung).
-- DB-Tabelle `instagram_posts` (bleibt liegen, keine Migration).
-- Andere Seiten/Sektionen.
+### 3. `InstagramSection.tsx` anpassen
+- Imports auf die 4 neuen Bilder umstellen.
+- `POSTS`-Array auf 4 Einträge reduzieren.
+- Grid bleibt `grid-cols-2 md:grid-cols-3`, quadratische Karten — mit 4 Bildern ergibt das auf Mobile 2×2, auf Desktop eine Reihe à 3 + 1.
+
+### 4. Nicht betroffen
+- `index.tsx`, Layout, restliche Sektionen — keine Änderung.
 
 ## Ergebnis
-Auf der Startseite erscheinen die 9 echten Foto-Screenshots als sauberes 2-/3-Spalten-Grid, ohne Kommentar-Panel — kompakter Insta-Wall-Look.
+Insta-Sektion zeigt nur noch die 4 neuen echten Bestanden-Fotos, sauber im Grid. Weitere Bilder können später einfach an das `POSTS`-Array angehängt werden.
