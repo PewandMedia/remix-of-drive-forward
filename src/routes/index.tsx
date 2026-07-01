@@ -158,7 +158,7 @@ function Index() {
               <span>{CONTACT.googleReviewCount} Google-Bewertungen · beste Fahrschule Bochum</span>
             </a>
           </div>
-          <div className="relative order-2 min-w-0 xl:-mr-8">
+          <div className="relative order-2 min-w-0">
             <div className="hero-car-stage relative mx-auto flex min-h-[300px] w-full max-w-[720px] flex-col items-center justify-end overflow-visible px-0 pb-4 pt-4 sm:min-h-[390px] sm:pb-8 lg:min-h-[560px] lg:max-w-none lg:pb-10 lg:pt-8">
               <div className="pointer-events-none absolute inset-x-3 bottom-6 h-[38%] hero-studio-floor sm:inset-x-6 lg:bottom-8" />
               <div className="pointer-events-none absolute inset-x-0 bottom-[18%] h-[38%] hero-soft-halo" />
