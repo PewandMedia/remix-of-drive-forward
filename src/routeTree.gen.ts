@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UeberUnsRouteImport } from './routes/ueber-uns'
 import { Route as TeamRouteImport } from './routes/team'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PreiseRouteImport } from './routes/preise'
 import { Route as LeistungenRouteImport } from './routes/leistungen'
 import { Route as KontaktRouteImport } from './routes/kontakt'
@@ -33,11 +32,6 @@ const UeberUnsRoute = UeberUnsRouteImport.update({
 const TeamRoute = TeamRouteImport.update({
   id: '/team',
   path: '/team',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreiseRoute = PreiseRouteImport.update({
@@ -111,7 +105,6 @@ export interface FileRoutesByFullPath {
   '/kontakt': typeof KontaktRoute
   '/leistungen': typeof LeistungenRoute
   '/preise': typeof PreiseRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -127,7 +120,6 @@ export interface FileRoutesByTo {
   '/kontakt': typeof KontaktRoute
   '/leistungen': typeof LeistungenRoute
   '/preise': typeof PreiseRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -145,7 +137,6 @@ export interface FileRoutesById {
   '/kontakt': typeof KontaktRoute
   '/leistungen': typeof LeistungenRoute
   '/preise': typeof PreiseRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -163,7 +154,6 @@ export interface FileRouteTypes {
     | '/kontakt'
     | '/leistungen'
     | '/preise'
-    | '/sitemap.xml'
     | '/team'
     | '/ueber-uns'
     | '/admin'
@@ -179,7 +169,6 @@ export interface FileRouteTypes {
     | '/kontakt'
     | '/leistungen'
     | '/preise'
-    | '/sitemap.xml'
     | '/team'
     | '/ueber-uns'
     | '/admin'
@@ -196,7 +185,6 @@ export interface FileRouteTypes {
     | '/kontakt'
     | '/leistungen'
     | '/preise'
-    | '/sitemap.xml'
     | '/team'
     | '/ueber-uns'
     | '/_authenticated/admin'
@@ -214,7 +202,6 @@ export interface RootRouteChildren {
   KontaktRoute: typeof KontaktRoute
   LeistungenRoute: typeof LeistungenRoute
   PreiseRoute: typeof PreiseRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeamRoute: typeof TeamRoute
   UeberUnsRoute: typeof UeberUnsRoute
 }
@@ -233,13 +220,6 @@ declare module '@tanstack/react-router' {
       path: '/team'
       fullPath: '/team'
       preLoaderRoute: typeof TeamRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/preise': {
@@ -352,7 +332,6 @@ const rootRouteChildren: RootRouteChildren = {
   KontaktRoute: KontaktRoute,
   LeistungenRoute: LeistungenRoute,
   PreiseRoute: PreiseRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeamRoute: TeamRoute,
   UeberUnsRoute: UeberUnsRoute,
 }
