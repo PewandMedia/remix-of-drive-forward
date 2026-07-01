@@ -4,7 +4,8 @@ import { useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import heroCar from "@/assets/hero-car.png";
+import miroCarAsset from "@/assets/miro-car.png.asset.json";
+import miroLogoAsset from "@/assets/miro-logo.png.asset.json";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
@@ -161,25 +162,48 @@ function Index() {
               <span>{CONTACT.googleReviewCount} Google-Bewertungen · beste Fahrschule Bochum</span>
             </a>
           </div>
-          <div className="relative -mr-8 sm:-mr-14 lg:-mr-32 xl:-mr-48 group">
-            {/* Radial red glow */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,theme(colors.primary/45),transparent_60%)] blur-3xl" />
-            {/* Speed lines behind car */}
-            <div className="pointer-events-none absolute left-0 top-1/2 -z-10 h-[35%] w-[70%] -translate-y-1/2 hero-speedlines opacity-70" />
-            {/* Black accent bar */}
-            <div className="pointer-events-none absolute -right-8 top-6 -z-10 hidden h-2 w-56 bg-foreground lg:block" />
-            <div className="pointer-events-none absolute -right-4 bottom-10 -z-10 hidden h-1 w-40 bg-primary lg:block" />
-            <img
-              src={heroCar}
-              alt="Fahrschulauto MIRO-DRIVE Bochum – moderner weißer Mercedes A-Klasse der Fahrschule in Bochum"
-              width={1600}
-              height={1024}
-              loading="eager"
-              fetchPriority="high"
-              className="animate-drive-in-right relative w-full scale-[1.7] object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.28)] transition-transform duration-500 group-hover:scale-[1.75] sm:scale-[1.45] lg:scale-[1.4] xl:scale-[1.5] lg:drop-shadow-[0_40px_50px_rgba(0,0,0,0.3)]"
-            />
-            {/* Ground shadow ellipse */}
-            <div className="pointer-events-none absolute bottom-[8%] left-1/2 h-4 w-[70%] -translate-x-1/2 rounded-[50%] bg-black/40 blur-2xl" />
+          <div className="relative flex flex-col items-center justify-center -mr-4 sm:-mr-8 lg:-mr-24 xl:-mr-36 group">
+            {/* Shared radial red glow behind logo + car */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,theme(colors.primary/40),transparent_62%)] blur-3xl" />
+
+            {/* Logo block */}
+            <div className="animate-fade-up relative z-10 flex w-full flex-col items-center pt-1 sm:pt-2">
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-primary/20 blur-2xl" />
+                <img
+                  src={miroLogoAsset.url}
+                  alt="MIRO-DRIVE Fahrschule Logo"
+                  width={480}
+                  height={160}
+                  loading="eager"
+                  fetchPriority="high"
+                  className="h-10 w-auto object-contain drop-shadow-[0_6px_14px_rgba(0,0,0,0.15)] sm:h-16 md:h-20 lg:h-24"
+                />
+              </div>
+              <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.28em] text-muted-foreground sm:mt-2 sm:text-[10px] md:text-xs">
+                Fahrschule · Bochum · seit über 10 Jahren
+              </p>
+              <div className="mt-2 h-[2px] w-16 bg-primary sm:mt-3 sm:w-24" />
+            </div>
+
+            {/* Car block */}
+            <div className="relative mt-1 w-full sm:mt-3">
+              {/* Speed lines behind car */}
+              <div className="pointer-events-none absolute left-0 top-1/2 -z-10 h-[38%] w-[75%] -translate-y-1/2 hero-speedlines opacity-70" />
+              {/* Black ground bar */}
+              <div className="pointer-events-none absolute bottom-4 left-1/2 -z-10 hidden h-1.5 w-[80%] -translate-x-1/2 bg-foreground lg:block" />
+              <img
+                src={miroCarAsset.url}
+                alt="MIRO-DRIVE Fahrschulauto Bochum – das echte Schulungsfahrzeug der Fahrschule MIRO-DRIVE"
+                width={1600}
+                height={1024}
+                loading="eager"
+                fetchPriority="high"
+                className="animate-drive-in-right relative w-full scale-[1.35] object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.28)] transition-transform duration-500 group-hover:scale-[1.4] sm:scale-[1.2] lg:scale-[1.15] xl:scale-[1.2] lg:drop-shadow-[0_40px_50px_rgba(0,0,0,0.3)]"
+              />
+              {/* Ground shadow ellipse */}
+              <div className="pointer-events-none absolute bottom-[6%] left-1/2 h-4 w-[70%] -translate-x-1/2 rounded-[50%] bg-black/40 blur-2xl" />
+            </div>
           </div>
         </div>
       </section>
