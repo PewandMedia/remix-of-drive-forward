@@ -149,17 +149,16 @@ function Index() {
               </a>
 
               <p className="mb-4 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-muted-foreground">
-                <span className="h-px w-8 bg-primary" /> Fahrschule · Bochum · Herne · NRW
+                <span className="h-px w-8 bg-primary" /> Fahrschule · Bochum · NRW
               </p>
               <h1 className="font-display text-[2rem] leading-[1.04] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5.25rem]">
                 Fahrschule MIRO-DRIVE –<br className="hidden sm:block" />
                 die <span className="italic text-primary">Nr. 1 Fahrschule</span> in Bochum.
               </h1>
               <p className="mt-5 max-w-2xl text-sm text-muted-foreground sm:text-lg lg:text-xl">
-                Zwei Filialen mitten in Bochum:{" "}
-                <strong className="text-foreground">Bochum Zentrum – Brückstraße 53</strong> und{" "}
+                Zwei Filialen in Bochum: <strong className="text-foreground">Bochum Zentrum – Brückstraße 53</strong> und{" "}
                 <strong className="text-foreground">Bochum Riemke – Herner Straße 365</strong>. Klasse B, B197 & B78 –
-                persönlich betreut, fair bepreist. Für Fahrschüler aus Bochum, Herne und ganz NRW.
+                persönlich betreut, fair bepreist. Für Fahrschüler aus Bochum und ganz NRW.
               </p>
 
               <div className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
