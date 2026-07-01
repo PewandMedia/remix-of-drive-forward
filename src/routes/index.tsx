@@ -45,7 +45,6 @@ const marqueeItems = [
   "Klasse B78",
   "Automatik & Schalter",
   "Erste-Hilfe-Kurs 50 €",
-  "Fahrschule Herne",
   "NRW",
   "5,0 ★ Google",
   "549+ Bewertungen",
