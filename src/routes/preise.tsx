@@ -127,6 +127,28 @@ function PricesPage() {
           </p>
         </div>
 
+        {anyLiveOffer && (
+          <a
+            href={CONTACT.whatsapp}
+            target="_blank"
+            rel="noopener"
+            className="mb-6 flex flex-col items-start gap-3 rounded-2xl border-2 border-primary bg-gradient-to-r from-primary via-primary to-[#7a0010] p-4 text-white shadow-[0_20px_50px_-20px_theme(colors.primary/60)] transition-transform hover:scale-[1.01] sm:flex-row sm:items-center sm:justify-between sm:p-5"
+          >
+            <div className="flex items-center gap-3">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/15 ring-1 ring-white/30 sm:h-12 sm:w-12">
+                <Flame className="h-5 w-5 animate-pulse sm:h-6 sm:w-6" />
+              </div>
+              <div>
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/80">Zeitlich begrenzt</div>
+                <div className="font-display text-lg leading-tight sm:text-2xl">Aktuelles Angebot läuft – jetzt anmelden & sparen!</div>
+              </div>
+            </div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-wider text-primary shadow-md sm:text-sm">
+              <MessageCircle className="h-4 w-4" /> Jetzt Angebot sichern
+            </span>
+          </a>
+        )}
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:items-stretch">
           {cards.map(({ meta, items }) => {
             const Icon = meta.icon;
