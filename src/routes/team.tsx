@@ -66,7 +66,7 @@ function TeamPage() {
         return (
           <div
             key={m.id}
-            className="group flex flex-col items-center rounded-3xl border bg-white p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl"
+            className="group flex flex-col items-center rounded-3xl border bg-white p-4 sm:p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl"
           >
             <Avatar name={m.name} src={m.image_url} />
             <h3 className="mt-5 font-display text-xl">{m.name}</h3>
