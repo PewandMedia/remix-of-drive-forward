@@ -125,9 +125,6 @@ function Index() {
       <section className="relative overflow-hidden bg-background">
         {/* soft radial glow + dot grid */}
         <div className="pointer-events-none absolute inset-0 hero-dot-grid opacity-[0.14]" />
-        <div className="pointer-events-none absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-primary/25 blur-[120px] animate-blob" />
-        <div className="pointer-events-none absolute top-40 -right-40 h-[520px] w-[520px] rounded-full bg-primary/15 blur-[140px] animate-blob" style={{ animationDelay: "-6s" }} />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
         <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
           <div className="grid items-center gap-8 lg:gap-12 lg:grid-cols-[1.15fr_1fr]">
