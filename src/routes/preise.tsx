@@ -136,32 +136,32 @@ function PricesPage() {
 
                 <div
                   className={[
-                    "relative px-7 pt-7 pb-6",
+                    "relative px-3 pt-4 pb-3 sm:px-7 sm:pt-7 sm:pb-6",
                     featured
                       ? "bg-gradient-to-br from-primary via-primary to-[#7a0010] text-white"
                       : "bg-gradient-to-br from-foreground via-foreground to-[#1a1a1a] text-white",
                   ].join(" ")}
                 >
                   <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:14px_14px]" />
-                  <div className="relative flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur">
-                        <Icon className="h-6 w-6" />
+                  <div className="relative flex items-center justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/10 ring-1 ring-white/20 backdrop-blur sm:h-12 sm:w-12 sm:rounded-2xl">
+                        <Icon className="h-4 w-4 sm:h-6 sm:w-6" />
                       </div>
-                      <div>
-                        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">
+                      <div className="min-w-0">
+                        <div className="hidden text-[11px] font-bold uppercase tracking-[0.18em] text-white/70 sm:block">
                           Führerschein
                         </div>
-                        <h3 className="font-display text-2xl leading-none">Klasse {meta.short}</h3>
+                        <h3 className="font-display text-base leading-none sm:text-2xl">Klasse {meta.short}</h3>
                       </div>
                     </div>
                     {meta.badge && (
-                      <span className="rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary shadow">
+                      <span className="hidden rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary shadow sm:inline-block">
                         {meta.badge}
                       </span>
                     )}
                   </div>
-                  <p className="relative mt-4 text-sm leading-relaxed text-white/80">{meta.tagline}</p>
+                  <p className="relative mt-3 hidden text-sm leading-relaxed text-white/80 sm:mt-4 sm:block">{meta.tagline}</p>
                 </div>
 
                 <div className="flex flex-1 flex-col px-7 pb-7 pt-5">
