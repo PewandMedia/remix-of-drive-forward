@@ -164,8 +164,8 @@ function PricesPage() {
                   <p className="relative mt-3 hidden text-sm leading-relaxed text-white/80 sm:mt-4 sm:block">{meta.tagline}</p>
                 </div>
 
-                <div className="flex flex-1 flex-col px-7 pb-7 pt-5">
-                  <div className="mb-5 space-y-3 rounded-2xl border border-border/60 bg-muted/30 p-4">
+                <div className="flex flex-1 flex-col px-3 pb-4 pt-3 sm:px-7 sm:pb-7 sm:pt-5">
+                  <div className="hidden sm:mb-5 sm:block sm:space-y-3 sm:rounded-2xl sm:border sm:border-border/60 sm:bg-muted/30 sm:p-4">
                     <div className="grid grid-cols-3 gap-2">
                       <div className="flex flex-col items-center gap-1 rounded-xl bg-white px-2 py-2 text-center shadow-sm">
                         <RouteIcon className="h-4 w-4 text-primary" />
