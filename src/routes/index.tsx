@@ -441,36 +441,16 @@ function Index() {
               </Link>
             </div>
             <div className="relative order-first lg:order-none">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-gradient-to-br from-primary/15 via-primary/5 to-transparent p-6">
-                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/25 blur-3xl" />
-                <div className="relative grid h-full grid-cols-3 grid-rows-3 gap-3">
-                  <div className="col-span-2 row-span-2 grid place-items-center rounded-2xl bg-primary text-primary-foreground shadow-xl">
-                    {/* Red-cross motif */}
-                    <div className="relative h-24 w-24">
-                      <span className="absolute left-1/2 top-0 h-full w-8 -translate-x-1/2 rounded-md bg-white" />
-                      <span className="absolute top-1/2 left-0 h-8 w-full -translate-y-1/2 rounded-md bg-white" />
-                    </div>
-                  </div>
-                  <div className="rounded-2xl bg-white p-3 shadow-sm">
-                    <Heart className="h-5 w-5 text-primary" />
-                    <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">50 €</p>
-                    <p className="text-xs font-bold">Kursgebühr</p>
-                  </div>
-                  <div className="rounded-2xl bg-white p-3 shadow-sm">
-                    <Calendar className="h-5 w-5 text-primary" />
-                    <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Monatlich</p>
-                    <p className="text-xs font-bold">Neue Termine</p>
-                  </div>
-                  <div className="col-span-3 rounded-2xl bg-foreground p-4 text-white shadow-lg">
-                    <div className="flex items-center gap-3">
-                      <ShieldCheck className="h-5 w-5 text-primary" />
-                      <div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Offiziell anerkannt</p>
-                        <p className="text-sm font-bold">Für TÜV & Führerschein-Antrag</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/25 blur-3xl" />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border shadow-xl">
+                <img
+                  src={ersteHilfeHero}
+                  alt="Erste-Hilfe-Kurs bei Fahrschule MIRO-DRIVE in Bochum"
+                  width={1280}
+                  height={960}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
               </div>
             </div>
           </div>
