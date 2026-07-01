@@ -7,7 +7,7 @@ import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { Heart, Calendar, Clock, FileText, GraduationCap, Phone } from "lucide-react";
-import ersteHilfeImg from "@/assets/erste-hilfe-side.jpg";
+import ersteHilfeImg from "@/assets/erste-hilfe-hero.jpg";
 
 const faQuery = queryOptions({
   queryKey: ["first_aid_info"],
