@@ -191,8 +191,6 @@ export type Database = {
           id: string
           offer_active: boolean
           offer_label: string | null
-          offer_valid_from: string | null
-          offer_valid_until: string | null
           old_price: string | null
           price: string
           sort_order: number
@@ -207,8 +205,6 @@ export type Database = {
           id?: string
           offer_active?: boolean
           offer_label?: string | null
-          offer_valid_from?: string | null
-          offer_valid_until?: string | null
           old_price?: string | null
           price: string
           sort_order?: number
@@ -223,8 +219,6 @@ export type Database = {
           id?: string
           offer_active?: boolean
           offer_label?: string | null
-          offer_valid_from?: string | null
-          offer_valid_until?: string | null
           old_price?: string | null
           price?: string
           sort_order?: number

@@ -15,13 +15,7 @@ const pricesQuery = queryOptions({
       .eq("active", true)
       .order("sort_order");
     if (error) throw error;
-    const now = Date.now();
-    return (data ?? []).map((p: any) => {
-      const from = p.offer_valid_from ? new Date(p.offer_valid_from).getTime() : null;
-      const until = p.offer_valid_until ? new Date(p.offer_valid_until).getTime() : null;
-      const inWindow = (from === null || now >= from) && (until === null || now <= until);
-      return { ...p, offer_active: p.offer_active && inWindow };
-    });
+    return data ?? [];
   },
 });
 

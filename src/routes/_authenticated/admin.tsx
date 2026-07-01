@@ -151,8 +151,6 @@ function PriceDialog({ initial }: { initial?: any }) {
         offer_active: form.get("offer_active") === "on",
         old_price: String(form.get("old_price") || "") || null,
         offer_label: String(form.get("offer_label") || "") || null,
-        offer_valid_from: String(form.get("offer_valid_from") || "") ? new Date(String(form.get("offer_valid_from"))).toISOString() : null,
-        offer_valid_until: String(form.get("offer_valid_until") || "") ? new Date(String(form.get("offer_valid_until"))).toISOString() : null,
       };
       if (isEdit) { const { error } = await supabase.from("prices").update(row).eq("id", initial.id); if (error) throw error; }
       else { const { error } = await supabase.from("prices").insert(row); if (error) throw error; }
@@ -192,17 +190,6 @@ function PriceDialog({ initial }: { initial?: any }) {
               <div><Label>Alter Preis (durchgestrichen)</Label><Input name="old_price" defaultValue={initial?.old_price ?? ""} placeholder="z. B. 299 €" /></div>
               <div><Label>Aktions-Label</Label><Input name="offer_label" defaultValue={initial?.offer_label ?? ""} placeholder="z. B. -30% / Sommer-Aktion" /></div>
             </div>
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              <div>
-                <Label>Aktion gültig ab</Label>
-                <Input name="offer_valid_from" type="datetime-local" defaultValue={initial?.offer_valid_from ? new Date(initial.offer_valid_from).toISOString().slice(0,16) : ""} />
-              </div>
-              <div>
-                <Label>Aktion gültig bis</Label>
-                <Input name="offer_valid_until" type="datetime-local" defaultValue={initial?.offer_valid_until ? new Date(initial.offer_valid_until).toISOString().slice(0,16) : ""} />
-              </div>
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">Leer lassen für dauerhaft. Außerhalb des Zeitraums wird automatisch der normale Preis gezeigt.</p>
           </div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
           <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
