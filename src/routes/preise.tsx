@@ -102,8 +102,8 @@ function PricesPage() {
     <SiteLayout>
       <PageHero
         eyebrow="Preise"
-        title="Klare Preise für Klasse B, B197 und B78."
-        subtitle="Wir bilden in drei Klassen aus – Schalter, Automatik-Ausbildung mit Schaltberechtigung (B197) und reine Automatik (B78). Anmeldung ausschließlich vor Ort in unseren Filialen in Bochum."
+        title="Preise für deinen Führerschein in Bochum"
+        subtitle="Transparente Preise bei MIRO-DRIVE – deiner Fahrschule in Bochum. Klasse B, B197 (Automatik mit Schaltberechtigung) und B78. Für individuelle Angebote einfach per WhatsApp anfragen."
       />
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -112,7 +112,9 @@ function PricesPage() {
         <div className="mb-10 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4">
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
           <p className="text-sm text-foreground/80">
-            Alle Angaben dienen der Übersicht. Preise können vom Inhaber jederzeit angepasst werden – frag im Zweifel kurz per WhatsApp nach.
+            <span className="font-bold">Persönliches Angebot?</span> MIRO-DRIVE erstellt individuelle Angebote
+            für deine Anmeldung, Ausbildungspakete oder Kombi-Angebote in Bochum. Frag dein Angebot einfach
+            direkt per WhatsApp an – wir helfen dir schnell und unkompliziert weiter.
           </p>
         </div>
 
