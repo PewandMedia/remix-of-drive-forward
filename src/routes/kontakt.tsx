@@ -8,9 +8,10 @@ import { Phone, Mail, Instagram, MessageCircle, AlertCircle } from "lucide-react
 export const Route = createFileRoute("/kontakt")({
   head: () => ({
     meta: [
-      { title: "Kontakt – MIRO-DRIVE Fahrschule" },
-      { name: "description", content: "MIRO-DRIVE Fahrschule – zwei Standorte in Bochum. Kontaktiere uns per WhatsApp, Telefon oder besuche uns direkt in der Filiale." },
-      { property: "og:title", content: "Kontakt – MIRO-DRIVE" },
+      { title: "Kontakt Fahrschule Bochum | MIRO-DRIVE" },
+      { name: "description", content: "Kontaktiere MIRO-DRIVE, deine Fahrschule in Bochum. Anmeldung, Preise, Angebote und Erste-Hilfe-Kurs einfach per WhatsApp anfragen." },
+      { property: "og:title", content: "Kontakt Fahrschule Bochum | MIRO-DRIVE" },
+      { property: "og:description", content: "Moderne Fahrschule in Bochum – WhatsApp, Telefon oder Besuch direkt in der Filiale. Für Bochum Innenstadt, Rathaus Bochum, Riemke & Herne." },
       { property: "og:url", content: "/kontakt" },
     ],
     links: [{ rel: "canonical", href: "/kontakt" }],
@@ -23,8 +24,8 @@ function ContactPage() {
     <SiteLayout>
       <PageHero
         eyebrow="Kontakt"
-        title="Besuche uns in einer unserer Filialen."
-        subtitle="Die Anmeldung erfolgt persönlich – komm einfach während der Bürozeiten vorbei. Für Fragen erreichst du uns telefonisch oder per WhatsApp."
+        title="Kontakt zur Fahrschule MIRO-DRIVE in Bochum"
+        subtitle="Du möchtest deinen Führerschein in Bochum machen? Dann kontaktiere MIRO-DRIVE direkt per WhatsApp, Telefon oder komm in eine unserer Filialen in Bochum Innenstadt, Rathaus Bochum oder Riemke."
       />
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">

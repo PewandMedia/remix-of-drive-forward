@@ -21,9 +21,10 @@ const faQuery = queryOptions({
 export const Route = createFileRoute("/erste-hilfe-kurs")({
   head: () => ({
     meta: [
-      { title: "Erste-Hilfe-Kurs – MIRO-DRIVE Fahrschule" },
-      { name: "description", content: "Erste-Hilfe-Kurs für Führerscheinbewerber – kompakt, verständlich, jederzeit per WhatsApp anfragen." },
-      { property: "og:title", content: "Erste-Hilfe-Kurs – MIRO-DRIVE" },
+      { title: "Erste-Hilfe-Kurs Bochum für Führerschein | MIRO-DRIVE" },
+      { name: "description", content: "Erste-Hilfe-Kurs für deinen Führerschein in Bochum anfragen. MIRO-DRIVE unterstützt dich bei Anmeldung, Beratung und allen nächsten Schritten." },
+      { property: "og:title", content: "Erste-Hilfe-Kurs Bochum | MIRO-DRIVE" },
+      { property: "og:description", content: "Erste-Hilfe-Kurs in Bochum für deinen Führerschein – jeden Monat direkt bei MIRO-DRIVE." },
       { property: "og:url", content: "/erste-hilfe-kurs" },
     ],
     links: [{ rel: "canonical", href: "/erste-hilfe-kurs" }],
@@ -36,15 +37,19 @@ export const Route = createFileRoute("/erste-hilfe-kurs")({
 function FAPage() {
   const { data: info } = useSuspenseQuery(faQuery);
   const benefits = [
-    { icon: Heart, label: "Erste-Hilfe-Kurs für den Führerschein" },
-    { icon: GraduationCap, label: "Kompakte und verständliche Schulung" },
-    { icon: Calendar, label: "Einfache Anmeldung" },
-    { icon: FileText, label: "Beratung zu allen notwendigen Unterlagen" },
-    { icon: Clock, label: "Unterstützung beim Start deiner Fahrausbildung" },
+    { icon: Heart, label: "Erste-Hilfe-Kurs für Führerscheinbewerber" },
+    { icon: GraduationCap, label: "Anfrage direkt online oder per WhatsApp" },
+    { icon: Calendar, label: "Ideal für Fahrschüler aus Bochum Innenstadt, Riemke & Umgebung" },
+    { icon: FileText, label: "Beratung zu Anmeldung und Unterlagen" },
+    { icon: Clock, label: "Kombinierbar mit deiner Anmeldung bei MIRO-DRIVE" },
   ];
   return (
     <SiteLayout>
-      <PageHero eyebrow="Erste-Hilfe-Kurs" title="Erste-Hilfe-Kurs für deinen Führerschein" subtitle="Mach deinen Erste-Hilfe-Kurs direkt bei MIRO-DRIVE – 8 Stunden an einem Tag (8:00–16:00 Uhr), jeden Monat in der Fahrschule." />
+      <PageHero
+        eyebrow="Erste-Hilfe-Kurs Bochum"
+        title="Erste-Hilfe-Kurs in Bochum für deinen Führerschein"
+        subtitle="Du brauchst einen Erste-Hilfe-Kurs für deinen Führerschein in Bochum? Bei MIRO-DRIVE kannst du einfach eine Anfrage stellen und dich beraten lassen – 8 Stunden an einem Tag, jeden Monat in der Fahrschule."
+      />
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start">
           <div className="space-y-10 lg:col-span-7">

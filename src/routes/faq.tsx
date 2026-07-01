@@ -3,20 +3,22 @@ import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const FAQS = [
-  { q: "Wie kann ich mich anmelden?", a: "Du kannst dich direkt über WhatsApp, telefonisch oder über das Kontaktformular anmelden." },
-  { q: "Welche Führerscheinklassen bietet MIRO-DRIVE an?", a: "Aktuell Klasse B, B197 und Auffrischungsstunden. Weitere Klassen können später ergänzt werden." },
-  { q: "Kann ich einen Erste-Hilfe-Kurs machen?", a: "Ja, über die Website kannst du eine Anfrage für einen Erste-Hilfe-Kurs stellen." },
-  { q: "Gibt es individuelle Angebote?", a: "Ja, wir können individuelle Angebote für Anmeldung, Ausbildungspakete oder Kombi-Anfragen anbieten." },
-  { q: "Kann ich die Preise online sehen?", a: "Ja, die Preise werden transparent auf der Preise-Seite dargestellt und können vom Chef im Admin-Panel angepasst werden." },
-  { q: "Wie erreiche ich euch am schnellsten?", a: "Am schnellsten erreichst du MIRO-DRIVE über WhatsApp." },
+  { q: "Ist MIRO-DRIVE eine Fahrschule in Bochum?", a: "Ja, MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, Auffrischungsstunden und Anfragen zum Erste-Hilfe-Kurs." },
+  { q: "Ist MIRO-DRIVE für Bochum Innenstadt und Riemke geeignet?", a: "Ja, MIRO-DRIVE richtet sich an Fahrschüler aus Bochum Innenstadt, der Nähe vom Rathaus Bochum, Bochum Riemke, Herne und Umgebung." },
+  { q: "Kann ich mich direkt online anmelden?", a: "Du kannst deine Anmeldung direkt über WhatsApp, telefonisch oder über das Kontaktformular starten. Die eigentliche Anmeldung erfolgt persönlich in einer unserer Filialen in Bochum." },
+  { q: "Bietet MIRO-DRIVE Klasse B und B197 an?", a: "Ja, auf der Website werden Klasse B und B197 als Leistungen dargestellt. Zusätzlich bieten wir Klasse B78 und Auffrischungsstunden an." },
+  { q: "Kann ich einen Erste-Hilfe-Kurs anfragen?", a: "Ja, über die Website kannst du eine Anfrage für einen Erste-Hilfe-Kurs in Bochum stellen – jeden Monat direkt bei MIRO-DRIVE." },
+  { q: "Gibt es individuelle Angebote?", a: "Ja, MIRO-DRIVE kann individuelle Angebote für Anmeldung, Ausbildungspakete oder Kombi-Angebote erstellen – frag einfach per WhatsApp an." },
+  { q: "Warum sollte ich MIRO-DRIVE als Fahrschule in Bochum wählen?", a: "MIRO-DRIVE verbindet moderne Fahrzeuge, persönliche Betreuung, transparente Preise und eine stressfreie Ausbildung. Mit 5,0 Sternen und über 549 Google-Bewertungen ist MIRO-DRIVE eine starke Wahl für deinen Führerschein in Bochum." },
 ];
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ – MIRO-DRIVE Fahrschule" },
-      { name: "description", content: "Häufige Fragen zur Anmeldung, Führerscheinklassen, Erste-Hilfe-Kurs und Preisen bei MIRO-DRIVE." },
-      { property: "og:title", content: "FAQ – MIRO-DRIVE" },
+      { title: "FAQ Fahrschule Bochum | MIRO-DRIVE" },
+      { name: "description", content: "Häufige Fragen zu deiner Fahrschule in Bochum: Anmeldung, Klasse B, B197, Erste-Hilfe-Kurs und Preise bei MIRO-DRIVE." },
+      { property: "og:title", content: "FAQ Fahrschule Bochum | MIRO-DRIVE" },
+      { property: "og:description", content: "Antworten auf die wichtigsten Fragen zur Fahrschule in Bochum – Klasse B, B197 & Erste-Hilfe-Kurs." },
       { property: "og:url", content: "/faq" },
     ],
     links: [{ rel: "canonical", href: "/faq" }],
@@ -35,7 +37,7 @@ export const Route = createFileRoute("/faq")({
 function FAQPage() {
   return (
     <SiteLayout>
-      <PageHero eyebrow="FAQ" title="Häufig gestellte Fragen." subtitle="Antworten auf die wichtigsten Fragen rund um deine Führerscheinausbildung." />
+      <PageHero eyebrow="FAQ" title="Häufige Fragen zur Fahrschule in Bochum" subtitle="Antworten auf die wichtigsten Fragen rund um deinen Führerschein in Bochum – Klasse B, B197, Erste-Hilfe-Kurs und Anmeldung." />
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <Accordion type="single" collapsible className="space-y-3">
           {FAQS.map((f, i) => (
