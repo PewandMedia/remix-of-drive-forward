@@ -130,8 +130,8 @@ function Index() {
         <div className="pointer-events-none absolute top-40 -right-40 h-[520px] w-[520px] rounded-full bg-primary/15 blur-[140px] animate-blob" style={{ animationDelay: "-6s" }} />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
-        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-28">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
+        <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
+          <div className="grid items-center gap-8 lg:gap-12 lg:grid-cols-[1.15fr_1fr]">
             {/* left column */}
             <div className="animate-fade-up">
               <a
@@ -151,33 +151,33 @@ function Index() {
               <p className="mb-4 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-muted-foreground">
                 <span className="h-px w-8 bg-primary" /> Fahrschule · Bochum · Herne · NRW
               </p>
-              <h1 className="font-display text-4xl leading-[1.02] tracking-tight sm:text-6xl lg:text-[4.5rem] xl:text-[5.25rem]">
+              <h1 className="font-display text-[2rem] leading-[1.04] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5.25rem]">
                 Fahrschule MIRO-DRIVE –<br className="hidden sm:block" />
                 die <span className="italic text-primary">Nr. 1 Fahrschule</span> in Bochum.
               </h1>
-              <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg lg:text-xl">
+              <p className="mt-5 max-w-2xl text-sm text-muted-foreground sm:text-lg lg:text-xl">
                 Zwei Filialen mitten in Bochum:{" "}
                 <strong className="text-foreground">Bochum Zentrum – Brückstraße 53</strong> und{" "}
                 <strong className="text-foreground">Bochum Riemke – Herner Straße 365</strong>. Klasse B, B197 & B78 –
                 persönlich betreut, fair bepreist. Für Fahrschüler aus Bochum, Herne und ganz NRW.
               </p>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-xl shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-primary/30 sm:px-7 sm:py-4">
+              <div className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
+                <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="col-span-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-bold text-primary-foreground shadow-xl shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-primary/30 sm:col-span-1 sm:px-7 sm:py-4 sm:text-sm">
                   <MessageCircle className="h-4 w-4" /> Jetzt per WhatsApp anmelden
                 </a>
-                <Link to="/preise" className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-bold text-background transition-all hover:-translate-y-0.5 hover:bg-foreground/90 sm:px-7 sm:py-4">
+                <Link to="/preise" className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-5 py-3 text-xs font-bold text-background transition-all hover:-translate-y-0.5 hover:bg-foreground/90 sm:px-7 sm:py-4 sm:text-sm">
                   Preise ansehen <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link to="/kontakt" className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-foreground/10 bg-background px-6 py-3.5 text-sm font-bold text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background sm:px-7 sm:py-4">
+                <Link to="/kontakt" className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-foreground/10 bg-background px-5 py-3 text-xs font-bold text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background sm:px-7 sm:py-4 sm:text-sm">
                   Beratung anfragen
                 </Link>
               </div>
 
-              <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-muted-foreground sm:mt-8 sm:flex sm:flex-wrap sm:gap-x-6 sm:text-sm">
                 {["2 Filialen in Bochum", "WhatsApp-Anmeldung", "Automatik & Schalter", "Persönliche Betreuung"].map((f) => (
                   <li key={f} className="inline-flex items-center gap-2">
-                    <Check className="h-4 w-4 text-primary" /> {f}
+                    <Check className="h-3.5 w-3.5 shrink-0 text-primary sm:h-4 sm:w-4" /> {f}
                   </li>
                 ))}
               </ul>
@@ -186,15 +186,15 @@ function Index() {
             {/* right column – stat bento */}
             <div className="relative">
               <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/20 via-transparent to-transparent blur-2xl" />
-              <div className="relative grid grid-cols-2 gap-3">
+              <div className="relative grid grid-cols-2 gap-2.5 sm:gap-3">
                 {/* Brand logo panel */}
-                <div className="col-span-2 relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-white to-white/70 p-8 shadow-xl">
+                <div className="col-span-2 relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-white to-white/70 p-5 shadow-xl sm:p-8">
                   <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
                   <div className="relative flex flex-col items-center text-center">
                     <img
                       src={logoAsset.url}
                       alt="MIRO-DRIVE Fahrschule Bochum Logo"
-                      className="h-16 w-auto sm:h-20"
+                      className="h-12 w-auto sm:h-20"
                     />
                     <div className="mt-4 flex items-center gap-3">
                       <span className="h-px w-8 bg-primary" />
@@ -210,42 +210,42 @@ function Index() {
                   href={CONTACT.googleProfileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="col-span-2 group overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-white to-white/60 p-6 shadow-xl transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl"
+                  className="col-span-2 group overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-white to-white/60 p-4 shadow-xl transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl sm:p-6"
                 >
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="min-w-0">
                       <div className="flex items-center gap-1">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} className="h-5 w-5 fill-primary text-primary" />
+                          <Star key={i} className="h-4 w-4 fill-primary text-primary sm:h-5 sm:w-5" />
                         ))}
                       </div>
-                      <p className="mt-2 font-display text-5xl leading-none">{CONTACT.googleRating}</p>
-                      <p className="mt-1 text-sm font-semibold text-muted-foreground">
+                      <p className="mt-2 font-display text-4xl leading-none sm:text-5xl">{CONTACT.googleRating}</p>
+                      <p className="mt-1 text-xs font-semibold text-muted-foreground sm:text-sm">
                         {CONTACT.googleReviewCount} Google-Bewertungen
                       </p>
                     </div>
-                    <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-foreground text-white">
-                      <Award className="h-7 w-7" />
+                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-foreground text-white sm:h-14 sm:w-14">
+                      <Award className="h-5 w-5 sm:h-7 sm:w-7" />
                     </div>
                   </div>
                 </a>
 
-                <div className="rounded-3xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl">
-                  <MapPin className="h-6 w-6 text-primary" />
-                  <p className="mt-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Filialen</p>
-                  <p className="mt-1 font-display text-xl leading-tight">Bochum Zentrum & Riemke</p>
+                <div className="rounded-3xl border border-border bg-card p-4 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl sm:p-5">
+                  <MapPin className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
+                  <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground sm:mt-3">Filialen</p>
+                  <p className="mt-1 font-display text-base leading-tight sm:text-xl">Bochum Zentrum & Riemke</p>
                 </div>
-                <div className="rounded-3xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl">
-                  <GraduationCap className="h-6 w-6 text-primary" />
-                  <p className="mt-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Klassen</p>
-                  <p className="mt-1 font-display text-xl leading-tight">B · B197 · B78</p>
+                <div className="rounded-3xl border border-border bg-card p-4 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl sm:p-5">
+                  <GraduationCap className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
+                  <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground sm:mt-3">Klassen</p>
+                  <p className="mt-1 font-display text-base leading-tight sm:text-xl">B · B197 · B78</p>
                 </div>
-                <div className="col-span-2 rounded-3xl bg-foreground p-5 text-white shadow-xl">
+                <div className="col-span-2 rounded-3xl bg-foreground p-4 text-white shadow-xl sm:p-5">
                   <div className="flex items-center gap-3">
-                    <Zap className="h-6 w-6 text-primary" />
+                    <Zap className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                     <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Anmeldung in Minuten</p>
                   </div>
-                  <p className="mt-2 font-display text-2xl leading-tight">
+                  <p className="mt-2 font-display text-lg leading-tight sm:text-2xl">
                     Schreib uns per WhatsApp – wir antworten meist innerhalb weniger Minuten.
                   </p>
                   <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
@@ -311,20 +311,20 @@ function Index() {
               Von der ersten WhatsApp-Nachricht bis zur bestandenen Prüfung – wir machen es dir so unkompliziert wie möglich.
             </p>
           </div>
-          <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-4 lg:grid-cols-4">
             {steps.map((s, i) => (
               <div
                 key={s.n}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-white/[0.06]"
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-white/[0.06] sm:rounded-3xl sm:p-7"
               >
-                <div className="absolute right-4 top-4 font-display text-6xl leading-none text-white/[0.08] transition-colors group-hover:text-primary/40">
+                <div className="absolute right-3 top-3 font-display text-4xl leading-none text-white/[0.08] transition-colors group-hover:text-primary/40 sm:right-4 sm:top-4 sm:text-6xl">
                   {s.n}
                 </div>
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-primary-foreground">
-                  <s.icon className="h-6 w-6" />
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground sm:h-12 sm:w-12 sm:rounded-2xl">
+                  <s.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                 </div>
-                <h3 className="mt-6 font-display text-xl leading-tight text-white">{s.title}</h3>
-                <p className="mt-2 text-sm text-white/60">{s.text}</p>
+                <h3 className="mt-4 font-display text-sm leading-tight text-white sm:mt-6 sm:text-xl">{s.title}</h3>
+                <p className="mt-1 text-xs text-white/60 sm:mt-2 sm:text-sm">{s.text}</p>
                 {i < steps.length - 1 && (
                   <ArrowRight className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-white/20 lg:block" />
                 )}
@@ -357,7 +357,7 @@ function Index() {
             Alle Preise ansehen <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-3 md:items-stretch">
+        <div className="grid grid-cols-3 gap-2.5 items-stretch sm:gap-4 md:gap-6">
           {PRICE_CLASSES.map((c) => {
             const grund = priceFor(c.key);
             const featured = c.featured;
@@ -366,38 +366,38 @@ function Index() {
                 key={c.key}
                 to="/preise"
                 className={[
-                  "group relative flex flex-col justify-between overflow-hidden p-8 transition-all duration-300",
+                  "group relative flex flex-col justify-between overflow-hidden p-3 transition-all duration-300 sm:p-6 lg:p-8",
                   featured
                     ? "z-10 bg-foreground text-white shadow-2xl md:scale-[1.03]"
                     : "border-2 border-black/5 bg-white shadow-sm hover:-translate-y-1 hover:border-foreground hover:shadow-xl",
                 ].join(" ")}
               >
                 {featured && (
-                  <span className="absolute right-0 top-0 bg-primary px-4 py-1 font-display text-[10px] uppercase tracking-widest text-primary-foreground">
+                  <span className="absolute right-0 top-0 bg-primary px-2 py-0.5 font-display text-[8px] uppercase tracking-widest text-primary-foreground sm:px-4 sm:py-1 sm:text-[10px]">
                     Beliebt
                   </span>
                 )}
                 <div>
                   <div
                     className={[
-                      "mb-8 grid h-12 w-12 place-items-center rounded-full",
+                      "mb-4 grid h-9 w-9 place-items-center rounded-full sm:mb-8 sm:h-12 sm:w-12",
                       featured ? "bg-primary text-primary-foreground" : "bg-foreground text-white",
                     ].join(" ")}
                   >
-                    <c.icon className="h-6 w-6" />
+                    <c.icon className="h-4 w-4 sm:h-6 sm:w-6" />
                   </div>
-                  <h3 className="mb-2 font-display text-3xl leading-tight tracking-tighter">
+                  <h3 className="mb-1 font-display text-lg leading-tight tracking-tighter sm:mb-2 sm:text-3xl">
                     Klasse {c.short}
                   </h3>
                   <p
                     className={[
-                      "mb-6 text-xs font-semibold uppercase tracking-wider",
+                      "mb-4 hidden text-xs font-semibold uppercase tracking-wider sm:mb-6 sm:block",
                       featured ? "text-white/60" : "text-muted-foreground",
                     ].join(" ")}
                   >
                     {c.tagline}
                   </p>
-                  <ul className="mb-10 space-y-3">
+                  <ul className="mb-4 hidden space-y-3 sm:mb-10 sm:block">
                     {c.highlights.map((h) => (
                       <li key={h} className="flex items-center gap-3 text-sm font-bold">
                         <span className="h-2 w-2 rounded-full bg-primary" />
@@ -409,24 +409,24 @@ function Index() {
                 {grund && (
                   <div
                     className={[
-                      "flex items-end justify-between border-t pt-6",
+                      "flex items-end justify-between border-t pt-3 sm:pt-6",
                       featured ? "border-white/10" : "border-black/10",
                     ].join(" ")}
                   >
-                    <div>
+                    <div className="min-w-0">
                       <p
                         className={[
-                          "mb-1 text-[10px] font-black uppercase tracking-[0.2em]",
+                          "mb-1 text-[8px] font-black uppercase tracking-[0.15em] sm:text-[10px] sm:tracking-[0.2em]",
                           featured ? "text-white/40" : "text-muted-foreground",
                         ].join(" ")}
                       >
-                        Grundbetrag ab
+                        Ab
                       </p>
-                      <p className="font-display text-4xl text-primary">{grund}</p>
+                      <p className="font-display text-xl text-primary sm:text-4xl">{grund}</p>
                     </div>
                     <div
                       className={[
-                        "flex h-10 w-10 items-center justify-center transition-colors",
+                        "hidden h-10 w-10 items-center justify-center transition-colors sm:flex",
                         featured
                           ? "bg-white/10 text-white group-hover:bg-primary"
                           : "border border-black/10 text-foreground group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground",
@@ -446,7 +446,7 @@ function Index() {
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl border bg-white">
           <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/15 hidden lg:block blur-3xl" />
-          <div className="relative grid gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
+          <div className="relative grid gap-6 p-5 sm:gap-10 sm:p-12 lg:grid-cols-2 lg:items-center">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Erste-Hilfe-Kurs</span>
               <h2 className="mt-2 text-4xl sm:text-5xl">Pflichtkurs für deinen Führerschein.</h2>
@@ -475,7 +475,7 @@ function Index() {
                 Zum Erste-Hilfe-Kurs <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            <div className="relative">
+            <div className="relative order-first lg:order-none">
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-gradient-to-br from-primary/15 via-primary/5 to-transparent p-6">
                 <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/25 blur-3xl" />
                 <div className="relative grid h-full grid-cols-3 grid-rows-3 gap-3">
@@ -528,14 +528,14 @@ function Index() {
                 Ganzes Team ansehen <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
               {team.map((m) => (
-                <Link key={m.id} to="/team" className="group rounded-3xl border bg-white p-5 text-center transition-transform hover:-translate-y-1">
+                <Link key={m.id} to="/team" className="group rounded-2xl border bg-white p-3 text-center transition-transform hover:-translate-y-1 sm:rounded-3xl sm:p-5">
                   <div className="mx-auto mb-4">
                     <MiniAvatar name={m.name} src={m.image_url} />
                   </div>
-                  <p className="font-display text-base">{m.name}</p>
-                  {m.role && <p className="mt-0.5 text-xs uppercase tracking-wider text-muted-foreground">{m.role}</p>}
+                  <p className="font-display text-sm sm:text-base">{m.name}</p>
+                  {m.role && <p className="mt-0.5 text-[10px] uppercase tracking-wider text-muted-foreground sm:text-xs">{m.role}</p>}
                 </Link>
               ))}
             </div>
@@ -640,7 +640,7 @@ function Index() {
             </p>
           </div>
         </div>
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
           {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
         </div>
       </section>
