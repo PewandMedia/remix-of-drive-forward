@@ -1,35 +1,32 @@
 ## Ziel
-Mobile-Ansicht der Preis-Karten: **1 Spalte untereinander**, aber jede Karte **horizontal dicht gepackt**, sodass alle Infos sichtbar sind ohne endloses Scrollen.
-
-## Strategie pro Karte (Mobile)
-Statt alles vertikal zu stapeln, werden Inhalte in **horizontale Zeilen mit mehreren Spalten** gelegt:
-
-```text
-┌─────────────────────────────────────────────┐
-│ [Icon] Klasse B          [Preis-Chip]       │
-│        Auto-Führerschein                    │
-├─────────────────────────────────────────────┤
-│ 🚗 5 Über · 4 Auto · 3 Nacht  |  📚 14 DS   │
-│ Alter 17/18 · TÜV-Prüfung                   │
-├─────────────────────────────────────────────┤
-│ • Grundbetrag        75€  • Sonderf.  80€   │
-│ • Theorie            15€  • Prüfung   250€  │
-├─────────────────────────────────────────────┤
-│ [WhatsApp]            [Filiale]             │
-└─────────────────────────────────────────────┘
-```
+Mobile Preis-Karten wieder **untereinander** (1 Spalte) statt 3 nebeneinander — aber **kompakt** mit **allen wichtigen Infos** sichtbar. Keine langen Scroll-Strecken.
 
 ## Änderungen in `src/routes/preise.tsx`
 
-1. **Grid-Container**: zurück auf `grid-cols-1 lg:grid-cols-3` (Mobile untereinander).
-2. **Karten-Header**: Icon + Titel links, Preis-Chip rechts (grid-cols mit `min-w-0` + `shrink-0`), keine Überlappung.
-3. **Info-Block**: kompakte 2-Spalten-Zeile für Sonderfahrten-Stats + Theorie/Alter, `text-[11px]`.
-4. **Preisliste**: auf Mobile `grid grid-cols-2 gap-x-3 gap-y-1.5` — jede Position (Grundbetrag, Sonderfahrten, Theorie, Prüfung etc.) als kompakte Zeile mit Label links, Preis rechts. Lange Beschreibungen ausgeblendet, Alt-Preise/Badges als kleine inline-Tags sichtbar.
-5. **CTAs**: WhatsApp + Filiale nebeneinander (`grid-cols-2`), volle Breite.
-6. **Icons**: Gradient-Ring + Glow bleibt erhalten.
-7. **Desktop (`lg:`)**: unverändert.
+### 1. Grid zurück auf 1 Spalte auf Mobile
+- `grid-cols-3` → `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- Karten volle Breite auf Mobile → mehr Platz für Inhalte
 
-## Ergebnis
-- Alle Klassen (B, B197, B78) untereinander lesbar
-- Alle wichtigen Infos sichtbar (Sonderfahrten, Theorie, Alter, Prüfung, Preise, beide CTAs)
-- Karten deutlich kürzer durch 2-spaltige Anordnung innerhalb der Karte → weniger Scrollen
+### 2. Karten-Header kompakt (horizontal, nicht mehr zentriert)
+- Icon (mit Gradient-Ring/Glow) links, Titel + Tagline rechts daneben, Badge oben rechts
+- Tagline **1 Zeile** mit `line-clamp-1` — kurz sichtbar
+- Sonder/Theorie/Alter Stat-Pills bleiben (jetzt breiter, gut lesbar)
+
+### 3. Info-Block auf Mobile sichtbar, aber kompakt
+- Theorie, Mindestalter, Prüfung, Voraussetzungen als **2-spaltiges Micro-Grid** (Icon + Zahl/Kurztext) — nicht mehr als lange Listen-Zeilen
+- `extraNote` in kleiner Hinweis-Zeile
+- Alles in einem einzigen dichten Kasten (`p-3`, `text-[11px]`)
+
+### 4. Preis-Liste kompakt
+- Zurück zu horizontaler Zeile (Titel links, Preis rechts) — jetzt mit voller Kartenbreite kein Overlap mehr
+- Beschreibungen bleiben auf Mobile sichtbar aber `line-clamp-1`, `text-[10px]`
+- Angebots-Badge + Alt-Preis sichtbar (klein)
+- Kompakte `py-2` Zeilen
+
+### 5. CTA
+- WhatsApp + Filiale beide sichtbar (nebeneinander), kompakt
+
+## Technisch
+- Nur `src/routes/preise.tsx`
+- Kein Business-Logic-Change
+- Icons behalten den Premium-Look aus dem vorherigen Turn

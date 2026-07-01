@@ -118,7 +118,7 @@ function PricesPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3 lg:items-stretch">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:items-stretch">
           {cards.map(({ meta, items }) => {
             const Icon = meta.icon;
             const featured = meta.featured;
@@ -136,20 +136,15 @@ function PricesPage() {
 
                 <div
                   className={[
-                    "relative px-4 pt-4 pb-3 sm:px-7 sm:pt-7 sm:pb-6",
+                    "relative px-3 pt-4 pb-3 sm:px-7 sm:pt-7 sm:pb-6",
                     featured
                       ? "bg-gradient-to-br from-primary via-primary to-[#7a0010] text-white"
                       : "bg-gradient-to-br from-foreground via-foreground to-[#1a1a1a] text-white",
                   ].join(" ")}
                 >
                   <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:14px_14px]" />
-                  {meta.badge && (
-                    <span className="absolute right-3 top-3 z-10 rounded-full bg-white px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary shadow sm:right-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[10px]">
-                      {meta.badge}
-                    </span>
-                  )}
-                  <div className="relative flex flex-row items-center justify-between gap-3 text-left">
-                    <div className="flex min-w-0 flex-row items-center gap-3">
+                  <div className="relative flex items-center justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-3">
                       {/* Premium icon: gradient ring + glow */}
                       <div className="relative shrink-0">
                         <div
@@ -160,63 +155,69 @@ function PricesPage() {
                         />
                         <div
                           className={[
-                            "relative grid h-12 w-12 place-items-center rounded-2xl p-[1.5px] sm:h-14 sm:w-14",
+                            "relative grid h-11 w-11 place-items-center rounded-2xl p-[1.5px] sm:h-14 sm:w-14",
                             featured
                               ? "bg-gradient-to-br from-white via-white/70 to-white/20"
                               : "bg-gradient-to-br from-primary via-primary/60 to-white/30",
                           ].join(" ")}
                         >
                           <div className="grid h-full w-full place-items-center rounded-[14px] bg-black/40 backdrop-blur-md ring-1 ring-white/20">
-                            <Icon className="h-6 w-6 drop-shadow-[0_0_8px_rgba(255,255,255,0.55)] sm:h-7 sm:w-7" />
+                            <Icon className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.55)] sm:h-7 sm:w-7" />
                           </div>
                         </div>
                       </div>
                       <div className="min-w-0">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70 sm:text-[11px]">
+                        <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-white/70 sm:text-[11px]">
                           Führerschein
                         </div>
-                        <h3 className="truncate font-display text-xl leading-none sm:text-2xl">Klasse {meta.short}</h3>
+                        <h3 className="font-display text-xl leading-none sm:text-2xl">Klasse {meta.short}</h3>
+                        <p className="mt-1 line-clamp-1 text-[11px] text-white/70 sm:hidden">{meta.tagline}</p>
                       </div>
                     </div>
+                    {meta.badge && (
+                      <span className="rounded-full bg-white px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary shadow sm:px-3 sm:py-1 sm:text-[10px]">
+                        {meta.badge}
+                      </span>
+                    )}
                   </div>
-                  <p className="relative mt-3 text-xs leading-relaxed text-white/80 sm:mt-4 sm:text-sm">{meta.tagline}</p>
+                  <p className="relative mt-2 hidden text-sm leading-relaxed text-white/80 sm:mt-4 sm:block">{meta.tagline}</p>
                 </div>
 
-                <div className="flex flex-1 flex-col px-4 pb-4 pt-3 sm:px-7 sm:pb-7 sm:pt-5">
-                  <div className="mb-3 space-y-2 rounded-2xl border border-border/60 bg-muted/30 p-2.5 sm:mb-5 sm:space-y-3 sm:p-4">
+                <div className="flex flex-1 flex-col px-3 pb-4 pt-3 sm:px-7 sm:pb-7 sm:pt-5">
+                  <div className="mb-3 space-y-2 rounded-2xl border border-border/60 bg-muted/30 p-3 sm:mb-5 sm:space-y-3 sm:p-4">
                     <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                       <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
                         <RouteIcon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
                         <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.ueberland}</span>
-                        <span className="text-[8px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Überland</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Überland</span>
                       </div>
                       <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
                         <Gauge className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
                         <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.autobahn}</span>
-                        <span className="text-[8px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Autobahn</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Autobahn</span>
                       </div>
                       <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
                         <Moon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
                         <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.dunkel}</span>
-                        <span className="text-[8px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Dunkel</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Dunkel</span>
                       </div>
                     </div>
-                    <ul className="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] leading-tight text-foreground/80 sm:flex sm:flex-col sm:gap-0 sm:space-y-1.5 sm:text-xs sm:leading-snug">
+                    <ul className="space-y-1 text-[11px] leading-snug text-foreground/80 sm:space-y-1.5 sm:text-xs">
                       <li className="flex items-start gap-1.5 sm:gap-2">
                         <BookOpen className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Theorie:</span> 14 DS</span>
+                        <span><span className="font-semibold">Theorie:</span> {meta.theorie}</span>
                       </li>
                       <li className="flex items-start gap-1.5 sm:gap-2">
                         <UserCheck className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Alter:</span> <span className="sm:hidden">ab 17</span><span className="hidden sm:inline">{meta.mindestalter}</span></span>
+                        <span><span className="font-semibold">Alter:</span> {meta.mindestalter}</span>
                       </li>
                       <li className="flex items-start gap-1.5 sm:gap-2">
                         <ShieldCheck className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Prüfung:</span> TÜV</span>
+                        <span><span className="font-semibold">Prüfung:</span> {meta.pruefung}</span>
                       </li>
                       <li className="flex items-start gap-1.5 sm:gap-2">
                         <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Sehtest</span> + EH</span>
+                        <span><span className="font-semibold">Voraussetzungen:</span> {meta.requirements.join(", ")}</span>
                       </li>
                     </ul>
                     {meta.extraNote && (
@@ -225,26 +226,26 @@ function PricesPage() {
                       </div>
                     )}
                   </div>
-                  <ul className="flex-1 grid grid-cols-2 gap-x-3 gap-y-1.5 sm:block sm:divide-y sm:divide-border/60 sm:gap-0">
+                  <ul className="flex-1 divide-y divide-border/60">
                     {items.map((it) => (
                       <li
                         key={it.id}
-                        className="flex flex-row items-center justify-between gap-2 border-b border-border/40 py-1.5 sm:border-b-0 sm:items-start sm:gap-4 sm:py-3.5"
+                        className="flex items-start justify-between gap-3 py-2 sm:gap-4 sm:py-3.5"
                       >
                         <div className="min-w-0">
-                          <p className="truncate text-[11px] font-semibold leading-tight sm:whitespace-normal sm:text-sm sm:leading-snug">{it.title}</p>
+                          <p className="text-[12px] font-semibold leading-snug sm:text-sm">{it.title}</p>
                           {it.description && (
-                            <p className="mt-0.5 hidden text-xs leading-snug text-muted-foreground sm:block">{it.description}</p>
+                            <p className="mt-0.5 line-clamp-1 text-[10px] leading-snug text-muted-foreground sm:line-clamp-none sm:text-xs">{it.description}</p>
                           )}
                           {it.offer_active && it.offer_label && (
-                            <span className="mt-0.5 inline-block rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary-foreground sm:px-2 sm:text-[9px]">
+                            <span className="mt-1 inline-block rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary-foreground sm:px-2 sm:text-[9px]">
                               {it.offer_label}
                             </span>
                           )}
                         </div>
-                        <div className="flex shrink-0 items-center gap-1 sm:flex-col sm:items-end sm:gap-0.5">
+                        <div className="flex shrink-0 flex-col items-end gap-0.5">
                           {it.offer_active && it.old_price && (
-                            <span className="text-[10px] text-muted-foreground line-through sm:text-xs">{it.old_price}</span>
+                            <span className="text-[9px] text-muted-foreground line-through sm:text-xs">{it.old_price}</span>
                           )}
                           <span
                             className={[
@@ -263,26 +264,26 @@ function PricesPage() {
                     ))}
                   </ul>
 
-                  <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-6">
+                  <div className="mt-3 flex flex-row gap-2 sm:mt-6">
                     <a
                       href={CONTACT.whatsapp}
                       target="_blank"
                       rel="noopener"
                       className={[
-                        "inline-flex items-center justify-center gap-1.5 rounded-full px-3 py-2.5 text-xs font-black transition-colors sm:gap-2 sm:px-4 sm:py-3 sm:text-sm",
+                        "inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2.5 text-xs font-black transition-colors sm:gap-2 sm:px-4 sm:py-3 sm:text-sm",
                         featured
                           ? "bg-primary text-primary-foreground hover:bg-primary/90"
                           : "bg-foreground text-white hover:bg-primary",
                       ].join(" ")}
                     >
                       <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                      WhatsApp
+                      <span>WhatsApp</span>
                     </a>
                     <Link
                       to="/kontakt"
-                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-foreground/15 px-3 py-2.5 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary sm:gap-2 sm:px-4 sm:py-3 sm:text-sm"
+                      className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-foreground/15 px-3 py-2.5 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary sm:gap-2 sm:px-4 sm:py-3 sm:text-sm"
                     >
-                      <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                      <MapPin className="h-4 w-4" />
                       Filiale
                     </Link>
                   </div>
