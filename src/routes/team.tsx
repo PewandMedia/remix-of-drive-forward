@@ -17,9 +17,10 @@ const teamQuery = queryOptions({
 export const Route = createFileRoute("/team")({
   head: () => ({
     meta: [
-      { title: "Team – MIRO-DRIVE Fahrschule" },
-      { name: "description", content: "Lerne das Team von MIRO-DRIVE kennen – geduldig, erfahren und immer an deiner Seite." },
-      { property: "og:title", content: "Team – MIRO-DRIVE" },
+      { title: "Team Fahrschule Bochum | MIRO-DRIVE" },
+      { name: "description", content: "Lerne das Team von MIRO-DRIVE kennen. Moderne Fahrschule in Bochum mit persönlicher Betreuung und professioneller Fahrausbildung." },
+      { property: "og:title", content: "Team Fahrschule Bochum | MIRO-DRIVE" },
+      { property: "og:description", content: "Freundliches, erfahrenes Team – deine Fahrschule in Bochum für Klasse B, B197 und Erste-Hilfe-Kurs." },
       { property: "og:url", content: "/team" },
     ],
     links: [{ rel: "canonical", href: "/team" }],
@@ -87,7 +88,11 @@ function TeamPage() {
 
   return (
     <SiteLayout>
-      <PageHero eyebrow="Team" title="Lerne das Team von MIRO-DRIVE kennen." subtitle="Geduldig, erfahren und immer an deiner Seite – unser Team begleitet dich sicher bis zum Führerschein." />
+      <PageHero
+        eyebrow="Team"
+        title="Das Team deiner Fahrschule in Bochum"
+        subtitle="Bei MIRO-DRIVE wirst du von einem freundlichen, geduldigen und professionellen Team begleitet – Anmeldung, Theorie und Praxis bis zur Prüfung, sicher und stressfrei in Bochum."
+      />
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-16 sm:px-6 lg:px-8">
         <ReviewsBadge />
         {(owner || otherInstructors.length > 0) && (

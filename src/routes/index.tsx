@@ -15,10 +15,10 @@ import { InstagramSection } from "@/components/site/InstagramSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MIRO-DRIVE Fahrschule – Dein Führerschein startet hier" },
-      { name: "description", content: "Modern, sicher und stressfrei zum Führerschein. Anmeldung per WhatsApp, transparente Preise, persönliche Betreuung." },
-      { property: "og:title", content: "MIRO-DRIVE Fahrschule" },
-      { property: "og:description", content: "Modern, sicher und stressfrei zum Führerschein." },
+      { title: "Fahrschule Bochum | MIRO-DRIVE – Führerschein Klasse B & B197" },
+      { name: "description", content: "MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, Auffrischungsstunden, Erste-Hilfe-Kurs und persönliche Beratung. Jetzt anmelden." },
+      { property: "og:title", content: "Fahrschule Bochum | MIRO-DRIVE" },
+      { property: "og:description", content: "Moderne Fahrschule in Bochum – Klasse B, B197, Fahrstunden & Erste-Hilfe-Kurs. Jetzt per WhatsApp anmelden." },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
@@ -119,27 +119,29 @@ function Index() {
               <span className="h-1 w-1 rounded-full bg-primary sm:h-1.5 sm:w-1.5" /> Fahrschule MIRO-DRIVE
             </div>
             <h1 className="text-xl leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-              Dein Führerschein <br />
-              <span className="text-primary">startet hier</span> – <br />
-              modern, sicher <br />
-              und stressfrei.
+              Fahrschule Bochum – <br />
+              <span className="text-primary">Dein Führerschein</span> <br />
+              startet bei <br />
+              MIRO-DRIVE.
             </h1>
             <p className="mt-3 max-w-xl text-xs text-muted-foreground sm:mt-6 sm:text-base lg:text-lg">
-              Bei MIRO-DRIVE lernst du Autofahren mit professioneller Betreuung, modernen Fahrzeugen, transparenter Beratung und einer Ausbildung, die dich wirklich sicher auf die Straße bringt.
+              MIRO-DRIVE ist deine moderne Fahrschule in Bochum für eine sichere, stressfreie und professionelle
+              Führerscheinausbildung. Ob Bochum Innenstadt, Rathaus Bochum, Bochum Riemke oder Umgebung wie
+              Herne – wir begleiten dich Schritt für Schritt bis zu deinem Führerschein.
             </p>
             <div className="mt-4 flex flex-col flex-wrap gap-2 sm:mt-8 sm:flex-row sm:gap-3">
               <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-3 py-2 text-[11px] font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03] sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm">
-                <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" /> WhatsApp
+                <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" /> Jetzt per WhatsApp anmelden
               </a>
-              <Link to="/kontakt" className="inline-flex items-center justify-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-[11px] font-bold text-white hover:bg-foreground/90 sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm">
-                <MapPin className="h-3 w-3 sm:h-4 sm:w-4" /> Standorte
+              <Link to="/preise" className="inline-flex items-center justify-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-[11px] font-bold text-white hover:bg-foreground/90 sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm">
+                Preise ansehen
               </Link>
-              <Link to="/preise" className="inline-flex items-center justify-center gap-1.5 rounded-full border-2 border-foreground bg-white px-3 py-2 text-[11px] font-bold text-foreground transition-colors hover:bg-foreground hover:text-white sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm">
-                Preise
+              <Link to="/angebote" className="inline-flex items-center justify-center gap-1.5 rounded-full border-2 border-foreground bg-white px-3 py-2 text-[11px] font-bold text-foreground transition-colors hover:bg-foreground hover:text-white sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm">
+                Angebot anfragen
               </Link>
             </div>
             <p className="mt-3 text-[9px] uppercase tracking-wider text-muted-foreground sm:mt-5 sm:text-xs">
-              Anmeldung nur persönlich in einer unserer Filialen
+              Moderne Fahrzeuge · persönliche Betreuung · transparente Preise · schnelle Anmeldung – deine erste Wahl für den Führerschein in Bochum.
             </p>
             <a
               href={CONTACT.googleProfileUrl}
@@ -154,7 +156,7 @@ function Index() {
               </span>
               <span className="font-bold text-foreground">{CONTACT.googleRating}</span>
               <span>·</span>
-              <span>{CONTACT.googleReviewCount} Bewertungen</span>
+              <span>{CONTACT.googleReviewCount} Google-Bewertungen · beste Fahrschule Bochum</span>
             </a>
           </div>
           <div className="relative -mr-6 sm:-mr-10 lg:-mr-20 xl:-mr-32">
@@ -162,7 +164,7 @@ function Index() {
             <div className="pointer-events-none absolute -right-6 top-8 -z-10 hidden h-2 w-40 bg-foreground lg:block" />
             <img
               src={heroCar}
-              alt="MIRO-DRIVE Fahrschulauto – moderner weißer Mercedes A-Klasse"
+              alt="Fahrschulauto MIRO-DRIVE Bochum – moderner weißer Mercedes A-Klasse der Fahrschule in Bochum"
               width={1600}
               height={1024}
               loading="eager"
@@ -200,7 +202,8 @@ function Index() {
             </div>
             <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Drei Klassen, transparente Preise.</h2>
             <p className="mt-4 text-muted-foreground">
-              Wir bilden in Klasse B, B197 und B78 aus – wähle die, die zu dir passt. Alle Preise sind offen einsehbar.
+              Als Fahrschule in Bochum bilden wir in Klasse B, B197 und B78 aus – transparent, fair und übersichtlich.
+              Perfekt für deinen Führerschein in Bochum, Herne und Umgebung.
             </p>
           </div>
           <Link to="/preise" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
@@ -371,10 +374,13 @@ function Index() {
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-5 lg:items-center">
           <div className="lg:col-span-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Über uns</span>
-            <h2 className="mt-2 text-4xl sm:text-5xl">Eine Fahrschule, die zuhört.</h2>
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Warum MIRO-DRIVE</span>
+            <h2 className="mt-2 text-4xl sm:text-5xl">Warum MIRO-DRIVE zu den besten Fahrschulen in Bochum gehört.</h2>
             <p className="mt-4 text-muted-foreground">
-              MIRO-DRIVE steht für eine moderne Fahrausbildung mit Herz: zwei Standorte in Bochum, ein eingespieltes Team, klare Preise und ein Ablauf, der wirklich auf dich zugeschnitten ist – egal ob Anfänger oder Auffrischer.
+              MIRO-DRIVE steht für moderne Fahrausbildung, persönliche Betreuung und klare Kommunikation. Als
+              Fahrschule in Bochum begleiten wir dich von der Anmeldung über Theorie und Praxis bis zur
+              erfolgreichen Prüfung – sicher, stressfrei und professionell. Egal ob Bochum Innenstadt, Rathaus
+              Bochum, Bochum Riemke, Herne oder Umgebung: bei MIRO-DRIVE findest du eine Fahrschule, die zu dir passt.
             </p>
             <Link to="/ueber-uns" className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-foreground bg-white px-6 py-3 text-sm font-bold text-foreground transition-colors hover:bg-foreground hover:text-white">
               Mehr über uns <ArrowRight className="h-4 w-4" />
@@ -423,10 +429,12 @@ function Index() {
       <section className="py-20">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Unsere Leistungen</span>
-            <h2 className="mt-2 text-4xl sm:text-5xl">Von der Anmeldung bis zur Prüfung.</h2>
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Leistungen der Fahrschule Bochum</span>
+            <h2 className="mt-2 text-4xl sm:text-5xl">Führerschein Klasse B, B197 & Auffrischungsstunden in Bochum.</h2>
             <p className="mt-4 max-w-lg text-muted-foreground">
-              Komplette Führerscheinausbildung Klasse B, B197 & B78, strukturierter Theorieunterricht, individuelle Praxisstunden, Sonderfahrten und Auffrischungskurse – alles aus einer Hand.
+              Ob Führerschein Klasse B in Bochum, B197 oder Auffrischungsstunden – MIRO-DRIVE bietet dir eine
+              moderne Ausbildung passend zu deinem Ziel: Theorieunterricht, Fahrstunden in Bochum, Sonderfahrten und
+              Erste-Hilfe-Kurs.
             </p>
             <Link to="/leistungen" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-foreground/90">
               Alle Leistungen ansehen <ArrowRight className="h-4 w-4" />
