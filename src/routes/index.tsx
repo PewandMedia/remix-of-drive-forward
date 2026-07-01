@@ -270,36 +270,6 @@ function Index() {
         </div>
       </section>
 
-      {/* SEO INTRO */}
-      <section className="border-b bg-muted/20">
-        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-          <span className="text-xs font-bold uppercase tracking-wider text-primary">Fahrschule Bochum · Herne · NRW</span>
-          <h2 className="mt-3 text-3xl leading-tight sm:text-4xl lg:text-5xl">
-            Führerschein in Bochum – modern, fair und persönlich.
-          </h2>
-          <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            <p>
-              MIRO-DRIVE ist deine <strong className="text-foreground">Fahrschule in Bochum</strong> für die Klassen
-              <strong className="text-foreground"> B, B197 und B78</strong>. Egal ob du deinen Führerschein auf
-              Schalter oder Automatik machen willst – bei uns bekommst du eine strukturierte Ausbildung mit modernen
-              Fahrzeugen, transparenten Preisen und einem Team, das dich vom Theorieunterricht bis zur bestandenen
-              praktischen Prüfung begleitet. Mit zwei Filialen in <strong className="text-foreground">Bochum Zentrum</strong>
-              {" "}und <strong className="text-foreground">Bochum Riemke</strong> sind wir ideal für Fahrschüler aus ganz
-              Bochum, <strong className="text-foreground">Herne</strong>, Wattenscheid, Gelsenkirchen und weiten Teilen
-              von <strong className="text-foreground">Nordrhein-Westfalen</strong> erreichbar.
-            </p>
-            <p>
-              Bei uns bekommst du alles aus einer Hand: <strong className="text-foreground">Führerschein Klasse B</strong>,
-              Automatik-Ausbildung <strong className="text-foreground">B197</strong> mit Schaltberechtigung, reine
-              Automatik-Klasse <strong className="text-foreground">B78</strong>, Theorieunterricht,
-              <strong className="text-foreground"> Auffrischungsstunden</strong>, unseren monatlichen
-              <strong className="text-foreground"> Erste-Hilfe-Kurs</strong> für 50 € sowie Beratung zu Sehtest und
-              TÜV-Prüfung. Über <strong className="text-foreground">{CONTACT.googleReviewCount} 5-Sterne-Bewertungen</strong>
-              {" "}auf Google zeigen: MIRO-DRIVE gehört zu den bestbewerteten Fahrschulen in Bochum.
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* PROCESS / SO GEHTS */}
       <section className="bg-[#0a0a0a] py-20 text-white">
