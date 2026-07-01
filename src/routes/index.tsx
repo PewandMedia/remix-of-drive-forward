@@ -4,7 +4,7 @@ import { useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star, Check, Phone, Award, Zap } from "lucide-react";
+import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -37,15 +37,27 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const trustItems = [
-  { icon: Car, label: "Moderne Fahrzeuge" },
-  { icon: Users, label: "Freundliche Fahrlehrer" },
-  { icon: Clock, label: "Flexible Fahrstunden" },
-  { icon: Euro, label: "Faire Preise" },
-  { icon: Heart, label: "Persönliche Betreuung" },
-  { icon: ShieldCheck, label: "Erste-Hilfe-Kurs" },
-  { icon: Sparkles, label: "Individuelle Angebote" },
-  { icon: MessageCircle, label: "Anmeldung per WhatsApp" },
+const marqueeItems = [
+  "Führerschein Bochum",
+  "Klasse B",
+  "Klasse B197",
+  "Klasse B78",
+  "Automatik & Schalter",
+  "Erste-Hilfe-Kurs 50 €",
+  "Fahrschule Herne",
+  "NRW",
+  "5,0 ★ Google",
+  "549+ Bewertungen",
+  "WhatsApp Anmeldung",
+  "Bochum Zentrum",
+  "Bochum Riemke",
+];
+
+const steps = [
+  { n: "01", icon: Send, title: "Melde dich per WhatsApp", text: "Schreib uns direkt – wir antworten meist innerhalb weniger Minuten." },
+  { n: "02", icon: ClipboardCheck, title: "Anmeldung in der Filiale", text: "Kurze Anmeldung bei uns in Bochum Zentrum oder Riemke." },
+  { n: "03", icon: GraduationCap, title: "Theorie & Praxis", text: "Strukturierter Unterricht, moderne Fahrzeuge und persönliche Betreuung." },
+  { n: "04", icon: Trophy, title: "Bestanden", text: "Wir begleiten dich bis zur bestandenen TÜV-Prüfung." },
 ];
 
 const reasons = [
@@ -112,8 +124,9 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden bg-background">
         {/* soft radial glow + dot grid */}
-        <div className="pointer-events-none absolute inset-0 hero-dot-grid opacity-[0.18]" />
-        <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-primary/25 blur-[120px]" />
+        <div className="pointer-events-none absolute inset-0 hero-dot-grid opacity-[0.14]" />
+        <div className="pointer-events-none absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-primary/25 blur-[120px] animate-blob" />
+        <div className="pointer-events-none absolute top-40 -right-40 h-[520px] w-[520px] rounded-full bg-primary/15 blur-[140px] animate-blob" style={{ animationDelay: "-6s" }} />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
         <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-28">
@@ -134,14 +147,18 @@ function Index() {
                 {CONTACT.googleRating} · {CONTACT.googleReviewCount} Google-Bewertungen
               </a>
 
-              <h1 className="text-4xl leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
-                Deine Fahrschule in <span className="text-primary">Bochum</span>.
+              <p className="mb-4 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-muted-foreground">
+                <span className="h-px w-8 bg-primary" /> Fahrschule · Bochum · Herne · NRW
+              </p>
+              <h1 className="font-display text-5xl leading-[0.98] tracking-tight sm:text-7xl lg:text-[5.5rem] xl:text-[6.25rem]">
+                Dein <span className="italic text-primary">Führerschein</span>
                 <br className="hidden sm:block" />
-                Klasse B, B197 & B78.
+                beginnt hier.
               </h1>
               <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg lg:text-xl">
-                Starte deinen Führerschein bei MIRO-DRIVE – persönliche Betreuung, faire Preise und moderne Fahrzeuge.
-                Für Fahrschüler aus Bochum, Herne und ganz NRW.
+                <strong className="text-foreground">MIRO-DRIVE</strong> – die bestbewertete Fahrschule in Bochum.
+                Klasse B, B197 & B78. Persönliche Betreuung, moderne Fahrzeuge und faire Preise für Fahrschüler
+                aus Bochum, Herne und ganz NRW.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -221,8 +238,20 @@ function Index() {
         </div>
       </section>
 
+      {/* MARQUEE TICKER */}
+      <section className="relative overflow-hidden border-y bg-foreground py-5 text-background">
+        <div className="flex w-max animate-marquee gap-10 whitespace-nowrap font-display text-lg tracking-tight sm:text-xl">
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
+            <span key={i} className="flex items-center gap-10">
+              {item}
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            </span>
+          ))}
+        </div>
+      </section>
+
       {/* SEO INTRO */}
-      <section className="border-y bg-muted/20">
+      <section className="border-b bg-muted/20">
         <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
           <span className="text-xs font-bold uppercase tracking-wider text-primary">Fahrschule Bochum · Herne · NRW</span>
           <h2 className="mt-3 text-3xl leading-tight sm:text-4xl lg:text-5xl">
@@ -252,15 +281,36 @@ function Index() {
         </div>
       </section>
 
-      {/* TRUST STRIP */}
-      <section className="border-y bg-[#0a0a0a] text-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4 sm:px-6 lg:grid-cols-8 lg:px-8">
-          {trustItems.map((t) => (
-            <div key={t.label} className="flex flex-col items-center gap-2 text-center">
-              <t.icon className="h-6 w-6 text-primary" />
-              <span className="text-xs font-semibold text-white/80">{t.label}</span>
-            </div>
-          ))}
+      {/* PROCESS / SO GEHTS */}
+      <section className="bg-[#0a0a0a] py-20 text-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">In 4 Schritten zum Führerschein</span>
+            <h2 className="mt-2 font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">So einfach startest du.</h2>
+            <p className="mt-4 text-white/60">
+              Von der ersten WhatsApp-Nachricht bis zur bestandenen Prüfung – wir machen es dir so unkompliziert wie möglich.
+            </p>
+          </div>
+          <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {steps.map((s, i) => (
+              <div
+                key={s.n}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-white/[0.06]"
+              >
+                <div className="absolute right-4 top-4 font-display text-6xl leading-none text-white/[0.08] transition-colors group-hover:text-primary/40">
+                  {s.n}
+                </div>
+                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-primary-foreground">
+                  <s.icon className="h-6 w-6" />
+                </div>
+                <h3 className="mt-6 font-display text-xl leading-tight text-white">{s.title}</h3>
+                <p className="mt-2 text-sm text-white/60">{s.text}</p>
+                {i < steps.length - 1 && (
+                  <ArrowRight className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-white/20 lg:block" />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

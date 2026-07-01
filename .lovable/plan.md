@@ -1,48 +1,49 @@
-# Plan: Startseite komplett neu – modern, lukrativ, SEO stark
+# Plan: Startseite neu aufbauen – lukrativ, modern, SEO-stark
 
 ## Ziel
-Die Startseite (`src/routes/index.tsx`) wirkt aktuell flach und der SEO‑optimierte Fließtext (Bochum / Herne / NRW) ist verloren gegangen. Ich baue die Seite optisch komplett neu auf – hochwertig, modern, mit klaren CTAs – und bringe den vollständigen SEO‑Text zurück.
+Die aktuelle Startseite wirkt flach und der SEO-Text ist verschwunden. Ich baue `src/routes/index.tsx` komplett neu – editorial, hochwertig, mit klarer Hierarchie – und bringe den vollständigen SEO-Fließtext für Bochum, Herne und NRW zurück.
 
-## 1. Hero – premium & lukrativ
-- Zweispaltig auf Desktop, gestapelt auf Mobile, ohne Auto-Bild-Chaos.
-- Große editoriale Headline mit rotem Akzentwort, darüber ein „5.0 ★ · 549 Google‑Bewertungen“ Badge (klickbar).
-- Sub‑Headline mit klarer Value‑Proposition (Bochum, Herne, NRW, Klasse B/B197/B78).
-- 3 CTAs: WhatsApp (primary rot), Preise ansehen (schwarz), Beratung (outline).
-- Rechte Spalte: elegante „Stat‑Karte“ Bento (5.0 ★, 549 Bewertungen, 2 Filialen Bochum, Anmeldung in Minuten) – ohne Auto-Foto.
-- Hintergrund: dezenter Dot‑Grid + weicher roter Radial‑Glow (dezent, kein „Fleck“).
+## 1. Hero – editorial premium
+- Vollflächiger Hero mit weichem rotem Radial-Glow + Dot-Grid Hintergrund (dezent, kein „Fleck").
+- Kleiner Top-Badge: „5.0 ★ · 549 Google-Bewertungen · Bochum & Herne" (klickbar zu Google).
+- Riesige editoriale H1 mit rotem Akzentwort („Dein **Führerschein** in Bochum & Herne").
+- Sub-Copy mit klaren Keywords (Klasse B, B197, B78, Automatik, Schalter).
+- 3 CTAs: WhatsApp (rot), Preise ansehen (schwarz), Beratung (outline).
+- Trust-Row unter den CTAs: „2 Filialen · Klassen B / B197 / B78 · Erste-Hilfe monatlich".
 
-## 2. SEO‑Textblock zurück
-Neuer Section „Deine Fahrschule in Bochum, Herne & NRW“ mit ausformuliertem Fließtext (2 Absätze) inkl. Keywords: Fahrschule Bochum, Führerschein Bochum, Fahrschule Herne, NRW, Klasse B, B197, B78, Automatik, Schalter, Erste‑Hilfe‑Kurs, Sehtest, TÜV. Als lesbarer Prose‑Block, nicht versteckt.
+## 2. Stat-Bento (direkt unter Hero)
+4 Karten in einem Bento-Grid: 5.0 ★, 549+ Bewertungen, 2 Filialen, Anmeldung in Minuten. Große Zahlen, kleine Labels, dezente Icons.
 
-## 3. Preise‑Teaser – aufgewertet
-- Gleiche 3 Karten, aber mit weicheren Schatten, Hover‑Lift, feinem Border‑Gradient bei „Beliebt“, roter Badge „Aktion läuft“ nur wenn aktiv.
-- „Ab“‑Preis größer, sekundäre Info in Muted.
+## 3. SEO-Textblock zurück
+Neuer Prose-Block „Deine Fahrschule in Bochum, Herne & NRW" mit 2 ausformulierten Absätzen. Keywords: Fahrschule Bochum, Führerschein Bochum, Fahrschule Herne, NRW, Klasse B, B197, B78, Automatik, Schalter, Erste-Hilfe-Kurs, Sehtest, TÜV, günstig, erfahren.
 
-## 4. Erste‑Hilfe‑Kurs Teaser
-- Split‑Card mit rotem Kreuz‑Icon Grid, 3 Info‑Stats (50 €, 1 Tag, monatlich), CTA.
-- Kein leeres Placeholder‑Herz mehr – stattdessen Icon‑Bento (Heart, ShieldCheck, Calendar) mit rotem Cross‑Motiv.
+## 4. Preise-Teaser – aufgewertet
+3 Karten (B / B197 / B78) mit weichem Schatten, Hover-Lift, roter „Beliebt"-Badge auf B197, pulsierender „Aktion läuft"-Badge nur wenn `offer_active`. Große „ab X€"-Preise. CTA zur Preise-Seite.
 
-## 5. Team‑Teaser
-- Kleine, elegante Karten (rundes Foto, Name, Rolle), max 4 nebeneinander, CTA „Ganzes Team ansehen“.
+## 5. Erste-Hilfe-Teaser
+Split-Card: links Info (50 €, 1 Tag, monatlich, direkt bei uns), rechts ein Icon-Bento mit rotem Kreuz-Motiv (Heart, ShieldCheck, Calendar). CTA „Zum Kurs".
 
-## 6. Standorte
-- Zwei LocationCards nebeneinander, mit Öffnungszeiten & „Route öffnen“.
+## 6. Team-Teaser
+Ilkay als Hero-Karte oben, darunter kleine runde Avatare der weiteren Instruktoren. CTA „Ganzes Team ansehen".
 
-## 7. FAQ‑Teaser
-- Accordion mit Top 3 Fragen, darunter Link zur FAQ‑Seite.
+## 7. Standorte
+2 LocationCards nebeneinander (Bochum-Standorte) mit Öffnungszeiten + „Route öffnen".
 
-## 8. Reviews + Instagram
-- ReviewsSection bleibt (weiter unten), darunter InstagramSection.
-- Direkt darüber ein dezenter „5.0 ★ Google‑Bewertungen“ Streifen.
+## 8. FAQ-Teaser
+Accordion mit Top 3 Fragen, Link zur FAQ-Seite.
 
-## 9. Final CTA
-- Vollflächige schwarze Section mit großer Claim‑Headline, WhatsApp + Kontakt CTA.
+## 9. Reviews + Instagram
+ReviewsSection + InstagramSection bleiben weiter unten; darüber dezenter „5.0 ★"-Streifen.
+
+## 10. Final CTA
+Vollflächige schwarze Section mit großer Claim-Headline + WhatsApp/Kontakt CTAs.
 
 ## Technisch
-- Nur `src/routes/index.tsx` und ggf. kleine Utility‑Klassen in `src/styles.css` (weicher radialer Glow, Border‑Gradient für „Beliebt“).
-- Keine Backend‑Änderungen, keine neuen Bilder.
-- Bestehende Queries (`home-prices`, `home-team`, `home-first-aid`) bleiben unverändert.
-- Metadaten `head()` bleiben; SEO‑JSON‑LD (`DrivingSchool` + `aggregateRating`) bleibt.
+- Nur `src/routes/index.tsx` neu, plus 2–3 kleine Utility-Klassen in `src/styles.css` (Radial-Glow, Border-Gradient für „Beliebt").
+- Bestehende Queries (`home-prices`, `home-team`, `home-first-aid`, offer-badge) bleiben.
+- SEO `head()` + JSON-LD (DrivingSchool + aggregateRating) bleiben.
+- Keine Backend-Änderungen, keine neuen Bilder, kein Auto-Hero-Bild.
+- Mobile: sauber vertikal gestapelt, kein horizontaler Overflow (mit Playwright verifiziert).
 
 ## Nicht Teil dieses Plans
-- Andere Unterseiten (Preise, Team, Kontakt etc.) – nur wenn du willst, mache ich die im Anschluss.
+Andere Unterseiten (Preise, Team, Kontakt …) – falls gewünscht, mache ich die im Anschluss.

@@ -204,3 +204,29 @@
       0 0 38px color-mix(in oklab, var(--brand) 30%, transparent);
   }
 }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@utility animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.08); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@utility animate-blob {
+  animation: blob-float 14s ease-in-out infinite;
+}
+
+@utility gradient-border-featured {
+  position: relative;
+  background: linear-gradient(var(--foreground), var(--foreground)) padding-box,
+              linear-gradient(135deg, var(--brand), color-mix(in oklab, var(--brand) 40%, transparent)) border-box;
+  border: 2px solid transparent;
+}
