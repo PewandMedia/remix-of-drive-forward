@@ -311,20 +311,20 @@ function Index() {
               Von der ersten WhatsApp-Nachricht bis zur bestandenen Prüfung – wir machen es dir so unkompliziert wie möglich.
             </p>
           </div>
-          <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-4 lg:grid-cols-4">
             {steps.map((s, i) => (
               <div
                 key={s.n}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-white/[0.06]"
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-white/[0.06] sm:rounded-3xl sm:p-7"
               >
-                <div className="absolute right-4 top-4 font-display text-6xl leading-none text-white/[0.08] transition-colors group-hover:text-primary/40">
+                <div className="absolute right-3 top-3 font-display text-4xl leading-none text-white/[0.08] transition-colors group-hover:text-primary/40 sm:right-4 sm:top-4 sm:text-6xl">
                   {s.n}
                 </div>
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-primary-foreground">
-                  <s.icon className="h-6 w-6" />
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground sm:h-12 sm:w-12 sm:rounded-2xl">
+                  <s.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                 </div>
-                <h3 className="mt-6 font-display text-xl leading-tight text-white">{s.title}</h3>
-                <p className="mt-2 text-sm text-white/60">{s.text}</p>
+                <h3 className="mt-4 font-display text-sm leading-tight text-white sm:mt-6 sm:text-xl">{s.title}</h3>
+                <p className="mt-1 text-xs text-white/60 sm:mt-2 sm:text-sm">{s.text}</p>
                 {i < steps.length - 1 && (
                   <ArrowRight className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-white/20 lg:block" />
                 )}
