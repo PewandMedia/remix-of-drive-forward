@@ -1,17 +1,14 @@
-## Erste-Hilfe-Kurs Sektion auf der Startseite optimieren
+## Erste-Hilfe-Bild ersetzen
 
-### Änderungen in `src/routes/index.tsx` (Zeilen 443-475)
+Statt des KI-Bilds mit Personen → ein **Verbandskasten (Erste-Hilfe-Koffer) mit MIRO-DRIVE Logo** auf dem Deckel.
 
-1. Die gesamte rechte Bento-Grafik entfernen (rotes Kreuz-Motiv + „50 € Kursgebühr" Card + „Monatlich Neue Termine" Card + „Offiziell anerkannt / Für TÜV & Führerschein-Antrag" Balken) — diese Infos stehen ohnehin bereits im linken Textblock und den InfoStats.
-2. Stattdessen **ein einziges KI-generiertes Bild** rechts platzieren: großformatig, `aspect-[4/3]`, `rounded-3xl`, mit dezentem Primary-Glow dahinter.
+### Schritte
 
-### KI-Bild generieren
+1. **Neues Bild generieren** mit `imagegen--generate_image` (standard quality):
+   - Motiv: Ein klassischer roter Verbandskasten / Erste-Hilfe-Koffer, prominent zentriert, weißes Kreuz auf dem Deckel, darunter das Schriftlogo „MIRO-DRIVE" (weiß) — Produktfoto-Stil, sauberer heller Studio-Hintergrund, weiches Licht, leichte Schatten, hochwertig und modern.
+   - Pfad: `src/assets/erste-hilfe-hero.jpg` (überschreibt das aktuelle Bild)
+   - Format: 1280×960
 
-- Tool: `imagegen--generate_image` (premium quality, weil realistisch/hochwertig)
-- Motiv: Erste-Hilfe-Kurs im MIRO-DRIVE Kontext — junge Fahrschüler:innen in modernem, hellem Kursraum, eine Person übt Herzdruckmassage an einer Übungspuppe, freundliche Atmosphäre, subtile rote Akzente (passend zur Brand), moderne Optik.
-- Speicherpfad: `src/assets/erste-hilfe-hero.jpg`
-- Format: 1280×960 (4:3, passend zum Container)
+2. **Kein Code-Change nötig** — der Import in `src/routes/index.tsx` bleibt derselbe.
 
-### Ergebnis
-
-Rechte Seite zeigt nur noch ein sauberes, professionelles Foto — links bleibt Titel, Beschreibung, 3 InfoStats und CTA-Button unverändert. Weniger visuelles Rauschen, keine doppelten Infos.
+3. Falls die Text-Rendering-Qualität nicht ausreicht, mit `imagegen--edit_image` und dem echten Logo (`src/assets/miro-logo.png.asset.json`) als Referenz nachbessern.
