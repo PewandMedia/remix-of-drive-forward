@@ -1,35 +1,32 @@
 ## Ziel
-Mobile Preise-Karten (`/preise`) neu strukturieren: keine Überlappung von Text und Preis, wichtige Infos sichtbar, Icons deutlich aufgewertet — Desktop bleibt wie er ist.
+Mobile Preis-Karten wieder **untereinander** (1 Spalte) statt 3 nebeneinander — aber **kompakt** mit **allen wichtigen Infos** sichtbar. Keine langen Scroll-Strecken.
 
 ## Änderungen in `src/routes/preise.tsx`
 
-### 1. Layout der Preiszeilen (Overlap-Fix)
-Von horizontalem `flex justify-between` auf **vertikalen Stack** auf Mobile umstellen:
-- Titel oben, volle Breite, 2 Zeilen erlaubt (`line-clamp-2`, kein `truncate`)
-- Preis darunter als eigener Chip, rechtsbündig
-- `gap-1`, `py-2`, klare Trennlinien
-- Ab `sm:` zurück auf die bestehende Zweispalten-Zeile
+### 1. Grid zurück auf 1 Spalte auf Mobile
+- `grid-cols-3` → `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- Karten volle Breite auf Mobile → mehr Platz für Inhalte
 
-### 2. Wichtige Infos wieder einblenden (Mobile)
-Aktuell komplett versteckt — jetzt kompakt zeigen:
-- **Tagline** der Klasse: 2-zeilig unter dem Titel (`text-[10px] text-white/75`)
-- **Info-Box** (Sonderfahrten, Theorie, Voraussetzungen): als 3 winzige Stat-Pills nebeneinander unter dem Header (`grid-cols-3`, nur Zahl + 1-Wort-Label, z.B. „12 Sonder" / „14 Theorie" / „17+ Alter")
-- **Angebots-Badge** und **durchgestrichener Alt-Preis**: klein aber sichtbar (nicht mehr `hidden`)
-- Item-Beschreibungen bleiben versteckt (zu lang), aber Angebots-Label wird angezeigt
+### 2. Karten-Header kompakt (horizontal, nicht mehr zentriert)
+- Icon (mit Gradient-Ring/Glow) links, Titel + Tagline rechts daneben, Badge oben rechts
+- Tagline **1 Zeile** mit `line-clamp-1` — kurz sichtbar
+- Sonder/Theorie/Alter Stat-Pills bleiben (jetzt breiter, gut lesbar)
 
-### 3. Icons aufwerten (Desktop + Mobile)
-Aktuell nur ein Lucide-Icon in einem grauen Kasten. Neu:
-- Icon-Container: **Gradient-Ring** (Primary → Weiß-Glow), inner `bg-white/15 backdrop-blur`
-- **Rotierender/pulsierender Glow** hinter dem Icon (radial-gradient, `animate-pulse` oder custom `@keyframes`)
-- Icon selbst: `drop-shadow` + leichte Größensteigerung
-- Auf `featured`-Karte: goldener Akzent-Ring statt weiß
-- Mobile: `h-10 w-10` (statt 8) mit demselben Premium-Look
+### 3. Info-Block auf Mobile sichtbar, aber kompakt
+- Theorie, Mindestalter, Prüfung, Voraussetzungen als **2-spaltiges Micro-Grid** (Icon + Zahl/Kurztext) — nicht mehr als lange Listen-Zeilen
+- `extraNote` in kleiner Hinweis-Zeile
+- Alles in einem einzigen dichten Kasten (`p-3`, `text-[11px]`)
 
-### 4. CTA-Bereich Mobile
-- „Anfragen" Button bleibt, aber mit sichtbarem WhatsApp-Icon und `font-black`
-- Kleine „Details"-Link darunter statt komplett versteckt
+### 4. Preis-Liste kompakt
+- Zurück zu horizontaler Zeile (Titel links, Preis rechts) — jetzt mit voller Kartenbreite kein Overlap mehr
+- Beschreibungen bleiben auf Mobile sichtbar aber `line-clamp-1`, `text-[10px]`
+- Angebots-Badge + Alt-Preis sichtbar (klein)
+- Kompakte `py-2` Zeilen
+
+### 5. CTA
+- WhatsApp + Filiale beide sichtbar (nebeneinander), kompakt
 
 ## Technisch
 - Nur `src/routes/preise.tsx`
-- Neue Keyframe-Animation für Icon-Glow evtl. in `src/styles.css` (`@keyframes icon-glow`)
 - Kein Business-Logic-Change
+- Icons behalten den Premium-Look aus dem vorherigen Turn
