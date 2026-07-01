@@ -112,15 +112,14 @@ function Index() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-white to-neutral-50">
-        <div className="pointer-events-none absolute inset-0 hero-dot-grid opacity-40" />
-        <div className="pointer-events-none absolute right-0 top-0 hidden h-full w-[55%] -skew-x-12 bg-gradient-to-br from-primary/[0.06] via-primary/[0.02] to-transparent lg:block" />
-        <div className="relative mx-auto flex max-w-7xl flex-col items-stretch gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-14 lg:grid lg:min-h-[640px] lg:grid-cols-[1fr_1.25fr] lg:items-center lg:gap-10 lg:py-20 lg:px-8">
+      <section className="hero-premium-backdrop relative overflow-hidden bg-background">
+        <div className="pointer-events-none absolute inset-0 hero-dot-grid opacity-25" />
+        <div className="relative mx-auto flex max-w-7xl flex-col items-stretch gap-5 px-4 pb-8 pt-8 sm:gap-8 sm:px-6 sm:pb-12 sm:pt-12 lg:grid lg:min-h-[660px] lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-8 lg:px-8 lg:py-16 xl:grid-cols-[0.86fr_1.14fr]">
           <div className="animate-fade-up relative z-10 min-w-0 order-1">
             <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary sm:mb-5 sm:gap-2 sm:px-3 sm:py-1 sm:text-xs">
               <span className="h-1 w-1 rounded-full bg-primary sm:h-1.5 sm:w-1.5" /> Fahrschule MIRO-DRIVE
             </div>
-            <h1 className="text-3xl leading-tight sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl">
+            <h1 className="max-w-2xl text-4xl leading-[1.03] sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl">
               Fahrschule Bochum –{" "}
               <span className="text-primary">Dein Führerschein</span> startet bei MIRO-DRIVE.
             </h1>
@@ -159,12 +158,13 @@ function Index() {
               <span>{CONTACT.googleReviewCount} Google-Bewertungen · beste Fahrschule Bochum</span>
             </a>
           </div>
-          <div className="relative order-2 flex min-w-0 flex-col items-center justify-center gap-3 sm:gap-4 lg:-mr-8 xl:-mr-16">
-            {/* Subtle radial red glow behind the whole composition */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,theme(colors.primary/30),transparent_65%)] blur-3xl" />
+          <div className="relative order-2 min-w-0">
+            <div className="hero-car-stage relative mx-auto flex min-h-[300px] w-full max-w-[720px] flex-col items-center justify-end overflow-visible px-0 pb-4 pt-4 sm:min-h-[390px] sm:pb-8 lg:min-h-[560px] lg:max-w-none lg:pb-10 lg:pt-8">
+              <div className="pointer-events-none absolute inset-x-3 bottom-6 h-[38%] hero-studio-floor sm:inset-x-6 lg:bottom-8" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-[18%] h-[38%] hero-soft-halo" />
 
-            {/* Logo + eyebrow */}
-            <div className="animate-fade-up relative z-10 flex w-full flex-col items-center">
+              {/* Logo + eyebrow */}
+              <div className="animate-fade-up relative z-10 mb-1 flex w-full flex-col items-center sm:mb-2 lg:mb-1">
               <img
                 src={miroLogoAsset.url}
                 alt="MIRO-DRIVE Fahrschule Logo"
@@ -172,18 +172,16 @@ function Index() {
                 height={160}
                 loading="eager"
                 fetchPriority="high"
-                className="h-10 w-auto object-contain sm:h-12 md:h-14 lg:h-12"
+                className="h-11 w-auto object-contain sm:h-14 md:h-16 lg:h-16 xl:h-[74px]"
               />
-              <p className="mt-2 text-[9px] font-bold uppercase tracking-[0.24em] text-muted-foreground sm:text-[10px] md:text-xs">
+              <p className="mt-2 text-center text-[9px] font-bold uppercase tracking-[0.22em] text-muted-foreground sm:text-[10px] md:text-xs">
                 Fahrschule · Bochum · seit über 10 Jahren
               </p>
-              <div className="mt-2 h-[2px] w-16 bg-primary sm:w-20" />
-            </div>
+              <div className="mt-2 h-px w-24 bg-gradient-to-r from-transparent via-primary to-transparent opacity-80 sm:w-32" />
+              </div>
 
-            {/* Car */}
-            <div className="relative w-full">
-              {/* subtle speed lines */}
-              <div className="pointer-events-none absolute left-0 top-1/2 -z-10 h-[32%] w-[70%] -translate-y-1/2 hero-speedlines opacity-50" />
+              {/* Car */}
+              <div className="animate-drive-in-right relative z-10 w-full">
               <img
                 src={miroCarAsset.url}
                 alt="MIRO-DRIVE Fahrschulauto Bochum – das echte Schulungsfahrzeug der Fahrschule MIRO-DRIVE"
@@ -191,10 +189,11 @@ function Index() {
                 height={1024}
                 loading="eager"
                 fetchPriority="high"
-                className="animate-drive-in-right relative mx-auto block w-full max-w-[440px] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)] sm:max-w-[560px] md:max-w-[640px] lg:max-w-none lg:scale-[1.1] xl:scale-[1.18] lg:drop-shadow-[0_35px_45px_rgba(0,0,0,0.3)]"
+                className="relative mx-auto block w-[108%] max-w-none -translate-x-[4%] object-contain drop-shadow-[0_24px_26px_rgba(15,15,15,0.22)] sm:w-[106%] sm:-translate-x-[3%] md:w-full md:translate-x-0 lg:w-[110%] lg:-translate-x-[2%] xl:w-[114%] xl:-translate-x-[4%]"
               />
               {/* ground shadow */}
-              <div className="pointer-events-none absolute bottom-[4%] left-1/2 h-3 w-[60%] -translate-x-1/2 rounded-[50%] bg-black/35 blur-xl" />
+              <div className="pointer-events-none absolute bottom-[5%] left-1/2 h-4 w-[74%] -translate-x-1/2 rounded-[50%] bg-foreground/25 blur-xl sm:h-5 lg:h-7 lg:w-[78%] lg:blur-2xl" />
+              </div>
             </div>
           </div>
         </div>
