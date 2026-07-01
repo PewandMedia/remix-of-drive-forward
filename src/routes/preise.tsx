@@ -118,7 +118,7 @@ function PricesPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2.5 sm:gap-6 lg:items-stretch">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:items-stretch">
           {cards.map(({ meta, items }) => {
             const Icon = meta.icon;
             const featured = meta.featured;
@@ -143,8 +143,8 @@ function PricesPage() {
                   ].join(" ")}
                 >
                   <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:14px_14px]" />
-                  <div className="relative flex flex-col items-center gap-2 text-center sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:text-left">
-                    <div className="flex min-w-0 flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-3">
+                  <div className="relative flex items-center justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-3">
                       {/* Premium icon: gradient ring + glow */}
                       <div className="relative shrink-0">
                         <div
@@ -170,7 +170,8 @@ function PricesPage() {
                         <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-white/70 sm:text-[11px]">
                           Führerschein
                         </div>
-                        <h3 className="font-display text-lg leading-none sm:text-2xl">Klasse {meta.short}</h3>
+                        <h3 className="font-display text-xl leading-none sm:text-2xl">Klasse {meta.short}</h3>
+                        <p className="mt-1 line-clamp-1 text-[11px] text-white/70 sm:hidden">{meta.tagline}</p>
                       </div>
                     </div>
                     {meta.badge && (
@@ -180,62 +181,47 @@ function PricesPage() {
                     )}
                   </div>
                   <p className="relative mt-2 hidden text-sm leading-relaxed text-white/80 sm:mt-4 sm:block">{meta.tagline}</p>
-                  {/* Mobile stat pills */}
-                  <div className="relative mt-3 grid grid-cols-3 gap-1 sm:hidden">
-                    <div className="rounded-lg bg-white/10 px-1 py-1.5 text-center ring-1 ring-white/15">
-                      <div className="font-display text-sm leading-none">{meta.sonderfahrten.ueberland + meta.sonderfahrten.autobahn + meta.sonderfahrten.dunkel}</div>
-                      <div className="mt-0.5 text-[7px] font-bold uppercase tracking-wider text-white/70">Sonder</div>
-                    </div>
-                    <div className="rounded-lg bg-white/10 px-1 py-1.5 text-center ring-1 ring-white/15">
-                      <div className="font-display text-sm leading-none">14</div>
-                      <div className="mt-0.5 text-[7px] font-bold uppercase tracking-wider text-white/70">Theorie</div>
-                    </div>
-                    <div className="rounded-lg bg-white/10 px-1 py-1.5 text-center ring-1 ring-white/15">
-                      <div className="font-display text-sm leading-none">17+</div>
-                      <div className="mt-0.5 text-[7px] font-bold uppercase tracking-wider text-white/70">Alter</div>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="flex flex-1 flex-col px-3 pb-4 pt-3 sm:px-7 sm:pb-7 sm:pt-5">
-                  <div className="hidden sm:mb-5 sm:block sm:space-y-3 sm:rounded-2xl sm:border sm:border-border/60 sm:bg-muted/30 sm:p-4">
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="flex flex-col items-center gap-1 rounded-xl bg-white px-2 py-2 text-center shadow-sm">
-                        <RouteIcon className="h-4 w-4 text-primary" />
-                        <span className="font-display text-base leading-none text-foreground">{meta.sonderfahrten.ueberland}</span>
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Überland</span>
+                  <div className="mb-3 space-y-2 rounded-2xl border border-border/60 bg-muted/30 p-3 sm:mb-5 sm:space-y-3 sm:p-4">
+                    <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                      <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
+                        <RouteIcon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
+                        <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.ueberland}</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Überland</span>
                       </div>
-                      <div className="flex flex-col items-center gap-1 rounded-xl bg-white px-2 py-2 text-center shadow-sm">
-                        <Gauge className="h-4 w-4 text-primary" />
-                        <span className="font-display text-base leading-none text-foreground">{meta.sonderfahrten.autobahn}</span>
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Autobahn</span>
+                      <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
+                        <Gauge className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
+                        <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.autobahn}</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Autobahn</span>
                       </div>
-                      <div className="flex flex-col items-center gap-1 rounded-xl bg-white px-2 py-2 text-center shadow-sm">
-                        <Moon className="h-4 w-4 text-primary" />
-                        <span className="font-display text-base leading-none text-foreground">{meta.sonderfahrten.dunkel}</span>
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Dunkel</span>
+                      <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
+                        <Moon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
+                        <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.dunkel}</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Dunkel</span>
                       </div>
                     </div>
-                    <ul className="space-y-1.5 text-xs text-foreground/80">
-                      <li className="flex items-start gap-2">
-                        <BookOpen className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                    <ul className="space-y-1 text-[11px] leading-snug text-foreground/80 sm:space-y-1.5 sm:text-xs">
+                      <li className="flex items-start gap-1.5 sm:gap-2">
+                        <BookOpen className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
                         <span><span className="font-semibold">Theorie:</span> {meta.theorie}</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <UserCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
-                        <span><span className="font-semibold">Mindestalter:</span> {meta.mindestalter}</span>
+                      <li className="flex items-start gap-1.5 sm:gap-2">
+                        <UserCheck className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
+                        <span><span className="font-semibold">Alter:</span> {meta.mindestalter}</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                      <li className="flex items-start gap-1.5 sm:gap-2">
+                        <ShieldCheck className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
                         <span><span className="font-semibold">Prüfung:</span> {meta.pruefung}</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                      <li className="flex items-start gap-1.5 sm:gap-2">
+                        <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
                         <span><span className="font-semibold">Voraussetzungen:</span> {meta.requirements.join(", ")}</span>
                       </li>
                     </ul>
                     {meta.extraNote && (
-                      <div className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-[11px] leading-snug text-foreground/80">
+                      <div className="rounded-lg border border-primary/30 bg-primary/5 px-2 py-1.5 text-[10px] leading-snug text-foreground/80 sm:px-3 sm:py-2 sm:text-[11px]">
                         <span className="font-bold text-primary">Hinweis: </span>{meta.extraNote}
                       </div>
                     )}
@@ -244,12 +230,12 @@ function PricesPage() {
                     {items.map((it) => (
                       <li
                         key={it.id}
-                        className="flex flex-col gap-1 py-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:py-3.5"
+                        className="flex items-start justify-between gap-3 py-2 sm:gap-4 sm:py-3.5"
                       >
                         <div className="min-w-0">
-                          <p className="text-[11px] font-semibold leading-snug sm:text-sm">{it.title}</p>
+                          <p className="text-[12px] font-semibold leading-snug sm:text-sm">{it.title}</p>
                           {it.description && (
-                            <p className="mt-0.5 hidden text-xs leading-snug text-muted-foreground sm:block">{it.description}</p>
+                            <p className="mt-0.5 line-clamp-1 text-[10px] leading-snug text-muted-foreground sm:line-clamp-none sm:text-xs">{it.description}</p>
                           )}
                           {it.offer_active && it.offer_label && (
                             <span className="mt-1 inline-block rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary-foreground sm:px-2 sm:text-[9px]">
@@ -257,7 +243,7 @@ function PricesPage() {
                             </span>
                           )}
                         </div>
-                        <div className="flex shrink-0 items-center justify-end gap-1.5 sm:flex-col sm:items-end sm:gap-0.5">
+                        <div className="flex shrink-0 flex-col items-end gap-0.5">
                           {it.offer_active && it.old_price && (
                             <span className="text-[9px] text-muted-foreground line-through sm:text-xs">{it.old_price}</span>
                           )}
@@ -278,13 +264,13 @@ function PricesPage() {
                     ))}
                   </ul>
 
-                  <div className="mt-3 flex flex-col gap-1.5 sm:mt-6 sm:flex-row sm:gap-2">
+                  <div className="mt-3 flex flex-row gap-2 sm:mt-6">
                     <a
                       href={CONTACT.whatsapp}
                       target="_blank"
                       rel="noopener"
                       className={[
-                        "inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-2 py-2 text-[10px] font-black transition-colors sm:gap-2 sm:px-4 sm:py-3 sm:text-sm",
+                        "inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2.5 text-xs font-black transition-colors sm:gap-2 sm:px-4 sm:py-3 sm:text-sm",
                         featured
                           ? "bg-primary text-primary-foreground hover:bg-primary/90"
                           : "bg-foreground text-white hover:bg-primary",
@@ -295,7 +281,7 @@ function PricesPage() {
                     </a>
                     <Link
                       to="/kontakt"
-                      className="hidden flex-1 items-center justify-center gap-2 rounded-full border border-foreground/15 px-4 py-3 text-sm font-bold text-foreground transition-colors hover:border-primary hover:text-primary sm:inline-flex"
+                      className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-foreground/15 px-3 py-2.5 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary sm:gap-2 sm:px-4 sm:py-3 sm:text-sm"
                     >
                       <MapPin className="h-4 w-4" />
                       Filiale
