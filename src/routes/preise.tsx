@@ -209,25 +209,25 @@ function PricesPage() {
                   </div>
                   <ul className="flex-1 divide-y divide-border/60">
                     {items.map((it) => (
-                      <li key={it.id} className="flex items-start justify-between gap-4 py-3.5">
+                      <li key={it.id} className="flex items-start justify-between gap-2 py-1.5 sm:gap-4 sm:py-3.5">
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold leading-tight">{it.title}</p>
+                          <p className="text-[10px] font-semibold leading-tight sm:text-sm">{it.title}</p>
                           {it.description && (
-                            <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{it.description}</p>
+                            <p className="mt-0.5 hidden text-xs leading-snug text-muted-foreground sm:block">{it.description}</p>
                           )}
                           {it.offer_active && it.offer_label && (
-                            <span className="mt-1 inline-block rounded-full bg-primary px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground">
+                            <span className="mt-1 hidden rounded-full bg-primary px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground sm:inline-block">
                               {it.offer_label}
                             </span>
                           )}
                         </div>
                         <div className="flex shrink-0 flex-col items-end gap-0.5">
                           {it.offer_active && it.old_price && (
-                            <span className="text-xs text-muted-foreground line-through">{it.old_price}</span>
+                            <span className="hidden text-xs text-muted-foreground line-through sm:block">{it.old_price}</span>
                           )}
                           <span
                             className={[
-                              "rounded-full px-3 py-1 font-display text-sm",
+                              "rounded-full px-1.5 py-0.5 font-display text-[10px] sm:px-3 sm:py-1 sm:text-sm",
                               it.offer_active
                                 ? "bg-primary text-primary-foreground"
                                 : featured
@@ -242,24 +242,25 @@ function PricesPage() {
                     ))}
                   </ul>
 
-                  <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+                  <div className="mt-3 flex flex-col gap-1.5 sm:mt-6 sm:flex-row sm:gap-2">
                     <a
                       href={CONTACT.whatsapp}
                       target="_blank"
                       rel="noopener"
                       className={[
-                        "inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold transition-colors",
+                        "inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-2 py-2 text-[10px] font-bold transition-colors sm:gap-2 sm:px-4 sm:py-3 sm:text-sm",
                         featured
                           ? "bg-primary text-primary-foreground hover:bg-primary/90"
                           : "bg-foreground text-white hover:bg-primary",
                       ].join(" ")}
                     >
-                      <MessageCircle className="h-4 w-4" />
-                      WhatsApp
+                      <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span className="hidden sm:inline">WhatsApp</span>
+                      <span className="sm:hidden">Anfragen</span>
                     </a>
                     <Link
                       to="/kontakt"
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-foreground/15 px-4 py-3 text-sm font-bold text-foreground transition-colors hover:border-primary hover:text-primary"
+                      className="hidden flex-1 items-center justify-center gap-2 rounded-full border border-foreground/15 px-4 py-3 text-sm font-bold text-foreground transition-colors hover:border-primary hover:text-primary sm:inline-flex"
                     >
                       <MapPin className="h-4 w-4" />
                       Filiale
