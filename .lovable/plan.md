@@ -1,49 +1,31 @@
-# Plan: Startseite neu aufbauen – lukrativ, modern, SEO-stark
+# Plan: Hero-Text & Logo-Veranschaulichung
 
-## Ziel
-Die aktuelle Startseite wirkt flach und der SEO-Text ist verschwunden. Ich baue `src/routes/index.tsx` komplett neu – editorial, hochwertig, mit klarer Hierarchie – und bringe den vollständigen SEO-Fließtext für Bochum, Herne und NRW zurück.
+## Änderungen in `src/routes/index.tsx` (Hero-Section)
 
-## 1. Hero – editorial premium
-- Vollflächiger Hero mit weichem rotem Radial-Glow + Dot-Grid Hintergrund (dezent, kein „Fleck").
-- Kleiner Top-Badge: „5.0 ★ · 549 Google-Bewertungen · Bochum & Herne" (klickbar zu Google).
-- Riesige editoriale H1 mit rotem Akzentwort („Dein **Führerschein** in Bochum & Herne").
-- Sub-Copy mit klaren Keywords (Klasse B, B197, B78, Automatik, Schalter).
-- 3 CTAs: WhatsApp (rot), Preise ansehen (schwarz), Beratung (outline).
-- Trust-Row unter den CTAs: „2 Filialen · Klassen B / B197 / B78 · Erste-Hilfe monatlich".
+### 1. Neuer Hero-Text (linke Spalte)
+- Eyebrow bleibt: „Fahrschule · Bochum · Herne · NRW"
+- Neue H1: **„Fahrschule MIRO-DRIVE – die Nr. 1 Fahrschule in Bochum."**
+  - „Nr. 1" als rotes/italic Akzentwort hervorgehoben
+- Sub-Copy klar formuliert mit den 2 Standorten:
+  - „Zwei Filialen mitten in Bochum: **Bochum Zentrum (Brückstraße 53)** und **Bochum Riemke (Herner Str. 365)**. Klasse B, B197 & B78 – persönlich betreut, fair bepreist."
+- Trust-Row unten bleibt (2 Filialen, WhatsApp-Anmeldung, Automatik & Schalter, Persönliche Betreuung)
 
-## 2. Stat-Bento (direkt unter Hero)
-4 Karten in einem Bento-Grid: 5.0 ★, 549+ Bewertungen, 2 Filialen, Anmeldung in Minuten. Große Zahlen, kleine Labels, dezente Icons.
+### 2. Rechte Spalte – Logo-Veranschaulichung über Bento
+Über der 5.0★-Karte kommt ein neues Logo-Panel:
+- Elegante Karte mit rotem Radial-Glow im Hintergrund
+- MIRO-DRIVE Logo groß und zentriert (`src/assets/miro-logo.png`)
+- Darunter eine dünne rote Trennlinie mit dem Label „Nr. 1 Fahrschule in Bochum"
+- Sitzt direkt über der Google-Rating-Bento-Karte, wirkt wie ein Brand-Header für die Stat-Sektion
+- Weiche Schatten, abgerundet (rounded-3xl), passend zum bestehenden Bento-Grid
 
-## 3. SEO-Textblock zurück
-Neuer Prose-Block „Deine Fahrschule in Bochum, Herne & NRW" mit 2 ausformulierten Absätzen. Keywords: Fahrschule Bochum, Führerschein Bochum, Fahrschule Herne, NRW, Klasse B, B197, B78, Automatik, Schalter, Erste-Hilfe-Kurs, Sehtest, TÜV, günstig, erfahren.
-
-## 4. Preise-Teaser – aufgewertet
-3 Karten (B / B197 / B78) mit weichem Schatten, Hover-Lift, roter „Beliebt"-Badge auf B197, pulsierender „Aktion läuft"-Badge nur wenn `offer_active`. Große „ab X€"-Preise. CTA zur Preise-Seite.
-
-## 5. Erste-Hilfe-Teaser
-Split-Card: links Info (50 €, 1 Tag, monatlich, direkt bei uns), rechts ein Icon-Bento mit rotem Kreuz-Motiv (Heart, ShieldCheck, Calendar). CTA „Zum Kurs".
-
-## 6. Team-Teaser
-Ilkay als Hero-Karte oben, darunter kleine runde Avatare der weiteren Instruktoren. CTA „Ganzes Team ansehen".
-
-## 7. Standorte
-2 LocationCards nebeneinander (Bochum-Standorte) mit Öffnungszeiten + „Route öffnen".
-
-## 8. FAQ-Teaser
-Accordion mit Top 3 Fragen, Link zur FAQ-Seite.
-
-## 9. Reviews + Instagram
-ReviewsSection + InstagramSection bleiben weiter unten; darüber dezenter „5.0 ★"-Streifen.
-
-## 10. Final CTA
-Vollflächige schwarze Section mit großer Claim-Headline + WhatsApp/Kontakt CTAs.
+### 3. Bento darunter bleibt strukturell gleich
+- 5,0 ★ · 549 Bewertungen (klickbar zu Google)
+- Filialen-Karte
+- Klassen-Karte
+- Schwarze „Anmeldung in Minuten"-Karte
 
 ## Technisch
-- Nur `src/routes/index.tsx` neu, plus 2–3 kleine Utility-Klassen in `src/styles.css` (Radial-Glow, Border-Gradient für „Beliebt").
-- Bestehende Queries (`home-prices`, `home-team`, `home-first-aid`, offer-badge) bleiben.
-- SEO `head()` + JSON-LD (DrivingSchool + aggregateRating) bleiben.
-- Keine Backend-Änderungen, keine neuen Bilder, kein Auto-Hero-Bild.
-- Mobile: sauber vertikal gestapelt, kein horizontaler Overflow (mit Playwright verifiziert).
-
-## Nicht Teil dieses Plans
-Andere Unterseiten (Preise, Team, Kontakt …) – falls gewünscht, mache ich die im Anschluss.
+- Nur `src/routes/index.tsx` wird angefasst
+- Logo-Import via bestehendem `miro-logo.png.asset.json`
+- Keine neuen Assets, keine Backend-Änderungen
+- Verifikation per Playwright (Desktop + Mobile Screenshot), damit Layout auf beiden Ansichten sauber steht
