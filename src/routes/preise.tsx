@@ -236,7 +236,10 @@ function PricesPage() {
                     )}
                   </div>
                   <ul className="flex-1 divide-y divide-border/60">
-                    {items.map((it) => (
+                    {items.map((it) => {
+                      const live = isOfferLive(it as any);
+                      const remaining = live ? formatRemaining((it as any).offer_valid_until) : null;
+                      return (
                       <li
                         key={it.id}
                         className="flex items-start justify-between gap-3 py-2 sm:gap-4 sm:py-3.5"
@@ -246,31 +249,41 @@ function PricesPage() {
                           {it.description && (
                             <p className="mt-0.5 line-clamp-1 text-[10px] leading-snug text-muted-foreground sm:line-clamp-none sm:text-xs">{it.description}</p>
                           )}
-                          {it.offer_active && it.offer_label && (
-                            <span className="mt-1 inline-block rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary-foreground sm:px-2 sm:text-[9px]">
-                              {it.offer_label}
-                            </span>
+                          {live && (it.offer_label || remaining) && (
+                            <div className="mt-1 flex flex-wrap items-center gap-1">
+                              {it.offer_label && (
+                                <span className="inline-flex items-center gap-0.5 rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary-foreground shadow-sm sm:px-2 sm:text-[9px]">
+                                  <Flame className="h-2.5 w-2.5" /> {it.offer_label}
+                                </span>
+                              )}
+                              {remaining && (
+                                <span className="inline-flex items-center gap-0.5 rounded-full bg-foreground/90 px-1.5 py-0.5 text-[8px] font-bold text-white sm:px-2 sm:text-[9px]">
+                                  <Timer className="h-2.5 w-2.5" /> {remaining}
+                                </span>
+                              )}
+                            </div>
                           )}
                         </div>
                         <div className="flex shrink-0 flex-col items-end gap-0.5">
-                          {it.offer_active && it.old_price && (
-                            <span className="text-[9px] text-muted-foreground line-through sm:text-xs">{it.old_price}</span>
+                          {live && it.old_price && (
+                            <span className="text-[10px] font-semibold text-muted-foreground line-through sm:text-sm">{it.old_price}</span>
                           )}
                           <span
                             className={[
-                              "rounded-full px-2 py-0.5 font-display text-[11px] sm:px-3 sm:py-1 sm:text-sm",
-                              it.offer_active
-                                ? "bg-primary text-primary-foreground"
+                              "rounded-full px-2 py-0.5 font-display sm:px-3 sm:py-1",
+                              live
+                                ? "bg-primary text-primary-foreground text-[13px] font-black shadow-md ring-2 ring-primary/30 sm:text-lg"
                                 : featured
-                                ? "bg-primary/10 text-primary"
-                                : "bg-foreground/5 text-foreground",
+                                ? "bg-primary/10 text-primary text-[11px] sm:text-sm"
+                                : "bg-foreground/5 text-foreground text-[11px] sm:text-sm",
                             ].join(" ")}
                           >
                             {it.price}
                           </span>
                         </div>
                       </li>
-                    ))}
+                      );
+                    })}
                   </ul>
 
                   <div className="mt-3 flex flex-row gap-2 sm:mt-6">
