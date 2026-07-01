@@ -185,42 +185,6 @@
   animation: fadeUp 0.6s ease-out both;
 }
 
-@keyframes driveInLeft {
-  0% { opacity: 0; transform: translateX(-130%) rotate(-3deg); }
-  60% { opacity: 1; }
-  80% { transform: translateX(2%) rotate(0.5deg); }
-  100% { opacity: 1; transform: translateX(0) rotate(0); }
-}
-
-@utility animate-drive-in-left {
-  animation: driveInLeft 1.2s cubic-bezier(0.22, 0.9, 0.3, 1) both;
-}
-
-@keyframes driveInRight {
-  0%   { opacity: 0; transform: translateX(32%) rotate(1deg); }
-  55%  { opacity: 1; }
-  80%  { transform: translateX(-1.2%) rotate(-0.25deg); }
-  100% { opacity: 1; transform: translateX(0) rotate(0); }
-}
-
-@utility animate-drive-in-right {
-  animation: driveInRight 1.4s cubic-bezier(0.16, 0.9, 0.25, 1) both;
-}
-
-@keyframes speedlines {
-  0%   { transform: translateX(0);     opacity: 0.9; }
-  100% { transform: translateX(-40%);  opacity: 0;   }
-}
-
-@utility hero-speedlines {
-  background-image: repeating-linear-gradient(
-    100deg,
-    color-mix(in oklab, var(--brand) 70%, transparent) 0 2px,
-    transparent 2px 22px
-  );
-  animation: speedlines 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
-}
-
 @utility hero-dot-grid {
   background-image: radial-gradient(color-mix(in oklab, var(--foreground) 12%, transparent) 1px, transparent 1px);
   background-size: 22px 22px;
@@ -229,32 +193,6 @@
 @utility hero-premium-backdrop {
   background:
     linear-gradient(180deg, var(--background) 0%, color-mix(in oklab, var(--muted) 42%, var(--background)) 100%);
-}
-
-@utility hero-car-stage {
-  isolation: isolate;
-}
-
-@utility hero-studio-floor {
-  background:
-    radial-gradient(ellipse at center, color-mix(in oklab, var(--foreground) 16%, transparent) 0%, transparent 66%),
-    linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--foreground) 4%, transparent) 100%);
-  border-radius: 999px;
-  filter: blur(10px);
-  opacity: 0.75;
-}
-
-@utility hero-soft-halo {
-  background: radial-gradient(ellipse at center, color-mix(in oklab, var(--background) 96%, var(--primary)) 0%, color-mix(in oklab, var(--muted) 70%, transparent) 44%, transparent 72%);
-  filter: blur(18px);
-  opacity: 0.9;
-}
-
-@media (max-width: 767px) {
-  @keyframes driveInRight {
-    0%   { opacity: 0; transform: translateX(14%) translateY(6px); }
-    100% { opacity: 1; transform: translateX(0) translateY(0); }
-  }
 }
 
 @utility headline-glow {
