@@ -1,5 +1,9 @@
-## Änderungen an `src/routes/_authenticated/admin.tsx`
+## Ursache
+Es gibt einen Eintrag „Schaltkompetenz-Fahrten" (Klasse B197) mit 70 €. Die anderen Fahrstunden liegen bei 65 €.
 
-1. **Presets kürzen**: Muttertag und Vatertag aus `OFFER_PRESETS` entfernen.
-2. **Notiz-Autofill entfernen**: `applyPreset()` schreibt nicht mehr in `offerNote`. Die Notiz bleibt komplett benutzergesteuert.
-3. **Preset-Info anzeigen**: Wenn ein Preset ausgewählt ist, wird dessen `note` als kleiner Info-Text (kursiv, muted) direkt unter der Preset-Chip-Reihe eingeblendet – rein informativ, geht nicht ins Notizfeld.
+## Fix
+Preis dieser einen Zeile auf `65 €` setzen – Daten-Update, keine Struktur-Änderung.
+
+```sql
+UPDATE prices SET price = '65 €' WHERE id = 'cbaab92d-8ab6-41be-9fd0-3a14a618e95d';
+```
