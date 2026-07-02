@@ -327,6 +327,55 @@ function Index() {
             Alle Preise ansehen <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
+
+        {/* ANGEBOTS-BANNER */}
+        {hasActiveOffer && (() => {
+          const offerRow = rowFor("Klasse B") ?? prices.find((p: any) => isOfferLive(p));
+          const oldP = offerRow?.old_price;
+          const newP = offerRow?.price;
+          const rem = offerRow ? formatRemaining(offerRow.offer_valid_until) : null;
+          const label = offerRow?.offer_label || "Angebot";
+          return (
+            <div className="mb-6 overflow-hidden rounded-3xl border-2 border-primary bg-gradient-to-br from-[#7a0010] via-primary to-[#4a0008] p-5 text-white shadow-2xl shadow-primary/30 sm:mb-8 sm:p-8">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur sm:text-xs">
+                    <Flame className="h-3.5 w-3.5 animate-pulse" /> Jetzt sparen
+                  </div>
+                  <h3 className="mt-3 font-display text-2xl leading-tight sm:text-4xl">
+                    {label}
+                  </h3>
+                  <p className="mt-2 text-sm text-white/80 sm:text-base">
+                    Anmeldegebühr nur <span className="font-display text-xl font-bold text-white sm:text-2xl">{newP}</span>{" "}
+                    {oldP && <span className="text-sm text-white/50 line-through">statt {oldP}</span>}
+                  </p>
+                  {rem && (
+                    <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-white/90 sm:text-sm">
+                      <Timer className="h-4 w-4" /> {rem}
+                    </p>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2 sm:flex-col sm:gap-3">
+                  <a
+                    href={CONTACT.whatsapp}
+                    target="_blank"
+                    rel="noopener"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-primary shadow-lg transition-transform hover:scale-105 sm:px-6 sm:py-3"
+                  >
+                    <MessageCircle className="h-4 w-4" /> Jetzt anmelden
+                  </a>
+                  <Link
+                    to="/preise"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-bold text-white backdrop-blur transition-colors hover:bg-white/20 sm:px-6 sm:py-3"
+                  >
+                    Alle Preise <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
         <div className="grid grid-cols-3 gap-2.5 items-stretch sm:gap-4 md:gap-6">
           {PRICE_CLASSES.map((c) => {
             const row: any = rowFor(c.key);
