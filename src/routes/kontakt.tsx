@@ -4,6 +4,7 @@ import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { Phone, Mail, Instagram, MessageCircle, AlertCircle } from "lucide-react";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
 
 export const Route = createFileRoute("/kontakt")({
   head: () => ({
@@ -42,7 +43,7 @@ function ContactPage() {
           ))}
         </div>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="flex items-center gap-3 rounded-2xl border bg-[#25D366] p-5 text-white transition-all hover:-translate-y-0.5 hover:shadow-md">
             <div className="rounded-full bg-white/20 p-2.5 text-white"><MessageCircle className="h-4 w-4" /></div>
             <div>
@@ -67,8 +68,15 @@ function ContactPage() {
           <a href={CONTACT.instagram} target="_blank" rel="noopener" className="flex items-center gap-3 rounded-2xl border bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-md">
             <div className="rounded-full bg-foreground p-2.5 text-white"><Instagram className="h-4 w-4" /></div>
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Social</div>
-              <div className="text-sm font-bold">Instagram & TikTok</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Instagram</div>
+              <div className="text-sm font-bold">miro_drive</div>
+            </div>
+          </a>
+          <a href={CONTACT.tiktok} target="_blank" rel="noopener" className="flex items-center gap-3 rounded-2xl border bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-md">
+            <div className="rounded-full bg-foreground p-2.5 text-white"><TikTokIcon className="h-4 w-4" /></div>
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">TikTok</div>
+              <div className="text-sm font-bold">@mirodrive</div>
             </div>
           </a>
         </div>

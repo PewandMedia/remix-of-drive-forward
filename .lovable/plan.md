@@ -1,23 +1,22 @@
 ## Ziel
-Den "Social"-Button auf der Kontakt-Seite in zwei separate, untereinander stehende Links für Instagram und TikTok aufteilen. Dabei die originalen Brand-Icons nutzen und das Label "Social" entfernen.
+Auf der Kontakt-Unterseite (`/kontakt`) den aktuell kombinierten „Social“-Button (der nur zu Instagram führt und „Instagram & TikTok“ anzeigt) in zwei eigenständige Buttons aufteilen. Beide sollen wie im Footer gestaltet sein und jeweils mit dem originalen Logo und der korrekten URL zu Instagram bzw. TikTok verlinken.
 
 ## Änderungen
 
-### `src/routes/kontakt.tsx`
-- Den vierten Link-Block (Zeile 67–73, bisher "Social" → Instagram & TikTok zusammen) entfernen.
-- An gleicher Stelle zwei neue, vertikal gestapelte Links einfügen:
-  1. **Instagram** – Link zu `CONTACT.instagram`, Icon: `Instagram` (Lucide), Label: "Instagram"
-  2. **TikTok** – Link zu `CONTACT.tiktok`, Icon: `TikTokIcon` (SVG, wie im Footer), Label: "TikTok"
-- Das Wort "Social" komplett aus dieser Sektion entfernen.
-- Die bestehende 4-Spalten-Grid-Struktur (`lg:grid-cols-4`) beibehalten; die beiden neuen Links teilen sich visuell die vierte Spalte als gestapelte Karten oder sind als eigene Karten im Grid (je nach Platzierung im Code).
+### 1. `src/routes/kontakt.tsx`
+- Den bestehenden kombinierten Social-Button entfernen.
+- **Neuen Instagram-Button** einfügen:
+  - Icon: `Instagram` (Lucide)
+  - Label: „Instagram“
+  - URL: `CONTACT.instagram`
+- **Neuen TikTok-Button** einfügen:
+  - Icon: `TikTokIcon` (eigene Komponente)
+  - Label: „TikTok“
+  - URL: `CONTACT.tiktok`
+- Grid-Layout anpassen: Die Button-Zeile enthält dann 5 Elemente (WhatsApp, Telefon, E-Mail, Instagram, TikTok). Die Spaltenanzahl im Grid muss entsprechend erweitert werden (`lg:grid-cols-5` statt `lg:grid-cols-4`).
 
-### Icon-Versorgung
-- TikTok-SVG-Icon aus `src/components/site/Footer.tsx` in eine wiederverwendbare Komponente (`src/components/icons/TikTokIcon.tsx`) extrahieren, damit `kontakt.tsx` es importieren kann, ohne den Footer direkt zu importieren.
-- Alternativ: Das Icon inline in `kontakt.tsx` definieren, falls keine zentrale Icon-Datei existiert.
+### 2. Keine Änderungen an Daten
+- `src/lib/contact.ts` enthous bereits die korrekten getrennten URLs für Instagram und TikTok.
 
-## Build-Validierung
-- Nach der Änderung `bun run build` ausführen, um sicherzustellen, dass alle Imports auflösbar sind und keine JSX-Fehler vorliegen.
-
-## Nicht im Scope
-- Keine Änderungen an anderen Seiten (Startseite, Footer, Preise etc.).
-- Keine Änderungen an Backend oder Auth.
+## Ergebnis
+Auf der Kontakt-Seite werden Instagram und TikTok als zwei separate, klar beschriftete Buttons mit Original-Logos angezeigt – jeder verlinkt direkt auf den jeweiligen Account.
