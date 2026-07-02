@@ -58,6 +58,7 @@ const CATEGORIES: CategoryMeta[] = [
   {
     key: "Klasse B",
     short: "B",
+    mobileLabel: "Klasse B – Schaltgetriebe",
     tagline: "Klassischer Führerschein mit Schaltgetriebe – volle Flexibilität.",
     icon: Car,
     sonderfahrten: { ueberland: 5, autobahn: 4, dunkel: 3 },
@@ -69,6 +70,7 @@ const CATEGORIES: CategoryMeta[] = [
   {
     key: "Klasse B197",
     short: "B197",
+    mobileLabel: "Klasse B197 – Automatik mit Schaltberechtigung",
     tagline: "Ausbildung auf Automatik – Führerschein gilt trotzdem für Schalter.",
     icon: Sparkles,
     featured: true,
@@ -83,6 +85,7 @@ const CATEGORIES: CategoryMeta[] = [
   {
     key: "Klasse B78",
     short: "B78",
+    mobileLabel: "Klasse B78 – Reine Automatik",
     tagline: "Reine Automatik-Klasse – schneller und entspannter ans Ziel.",
     icon: Cog,
     sonderfahrten: { ueberland: 5, autobahn: 4, dunkel: 3 },
