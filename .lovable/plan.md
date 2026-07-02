@@ -1,21 +1,20 @@
-## Plan
+## Ziel
+Das hochgeladene SVG-Logo (`miro-drive-logo.svg`) ersetzt überall das aktuelle PNG-Logo (`miro-logo.png.asset.json`).
 
-### 1. Navbar – Logo zentrieren
-In `src/components/site/Navbar.tsx` das Layout anpassen:
-- Derzeit: `justify-between` mit Logo links, Nav rechts.
-- Ziel: Logo in die Mitte des Headers.
-- Umsetzung: Header-Inhalt in 3 Spalten aufteilen (leer / Logo / Hamburger + Desktop-Nav). Logo mit `mx-auto` oder `justify-center` zentrieren. Desktop-Navigation bleibt rechts, Mobile-Menü-Button bleibt rechts.
+## Schritte
+1. **Neue Logo-Komponente**
+   - `src/components/site/Logo.tsx` anlegen.
+   - Der Inhalt ist das hochgeladene SVG als inline React-Komponente (self-contained, da Base64-Bilddaten enthalten sind).
+   - Unterstützt `className` und `alt`-Text als Props für Barrierefreiheit.
 
-### 2. Logo-Click smooth-scroll auf Startseite
-In `src/routes/index.tsx`:
-- Das Logo im Hero-Bereich (Logo-Panel) mit einem `onClick` versehen.
-- Bei Klick: `window.scrollTo({ top: 0, behavior: 'smooth' })` ausführen.
-- Cursor auf `cursor-pointer` setzen, damit es klickbar wirkt.
+2. **Referenzen aktualisieren**
+   - `src/components/site/Navbar.tsx`
+   - `src/components/site/Footer.tsx`
+   - `src/routes/index.tsx`
+   Überall das alte `import logoAsset from "@/assets/miro-logo.png.asset.json"` entfernen und durch `<Logo className="h-10 w-auto" alt="MIRO-DRIVE" />` ersetzen.
 
-### 3. Mobile Menü fullscreen
-In `src/components/site/Navbar.tsx`:
-- Das mobile Dropdown (`open && ...`) von einem kleinen Dropdown zu einem **Fullscreen-Overlay** umbauen.
-- Overlay deckt die gesamte Viewport-Höhe ab (`fixed inset-0 z-50 bg-white flex flex-col items-center justify-center`).
-- Menü-Links zentriert und größer darstellen.
-- Schließen-Button (X) oben rechts fixieren.
-- `overflow-hidden` auf `<body>` toggeln, damit man nicht im Hintergrund scrollen kann.
+3. **Alten Asset-Pointer aufräumen**
+   - `src/assets/miro-logo.png.asset.json` löschen, da keine Verweise mehr bestehen.
+
+4. **Build-Check**
+   - `bun run build` ausführen, um sicherzustellen dass alle Imports korrekt aufgelöst werden und keine ungenutzten Imports übrig bleiben.
