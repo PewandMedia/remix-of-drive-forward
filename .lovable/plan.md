@@ -1,24 +1,33 @@
 ## Ziel
-Die aktive "Sommer-Aktion" auf der Startseite wirkt derzeit als kleines, leicht zu übersehendes Badge. Sie soll sofort als echtes, attraktives Angebot erkennbar sein – ohne die Seite zu überladen.
+Die Team-Karten sollen sich beim Klick mit einem coolen 3D-Flip-Effekt umdrehen und auf der Rückseite einen persönlichen Text des jeweiligen Team-Mitglieds zeigen (z. B. „Entspannter Fahrlehrer, der dich sicher zur Prüfung bringt"). Diese Texte müssen im Admin-Panel bearbeitbar sein.
 
 ## Änderungen
 
-### 1. Auffälliger Angebots-Banner oberhalb der Preis-Karten
-- In `src/routes/index.tsx`: Direkt über der 3-Spalten-Preisübersicht einen eigenen, farblich abgesetzten Angebots-Block einfügen.
-- Rot-schwarzer Gradient-Hintergrund mit deutlichem Kontrast zur weißen Umgebung.
-- Text: "☀️ Sommer-Aktion – jetzt Anmeldegebühr nur 200 € statt 299 €"
-- Countdown-Timer direkt im Banner: "Noch X Tage / Std. gültig"
-- Zwei CTA-Buttons: "Jetzt per WhatsApp anmelden" und "Alle Preise ansehen"
+### 1. Datenbank
+- Neue Spalte `bio` (text, nullable) in `team_members` hinzufügen.
+- Vorhandene `description`-Spalte bleibt für Sprachen unverändert.
 
-### 2. Karten mit aktivem Angebot stärker hervorheben
-- Die 3 Klassen-Karten (B, B197, B78) bekommen bei `live === true` einen dicken, rot-goldenen Rahmen statt des feinen schwarzen/weißen Borders.
-- Subtiler roter Glow-Ring (`ring-4 ring-primary/30`) um die Karte.
-- "🔥 Angebot" Badge wird größer und prominent (z. B. als Ribbon oben rechts oder als Pulsierender Stempel).
-- Der Preisunterschied wird visuell größer: Alter Preis (durchgestrichen, 299 €) und neuer Preis (200 €) in deutlich größerer Schrift, der neue Preis fett in Rot/Primärfarbe.
+### 2. Team-Seite (`src/routes/team.tsx`)
+- Karten in eine neue Komponente `FlipCard` auslagern.
+- 3D-Flip: `perspective` + `transform-style: preserve-3d` + `rotate-y-180` beim Klick.
+- Vorderseite: aktuelles Design (Avatar, Name, Rolle, Sprachen).
+- Rückseite: gleicher Rahmen, dunkler roter Gradient-Hintergrund, weißer Bio-Text zentriert, kleiner „Zurück"-Hinweis.
+- Wenn kein Bio-Text vorhanden ist: dezenter Platzhalter („Bald mehr über {Name}").
+- Kleiner Rotations-Icon-Indikator (unten rechts) signalisiert Klickbarkeit; sanfte Hover-Animation.
+- Owner-Karte (Ilkay) bekommt denselben Flip-Effekt in ihrer größeren Variante.
 
-### 3. Keine Änderungen an der Admin-Oberfläche oder Datenbank
-- Angebots-Daten (Preise, Gültigkeit, Label) bleiben unverändert.
-- Nur die visuelle Präsentation auf der Startseite wird angepasst.
+### 3. Admin-Panel (`src/routes/_authenticated/admin.tsx`)
+- Im Team-Tab pro Mitglied ein neues Textarea-Feld „Bio (Rückseite der Karte)" hinzufügen.
+- Speichern über die bestehende Update-Mutation, ergänzt um das `bio`-Feld.
+
+### 4. CSS (`src/styles.css`)
+- Utility-Klassen für Flip: `.perspective`, `.preserve-3d`, `.backface-hidden`, `.rotate-y-180`.
+
+## Technische Details
+- SQL-Migration: `ALTER TABLE public.team_members ADD COLUMN bio text;`
+- Typen werden automatisch neu generiert.
+- Flip-State pro Karte via `useState<boolean>`; Klick togglet, Tastatur (Enter/Space) ebenfalls unterstützt für Accessibility (`role="button"`, `tabIndex={0}`).
+- Keine Änderung an Sortierung, Filialen oder anderen Team-Feldern.
 
 ## Ergebnis
-Jeder Besucher sieht sofort, dass eine zeitlich begrenzte Aktion läuft. Die Sommeraktion springt als eigenständiger, hochwertiger Banner ins Auge, und die einzelnen Klassen-Karten heben sich durch Rahmen und Preis-Hervorhebung klar vom Normalpreis ab.
+Jede Team-Karte lässt sich mit einem eleganten 3D-Flip umdrehen und zeigt einen persönlichen Text. Ilkay und alle anderen können ihren Text jederzeit selbst über das Admin-Panel pflegen.

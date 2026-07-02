@@ -239,6 +239,7 @@ export type Database = {
       team_members: {
         Row: {
           active: boolean
+          bio: string | null
           created_at: string
           description: string | null
           id: string
@@ -250,6 +251,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          bio?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -261,6 +263,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          bio?: string | null
           created_at?: string
           description?: string | null
           id?: string

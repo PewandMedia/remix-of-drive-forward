@@ -549,6 +549,7 @@ function TeamDialog({ initial }: { initial?: any }) {
         name: String(form.get("name") || ""),
         role: String(form.get("role") || ""),
         description: String(form.get("description") || "") || null,
+        bio: String(form.get("bio") || "") || null,
         image_url: String(form.get("image_url") || "") || null,
         sort_order: Number(form.get("sort_order") || 0),
         active: form.get("active") === "on",
@@ -571,6 +572,10 @@ function TeamDialog({ initial }: { initial?: any }) {
           <div><Label>Name</Label><Input name="name" required defaultValue={initial?.name} /></div>
           <div><Label>Rolle</Label><Input name="role" required defaultValue={initial?.role} /></div>
           <div><Label>Beschreibung</Label><Textarea name="description" rows={3} defaultValue={initial?.description ?? ""} /></div>
+          <div>
+            <Label>Bio (Rückseite der Karte)</Label>
+            <Textarea name="bio" rows={4} defaultValue={initial?.bio ?? ""} placeholder="z. B. Entspannter Fahrlehrer, der dich sicher & stressfrei zur Prüfung bringt." />
+          </div>
           <div><Label>Bild-URL</Label><Input name="image_url" defaultValue={initial?.image_url ?? ""} placeholder="https://…" /></div>
           <div><Label>Sortierung</Label><Input name="sort_order" type="number" defaultValue={initial?.sort_order ?? 0} /></div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
