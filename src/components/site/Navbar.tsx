@@ -56,8 +56,8 @@ export function Navbar() {
         scrolled && "shadow-[0_4px_24px_-12px_rgba(0,0,0,0.18)]"
       )}
     >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-3">
+      <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link to="/" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 flex items-center gap-3">
           <img src={logoAsset.url} alt="MIRO-DRIVE Fahrschule" className="h-10 w-auto" />
         </Link>
 

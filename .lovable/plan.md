@@ -1,20 +1,14 @@
 ## Ziel
-Das hochgeladene SVG-Logo (`miro-drive-logo.svg`) ersetzt überall das aktuelle PNG-Logo (`miro-logo.png.asset.json`).
+Das MIRO-DRIVE Logo im Header soll auf mobilen Viewports (unter `lg`) horizontal zentriert werden. Der Hamburger-Menü-Button bleibt rechts.
 
 ## Schritte
-1. **Neue Logo-Komponente**
-   - `src/components/site/Logo.tsx` anlegen.
-   - Der Inhalt ist das hochgeladene SVG als inline React-Komponente (self-contained, da Base64-Bilddaten enthalten sind).
-   - Unterstützt `className` und `alt`-Text als Props für Barrierefreiheit.
+1. **Datei öffnen:** `src/components/site/Navbar.tsx`
+2. **Layout anpassen:**
+   - Dem inneren Flex-Container (`<div className="mx-auto flex ...">`) die Klasse `relative` hinzufügen.
+   - Dem Logo-Link (`<Link to="/">`) die Klassen `absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0` hinzufügen, damit er auf Mobil absolut mittig und auf Desktop wieder normal linksbündig ist.
+3. **Verifikation:** Im Live-Preview prüfen, ob das Logo auf Mobil (390px) zentriert ist und auf Desktop (`lg`) weiterhin links ausgerichtet bleibt.
 
-2. **Referenzen aktualisieren**
-   - `src/components/site/Navbar.tsx`
-   - `src/components/site/Footer.tsx`
-   - `src/routes/index.tsx`
-   Überall das alte `import logoAsset from "@/assets/miro-logo.png.asset.json"` entfernen und durch `<Logo className="h-10 w-auto" alt="MIRO-DRIVE" />` ersetzen.
-
-3. **Alten Asset-Pointer aufräumen**
-   - `src/assets/miro-logo.png.asset.json` löschen, da keine Verweise mehr bestehen.
-
-4. **Build-Check**
-   - `bun run build` ausführen, um sicherzustellen dass alle Imports korrekt aufgelöst werden und keine ungenutzten Imports übrig bleiben.
+## Technische Details
+- Verwendet bestehende Tailwind-Breakpoints (`lg:`).
+- Keine neuen Abhängigkeiten.
+- Keine Änderungen an Desktop-Layout oder Menü-Funktionalität.
