@@ -1,0 +1,1 @@
+ALTER TABLE public.prices ADD COLUMN IF NOT EXISTS offer_note TEXT;

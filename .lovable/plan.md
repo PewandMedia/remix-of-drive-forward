@@ -1,11 +1,33 @@
 ## Ziel
-Gleiche Positionen (z. B. „Grundbetrag") einmal bearbeiten → gilt automatisch für Klasse B, B197, B78.
+Angebots-Dialog im Admin einfacher & flexibler machen.
 
-## Umsetzung
-Nur `src/routes/_authenticated/admin.tsx` wird geändert. Datenbank & Frontend bleiben unverändert.
+## Änderungen (nur `src/routes/_authenticated/admin.tsx` + Frontend-Anzeige)
 
-1. Zeilen im Preis-Tab nach `title` gruppieren, wenn `category` ∈ {Klasse B, Klasse B197, Klasse B78}. Sonstige Kategorien bleiben Einzelzeilen.
-2. Gruppenzeile zeigt die gemeinsamen Werte + Badge „gilt für: B · B197 · B78".
-3. Bearbeiten-Dialog speichert per Bulk-Update (`.in("id", groupIds)`) die Felder `price`, `old_price`, `offer_active`, `offer_label`, `offer_valid_from`, `offer_valid_until`, `active`, `description` auf alle Zeilen der Gruppe. `category`/`title` bleiben pro Zeile erhalten.
-4. Aktiv-Toggle und Löschen wirken ebenfalls auf die ganze Gruppe.
-5. „Preis hinzufügen": neuer Schalter „Für alle Klassen anlegen" – erstellt 3 Zeilen gleichzeitig.
+### 1. Alter Preis automatisch
+- Beim Aktivieren von „Angebot aktiv" wird `old_price` automatisch mit dem aktuellen `price` vorbefüllt.
+- Feld „Neuer Aktionspreis" (statt „Preis") wird prominent – Admin gibt einfach z. B. `150` ein.
+- Kein Prozent-Feld, keine Prozentrechnung – reine Zahlen.
+
+### 2. Datum vereinfachen
+- Statt zwei `datetime-local` Feldern → **Shadcn Date-Range-Picker** (Kalender-Popover).
+- Schnellauswahl-Buttons: „7 Tage", „14 Tage", „30 Tage", „Bis Monatsende".
+- Uhrzeit entfällt (00:00 Start, 23:59 Ende automatisch).
+
+### 3. Anlass-Auswahl + Notiz
+- Neues Feld `offer_label` bekommt Preset-Chips:
+  - Weihnachten, Silvester, Neujahr, Ostern, Sommer-Aktion, Herbst-Aktion, Frühlings-Aktion, Black Friday, Ferien-Special, Muttertag, Vatertag
+  - Klick auf Chip = Label + passendes Emoji wird gesetzt.
+  - „Eigener Anlass" → Freitext.
+- Neues DB-Feld `offer_note` (TEXT, optional): längere Beschreibung („Nur für Neuanmeldungen bis Ende des Monats").
+
+### 4. Anzeige auf Frontend
+- Auf `/preise` und Startseite: unter dem Aktionspreis wird `offer_note` als kleiner kursiver Text angezeigt, wenn vorhanden.
+- Label-Chip bleibt oben rechts wie bisher.
+
+## DB-Migration
+- `ALTER TABLE prices ADD COLUMN offer_note TEXT;`
+
+## Reihenfolge
+1. Migration (neues Feld).
+2. Admin-Dialog umbauen.
+3. Preise-Seite + Startseiten-Karten für Notiz-Anzeige erweitern.
