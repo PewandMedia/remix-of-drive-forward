@@ -77,11 +77,6 @@ const PRICE_CLASSES = [
   { key: "Klasse B78", short: "B78", icon: Cog, tagline: "Reine Automatik – einfach & entspannt.", highlights: ["Nur Automatik-Fahrzeuge", "Schnellerer Lernfortschritt"] },
 ];
 
-const FAQ_TOP = [
-  { q: "Welche Führerscheinklassen bietet MIRO-DRIVE an?", a: "Wir bilden in den Klassen B (Schalter), B197 (Automatik mit Schaltberechtigung) und B78 (reine Automatik) aus." },
-  { q: "Wie melde ich mich an?", a: "Die Anmeldung erfolgt ausschließlich persönlich in einer unserer Filialen in Bochum Zentrum oder Riemke." },
-  { q: "Wie erreiche ich euch am schnellsten?", a: "Am schnellsten erreichst du uns per WhatsApp – wir antworten in der Regel innerhalb kürzester Zeit." },
-];
 
 function Index() {
   const [, setTick] = useState(0);
@@ -545,30 +540,6 @@ function Index() {
         </div>
       </section>
 
-      {/* FAQ TEASER */}
-      <section className="bg-muted/30 py-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
-                <HelpCircle className="h-4 w-4" /> FAQ
-              </span>
-              <h2 className="mt-2 text-4xl sm:text-5xl">Schnelle Antworten.</h2>
-            </div>
-            <Link to="/faq" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
-              Alle FAQ ansehen <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <Accordion type="single" collapsible className="space-y-3">
-            {FAQ_TOP.map((f, i) => (
-              <AccordionItem key={i} value={`q-${i}`} className="rounded-2xl border bg-white px-5">
-                <AccordionTrigger className="text-left text-base font-bold hover:no-underline">{f.q}</AccordionTrigger>
-                <AccordionContent className="text-sm text-muted-foreground">{f.a}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
 
       {/* SERVICES TEASER */}
       <section className="py-20">
