@@ -1,5 +1,11 @@
-Das MIRO-DRIVE Logo im Footer soll in Rot statt in Weiß (Invert) angezeigt werden.
+## Problem
+Im Team-Teaser auf der Startseite (4 Team-Mitglieder in Karten) sind die runden Avatare nicht zentriert, sondern links ausgerichtet.
 
-Änderung: In `src/components/site/Footer.tsx` wird der aktuelle `invert`-Filter durch eine rotfärbende CSS-Technik ersetzt (z. B. `filter: brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(5000%) hue-rotate(350deg) brightness(95%)` oder einfacher `filter: invert(1) brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(5)`), damit das Logo in der Markenfarbe Rot erscheint und trotzdem auf dem dunklen Hintergrund gut lesbar bleibt.
+## Ursache
+Das `MiniAvatar`-Komponente in `src/routes/index.tsx` hat `h-20 w-20` aber kein `mx-auto`. Der umgebende `<div className="mx-auto mb-4">` bringt nichts, weil ein Block-Element ohne Breite die volle Breite einnimmt und `mx-auto` darauf wirkungslos bleibt.
 
-Nur eine Datei betroffen: `src/components/site/Footer.tsx`.
+## Lösung
+`mx-auto` dem `img`-Tag und dem Fallback-`<div>` innerhalb der `MiniAvatar`-Funktion hinzufügen, sodass das 80×80 Element horizontal zentriert wird.
+
+## Dateien
+- `src/routes/index.tsx` — 1 kleine Änderung in der `MiniAvatar`-Komponente.

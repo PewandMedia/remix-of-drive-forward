@@ -704,10 +704,10 @@ function InfoStat({ icon: Icon, label, value }: { icon: typeof Heart; label: str
 }
 
 function MiniAvatar({ name, src }: { name: string; src?: string | null }) {
-  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className="h-20 w-20 rounded-full object-cover" />;
+  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className="mx-auto h-20 w-20 rounded-full object-cover" />;
   const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <div className="grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-xl text-white">
+    <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-xl text-white">
       {initials}
     </div>
   );
