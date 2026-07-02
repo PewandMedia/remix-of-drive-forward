@@ -410,7 +410,7 @@ function Index() {
                   <div
                     className={[
                       "mb-4 grid h-9 w-9 place-items-center rounded-full sm:mb-8 sm:h-12 sm:w-12",
-                      featured ? "bg-primary text-primary-foreground" : "bg-foreground text-white",
+                      live || featured ? "bg-primary text-primary-foreground" : "bg-foreground text-white",
                     ].join(" ")}
                   >
                     <c.icon className="h-4 w-4 sm:h-6 sm:w-6" />
