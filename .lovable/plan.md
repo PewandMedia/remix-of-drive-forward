@@ -1,11 +1,3 @@
-## Problem
-Im Team-Teaser auf der Startseite (4 Team-Mitglieder in Karten) sind die runden Avatare nicht zentriert, sondern links ausgerichtet.
+Anpassung in `src/routes/index.tsx`, Zeile 192: Den absolut positionierten Glow (`blur-3xl`) im Brand-Logo-Panel von `-top-16` auf `-top-8` (oder einen vergleichbaren niedrigeren Wert) ändern, damit der Lichtschein dichter am Logo liegt und nicht so weit nach oben ragt.
 
-## Ursache
-Das `MiniAvatar`-Komponente in `src/routes/index.tsx` hat `h-20 w-20` aber kein `mx-auto`. Der umgebende `<div className="mx-auto mb-4">` bringt nichts, weil ein Block-Element ohne Breite die volle Breite einnimmt und `mx-auto` darauf wirkungslos bleibt.
-
-## Lösung
-`mx-auto` dem `img`-Tag und dem Fallback-`<div>` innerhalb der `MiniAvatar`-Funktion hinzufügen, sodass das 80×80 Element horizontal zentriert wird.
-
-## Dateien
-- `src/routes/index.tsx` — 1 kleine Änderung in der `MiniAvatar`-Komponente.
+Anschließend kurze visuelle Verifikation im Preview.

@@ -189,7 +189,7 @@ function Index() {
               <div className="relative grid grid-cols-2 gap-2.5 sm:gap-3">
                 {/* Brand logo panel */}
                 <div className="col-span-2 relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-white to-white/70 p-5 shadow-xl sm:p-8">
-                  <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+                  <div className="pointer-events-none absolute -top-8 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
                   <div className="relative flex flex-col items-center text-center">
                     <img
                       src={logoAsset.url}
