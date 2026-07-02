@@ -10,7 +10,11 @@ import { cn } from "@/lib/utils";
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const mobileNavLinks = NAV_LINKS;
+  const mobileNavLinks = [
+    ...NAV_LINKS,
+    { to: "/faq", label: "FAQ" },
+    { to: "/ueber-uns", label: "Über uns" },
+  ];
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { data: hasOffer = false } = useQuery({
     queryKey: ["nav-active-offer"],
