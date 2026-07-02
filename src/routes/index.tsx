@@ -389,19 +389,21 @@ function Index() {
                 to="/preise"
                 className={[
                   "group relative flex flex-col justify-between overflow-hidden p-3 transition-all duration-300 sm:p-6 lg:p-8",
-                  featured
+                  live
+                    ? "z-10 border-4 border-primary bg-white shadow-[0_0_40px_-12px_theme(colors.primary/45)] hover:-translate-y-1 hover:shadow-[0_0_60px_-12px_theme(colors.primary/55)]"
+                    : featured
                     ? "z-10 bg-foreground text-white shadow-2xl md:scale-[1.03]"
                     : "border-2 border-black/5 bg-white shadow-sm hover:-translate-y-1 hover:border-foreground hover:shadow-xl",
                 ].join(" ")}
               >
-                {featured && (
+                {featured && !live && (
                   <span className="absolute right-0 top-0 bg-primary px-2 py-0.5 font-display text-[8px] uppercase tracking-widest text-primary-foreground sm:px-4 sm:py-1 sm:text-[10px]">
                     Beliebt
                   </span>
                 )}
                 {live && (
-                  <span className="absolute left-0 top-0 z-10 inline-flex items-center gap-1 bg-white px-2 py-0.5 font-display text-[8px] font-black uppercase tracking-widest text-primary shadow-md sm:px-3 sm:py-1 sm:text-[10px]">
-                    🔥 {row?.offer_label || "Angebot"}
+                  <span className="absolute left-0 top-0 z-20 inline-flex items-center gap-1 bg-primary px-2 py-0.5 font-display text-[8px] font-black uppercase tracking-widest text-primary-foreground shadow-lg sm:px-3 sm:py-1 sm:text-[10px]">
+                    <Flame className="h-2.5 w-2.5 animate-pulse sm:h-3 sm:w-3" /> {row?.offer_label || "Angebot"}
                   </span>
                 )}
                 <div>
