@@ -148,13 +148,6 @@ export function Navbar() {
                 )}
               </Link>
             ))}
-            <Link
-              to="/kontakt"
-              onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-bold text-primary-foreground"
-            >
-              Jetzt anmelden
-            </Link>
           </nav>
         </div>
       )}
