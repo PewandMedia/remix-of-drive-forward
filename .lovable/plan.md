@@ -1,17 +1,23 @@
-Wenn man im mobilen Viewport auf das Hamburger-Menü tippt, soll die Navigation als **Fullscreen-Overlay** erscheinen – nicht mehr als schmales Dropdown unter dem Header.
+## Ziel
+Wenn das Hamburger-Menü auf Mobil geöffnet wird, soll man nur die Navigation sehen — keine Startseite dahinter und kein unnötiger Startseiten-Link im Menü.
 
-### Was gemacht wird
-1. **Datei**: `src/components/site/Navbar.tsx`
-2. **Mobile Navigation wird zu einem Fullscreen-Overlay** umgebaut:
-   - Overlay deckt die **gesamte Viewport-Höhe und -Breite** ab (`fixed inset-0 z-50`).
-   - **Oben**: MIRO-DRIVE Logo + X-Schließen-Button (rechts).
-   - **Mitte**: Alle Nav-Links in großer, klarer Darstellung (untereinander).
-   - **Unten**: CTA-Button „Jetzt anmelden".
-3. **Body-Scroll-Lock**: Sobald das Menü offen ist, kann man die Seite im Hintergrund nicht mehr scrollen.
-4. **Animation**: Ein simpler Ein-/Ausblend-Effekt (z. B. `opacity` + `translate-y`) für ein modernes Gefühl.
-5. **Desktop bleibt komplett unverändert**.
+## Änderungen
+1. **Mobile Fullscreen-Menü sauber abdecken**
+   - Overlay bleibt `fixed inset-0` und bekommt eine komplett deckende weiße Fläche.
+   - Höhe wird auf den echten mobilen Viewport optimiert (`100dvh`), damit nichts von der Seite durchscheint.
+   - Falls nötig: Header/Overlay-Z-Index so anpassen, dass wirklich alles über der Startseite liegt.
 
-### Technische Details
-- Nutzt ausschließlich Tailwind CSS Utilities (kein neues Paket).
-- Scroll-Lock via `document.body.style.overflow = 'hidden'` beim Öffnen, Rücksetzen beim Schließen/Unmount.
-- Overlay schließt sich auch beim Klick auf einen Link (bestehendes Verhalten bleibt).
+2. **„Startseite“ aus dem mobilen Menü entfernen**
+   - Desktop-Navigation bleibt unverändert.
+   - Im mobilen Fullscreen-Menü werden nur Unterseiten angezeigt: Preise, Leistungen, Erste-Hilfe-Kurs, Team, Kontakt.
+   - Das Logo oben bleibt weiterhin klickbar zur Startseite.
+
+3. **Menü-Verhalten verbessern**
+   - Klick auf einen Unterseiten-Link schließt das Menü zuverlässig.
+   - X-Button schließt das Menü.
+   - Body-Scroll bleibt gesperrt, solange das Menü offen ist.
+
+## Technische Details
+- Änderung nur in `src/components/site/Navbar.tsx`.
+- Keine Änderung an Desktop-Design, Routen oder Datenbank.
+- Bestehende `NAV_LINKS` bleiben global unverändert; für Mobile wird lokal gefiltert.
