@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import { Car, GraduationCap, BookOpen, Wrench, Sun, RotateCcw, Heart, Gift } from "lucide-react";
+import { Car, GraduationCap, BookOpen, Wrench, Sun, RotateCcw, Heart } from "lucide-react";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
 import imgTheorie from "@/assets/leistungen/theorie.jpg";
@@ -9,7 +9,6 @@ import imgPraxis from "@/assets/leistungen/praxis.jpg";
 import imgSonder from "@/assets/leistungen/sonderfahrten.jpg";
 import imgAuffrischung from "@/assets/leistungen/auffrischung.jpg";
 import imgErsteHilfe from "@/assets/leistungen/erste-hilfe.jpg";
-import imgAngebote from "@/assets/leistungen/angebote.jpg";
 
 export const Route = createFileRoute("/leistungen")({
   head: () => ({
@@ -33,7 +32,6 @@ const services = [
   { icon: Sun, image: imgSonder, title: "Sonderfahrten", text: "Wir bereiten dich professionell auf Überlandfahrten, Autobahnfahrten und Nachtfahrten rund um Bochum und Herne vor.", cta: "Mehr erfahren", to: "/kontakt" },
   { icon: RotateCcw, image: imgAuffrischung, title: "Auffrischungsstunden in Bochum", text: "Du hast deinen Führerschein bereits, fühlst dich aber unsicher? Mit Auffrischungsstunden bei MIRO-DRIVE gewinnst du wieder Sicherheit im Straßenverkehr.", cta: "Termin anfragen", to: "/kontakt" },
   { icon: Heart, image: imgErsteHilfe, title: "Erste-Hilfe-Kurs Bochum", text: "Für deinen Führerschein brauchst du einen Erste-Hilfe-Kurs. Bei MIRO-DRIVE kannst du dich informieren und direkt eine Anfrage stellen.", cta: "Kurs anfragen", to: "/erste-hilfe-kurs" },
-  { icon: Gift, image: imgAngebote, title: "Individuelle Angebote", text: "Persönliche Angebote für Anmeldung, Ausbildungspakete oder Kombi-Angebote – zugeschnitten auf deinen Führerschein in Bochum.", cta: "Angebot anfragen", to: "/angebote" },
 ];
 
 function LeistungenPage() {
