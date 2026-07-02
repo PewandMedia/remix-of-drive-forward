@@ -1,20 +1,13 @@
-Alle WhatsApp-Buttons auf der Website sollen einheitlich in der offiziellen WhatsApp-Grün-Farbe (#25D366) dargestellt werden.
+## Ziel
+Die Instagram- und TikTok-Buttons im Footer sollen im jeweiligen originalen Brand-Stil erscheinen.
 
-Betroffene Stellen:
-1. **Startseite (src/routes/index.tsx)**
-   - Hero-Button "Jetzt per WhatsApp anmelden" (derzeit rot/bg-primary)
-   - Bento-Panel "Chat starten" Link (derzeit nur Text in primary)
+## Umsetzung
+1. **Instagram-Button**: Statt neutralem `bg-white/10` den offiziellen Instagram-Verlauf (pink/lila/orange) als Hintergrund verwenden, damit er sofort erkennbar ist.
+2. **TikTok-Button**: Statt neutralem `bg-white/10` einen schwarzen oder typischen TikTok-roten Hintergrund mit weißem Icon verwenden, um den originalen Look zu treffen.
+3. Beide Buttons behalten ihre runde Form, Hover-Animation und korrekte Verlinkung.
+4. Änderung ausschließlich in `src/components/site/Footer.tsx`.
 
-2. **Preise (src/routes/preise.tsx)**
-   - WhatsApp-Buttons in den 3 Preis-Karten (derzeit rot bei Featured, dunkel bei anderen)
-
-3. **Leistungen (src/routes/leistungen.tsx)**
-   - Button "Per WhatsApp fragen" am Seitenende (derzeit rot/bg-primary)
-
-4. **Kontakt (src/routes/kontakt.tsx)**
-   - WhatsApp-Kontakt-Button (derzeit weißer Button, nur Icon-Container grün)
-
-5. **Footer (src/components/site/Footer.tsx)**
-   - WhatsApp-Social-Icon (derzeit rot/bg-primary)
-
-Umsetzung: Konsequente Anwendung von `bg-[#25D366]` und passendem Text-Kontrast (weiß) auf allen WhatsApp-Elementen. Keine weiteren Seiten betroffen.
+## Technische Details
+- CSS-Gradient für Instagram (`linear-gradient` mit `#f09433`, `#e6683c`, `#dc2743`, `#cc2366`, `#bc1888`).
+- Reiner schwarzer oder `#010101` Hintergrund für TikTok mit weißem Icon.
+- Keine neuen Abhängigkeiten nötig.
