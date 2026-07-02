@@ -230,3 +230,20 @@
               linear-gradient(135deg, var(--brand), color-mix(in oklab, var(--brand) 40%, transparent)) border-box;
   border: 2px solid transparent;
 }
+
+@utility perspective-1000 {
+  perspective: 1000px;
+}
+
+@utility preserve-3d {
+  transform-style: preserve-3d;
+}
+
+@utility backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@utility rotate-y-180 {
+  transform: rotateY(180deg);
+}
