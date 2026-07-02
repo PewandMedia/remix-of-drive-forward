@@ -4,7 +4,7 @@ import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { CONTACT } from "@/lib/contact";
 import { ErrorBox, NotFoundBox } from "@/components/site/QueryFallbacks";
-import { Info, Car, Cog, Sparkles, MapPin, MessageCircle, ShieldCheck, ArrowRight, Route as RouteIcon, Moon, Gauge, BookOpen, UserCheck, CheckCircle2, Timer, Flame } from "lucide-react";
+import { Car, Cog, Sparkles, MapPin, MessageCircle, ShieldCheck, ArrowRight, Route as RouteIcon, Moon, Gauge, BookOpen, UserCheck, CheckCircle2, Timer, Flame } from "lucide-react";
 import { isOfferLive, formatRemaining } from "@/lib/offer";
 import { useEffect, useState } from "react";
 
@@ -104,7 +104,6 @@ function PricesPage() {
   const cards = CATEGORIES
     .map((meta) => ({ meta, items: prices.filter((p) => p.category === meta.key) }))
     .filter((g) => g.items.length > 0);
-  const anyLiveOffer = prices.some((p: any) => isOfferLive(p));
   const tuev = prices.filter((p) => p.category === "Externe TÜV-Gebühren");
 
   return (
@@ -112,42 +111,11 @@ function PricesPage() {
       <PageHero
         eyebrow="Preise"
         title="Preise für deinen Führerschein in Bochum"
-        subtitle="Transparente Preise bei MIRO-DRIVE – deiner Fahrschule in Bochum. Klasse B, B197 (Automatik mit Schaltberechtigung) und B78. Für individuelle Angebote einfach per WhatsApp anfragen."
+        subtitle="Transparente Preise bei MIRO-DRIVE – deiner Fahrschule in Bochum. Klasse B, B197 (Automatik mit Schaltberechtigung) und B78."
       />
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(ellipse_at_top,theme(colors.primary/10),transparent_60%)]" />
-
-        <div className="mb-10 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4">
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-          <p className="text-sm text-foreground/80">
-            <span className="font-bold">Persönliches Angebot?</span> MIRO-DRIVE erstellt individuelle Angebote
-            für deine Anmeldung, Ausbildungspakete oder Kombi-Angebote in Bochum. Frag dein Angebot einfach
-            direkt per WhatsApp an – wir helfen dir schnell und unkompliziert weiter.
-          </p>
-        </div>
-
-        {anyLiveOffer && (
-          <a
-            href={CONTACT.whatsapp}
-            target="_blank"
-            rel="noopener"
-            className="mb-6 flex flex-col items-start gap-3 rounded-2xl border-2 border-primary bg-gradient-to-r from-primary via-primary to-[#7a0010] p-4 text-white shadow-[0_20px_50px_-20px_theme(colors.primary/60)] transition-transform hover:scale-[1.01] sm:flex-row sm:items-center sm:justify-between sm:p-5"
-          >
-            <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/15 ring-1 ring-white/30 sm:h-12 sm:w-12">
-                <Flame className="h-5 w-5 animate-pulse sm:h-6 sm:w-6" />
-              </div>
-              <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/80">Zeitlich begrenzt</div>
-                <div className="font-display text-lg leading-tight sm:text-2xl">Aktuelles Angebot läuft – jetzt anmelden & sparen!</div>
-              </div>
-            </div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-wider text-primary shadow-md sm:text-sm">
-              <MessageCircle className="h-4 w-4" /> Jetzt Angebot sichern
-            </span>
-          </a>
-        )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:items-stretch">
           {cards.map(({ meta, items }) => {
