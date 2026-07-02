@@ -1,6 +1,14 @@
-Auf der Leistungen-Seite (`/leistungen`) führen die einzelnen Service-Cards aktuell unterschiedliche rote Link-Texte wie "Anmelden", "Beratung anfragen", "Termine erfragen", "Stunde buchen" und "Kurs anfragen". 
+## Problem
+Auf der Startseite (`/`) scrollt ein Klick auf das Logo im Header nicht nach oben. Der `<Link to="/">` verhält sich in TanStack Router bei bereits aktiver Route passiv (kein Reload, kein Scroll).
 
-Änderung:
-- In `src/routes/leistungen.tsx` werden alle `cta`-Werte im `services`-Array auf **"Mehr erfahren"** gesetzt, sodass jeder rote Button einheitlich beschriftet ist.
+## Lösung
+In `src/components/site/Navbar.tsx` den Logo-`<Link>` erweitern:
+- `onClick`-Handler hinzufügen.
+- Wenn `pathname === "/"`, `event.preventDefault()` aufrufen und stattdessen `window.scrollTo({ top: 0, behavior: "smooth" })` ausführen.
+- Auf Unterseiten bleibt der normale Router-Navigation zu `/` erhalten.
 
-Das ist die einzige Datei, die angepasst wird.
+## Datei
+- `src/components/site/Navbar.tsx` (ca. Zeile 72)
+
+## Aufwand
+1 kleiner Edit, keine neuen Abhängigkeiten.
