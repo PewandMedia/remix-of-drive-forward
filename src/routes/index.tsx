@@ -410,6 +410,9 @@ function Index() {
                       {remaining && (
                         <p className="mt-1 text-[9px] font-bold text-primary sm:text-[11px]">⏰ {remaining}</p>
                       )}
+                      {live && row?.offer_note && (
+                        <p className={["mt-1 hidden text-[10px] italic leading-snug sm:block", featured ? "text-white/70" : "text-muted-foreground"].join(" ")}>{row.offer_note}</p>
+                      )}
                     </div>
                     <div
                       className={[
