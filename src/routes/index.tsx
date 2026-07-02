@@ -4,7 +4,7 @@ import { useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import logoAsset from "@/assets/miro-logo.png.asset.json";
+import logoAsset from "@/assets/miro-drive-logo.svg.asset.json";
 import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
