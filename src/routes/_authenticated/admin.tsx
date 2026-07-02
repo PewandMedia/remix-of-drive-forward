@@ -256,6 +256,19 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
     if (offerActive && !oldPriceNum && priceNum) setOldPriceNum(priceNum);
   }, [offerActive]);
 
+  // When Angebot is toggled OFF → restore original price and clear offer fields
+  function handleOfferToggle(next: boolean) {
+    if (!next && offerActive) {
+      if (oldPriceNum) setPriceNum(oldPriceNum);
+      setOldPriceNum("");
+      setOfferLabel("");
+      setOfferNote("");
+      setValidFrom("");
+      setValidUntil("");
+    }
+    setOfferActive(next);
+  }
+
   function applyPreset(preset: typeof OFFER_PRESETS[number]) {
     setOfferActive(true);
     setOfferLabel(preset.label);
@@ -281,7 +294,8 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
 
   const save = useMutation({
     mutationFn: async (form: FormData) => {
-      const priceStr = priceNum ? `${priceNum} €` : "";
+      const effectivePrice = !offerActive && oldPriceNum ? oldPriceNum : priceNum;
+      const priceStr = effectivePrice ? `${effectivePrice} €` : "";
       const oldStr = offerActive && oldPriceNum ? `${oldPriceNum} €` : null;
       const row = {
         category: String(form.get("category") || ""),
@@ -388,11 +402,12 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
 
           <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
             <label className="flex items-center gap-2 text-sm font-bold">
-              <input type="checkbox" checked={offerActive} onChange={(e) => setOfferActive(e.target.checked)} />
+              <input type="checkbox" checked={offerActive} onChange={(e) => handleOfferToggle(e.target.checked)} />
               Angebot / Aktion aktiv
             </label>
             <p className="mt-1 text-xs text-muted-foreground">
               Der aktuelle Preis wird zum Aktionspreis. Der alte Preis wird durchgestrichen darüber angezeigt.
+              Beim Deaktivieren wird automatisch der ursprüngliche Preis wiederhergestellt.
             </p>
 
             {offerActive && (
