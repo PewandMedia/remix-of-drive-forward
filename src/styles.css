@@ -162,8 +162,8 @@
   h1:hover, h2:hover {
     color: var(--brand);
     text-shadow:
-      0 0 18px color-mix(in oklab, var(--brand) 55%, transparent),
-      0 0 38px color-mix(in oklab, var(--brand) 30%, transparent);
+      0 0 10px color-mix(in oklab, var(--brand) 35%, transparent),
+      0 0 22px color-mix(in oklab, var(--brand) 18%, transparent);
   }
 }
 
@@ -200,8 +200,8 @@
   &:hover {
     color: var(--brand);
     text-shadow:
-      0 0 18px color-mix(in oklab, var(--brand) 55%, transparent),
-      0 0 38px color-mix(in oklab, var(--brand) 30%, transparent);
+      0 0 10px color-mix(in oklab, var(--brand) 35%, transparent),
+      0 0 22px color-mix(in oklab, var(--brand) 18%, transparent);
   }
 }
 
