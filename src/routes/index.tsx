@@ -420,6 +420,14 @@ function Index() {
                   </h3>
                   <p
                     className={[
+                      "mb-1 text-[9px] font-bold leading-tight sm:hidden",
+                      live ? "text-muted-foreground" : featured ? "text-white/70" : "text-muted-foreground",
+                    ].join(" ")}
+                  >
+                    {c.mobileShort}
+                  </p>
+                  <p
+                    className={[
                       "mb-4 hidden text-xs font-semibold uppercase tracking-wider sm:mb-6 sm:block",
                       live ? "text-muted-foreground" : featured ? "text-white/60" : "text-muted-foreground",
                     ].join(" ")}
