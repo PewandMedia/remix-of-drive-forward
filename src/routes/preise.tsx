@@ -25,9 +25,9 @@ export const Route = createFileRoute("/preise")({
   head: () => ({
     meta: [
       { title: "Preise Fahrschule Bochum | MIRO-DRIVE" },
-      { name: "description", content: "Transparente Preise für deinen Führerschein in Bochum. Klasse B, B197, Auffrischungsstunden und Erste-Hilfe-Kurs bei MIRO-DRIVE anfragen." },
+      { name: "description", content: "Transparente Preise für deinen Führerschein in Bochum. Klasse B, B197, B78 und Erste-Hilfe-Kurs bei MIRO-DRIVE anfragen." },
       { property: "og:title", content: "Preise Fahrschule Bochum | MIRO-DRIVE" },
-      { property: "og:description", content: "Transparente Preise deiner Fahrschule in Bochum – Klasse B, B197, Auffrischungsstunden & Erste-Hilfe-Kurs." },
+      { property: "og:description", content: "Transparente Preise deiner Fahrschule in Bochum – Klasse B, B197, B78 & Erste-Hilfe-Kurs." },
       { property: "og:url", content: "/preise" },
     ],
     links: [{ rel: "canonical", href: "/preise" }],

@@ -360,7 +360,7 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
                 {applyAllClasses && !isEdit ? (
                   <p className="text-xs text-muted-foreground">Wird automatisch für alle Klassen angelegt.</p>
                 ) : (
-                  <Input name="category" required defaultValue={initial?.category} placeholder="Klasse B / B197 / Auffrischungsstunden / Erste-Hilfe-Kurs" />
+                  <Input name="category" required defaultValue={initial?.category} placeholder="Klasse B / B197 / B78 / Erste-Hilfe-Kurs" />
                 )}
               </div>
               <div><Label>Titel</Label><Input name="title" required defaultValue={initial?.title} /></div>

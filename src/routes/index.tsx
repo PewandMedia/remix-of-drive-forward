@@ -6,6 +6,8 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import logoAsset from "@/assets/miro-logo.png.asset.json";
 import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
+import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
+import imgB197 from "@/assets/leistungen/b197.jpg";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
@@ -19,7 +21,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Fahrschule Bochum | MIRO-DRIVE – Führerschein Klasse B & B197" },
-      { name: "description", content: "MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, Auffrischungsstunden, Erste-Hilfe-Kurs und persönliche Beratung. Jetzt anmelden." },
+      { name: "description", content: "MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, B78, Erste-Hilfe-Kurs und persönliche Beratung. Jetzt anmelden." },
       { property: "og:title", content: "Fahrschule Bochum | MIRO-DRIVE" },
       { property: "og:description", content: "Moderne Fahrschule in Bochum – Klasse B, B197, Fahrstunden & Erste-Hilfe-Kurs. Jetzt per WhatsApp anmelden." },
       { property: "og:url", content: "/" },
@@ -570,30 +572,44 @@ function Index() {
 
       {/* SERVICES TEASER */}
       <section className="py-20">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Leistungen der Fahrschule Bochum</span>
-            <h2 className="mt-2 text-4xl sm:text-5xl">Führerschein Klasse B, B197 & Auffrischungsstunden in Bochum.</h2>
-            <p className="mt-4 max-w-lg text-muted-foreground">
-              Ob Führerschein Klasse B in Bochum, B197 oder Auffrischungsstunden – MIRO-DRIVE bietet dir eine
-              moderne Ausbildung passend zu deinem Ziel: Theorieunterricht, Fahrstunden in Bochum, Sonderfahrten und
-              Erste-Hilfe-Kurs.
-            </p>
-            <Link to="/leistungen" className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-foreground/90">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Leistungen der Fahrschule Bochum</span>
+              <h2 className="mt-2 text-4xl sm:text-5xl">Führerschein Klasse B, B197 & B78 in Bochum.</h2>
+              <p className="mt-4 max-w-lg text-muted-foreground">
+                MIRO-DRIVE bietet dir eine moderne Ausbildung passend zu deinem Ziel: Theorieunterricht, Fahrstunden in Bochum, Sonderfahrten und Erste-Hilfe-Kurs.
+              </p>
+            </div>
+            <Link to="/leistungen" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
               Alle Leistungen ansehen <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {[
-              { icon: GraduationCap, label: "Klasse B" },
-              { icon: Sparkles, label: "Klasse B197" },
-              { icon: Cog, label: "Klasse B78" },
-              { icon: Clock, label: "Auffrischungs­stunden" },
+              { image: imgKlasseB, title: "Klasse B", text: "Der klassische Führerschein mit Schaltgetriebe.", to: "/leistungen" },
+              { image: imgB197, title: "Klasse B197", text: "Automatik lernen – Schalter fahren dürfen.", to: "/leistungen" },
+              { image: imgKlasseB, title: "Klasse B78", text: "Reine Automatik – schnell & entspannt.", to: "/leistungen" },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl border bg-white p-6">
-                <s.icon className="h-7 w-7 text-primary" />
-                <p className="mt-4 font-bold">{s.label}</p>
-              </div>
+              <Link key={s.title} to={s.to} className="group flex flex-col overflow-hidden rounded-2xl border bg-white transition-all hover:-translate-y-1 hover:shadow-2xl">
+                <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                  <img
+                    src={s.image}
+                    alt={s.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-black/0 to-black/0" />
+                </div>
+                <div className="flex flex-1 flex-col p-3 sm:p-5">
+                  <h3 className="font-display text-sm leading-tight sm:text-lg">{s.title}</h3>
+                  <p className="mt-1 flex-1 text-xs text-muted-foreground sm:text-sm">{s.text}</p>
+                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary group-hover:underline sm:text-sm">
+                    Mehr erfahren <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

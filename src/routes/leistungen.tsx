@@ -1,20 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import { Car, GraduationCap, BookOpen, Wrench, Sun, RotateCcw, Heart } from "lucide-react";
+import { Car, GraduationCap, BookOpen, Wrench, Sun, Heart } from "lucide-react";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
 import imgTheorie from "@/assets/leistungen/theorie.jpg";
 import imgPraxis from "@/assets/leistungen/praxis.jpg";
 import imgSonder from "@/assets/leistungen/sonderfahrten.jpg";
-import imgAuffrischung from "@/assets/leistungen/auffrischung.jpg";
+
 import imgErsteHilfe from "@/assets/leistungen/erste-hilfe.jpg";
 
 export const Route = createFileRoute("/leistungen")({
   head: () => ({
     meta: [
       { title: "Führerschein Bochum | Klasse B, B197 & Fahrstunden | MIRO-DRIVE" },
-      { name: "description", content: "Moderne Fahrausbildung in Bochum: Klasse B, B197, Theorieunterricht, Praxisstunden, Sonderfahrten und Auffrischungsstunden bei MIRO-DRIVE." },
+      { name: "description", content: "Moderne Fahrausbildung in Bochum: Klasse B, B197, B78, Theorieunterricht, Praxisstunden und Sonderfahrten bei MIRO-DRIVE." },
       { property: "og:title", content: "Führerschein Bochum | Klasse B & B197 | MIRO-DRIVE" },
       { property: "og:description", content: "Alle Leistungen deiner Fahrschule in Bochum – Klasse B, B197, Fahrstunden, Sonderfahrten & Erste-Hilfe-Kurs." },
       { property: "og:url", content: "/leistungen" },
@@ -30,7 +30,6 @@ const services = [
   { icon: BookOpen, image: imgTheorie, title: "Theorieunterricht in Bochum", text: "Unser Theorieunterricht in Bochum ist verständlich, strukturiert und praxisnah – optimale Vorbereitung auf deine Theorieprüfung.", cta: "Termine erfragen", to: "/kontakt" },
   { icon: Wrench, image: imgPraxis, title: "Fahrstunden in Bochum", text: "In den Fahrstunden in Bochum lernst du Schritt für Schritt sicheres Fahren im echten Straßenverkehr in Bochum und Umgebung.", cta: "Stunde buchen", to: "/kontakt" },
   { icon: Sun, image: imgSonder, title: "Sonderfahrten", text: "Wir bereiten dich professionell auf Überlandfahrten, Autobahnfahrten und Nachtfahrten rund um Bochum und Herne vor.", cta: "Mehr erfahren", to: "/kontakt" },
-  { icon: RotateCcw, image: imgAuffrischung, title: "Auffrischungsstunden in Bochum", text: "Du hast deinen Führerschein bereits, fühlst dich aber unsicher? Mit Auffrischungsstunden bei MIRO-DRIVE gewinnst du wieder Sicherheit im Straßenverkehr.", cta: "Termin anfragen", to: "/kontakt" },
   { icon: Heart, image: imgErsteHilfe, title: "Erste-Hilfe-Kurs Bochum", text: "Für deinen Führerschein brauchst du einen Erste-Hilfe-Kurs. Bei MIRO-DRIVE kannst du dich informieren und direkt eine Anfrage stellen.", cta: "Kurs anfragen", to: "/erste-hilfe-kurs" },
 ];
 

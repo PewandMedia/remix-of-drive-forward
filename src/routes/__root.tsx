@@ -78,8 +78,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Fahrschule Bochum | MIRO-DRIVE – Führerschein Klasse B & B197" },
-      { name: "description", content: "MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, Auffrischungsstunden, Erste-Hilfe-Kurs und persönliche Beratung. Jetzt anmelden." },
-      { name: "keywords", content: "Fahrschule Bochum, Fahrschule in Bochum, Fahrschule Bochum Innenstadt, Fahrschule Rathaus Bochum, Fahrschule Bochum Riemke, Führerschein Bochum, Führerschein Klasse B Bochum, B197 Bochum, Erste-Hilfe-Kurs Bochum, Fahrstunden Bochum, Auffrischungsstunden Bochum, beste Fahrschule Bochum, moderne Fahrschule Bochum, Fahrschule Herne, Fahrschule NRW" },
+      { name: "description", content: "MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, B78, Erste-Hilfe-Kurs und persönliche Beratung. Jetzt anmelden." },
+      { name: "keywords", content: "Fahrschule Bochum, Fahrschule in Bochum, Fahrschule Bochum Innenstadt, Fahrschule Rathaus Bochum, Fahrschule Bochum Riemke, Führerschein Bochum, Führerschein Klasse B Bochum, B197 Bochum, B78 Bochum, Erste-Hilfe-Kurs Bochum, Fahrstunden Bochum, beste Fahrschule Bochum, moderne Fahrschule Bochum, Fahrschule Herne, Fahrschule NRW" },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "DE-NW" },
       { name: "geo.placename", content: "Bochum" },
@@ -107,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": ["LocalBusiness", "DrivingSchool"],
           name: "MIRO-DRIVE Fahrschule",
           description:
-            "Moderne Fahrschule in Bochum für Führerschein Klasse B, B197, Auffrischungsstunden und Erste-Hilfe-Kurs. Persönliche Betreuung in Bochum Innenstadt, Rathaus Bochum, Bochum Riemke und Umgebung.",
+            "Moderne Fahrschule in Bochum für Führerschein Klasse B, B197, B78 und Erste-Hilfe-Kurs. Persönliche Betreuung in Bochum Innenstadt, Rathaus Bochum, Bochum Riemke und Umgebung.",
           image: "/favicon.ico",
           address: {
             "@type": "PostalAddress",

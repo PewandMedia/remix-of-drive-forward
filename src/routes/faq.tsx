@@ -3,10 +3,10 @@ import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const FAQS = [
-  { q: "Ist MIRO-DRIVE eine Fahrschule in Bochum?", a: "Ja, MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, Auffrischungsstunden und Anfragen zum Erste-Hilfe-Kurs." },
+  { q: "Ist MIRO-DRIVE eine Fahrschule in Bochum?", a: "Ja, MIRO-DRIVE ist deine moderne Fahrschule in Bochum für Klasse B, B197, B78 und Anfragen zum Erste-Hilfe-Kurs." },
   { q: "Ist MIRO-DRIVE für Bochum Innenstadt und Riemke geeignet?", a: "Ja, MIRO-DRIVE richtet sich an Fahrschüler aus Bochum Innenstadt, der Nähe vom Rathaus Bochum, Bochum Riemke, Herne und Umgebung." },
   { q: "Kann ich mich direkt online anmelden?", a: "Du kannst deine Anmeldung direkt über WhatsApp, telefonisch oder über das Kontaktformular starten. Die eigentliche Anmeldung erfolgt persönlich in einer unserer Filialen in Bochum." },
-  { q: "Bietet MIRO-DRIVE Klasse B und B197 an?", a: "Ja, auf der Website werden Klasse B und B197 als Leistungen dargestellt. Zusätzlich bieten wir Klasse B78 und Auffrischungsstunden an." },
+  { q: "Bietet MIRO-DRIVE Klasse B und B197 an?", a: "Ja, auf der Website werden Klasse B und B197 als Leistungen dargestellt. Zusätzlich bieten wir Klasse B78 an." },
   { q: "Kann ich einen Erste-Hilfe-Kurs anfragen?", a: "Ja, über die Website kannst du eine Anfrage für einen Erste-Hilfe-Kurs in Bochum stellen – jeden Monat direkt bei MIRO-DRIVE." },
   { q: "Gibt es individuelle Angebote?", a: "Ja, MIRO-DRIVE kann individuelle Angebote für Anmeldung, Ausbildungspakete oder Kombi-Angebote erstellen – frag einfach per WhatsApp an." },
   { q: "Warum sollte ich MIRO-DRIVE als Fahrschule in Bochum wählen?", a: "MIRO-DRIVE verbindet moderne Fahrzeuge, persönliche Betreuung, transparente Preise und eine stressfreie Ausbildung. Mit 5,0 Sternen und über 549 Google-Bewertungen ist MIRO-DRIVE eine starke Wahl für deinen Führerschein in Bochum." },
