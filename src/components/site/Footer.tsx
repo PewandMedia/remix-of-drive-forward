@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Phone, Mail, MapPin, Navigation } from "lucide-react";
-import logoAsset from "@/assets/miro-logo.png.asset.json";
+import logoAsset from "@/assets/miro-drive-logo.svg.asset.json";
 import { CONTACT, NAV_LINKS } from "@/lib/contact";
 import { LOCATIONS, navigationUrl, fullAddress } from "@/lib/locations";
 

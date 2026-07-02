@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, Sparkles } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import logoAsset from "@/assets/miro-logo.png.asset.json";
+import logoAsset from "@/assets/miro-drive-logo.svg.asset.json";
 import { NAV_LINKS } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
