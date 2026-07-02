@@ -439,33 +439,37 @@ function Index() {
                   <div
                     className={[
                       "flex items-end justify-between border-t pt-3 sm:pt-6",
-                      featured ? "border-white/10" : "border-black/10",
+                      live ? "border-primary/20" : featured ? "border-white/10" : "border-black/10",
                     ].join(" ")}
                   >
                     <div className="min-w-0">
                       <p
                         className={[
                           "mb-1 text-[8px] font-black uppercase tracking-[0.15em] sm:text-[10px] sm:tracking-[0.2em]",
-                          featured ? "text-white/40" : "text-muted-foreground",
+                          live ? "text-primary/60" : featured ? "text-white/40" : "text-muted-foreground",
                         ].join(" ")}
                       >
                         Ab
                       </p>
                       {live && row?.old_price && (
-                        <p className={["text-[10px] font-semibold line-through sm:text-sm", featured ? "text-white/50" : "text-muted-foreground"].join(" ")}>{row.old_price}</p>
+                        <p className={["text-sm font-semibold line-through sm:text-lg", live ? "text-muted-foreground" : featured ? "text-white/50" : "text-muted-foreground"].join(" ")}>{row.old_price}</p>
                       )}
-                      <p className={["font-display text-primary", live ? "text-2xl sm:text-5xl drop-shadow-sm" : "text-xl sm:text-4xl"].join(" ")}>{grund}</p>
+                      <p className={["font-display text-primary", live ? "text-3xl sm:text-6xl drop-shadow-sm" : "text-xl sm:text-4xl"].join(" ")}>{grund}</p>
                       {remaining && (
-                        <p className="mt-1 text-[9px] font-bold text-primary sm:text-[11px]">⏰ {remaining}</p>
+                        <p className="mt-1 inline-flex items-center gap-1 text-[9px] font-bold text-primary sm:text-[11px]">
+                          <Timer className="h-3 w-3" /> {remaining}
+                        </p>
                       )}
                       {live && row?.offer_note && (
-                        <p className={["mt-1 hidden text-[10px] italic leading-snug sm:block", featured ? "text-white/70" : "text-muted-foreground"].join(" ")}>{row.offer_note}</p>
+                        <p className={["mt-1 hidden text-[10px] italic leading-snug sm:block", live ? "text-muted-foreground" : featured ? "text-white/70" : "text-muted-foreground"].join(" ")}>{row.offer_note}</p>
                       )}
                     </div>
                     <div
                       className={[
                         "hidden h-10 w-10 items-center justify-center transition-colors sm:flex",
-                        featured
+                        live
+                          ? "bg-primary text-primary-foreground group-hover:bg-foreground"
+                          : featured
                           ? "bg-white/10 text-white group-hover:bg-primary"
                           : "border border-black/10 text-foreground group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground",
                       ].join(" ")}
