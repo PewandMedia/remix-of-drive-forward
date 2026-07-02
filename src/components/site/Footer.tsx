@@ -32,7 +32,7 @@ export function Footer() {
             <a href={CONTACT.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp" className="rounded-full bg-[#25D366] p-2.5 hover:scale-105 transition-transform">
               <WhatsAppIcon className="h-5 w-5" />
             </a>
-            <a href={CONTACT.instagram} target="_blank" rel="noopener" aria-label="Instagram" className="rounded-full p-2.5 hover:scale-105 transition-transform" style={{ background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50 50%, #cc2366 75%, #bc1888 100%)' }}>
+            <a href={CONTACT.instagram} target="_blank" rel="noopener" aria-label="Instagram" className="rounded-full p-2.5 hover:scale-105 transition-transform" style={{ background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
               <Instagram className="h-5 w-5" />
             </a>
             <a href={CONTACT.tiktok} target="_blank" rel="noopener" aria-label="TikTok" className="rounded-full bg-black p-2.5 text-white hover:scale-105 transition-transform">
