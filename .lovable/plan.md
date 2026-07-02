@@ -1,14 +1,17 @@
-## Problem
-Auf der Startseite (`/`) scrollt ein Klick auf das Logo im Header nicht nach oben. Der `<Link to="/">` verhält sich in TanStack Router bei bereits aktiver Route passiv (kein Reload, kein Scroll).
+## Ziel
+Den roten Hover-Glow auf h1/h2-Überschriften deutlich abschwächen.
 
-## Lösung
-In `src/components/site/Navbar.tsx` den Logo-`<Link>` erweitern:
-- `onClick`-Handler hinzufügen.
-- Wenn `pathname === "/"`, `event.preventDefault()` aufrufen und stattdessen `window.scrollTo({ top: 0, behavior: "smooth" })` ausführen.
-- Auf Unterseiten bleibt der normale Router-Navigation zu `/` erhalten.
+## Status quo
+In `src/styles.css` erzeugen `h1:hover, h2:hover` und `@utility headline-glow` einen zweilagigen `text-shadow`:
+- Layer 1: `0 0 18px` bei 55 % Brand-Rot
+- Layer 2: `0 0 38px` bei 30 % Brand-Rot
+
+## Änderung
+Beide Stellen auf einen sanfteren Glow reduzieren:
+- Layer 1: `0 0 10px` bei 35 % Brand-Rot
+- Layer 2: `0 0 22px` bei 18 % Brand-Rot
+
+Das macht den Effekt weniger dominant, behält aber die rote Akzentuierung beim Hover.
 
 ## Datei
-- `src/components/site/Navbar.tsx` (ca. Zeile 72)
-
-## Aufwand
-1 kleiner Edit, keine neuen Abhängigkeiten.
+- `src/styles.css` (Zeile 164–166 und 202–204)
