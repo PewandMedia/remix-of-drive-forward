@@ -1,7 +1,7 @@
 export const CONTACT = {
   whatsapp: "https://wa.me/491234567890",
   whatsappText: "+49 123 4567890",
-  instagram: "https://instagram.com/mirodrive",
+  instagram: "https://instagram.com/miro_drive",
   tiktok: "https://tiktok.com/@mirodrive",
   phone: "+491234567890",
   phoneDisplay: "+49 123 4567890",
