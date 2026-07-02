@@ -336,10 +336,11 @@ function Index() {
           const rem = offerRow ? formatRemaining(offerRow.offer_valid_until) : null;
           const label = offerRow?.offer_label || "Angebot";
           return (
-            <div className="mb-6 overflow-hidden rounded-3xl border-2 border-primary bg-gradient-to-br from-[#7a0010] via-primary to-[#4a0008] p-5 text-white shadow-2xl shadow-primary/30 sm:mb-8 sm:p-8">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="relative mb-6 overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-primary via-[#c8102e] to-[#7a0010] p-5 text-white shadow-2xl shadow-primary/40 ring-1 ring-inset ring-white/20 sm:mb-8 sm:p-8">
+              <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_0%_0%,rgba(255,255,255,0.25),transparent_55%),radial-gradient(80%_60%_at_100%_100%,rgba(255,180,180,0.18),transparent_60%)]" />
+              <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur sm:text-xs">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur sm:text-xs">
                     <Flame className="h-3.5 w-3.5 animate-pulse" /> Jetzt sparen
                   </div>
                   <h3 className="mt-3 font-display text-2xl leading-tight sm:text-4xl">

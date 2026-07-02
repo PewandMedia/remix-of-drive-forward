@@ -1,23 +1,14 @@
-Ich passe die Social-Buttons so an, dass nicht mehr die generischen Icons verwendet werden.
+## Angebots-Banner (Startseite) verschönern
 
-Plan:
-1. **Instagram-Logo ersetzen**
-   - Auf der Kontakt-Seite und im Footer wird das generische `lucide-react` Instagram-Icon entfernt.
-   - Stattdessen kommt ein echtes Instagram-Logo im typischen Farbverlauf/Original-Look in den Button.
+Aktuell nutzt das Banner den Gradient `from-[#7a0010] via-primary to-[#4a0008]` — das `#4a0008` ist fast schwarz und wirkt matschig/hässlich.
 
-2. **TikTok-Logo ersetzen**
-   - Das aktuelle einfache einfarbige TikTok-SVG wird durch ein echtes TikTok-Logo mit schwarzer Basis und cyan/rotem Offset-Look ersetzt.
-   - Dasselbe Logo wird überall einheitlich genutzt, nicht zwei verschiedene Varianten.
+### Änderung in `src/routes/index.tsx` (Zeile 339)
 
-3. **Kontakt-Seite korrigieren**
-   - Instagram und TikTok bleiben als zwei getrennte Buttons.
-   - Jeder Button führt zum richtigen Account.
-   - Die Logos stehen sichtbar links im Button und sehen wie echte Social-Media-Logos aus.
+Reines, edles Rot-Gradient statt Rot-zu-Schwarz:
 
-4. **Footer angleichen**
-   - Footer nutzt dieselben original wirkenden Instagram- und TikTok-Logos wie die Kontakt-Seite.
-   - Die Social-Buttons behalten ihre runde, hochwertige Optik.
+- Gradient tauschen auf ein warmes, lebendiges Rot-Verlauf: `bg-gradient-to-br from-primary via-[#c8102e] to-[#7a0010]` (kein Schwarz mehr, tiefes Bordeaux als dunkelster Punkt).
+- Dazu leichtes Radial-Glow-Overlay (via absolute `div` mit `bg-[radial-gradient(...)]`) für Premium-Look.
+- Innerer Border-Highlight (`ring-1 ring-white/20`) und weicherer Shadow (`shadow-primary/40`).
+- Chip-Hintergrund von `bg-white/15` auf `bg-white/20` für mehr Kontrast.
 
-Technisch:
-- Ich erstelle/ersetze zentrale Icon-Komponenten für Instagram und TikTok.
-- `src/routes/kontakt.tsx` und `src/components/site/Footer.tsx` verwenden dann diese Komponenten statt `lucide-react` bzw. dem alten TikTokIcon.
+Keine Layout- oder Text-Änderungen, nur die Farben/Effekte des Banners.
