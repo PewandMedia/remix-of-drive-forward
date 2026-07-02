@@ -10,7 +10,11 @@ import { cn } from "@/lib/utils";
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const mobileNavLinks = NAV_LINKS;
+  const mobileNavLinks = [
+    ...NAV_LINKS,
+    { to: "/faq", label: "FAQ" },
+    { to: "/ueber-uns", label: "Über uns" },
+  ];
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { data: hasOffer = false } = useQuery({
     queryKey: ["nav-active-offer"],
@@ -99,12 +103,6 @@ export function Navbar() {
                 )}
               </Link>
             ))}
-            <Link
-              to="/kontakt"
-              className="ml-3 inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03]"
-            >
-              Jetzt anmelden
-            </Link>
           </nav>
 
           <button
@@ -150,13 +148,6 @@ export function Navbar() {
                 )}
               </Link>
             ))}
-            <Link
-              to="/kontakt"
-              onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-bold text-primary-foreground"
-            >
-              Jetzt anmelden
-            </Link>
           </nav>
         </div>
       )}
