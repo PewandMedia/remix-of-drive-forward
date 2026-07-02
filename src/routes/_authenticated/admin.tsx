@@ -215,8 +215,6 @@ const OFFER_PRESETS: { label: string; note?: string; days?: number }[] = [
   { label: "🌸 Frühlings-Aktion", note: "Neue Saison, neuer Führerschein.", days: 30 },
   { label: "🖤 Black Friday", note: "Nur wenige Tage – Rabatt-Wochenende bei MIRO-DRIVE.", days: 4 },
   { label: "🎓 Ferien-Special", note: "Ideal für Schüler & Studenten in den Ferien.", days: 30 },
-  { label: "💐 Muttertag-Aktion", note: "Verschenke Freiheit – Führerschein zum Muttertag.", days: 14 },
-  { label: "👔 Vatertag-Aktion", note: "Der Klassiker unter den Geschenken.", days: 14 },
 ];
 
 function toDateInput(iso?: string | null): string {
@@ -261,7 +259,6 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
   function applyPreset(preset: typeof OFFER_PRESETS[number]) {
     setOfferActive(true);
     setOfferLabel(preset.label);
-    if (preset.note && !offerNote) setOfferNote(preset.note);
     if (preset.days) {
       const today = new Date();
       const end = new Date();
@@ -419,6 +416,14 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
                       </button>
                     ))}
                   </div>
+                  {(() => {
+                    const active = OFFER_PRESETS.find((p) => p.label === offerLabel);
+                    return active?.note ? (
+                      <p className="mt-2 rounded-md bg-white/70 px-2 py-1.5 text-[11px] italic leading-snug text-muted-foreground">
+                        <span className="font-semibold not-italic text-foreground">Info: </span>{active.note}
+                      </p>
+                    ) : null;
+                  })()}
                 </div>
 
                 <div className="mt-3 grid grid-cols-2 gap-3">
