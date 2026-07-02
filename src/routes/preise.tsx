@@ -285,6 +285,9 @@ function PricesPage() {
                               )}
                             </div>
                           )}
+                          {live && (it as any).offer_note && (
+                            <p className="mt-1 text-[10px] italic leading-snug text-muted-foreground sm:text-[11px]">{(it as any).offer_note}</p>
+                          )}
                         </div>
                         <div className="flex shrink-0 flex-col items-end gap-0.5">
                           {live && it.old_price && (
