@@ -11,7 +11,7 @@ import imgB197 from "@/assets/leistungen/b197.jpg";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
 import { ReviewsSection } from "@/components/site/ReviewsSection";
 import { InstagramSection } from "@/components/site/InstagramSection";
 import { isOfferLive, formatRemaining } from "@/lib/offer";
