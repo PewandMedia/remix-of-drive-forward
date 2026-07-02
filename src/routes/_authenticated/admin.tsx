@@ -76,6 +76,53 @@ function AdminPage() {
 }
 
 /* ============== PRICES ============== */
+const CLASS_CATEGORIES = ["Klasse B", "Klasse B197", "Klasse B78"] as const;
+
+type PriceRow = any;
+type PriceGroup = {
+  key: string;
+  title: string;
+  isClassGroup: boolean;
+  rows: PriceRow[];
+  representative: PriceRow;
+  categories: string[];
+};
+
+function groupPrices(rows: PriceRow[]): PriceGroup[] {
+  const groups: PriceGroup[] = [];
+  const classBuckets = new Map<string, PriceRow[]>();
+  for (const r of rows) {
+    if ((CLASS_CATEGORIES as readonly string[]).includes(r.category)) {
+      const k = r.title;
+      if (!classBuckets.has(k)) classBuckets.set(k, []);
+      classBuckets.get(k)!.push(r);
+    } else {
+      groups.push({
+        key: `single:${r.id}`,
+        title: r.title,
+        isClassGroup: false,
+        rows: [r],
+        representative: r,
+        categories: [r.category],
+      });
+    }
+  }
+  for (const [title, bucket] of classBuckets) {
+    const sorted = [...bucket].sort(
+      (a, b) => CLASS_CATEGORIES.indexOf(a.category) - CLASS_CATEGORIES.indexOf(b.category),
+    );
+    groups.push({
+      key: `class:${title}`,
+      title,
+      isClassGroup: true,
+      rows: sorted,
+      representative: sorted[0],
+      categories: sorted.map((r) => r.category),
+    });
+  }
+  return groups;
+}
+
 function PricesAdmin() {
   const qc = useQueryClient();
   const { data = [] } = useQuery({
@@ -85,13 +132,20 @@ function PricesAdmin() {
       if (error) throw error; return data;
     },
   });
+  const groups = groupPrices(data);
+  const invalidateAll = () => {
+    qc.invalidateQueries({ queryKey: ["admin-prices"] });
+    qc.invalidateQueries({ queryKey: ["prices"] });
+    qc.invalidateQueries({ queryKey: ["home-prices"] });
+    qc.invalidateQueries({ queryKey: ["nav-active-offer"] });
+  };
   const del = useMutation({
-    mutationFn: async (id: string) => { const { error } = await supabase.from("prices").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-prices"] }); qc.invalidateQueries({ queryKey: ["prices"] }); toast.success("Gelöscht"); },
+    mutationFn: async (ids: string[]) => { const { error } = await supabase.from("prices").delete().in("id", ids); if (error) throw error; },
+    onSuccess: () => { invalidateAll(); toast.success("Gelöscht"); },
   });
   const toggleActive = useMutation({
-    mutationFn: async (p: { id: string; active: boolean }) => { const { error } = await supabase.from("prices").update({ active: p.active }).eq("id", p.id); if (error) throw error; },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-prices"] }); qc.invalidateQueries({ queryKey: ["prices"] }); },
+    mutationFn: async (p: { ids: string[]; active: boolean }) => { const { error } = await supabase.from("prices").update({ active: p.active }).in("id", p.ids); if (error) throw error; },
+    onSuccess: () => { invalidateAll(); },
   });
 
   return (
@@ -102,32 +156,49 @@ function PricesAdmin() {
       <div className="overflow-x-auto rounded-xl border bg-white">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left text-xs uppercase">
-            <tr><th className="p-3">Kategorie</th><th className="p-3">Titel</th><th className="p-3">Preis</th><th className="p-3">Angebot</th><th className="p-3">Aktiv</th><th className="p-3 text-right">Aktion</th></tr>
+            <tr><th className="p-3">Gilt für</th><th className="p-3">Titel</th><th className="p-3">Preis</th><th className="p-3">Angebot</th><th className="p-3">Aktiv</th><th className="p-3 text-right">Aktion</th></tr>
           </thead>
           <tbody>
-            {data.map((p) => (
-              <tr key={p.id} className="border-t">
-                <td className="p-3 font-bold">{p.category}</td>
-                <td className="p-3">{p.title}<div className="text-xs text-muted-foreground">{p.description}</div></td>
-                <td className="p-3">
-                  {p.offer_active && p.old_price && (
-                    <span className="mr-1 text-xs text-muted-foreground line-through">{p.old_price}</span>
-                  )}
-                  <span className="text-primary">{p.price}</span>
-                </td>
-                <td className="p-3">
-                  {p.offer_active ? (
-                    <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-black uppercase text-primary-foreground">
-                      {p.offer_label || "Aktion"}
-                    </span>
-                  ) : (
-                    <span className="text-xs text-muted-foreground">–</span>
-                  )}
-                </td>
-                <td className="p-3"><Switch checked={p.active} onCheckedChange={(v) => toggleActive.mutate({ id: p.id, active: v })} /></td>
-                <td className="p-3"><div className="flex justify-end gap-2"><PriceDialog initial={p} /><Button size="icon" variant="ghost" onClick={() => del.mutate(p.id)}><Trash2 className="h-4 w-4" /></Button></div></td>
-              </tr>
-            ))}
+            {groups.map((g) => {
+              const p = g.representative;
+              const allActive = g.rows.every((r) => r.active);
+              const ids = g.rows.map((r) => r.id);
+              return (
+                <tr key={g.key} className="border-t">
+                  <td className="p-3 font-bold">
+                    {g.isClassGroup ? (
+                      <div className="flex flex-wrap gap-1">
+                        {g.categories.map((c) => (
+                          <span key={c} className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-black uppercase text-primary">
+                            {c.replace("Klasse ", "")}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      p.category
+                    )}
+                  </td>
+                  <td className="p-3">{g.title}<div className="text-xs text-muted-foreground">{p.description}</div></td>
+                  <td className="p-3">
+                    {p.offer_active && p.old_price && (
+                      <span className="mr-1 text-xs text-muted-foreground line-through">{p.old_price}</span>
+                    )}
+                    <span className="text-primary">{p.price}</span>
+                  </td>
+                  <td className="p-3">
+                    {p.offer_active ? (
+                      <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-black uppercase text-primary-foreground">
+                        {p.offer_label || "Aktion"}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">–</span>
+                    )}
+                  </td>
+                  <td className="p-3"><Switch checked={allActive} onCheckedChange={(v) => toggleActive.mutate({ ids, active: v })} /></td>
+                  <td className="p-3"><div className="flex justify-end gap-2"><PriceDialog initial={p} group={g} /><Button size="icon" variant="ghost" onClick={() => del.mutate(ids)}><Trash2 className="h-4 w-4" /></Button></div></td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -135,10 +206,12 @@ function PricesAdmin() {
   );
 }
 
-function PriceDialog({ initial }: { initial?: any }) {
+function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const isEdit = !!initial;
+  const isGroupEdit = !!group && group.isClassGroup;
+  const [applyAllClasses, setApplyAllClasses] = useState(!isEdit);
   const save = useMutation({
     mutationFn: async (form: FormData) => {
       const row = {
@@ -154,8 +227,27 @@ function PriceDialog({ initial }: { initial?: any }) {
         offer_valid_from: (form.get("offer_valid_from") as string) ? new Date(form.get("offer_valid_from") as string).toISOString() : null,
         offer_valid_until: (form.get("offer_valid_until") as string) ? new Date(form.get("offer_valid_until") as string).toISOString() : null,
       };
-      if (isEdit) { const { error } = await supabase.from("prices").update(row).eq("id", initial.id); if (error) throw error; }
-      else { const { error } = await supabase.from("prices").insert(row); if (error) throw error; }
+      if (isEdit) {
+        if (isGroupEdit) {
+          // Bulk update all rows in the group; keep per-row category/title/sort_order.
+          const { category: _c, title: _t, sort_order: _s, ...shared } = row;
+          const { error } = await supabase.from("prices").update(shared).in("id", group!.rows.map((r) => r.id));
+          if (error) throw error;
+        } else {
+          const { error } = await supabase.from("prices").update(row).eq("id", initial.id);
+          if (error) throw error;
+        }
+      } else {
+        if (applyAllClasses) {
+          const { category: _c, ...shared } = row;
+          const inserts = CLASS_CATEGORIES.map((cat) => ({ ...shared, category: cat }));
+          const { error } = await supabase.from("prices").insert(inserts);
+          if (error) throw error;
+        } else {
+          const { error } = await supabase.from("prices").insert(row);
+          if (error) throw error;
+        }
+      }
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-prices"] });
@@ -173,14 +265,43 @@ function PriceDialog({ initial }: { initial?: any }) {
                : <Button className="rounded-full"><Plus className="h-4 w-4" /> Preis hinzufügen</Button>}
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader><DialogTitle>{isEdit ? "Preis bearbeiten" : "Neuer Preis"}</DialogTitle></DialogHeader>
+        <DialogHeader>
+          <DialogTitle>
+            {isEdit ? (isGroupEdit ? `Preis „${group!.title}" bearbeiten (gilt für alle Klassen)` : "Preis bearbeiten") : "Neuer Preis"}
+          </DialogTitle>
+        </DialogHeader>
         <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3">
-          <div><Label>Kategorie</Label><Input name="category" required defaultValue={initial?.category} placeholder="Klasse B / B197 / Auffrischungsstunden / Erste-Hilfe-Kurs" /></div>
-          <div><Label>Titel</Label><Input name="title" required defaultValue={initial?.title} /></div>
+          {isGroupEdit ? (
+            <div className="rounded-lg border bg-primary/5 p-3 text-xs">
+              Änderungen greifen automatisch für: <b>{group!.categories.join(" · ")}</b>. Kategorie und Titel bleiben pro Zeile erhalten.
+              <input type="hidden" name="category" value={initial?.category} />
+              <input type="hidden" name="title" value={initial?.title} />
+              <input type="hidden" name="sort_order" value={initial?.sort_order ?? 0} />
+            </div>
+          ) : (
+            <>
+              {!isEdit && (
+                <label className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm font-bold">
+                  <input type="checkbox" checked={applyAllClasses} onChange={(e) => setApplyAllClasses(e.target.checked)} />
+                  Für alle Führerschein-Klassen anlegen (B · B197 · B78)
+                </label>
+              )}
+              <div><Label>Kategorie</Label>
+                {applyAllClasses && !isEdit ? (
+                  <p className="text-xs text-muted-foreground">Wird automatisch für alle Klassen angelegt.</p>
+                ) : (
+                  <Input name="category" required defaultValue={initial?.category} placeholder="Klasse B / B197 / Auffrischungsstunden / Erste-Hilfe-Kurs" />
+                )}
+              </div>
+              <div><Label>Titel</Label><Input name="title" required defaultValue={initial?.title} /></div>
+            </>
+          )}
           <div><Label>Beschreibung</Label><Textarea name="description" rows={2} defaultValue={initial?.description ?? ""} /></div>
           <div className="grid grid-cols-2 gap-3">
             <div><Label>Preis</Label><Input name="price" required defaultValue={initial?.price} placeholder="z. B. 60 €" /></div>
-            <div><Label>Sortierung</Label><Input name="sort_order" type="number" defaultValue={initial?.sort_order ?? 0} /></div>
+            {!isGroupEdit && (
+              <div><Label>Sortierung</Label><Input name="sort_order" type="number" defaultValue={initial?.sort_order ?? 0} /></div>
+            )}
           </div>
           <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
             <label className="flex items-center gap-2 text-sm font-bold">
