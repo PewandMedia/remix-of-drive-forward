@@ -99,12 +99,6 @@ export function Navbar() {
                 )}
               </Link>
             ))}
-            <Link
-              to="/kontakt"
-              className="ml-3 inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03]"
-            >
-              Jetzt anmelden
-            </Link>
           </nav>
 
           <button
