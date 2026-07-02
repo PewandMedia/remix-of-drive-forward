@@ -1,12 +1,5 @@
-## Footer-Logo ohne weißen Kasten
+Das MIRO-DRIVE Logo im Footer soll in Rot statt in Weiß (Invert) angezeigt werden.
 
-**Problem:** Das MIRO-DRIVE Logo im Footer liegt aktuell in einem weißen Kasten (`bg-white`), was auf dem dunklen Footer-Hintergrund (#0a0a0a) optisch störend ist. Das Logo selbst ist dunkel und wäre ohne den Kasten nicht sichtbar.
+Änderung: In `src/components/site/Footer.tsx` wird der aktuelle `invert`-Filter durch eine rotfärbende CSS-Technik ersetzt (z. B. `filter: brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(5000%) hue-rotate(350deg) brightness(95%)` oder einfacher `filter: invert(1) brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(5)`), damit das Logo in der Markenfarbe Rot erscheint und trotzdem auf dem dunklen Hintergrund gut lesbar bleibt.
 
-**Lösung:**
-1. In `src/components/site/Footer.tsx` den weißen Hintergrund-Container (`rounded-lg bg-white p-3`) um das Logo entfernen.
-2. Auf das Logo-Bild einen CSS-Filter anwenden (`brightness-0 invert`), der das gesamte Logo in reines Weiß verwandelt. So liegt es direkt auf dem dunklen Footer-Hintergrund und bleibt trotzdem perfekt lesbar.
-3. Keine neue Asset-Datei nötig – die bestehende SVG-Version wird wiederverwendet.
-
-**Technische Details:**
-- `filter: brightness(0) invert(1)` macht alle Farbanteile des SVGs zunächst schwarz und invertiert sie anschließend zu Weiß. Transparente Bereiche bleiben erhalten.
-- Tailwind-Klassen: `brightness-0 invert` auf dem `<img>`-Tag.
+Nur eine Datei betroffen: `src/components/site/Footer.tsx`.
