@@ -6,6 +6,8 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import logoAsset from "@/assets/miro-logo.png.asset.json";
 import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
+import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
+import imgB197 from "@/assets/leistungen/b197.jpg";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, HelpCircle, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy } from "lucide-react";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
