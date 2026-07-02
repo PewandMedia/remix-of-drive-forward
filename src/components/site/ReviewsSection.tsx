@@ -75,22 +75,22 @@ export function ReviewsSection() {
           {SAMPLE_REVIEWS.map((r) => (
             <article
               key={r.name}
-              className="group relative flex flex-col rounded-3xl border border-black/5 bg-white p-7 shadow-sm transition-transform hover:-translate-y-1"
+              className="group relative flex flex-col rounded-2xl border border-black/5 bg-white p-4 shadow-sm transition-transform hover:-translate-y-1 sm:rounded-3xl sm:p-7"
             >
-              <div className="flex items-center gap-3">
-                <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-sm text-white">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-xs text-white sm:h-11 sm:w-11 sm:text-sm">
                   {r.initials}
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-bold text-foreground">{r.name}</p>
-                  <p className="text-xs text-muted-foreground">{r.when}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-foreground sm:text-sm truncate">{r.name}</p>
+                  <p className="text-[10px] text-muted-foreground sm:text-xs">{r.when}</p>
                 </div>
-                <GoogleLogo className="h-5 w-5" />
+                <GoogleLogo className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
               </div>
-              <div className="mt-4">
-                <Stars size={14} />
+              <div className="mt-3 sm:mt-4">
+                <Stars size={12} />
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+              <p className="mt-2 text-xs leading-relaxed text-foreground/80 line-clamp-4 sm:mt-3 sm:text-sm sm:line-clamp-none">
                 "{r.text}"
               </p>
             </article>
