@@ -106,22 +106,40 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t bg-white lg:hidden">
-          <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4">
+        <div className="fixed inset-0 z-[60] flex animate-fade-up flex-col bg-white lg:hidden">
+          <div className="flex h-20 items-center justify-between px-4 sm:px-6">
+            <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-3">
+              <img src={logoAsset.url} alt="MIRO-DRIVE Fahrschule" className="h-10 w-auto" />
+            </Link>
+            <button
+              aria-label="Menü schließen"
+              className="rounded-md p-2"
+              onClick={() => setOpen(false)}
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          <nav className="flex flex-1 flex-col items-center justify-center gap-6 px-6">
             {NAV_LINKS.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
-                className="rounded-md px-3 py-3 text-base font-semibold text-foreground/80 hover:bg-muted"
-                activeProps={{ className: "text-primary bg-muted" }}
+                className="relative text-2xl font-bold text-foreground/80 transition-colors hover:text-primary"
+                activeProps={{ className: "text-primary" }}
                 activeOptions={{ exact: l.to === "/" }}
               >
                 {l.label}
+                {l.to === "/preise" && hasOffer && (
+                  <span className="absolute -right-14 top-0 ml-1.5 inline-flex items-center gap-1 rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground">
+                    <Sparkles className="h-2.5 w-2.5" /> Aktion
+                  </span>
+                )}
               </Link>
             ))}
             <Link
               to="/kontakt"
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground"
+              className="mt-4 inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-bold text-primary-foreground"
             >
               Jetzt anmelden
             </Link>
