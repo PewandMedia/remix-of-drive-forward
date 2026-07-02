@@ -41,6 +41,7 @@ export const Route = createFileRoute("/preise")({
 type CategoryMeta = {
   key: string;
   short: string;
+  mobileLabel: string;
   tagline: string;
   icon: typeof Car;
   featured?: boolean;
