@@ -4,7 +4,7 @@ import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { CONTACT } from "@/lib/contact";
 import { ErrorBox, NotFoundBox } from "@/components/site/QueryFallbacks";
-import { Info, Car, Cog, Sparkles, MapPin, MessageCircle, ShieldCheck, ArrowRight, Route as RouteIcon, Moon, Gauge, BookOpen, UserCheck, CheckCircle2, Timer, Flame } from "lucide-react";
+import { Car, Cog, Sparkles, MapPin, MessageCircle, ShieldCheck, ArrowRight, Route as RouteIcon, Moon, Gauge, BookOpen, UserCheck, CheckCircle2, Timer, Flame } from "lucide-react";
 import { isOfferLive, formatRemaining } from "@/lib/offer";
 import { useEffect, useState } from "react";
 
@@ -104,7 +104,6 @@ function PricesPage() {
   const cards = CATEGORIES
     .map((meta) => ({ meta, items: prices.filter((p) => p.category === meta.key) }))
     .filter((g) => g.items.length > 0);
-  const anyLiveOffer = prices.some((p: any) => isOfferLive(p));
   const tuev = prices.filter((p) => p.category === "Externe TÜV-Gebühren");
 
   return (
