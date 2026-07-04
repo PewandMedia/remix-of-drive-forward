@@ -1,0 +1,1 @@
+UPDATE public.team_members SET image_url = '/images/team/' || split_part(image_url, '/', 4) WHERE image_url LIKE '/__l5e/%';
