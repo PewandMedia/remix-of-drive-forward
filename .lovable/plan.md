@@ -1,17 +1,37 @@
-## Plan
+## Plan: Vite Server allowedHosts Fix
 
-1. **Vite-Konfiguration prüfen**
-   - Sicherstellen, dass `vite.config.ts` den Host `mirodrive.pewandmedia.de` in `server.allowedHosts` enthält.
+**Problem:** Requests an `mirodrive.pewandmedia.de` werden vom Vite-Dev-Server blockiert.
 
-2. **Host-Freigabe korrigieren**
-   - Falls nötig, `server.allowedHosts` so setzen, dass diese Domains erlaubt sind:
-     - `mirodrive.pewandmedia.de`
-     - `.pewandmedia.de`
-     - `.lovable.app`
+**Lösung:** `vite.config.ts` erweitern.
 
-3. **Preview neu laden**
-   - Danach den Dev-Server neu starten bzw. Preview aktualisieren, damit die Änderung aktiv wird.
+### Schritte
 
-## Technische Details
+1. **Datei `vite.config.ts` aktualisieren**
+   - Bestehende `allowedHosts` um `www.mirodrive.pewandmedia.de` erweitern.
+   - `host: "0.0.0.0"` unter `vite.server` hinzufügen, damit der Server extern erreichbar ist.
+   - Keine bestehenden Einträge (`mirodrive.pewandmedia.de`, `.pewandmedia.de`, `.lovable.app`) entfernen oder duplizieren.
 
-Die Fehlermeldung kommt nicht von der Webseite selbst, sondern vom lokalen Vite-Server. Er blockiert Requests, deren Hostname nicht ausdrücklich erlaubt ist. Die Lösung ist eine Ergänzung in `vite.config.ts` unter `vite.server.allowedHosts`.
+2. **Dev-Server neu starten**
+   - Nach der Konfigurationsänderung den Vite-Dev-Server neu starten, damit die neuen allowedHosts aktiv werden.
+
+### Erwartetes Ergebnis
+```typescript
+export default defineConfig({
+  tanstackStart: {
+    server: { entry: "server" },
+  },
+  vite: {
+    server: {
+      host: "0.0.0.0",
+      allowedHosts: [
+        "mirodrive.pewandmedia.de",
+        "www.mirodrive.pewandmedia.de",
+        ".pewandmedia.de",
+        ".lovable.app",
+      ],
+    },
+  },
+});
+```
+
+**Keine Änderungen an Design, Inhalten, Funktionen oder anderen Dateien.**
