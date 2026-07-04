@@ -43,16 +43,7 @@ export function fullAddress(loc: Location) {
   return `${loc.street}, ${loc.zip} ${loc.city}`;
 }
 
-/**
- * Returns a URL that opens the user's preferred navigation app with directions
- * to the given location. On iOS this prefers Apple Maps, otherwise Google Maps.
- */
 export function navigationUrl(loc: Location) {
   const destination = encodeURIComponent(fullAddress(loc));
-  if (typeof navigator !== "undefined") {
-    const ua = navigator.userAgent || "";
-    const isApple = /iPad|iPhone|iPod|Macintosh/.test(ua);
-    if (isApple) return `https://maps.apple.com/?daddr=${destination}`;
-  }
   return `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
 }

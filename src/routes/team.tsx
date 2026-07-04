@@ -27,12 +27,12 @@ export const Route = createFileRoute("/team")({
 });
 
 function Avatar({ name, src, size = "md" }: { name: string; src?: string | null; size?: "md" | "lg" }) {
-  const dim = size === "lg" ? "h-44 w-44" : "h-32 w-32";
+  const dim = size === "lg" ? "h-36 w-36 sm:h-40 sm:w-40" : "h-24 w-24 sm:h-28 sm:w-28";
   const textSize = size === "lg" ? "text-5xl" : "text-3xl";
-  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className={`${dim} rounded-full object-cover`} />;
+  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className={`${dim} shrink-0 rounded-full object-cover`} />;
   const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <div className={`flex ${dim} items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display ${textSize} text-white`}>
+    <div className={`flex ${dim} shrink-0 items-center justify-center rounded-full bg-primary font-display ${textSize} text-primary-foreground`}>
       {initials}
     </div>
   );
@@ -58,17 +58,17 @@ function TeamCard({ member, size = "md" }: { member: TeamMember; size?: "md" | "
   const bio = (member as any).bio as string | null | undefined;
 
   const isLg = size === "lg";
-  const cardSize = isLg ? "min-h-[460px] w-full max-w-md p-8 sm:p-10" : "min-h-[360px] p-5 sm:p-7";
+  const cardSize = isLg ? "min-h-[420px] w-full max-w-md p-8 sm:p-10" : "min-h-[320px] p-5 sm:p-7";
 
   return (
     <article
-      className={`flex h-full flex-col items-center rounded-2xl border bg-card ${cardSize} text-center shadow-sm transition-shadow hover:shadow-lg ${
+      className={`relative isolate flex h-full min-w-0 flex-col items-center overflow-hidden rounded-2xl border bg-card ${cardSize} text-center shadow-sm transition-shadow hover:shadow-lg ${
         isLg ? "border-primary/30" : "border-border"
       }`}
       aria-label={member.name}
     >
       <Avatar name={member.name} src={member.image_url} size={size} />
-      <h3 className={`${isLg ? "mt-6 text-3xl" : "mt-5 text-xl"} font-display text-foreground`}>{member.name}</h3>
+      <h3 className={`${isLg ? "mt-6 text-3xl" : "mt-5 text-xl"} max-w-full truncate font-display text-foreground`}>{member.name}</h3>
       <p className={`mt-1 ${isLg ? "text-base" : "text-sm"} font-bold text-primary`}>{member.role}</p>
       {languages.length > 0 && (
         <div className={`${isLg ? "mt-4" : "mt-3"} flex flex-wrap justify-center gap-1.5`}>
@@ -96,7 +96,7 @@ function TeamPage() {
   if (birtan) otherInstructors = [...otherInstructors, birtan];
 
   const renderGroup = (members: typeof team) => (
-    <div className="grid items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
       {members.map((m) => <TeamCard key={m.id} member={m as TeamMember} />)}
     </div>
   );
@@ -108,10 +108,10 @@ function TeamPage() {
         title="Das Team deiner Fahrschule in Bochum"
         subtitle="Bei MIRO-DRIVE wirst du von einem freundlichen, geduldigen und professionellen Team begleitet – Anmeldung, Theorie und Praxis bis zur Prüfung, sicher und stressfrei in Bochum."
       />
-      <div className="mx-auto max-w-7xl space-y-16 px-4 py-16 pb-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl space-y-20 overflow-hidden px-4 py-16 pb-28 sm:px-6 lg:px-8">
         <ReviewsBadge />
         {(owner || otherInstructors.length > 0) && (
-          <section>
+          <section className="flow-root">
             <h2 className="mb-10 text-center font-display text-2xl text-primary sm:text-3xl">
               Fahrlehrer:innen der Fahrschule MIRO-DRIVE
             </h2>
@@ -124,7 +124,7 @@ function TeamPage() {
           </section>
         )}
         {officeWithoutBirtan.length > 0 && (
-          <section>
+          <section className="flow-root border-t border-border pt-16">
             <h2 className="mb-8 text-center font-display text-2xl text-primary sm:text-3xl">
               Bürokräfte der Fahrschule MIRO-DRIVE
             </h2>
