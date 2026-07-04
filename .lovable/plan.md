@@ -1,57 +1,46 @@
-## Zusammenhang mit der Team-Seite?
+## Diagnose
 
-Nein. Die CSRF-Warnung ist **eine reine Sicherheitsempfehlung** von TanStack Start und hat mit der kaputten Team-Darstellung auf `mirodrive.pewandmedia.de` **nichts zu tun**. Sie blockiert nichts, verursacht keinen Layout-Fehler und bricht keine Datenbank-Anfrage ab.
+Die kaputte Team-Seite kommt sehr wahrscheinlich nicht vom CSRF-Hinweis und auch nicht direkt vom WebSocket/Node-Problem. Auf dem Screenshot sieht man ein Layout-Problem: Die Team-Karten/Flip-Karten laufen optisch aus ihrem vorgesehenen Bereich und überdecken den Footer.
 
-Die Team-Seite auf deinem Debian-Server sieht auf dem Screenshot deshalb chaotisch aus, weil dort noch ein **alter Build** läuft. In der Lovable-Preview ist die Seite bereits sauber. Nach einem echten Deploy (neu bauen + Prozess neu starten) verschwindet das Layout-Problem.
+Der aktuelle Code nutzt für die Team-Karten eine 3D-Flip-Struktur mit `absolute inset-0`, eigenen CSS-Utilities wie `preserve-3d`, `backface-hidden`, `rotate-y-180` und dynamischen Höhenklassen. Wenn auf dem Debian-Server eine alte Build-Version, ein anderer CSS-Build oder gecachte Assets laufen, können genau diese 3D-/absolute-Styles brechen. Dann werden Kartenflächen, Avatare und Texte nicht mehr im normalen Dokumentfluss gehalten und landen übereinander.
 
-## Was du auf dem Server tun solltest (Team-Seite fixen)
+## Lösungsvorschlag
 
-Im Projektordner auf deinem Debian-Server:
+1. **Team-Karten robust neu bauen**
+   - Die fehleranfällige 3D-Flip-Card-Struktur entfernen.
+   - Normale stabile Karten im Dokumentfluss verwenden, ohne `absolute`, ohne 3D-Transform und ohne Backface-Logik.
+   - Avatar, Name, Rolle, Sprachen und Kurztext sichtbar sauber in einer Karte anzeigen.
+
+2. **Grid stabilisieren**
+   - Desktop: sauberes 3-/4-Spalten-Grid.
+   - Tablet/Mobile: weniger Spalten, damit nichts zusammengedrückt wird.
+   - Jede Karte bekommt feste responsive Mindesthöhen und `h-full`, damit Karten gleichmäßig stehen und den Footer nicht überlappen.
+
+3. **Owner-/Chefkarte separat stabil darstellen**
+   - Die hervorgehobene Ilkay-Karte bleibt optisch größer, aber ebenfalls ohne absolute/3D-Technik.
+   - Dadurch kann sie nicht mehr über andere Karten rutschen.
+
+4. **Footer-Abstand absichern**
+   - Unterhalb der Team-Sektionen genug Abstand lassen.
+   - Der Footer bleibt erst nach dem kompletten Team-Grid sichtbar.
+
+5. **Alte CSS-Risikostellen entfernen oder ungenutzt lassen**
+   - Die speziellen Flip-Utilities werden nicht mehr gebraucht.
+   - Dadurch ist die Seite weniger abhängig von CSS-Generierung, Browser-3D-Verhalten und gecachten alten Assets.
+
+## Ergebnis
+
+Nach Umsetzung ist die Team-Seite technisch simpler und stabiler. Selbst wenn dein Debian-Server noch mit Node 20/22, PM2 oder gecachten Assets arbeitet, kann diese konkrete Überlappung nicht mehr durch die Flip-Card-Struktur entstehen.
+
+## Danach auf dem Debian-Server
+
+Nach dem Code-Fix trotzdem einmal frisch bauen und neustarten:
 
 ```bash
 git pull
 npm install
 npm run build
+pm2 restart all
 ```
 
-Dann je nachdem wie du die App startest:
-
-```bash
-pm2 restart all        # falls du pm2 nutzt
-# ODER
-sudo systemctl restart drive-forward   # falls systemd (Servicenamen anpassen)
-```
-
-Danach die Seite mit hartem Reload öffnen (Cmd+Shift+R). Die Team-Karten sollten dann sauber in ihren Boxen sitzen.
-
-## Lösungsvorschlag zur CSRF-Warnung
-
-Die Warnung sagt: Server-Funktionen (`createServerFn`) sind derzeit nicht gegen Cross-Site-Requests geschützt. Empfohlene Lösung: eine CSRF-Middleware in `src/start.ts` ergänzen.
-
-### Plan
-
-1. **CSRF-Middleware in `src/start.ts` ergänzen**
-   - Neue Middleware `csrfMiddleware` via `createCsrfMiddleware` aus `@tanstack/react-start`.
-   - Filter setzen: `filter: (ctx) => ctx.handlerType === 'serverFn'`, damit nur Server-Funktionen geprüft werden, nicht öffentliche API-Routen wie Webhooks.
-   - Middleware zusätzlich zum bestehenden `errorMiddleware` in `requestMiddleware` eintragen.
-   - `functionMiddleware: [attachSupabaseAuth]` bleibt unverändert.
-
-2. **Kompatibilität prüfen**
-   - Sicherstellen, dass die installierte `@tanstack/react-start`-Version `createCsrfMiddleware` bereits exportiert. Falls nicht: Version aktualisieren.
-   - Öffentliche API-Routen unter `src/routes/api/public/*` sind vom Filter nicht betroffen — sie brauchen weiter ihre eigene Signatur-Prüfung.
-
-3. **Verifizieren**
-   - Lokal bauen (`npm run build`) und testen, dass:
-     - Warnung im Terminal verschwindet.
-     - Team-, Preise-, Erste-Hilfe-, Home-Seite normal laden.
-     - Login und Admin-Bereich weiter funktionieren.
-
-4. **Auf deinem Debian-Server deployen**
-   - `git pull && npm install && npm run build`
-   - App neu starten (pm2 oder systemd).
-
-## Ergebnis
-
-Nach dem Deploy siehst du:
-- Die Team-Seite auf `mirodrive.pewandmedia.de` sitzt sauber in den Karten (wie in der Preview).
-- Die CSRF-Warnung ist weg, Server-Funktionen sind sauber gegen Cross-Site-Requests geschützt.
+Falls dein Prozess nicht über PM2 läuft, statt `pm2 restart all` deinen systemd-Service oder Startprozess neu starten.
