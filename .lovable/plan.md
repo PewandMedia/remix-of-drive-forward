@@ -1,37 +1,33 @@
-## Plan: Vite Server allowedHosts Fix
+## Plan: Vite-Hosting-Fehler beheben
 
-**Problem:** Requests an `mirodrive.pewandmedia.de` werden vom Vite-Dev-Server blockiert.
+Ich ändere ausschließlich die bestehende Vite-Konfiguration, damit `mirodrive.pewandmedia.de` auf deinem VPS nicht mehr blockiert wird.
 
-**Lösung:** `vite.config.ts` erweitern.
+### Geplante Änderung
 
-### Schritte
+1. **Nur `vite.config.ts` prüfen und anpassen**
+   - Keine neue Config-Datei erstellen, weil `vite.config.ts` bereits existiert.
+   - Bestehende `vite.server`-Konfiguration sauber zusammenführen, nicht doppelt anlegen.
 
-1. **Datei `vite.config.ts` aktualisieren**
-   - Bestehende `allowedHosts` um `www.mirodrive.pewandmedia.de` erweitern.
-   - `host: "0.0.0.0"` unter `vite.server` hinzufügen, damit der Server extern erreichbar ist.
-   - Keine bestehenden Einträge (`mirodrive.pewandmedia.de`, `.pewandmedia.de`, `.lovable.app`) entfernen oder duplizieren.
+2. **`server` ergänzen/setzen**
+   - `host: "0.0.0.0"`
+   - `port: 8082`
+   - `allowedHosts` mit:
+     - `"mirodrive.pewandmedia.de"`
+     - `"www.mirodrive.pewandmedia.de"`
+   - Bestehende sinnvolle Host-Einträge wie `.pewandmedia.de` und `.lovable.app` nicht entfernen, falls sie bereits vorhanden sind.
 
-2. **Dev-Server neu starten**
-   - Nach der Konfigurationsänderung den Vite-Dev-Server neu starten, damit die neuen allowedHosts aktiv werden.
+3. **`preview` ergänzen/setzen**
+   - `host: "0.0.0.0"`
+   - `port: 8082`
+   - `allowedHosts` mit:
+     - `"mirodrive.pewandmedia.de"`
+     - `"www.mirodrive.pewandmedia.de"`
+   - Auch hier keine doppelten Blöcke erzeugen.
 
-### Erwartetes Ergebnis
-```typescript
-export default defineConfig({
-  tanstackStart: {
-    server: { entry: "server" },
-  },
-  vite: {
-    server: {
-      host: "0.0.0.0",
-      allowedHosts: [
-        "mirodrive.pewandmedia.de",
-        "www.mirodrive.pewandmedia.de",
-        ".pewandmedia.de",
-        ".lovable.app",
-      ],
-    },
-  },
-});
-```
+4. **Keine anderen Dateien ändern**
+   - Kein Design ändern.
+   - Keine Texte ändern.
+   - Keine Komponenten oder Funktionen ändern.
 
-**Keine Änderungen an Design, Inhalten, Funktionen oder anderen Dateien.**
+5. **Am Ende ausgeben**
+   - Die komplett finale `vite.config.ts` mit dem vollständigen Code.

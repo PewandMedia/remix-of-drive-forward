@@ -15,6 +15,17 @@ export default defineConfig({
   vite: {
     server: {
       host: "0.0.0.0",
+      port: 8082,
+      allowedHosts: [
+        "mirodrive.pewandmedia.de",
+        "www.mirodrive.pewandmedia.de",
+        ".pewandmedia.de",
+        ".lovable.app",
+      ],
+    },
+    preview: {
+      host: "0.0.0.0",
+      port: 8082,
       allowedHosts: [
         "mirodrive.pewandmedia.de",
         "www.mirodrive.pewandmedia.de",
