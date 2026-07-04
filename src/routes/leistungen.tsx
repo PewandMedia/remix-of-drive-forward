@@ -14,9 +14,9 @@ export const Route = createFileRoute("/leistungen")({
   head: () => ({
     meta: [
       { title: "Führerschein Bochum | Klasse B, B197 & Fahrstunden | MIRO-DRIVE" },
-      { name: "description", content: "Moderne Fahrausbildung in Bochum: Klasse B, B197, B78, Theorieunterricht, Praxisstunden und Sonderfahrten bei MIRO-DRIVE." },
+      { name: "description", content: "Klasse B, B197, B78, Theorie, Sonderfahrten und Erste-Hilfe-Kurs – alles aus einer Hand in Bochum." },
       { property: "og:title", content: "Führerschein Bochum | Klasse B & B197 | MIRO-DRIVE" },
-      { property: "og:description", content: "Alle Leistungen deiner Fahrschule in Bochum – Klasse B, B197, Fahrstunden, Sonderfahrten & Erste-Hilfe-Kurs." },
+      { property: "og:description", content: "Klasse B, B197, B78, Theorie, Sonderfahrten und Erste-Hilfe-Kurs – alles aus einer Hand in Bochum." },
       { property: "og:url", content: "/leistungen" },
     ],
     links: [{ rel: "canonical", href: "/leistungen" }],

@@ -20,9 +20,9 @@ export const Route = createFileRoute("/team")({
   head: () => ({
     meta: [
       { title: "Team Fahrschule Bochum | MIRO-DRIVE" },
-      { name: "description", content: "Lerne das Team von MIRO-DRIVE kennen. Moderne Fahrschule in Bochum mit persönlicher Betreuung und professioneller Fahrausbildung." },
+      { name: "description", content: "Mehrsprachig, geduldig, erfahren – lerne die Fahrlehrer:innen von MIRO-DRIVE persönlich kennen." },
       { property: "og:title", content: "Team Fahrschule Bochum | MIRO-DRIVE" },
-      { property: "og:description", content: "Freundliches, erfahrenes Team – deine Fahrschule in Bochum für Klasse B, B197 und Erste-Hilfe-Kurs." },
+      { property: "og:description", content: "Mehrsprachig, geduldig, erfahren – lerne die Fahrlehrer:innen von MIRO-DRIVE persönlich kennen." },
       { property: "og:url", content: "/team" },
     ],
     links: [{ rel: "canonical", href: "/team" }],

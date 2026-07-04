@@ -10,9 +10,9 @@ export const Route = createFileRoute("/kontakt")({
   head: () => ({
     meta: [
       { title: "Kontakt Fahrschule Bochum | MIRO-DRIVE" },
-      { name: "description", content: "Kontaktiere MIRO-DRIVE, deine Fahrschule in Bochum. Anmeldung, Preise, Angebote und Erste-Hilfe-Kurs einfach per WhatsApp anfragen." },
+      { name: "description", content: "WhatsApp, Telefon oder Filiale in Bochum – melde dich in unter einer Minute für den Führerschein an." },
       { property: "og:title", content: "Kontakt Fahrschule Bochum | MIRO-DRIVE" },
-      { property: "og:description", content: "Moderne Fahrschule in Bochum – WhatsApp, Telefon oder Besuch direkt in der Filiale. Für Bochum Innenstadt, Rathaus Bochum, Riemke & Herne." },
+      { property: "og:description", content: "WhatsApp, Telefon oder Filiale in Bochum – melde dich in unter einer Minute für den Führerschein an." },
       { property: "og:url", content: "/kontakt" },
     ],
     links: [{ rel: "canonical", href: "/kontakt" }],

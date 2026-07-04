@@ -7,9 +7,9 @@ export const Route = createFileRoute("/ueber-uns")({
   head: () => ({
     meta: [
       { title: "Über uns | Fahrschule Bochum – MIRO-DRIVE" },
-      { name: "description", content: "MIRO-DRIVE ist deine moderne Fahrschule in Bochum. Persönliche Betreuung, transparente Preise und professionelle Fahrausbildung für Bochum und Umgebung." },
+      { name: "description", content: "Deine Fahrschule in Bochum Zentrum & Riemke – modern ausgestattet, transparent und nah dran." },
       { property: "og:title", content: "Über uns – MIRO-DRIVE Fahrschule Bochum" },
-      { property: "og:description", content: "Moderne Fahrschule in Bochum mit persönlicher Betreuung und klaren Preisen." },
+      { property: "og:description", content: "Deine Fahrschule in Bochum Zentrum & Riemke – modern ausgestattet, transparent und nah dran." },
       { property: "og:url", content: "/ueber-uns" },
     ],
     links: [{ rel: "canonical", href: "/ueber-uns" }],

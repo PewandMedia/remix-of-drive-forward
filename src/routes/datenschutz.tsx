@@ -5,7 +5,7 @@ export const Route = createFileRoute("/datenschutz")({
   head: () => ({
     meta: [
       { title: "Datenschutz – MIRO-DRIVE Fahrschule" },
-      { name: "description", content: "Datenschutzhinweise der Fahrschule MIRO-DRIVE." },
+      { name: "description", content: "Wie MIRO-DRIVE personenbezogene Daten verarbeitet – transparent nach DSGVO." },
       { property: "og:url", content: "/datenschutz" },
     ],
     links: [{ rel: "canonical", href: "/datenschutz" }],

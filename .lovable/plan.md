@@ -1,18 +1,32 @@
-## Status
+## 1. Favicon aus dem Logo-Symbol
 
-Sichtbarer App-Code enthält keine Lovable-Hinweise mehr. Verbleibende Stellen:
+Das aktuelle Logo-SVG (`miro-drive-logo.svg`, 573×130) enthält Symbol + Wortmarke. Für das Favicon brauchen wir nur das Symbol quadratisch.
 
-1. **„Edit with Lovable"-Badge** auf der veröffentlichten Seite (wird von der Plattform injiziert).
-2. **Dev-Fehlermeldungen** in `src/integrations/supabase/{client,client.server,auth-middleware}.ts` erwähnen „Lovable Cloud" — nur sichtbar, wenn Env-Vars fehlen (Entwickler-Fehler, kein Endnutzer-Output).
-3. **Build-Infrastruktur** (`vite.config.ts`, `bunfig.toml`, `package.json` → `@lovable.dev/*`) — nicht auslieferungsrelevant, nicht user-facing. Entfernen würde den Build brechen.
+Schritte:
+- `imagegen--edit_image` auf das Logo mit Prompt „Extract only the car/emblem symbol, centered, square, transparent background" → `public/favicon.png` (512×512, transparent).
+- In `src/routes/__root.tsx` das `<link rel="icon">` auf `/favicon.png` (type `image/png`) umstellen.
+- `public/favicon.ico` löschen (Template-Default).
 
-## Änderungen
+## 2. Neue Untertitel (Meta-Descriptions) je Route
 
-1. **Badge ausblenden**: `publish_settings--set_badge_visibility({ hide_badge: true })`. Erfordert Pro-Plan; falls kein Pro-Plan aktiv ist, meldet der Aufruf einen Fehler und ich informiere dich.
-2. **Supabase-Fehlermeldungen umformulieren**: In den drei Dateien den String `Connect Supabase in Lovable Cloud.` → `Configure Supabase environment variables.` ändern.
-   - Hinweis: Diese Dateien sind laut Projektregeln auto-generiert. Änderungen dort können bei einer Regeneration überschrieben werden — das ist eine kosmetische Anpassung für den Fall, dass die Meldung mal geloggt wird.
+Kürzere, prägnantere Untertitel — jede Seite bekommt einen eigenen Charakter statt fast identischer Formulierungen. Vorschlag pro Seite (wird in `description` + `og:description` gesetzt):
 
-## Nicht angerührt
+| Route | Neuer Untertitel |
+|---|---|
+| `/` | Führerschein Klasse B, B197 & B78 in Bochum – moderne Fahrzeuge, faire Preise, persönliche Betreuung. |
+| `/leistungen` | Klasse B, B197, B78, Theorie, Sonderfahrten und Erste-Hilfe-Kurs – alles aus einer Hand in Bochum. |
+| `/preise` | Klare Paketpreise für Klasse B, B197, B78 und Erste-Hilfe-Kurs – ohne versteckte Kosten. |
+| `/team` | Mehrsprachig, geduldig, erfahren – lerne die Fahrlehrer:innen von MIRO-DRIVE persönlich kennen. |
+| `/ueber-uns` | Deine Fahrschule in Bochum Zentrum & Riemke – modern ausgestattet, transparent und nah dran. |
+| `/kontakt` | WhatsApp, Telefon oder Filiale in Bochum – melde dich in unter einer Minute für den Führerschein an. |
+| `/faq` | Antworten zu Anmeldung, Ablauf, Klasse B/B197/B78, Prüfungen und Erste-Hilfe-Kurs in Bochum. |
+| `/erste-hilfe-kurs` | Amtlich anerkannter Erste-Hilfe-Kurs in Bochum – regelmäßige Termine, Anmeldung per WhatsApp. |
+| `/impressum` | Anbieterkennzeichnung nach § 5 TMG für die Fahrschule MIRO-DRIVE in Bochum. |
+| `/datenschutz` | Wie MIRO-DRIVE personenbezogene Daten verarbeitet – transparent nach DSGVO. |
 
-- `vite.config.ts`, `bunfig.toml`, `package.json` (`@lovable.dev/*` Pakete) — Build/Runtime-Abhängigkeiten der Plattform.
-- `AGENTS.md`, `.lovable/` — nur Repo-interne Metadaten, kein Auslieferungscode.
+Titel (`<title>`) bleiben unverändert, weil sie SEO-optimiert sind (Keyword „Fahrschule Bochum" vorne).
+
+## Verifikation
+
+- Preview: Favicon erscheint im Browser-Tab.
+- `bun run build` grün.

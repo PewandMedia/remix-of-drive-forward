@@ -6,7 +6,7 @@ export const Route = createFileRoute("/impressum")({
   head: () => ({
     meta: [
       { title: "Impressum – MIRO-DRIVE Fahrschule" },
-      { name: "description", content: "Impressum der Fahrschule MIRO-DRIVE." },
+      { name: "description", content: "Anbieterkennzeichnung nach § 5 TMG für die Fahrschule MIRO-DRIVE in Bochum." },
       { property: "og:url", content: "/impressum" },
     ],
     links: [{ rel: "canonical", href: "/impressum" }],

@@ -16,9 +16,9 @@ export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
       { title: "FAQ Fahrschule Bochum | MIRO-DRIVE" },
-      { name: "description", content: "Häufige Fragen zu deiner Fahrschule in Bochum: Anmeldung, Klasse B, B197, Erste-Hilfe-Kurs und Preise bei MIRO-DRIVE." },
+      { name: "description", content: "Antworten zu Anmeldung, Ablauf, Klasse B/B197/B78, Prüfungen und Erste-Hilfe-Kurs in Bochum." },
       { property: "og:title", content: "FAQ Fahrschule Bochum | MIRO-DRIVE" },
-      { property: "og:description", content: "Antworten auf die wichtigsten Fragen zur Fahrschule in Bochum – Klasse B, B197 & Erste-Hilfe-Kurs." },
+      { property: "og:description", content: "Antworten zu Anmeldung, Ablauf, Klasse B/B197/B78, Prüfungen und Erste-Hilfe-Kurs in Bochum." },
       { property: "og:url", content: "/faq" },
     ],
     links: [{ rel: "canonical", href: "/faq" }],

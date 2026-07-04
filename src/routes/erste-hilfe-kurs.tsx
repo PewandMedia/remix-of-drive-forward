@@ -22,9 +22,9 @@ export const Route = createFileRoute("/erste-hilfe-kurs")({
   head: () => ({
     meta: [
       { title: "Erste-Hilfe-Kurs Bochum für Führerschein | MIRO-DRIVE" },
-      { name: "description", content: "Erste-Hilfe-Kurs für deinen Führerschein in Bochum anfragen. MIRO-DRIVE unterstützt dich bei Anmeldung, Beratung und allen nächsten Schritten." },
+      { name: "description", content: "Amtlich anerkannter Erste-Hilfe-Kurs in Bochum – regelmäßige Termine, Anmeldung per WhatsApp." },
       { property: "og:title", content: "Erste-Hilfe-Kurs Bochum | MIRO-DRIVE" },
-      { property: "og:description", content: "Erste-Hilfe-Kurs in Bochum für deinen Führerschein – jeden Monat direkt bei MIRO-DRIVE." },
+      { property: "og:description", content: "Amtlich anerkannter Erste-Hilfe-Kurs in Bochum – regelmäßige Termine, Anmeldung per WhatsApp." },
       { property: "og:url", content: "/erste-hilfe-kurs" },
     ],
     links: [{ rel: "canonical", href: "/erste-hilfe-kurs" }],
