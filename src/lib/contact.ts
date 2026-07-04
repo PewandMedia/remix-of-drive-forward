@@ -1,10 +1,10 @@
 export const CONTACT = {
-  whatsapp: "https://wa.me/491234567890",
-  whatsappText: "+49 123 4567890",
+  whatsapp: "https://wa.me/4915730218086",
+  whatsappText: "+49 1573 0218086",
   instagram: "https://instagram.com/miro_drive",
   tiktok: "https://tiktok.com/@mirodrive",
-  phone: "+491234567890",
-  phoneDisplay: "+49 123 4567890",
+  phone: "+4915730218086",
+  phoneDisplay: "+49 1573 0218086",
   email: "info@miro-drive.de",
   address: "Musterstraße 1, 44787 Bochum",
   hours: [
