@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import { supabase } from "@/integrations/supabase/client";
+import { getFirstAidInfo } from "@/lib/public-data.functions";
 import { ErrorBox } from "@/components/site/QueryFallbacks";
 import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
@@ -11,11 +11,7 @@ import ersteHilfeImg from "@/assets/erste-hilfe-hero.jpg";
 
 const faQuery = queryOptions({
   queryKey: ["first_aid_info"],
-  queryFn: async () => {
-    const { data, error } = await supabase.from("first_aid_info").select("*").eq("active", true).order("updated_at", { ascending: false }).limit(1);
-    if (error) throw error;
-    return data?.[0] ?? null;
-  },
+  queryFn: () => getFirstAidInfo(),
 });
 
 export const Route = createFileRoute("/erste-hilfe-kurs")({
