@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Menu, X, Sparkles } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import logoAsset from "@/assets/miro-drive-logo.svg.asset.json";
 import { NAV_LINKS } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
@@ -83,7 +82,7 @@ export function Navbar() {
             }}
             className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-3 lg:static lg:translate-x-0 lg:translate-y-0"
           >
-            <img src={logoAsset.url} alt="MIRO-DRIVE Fahrschule" className="h-10 w-auto" />
+            <img src="/images/miro-drive-logo.svg" alt="MIRO-DRIVE Fahrschule" className="h-10 w-auto" />
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex">
@@ -119,7 +118,7 @@ export function Navbar() {
         <div className="fixed inset-0 z-[100] flex h-[100dvh] flex-col overflow-hidden bg-white lg:hidden">
           <div className="flex h-20 items-center justify-between px-4 sm:px-6">
             <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-3">
-              <img src={logoAsset.url} alt="MIRO-DRIVE Fahrschule" className="h-10 w-auto" />
+              <img src="/images/miro-drive-logo.svg" alt="MIRO-DRIVE Fahrschule" className="h-10 w-auto" />
             </Link>
             <button
               aria-label="Menü schließen"
