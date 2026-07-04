@@ -14,8 +14,10 @@ export default defineConfig({
   },
   vite: {
     server: {
+      host: "0.0.0.0",
       allowedHosts: [
         "mirodrive.pewandmedia.de",
+        "www.mirodrive.pewandmedia.de",
         ".pewandmedia.de",
         ".lovable.app",
       ],
