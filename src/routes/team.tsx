@@ -65,7 +65,7 @@ function FlipCard({ member, size = "md" }: { member: TeamMember; size?: "md" | "
   const bio = (member as any).bio as string | null | undefined;
 
   const isLg = size === "lg";
-  const heightClass = isLg ? "min-h-[440px]" : "min-h-[300px] sm:min-h-[360px]";
+  const heightClass = isLg ? "min-h-[520px]" : "min-h-[380px] sm:min-h-[440px]";
   const padding = isLg ? "p-10" : "p-4 sm:p-8";
 
   return (

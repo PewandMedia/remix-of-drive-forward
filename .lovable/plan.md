@@ -1,17 +1,18 @@
+## Problem
+Die Sprach-Tags in den Team-Flip-Cards überlappen bei vielen Sprachen die feste Kartenhöhe und ragen aus der Box heraus.
+
+## Ursache
+Die FlipCards verwenden eine absolute, 3D-geflippte Struktur mit fester `min-h` (300px/360px bzw. 440px). Der Sprachen-Container nutzt `flex-wrap`, wodurch bei vielen Sprachen der verfügbare vertikale Platz überschritten wird.
+
+## Lösung
+1. **`src/routes/team.tsx`** – FlipCard:
+   - Erhöhe `min-h` für normale Karten von `300px` auf `380px` und `sm:min-h-[360px]` auf `sm:min-h-[420px]`
+   - Erhöhe `min-h` für große Karten (`lg`) von `440px` auf `520px`
+   - Oder alternativ: Begrenze die Sprach-Tags auf max. 2 Zeilen mit `line-clamp`/`overflow-hidden` und `max-h` auf dem Sprachen-Container
+
+2. Sorge dafür, dass alle Karten einer Reihe dieselbe Höhe haben (grid-Row-Ausrichtung bleibt erhalten).
+
+3. Keine Änderung an Texten, Farben, Design oder Funktionalität der Flip-Animation.
+
 ## Ziel
-Alle WhatsApp-Buttons auf der Seite sollen beim Klick einen WhatsApp-Chat mit der Nummer **+49 1573 0218086** öffnen.
-
-## Analyse
-Alle WhatsApp-Links in der App beziehen sich auf das zentrale `CONTACT`-Objekt in `src/lib/contact.ts`. Dort ist aktuell noch eine Platzhalter-Nummer hinterlegt (`491234567890`).
-
-## Umsetzung
-1. In `src/lib/contact.ts` folgende Werte aktualisieren:
-   - `whatsapp`: `https://wa.me/4915730218086`
-   - `whatsappText`: `+49 1573 0218086`
-   - `phone`: `4915730218086`
-   - `phoneDisplay`: `+49 1573 0218086`
-
-2. Build prüfen mit `bun run build`.
-
-## Auswirkung
-Dadurch wird automatisch jeder WhatsApp-Button (Floating-Button, Hero-CTA, Kontaktseite, etc.) auf die neue Nummer umgestellt – ohne weitere Dateien ändern zu müssen.
+Sprach-Tags bleiben sauber innerhalb jeder Team-Karte, unabhängig von der Anzahl der gesprochenen Sprachen.
