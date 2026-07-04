@@ -4,7 +4,6 @@ import { useQueries } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import logoAsset from "@/assets/miro-drive-logo.svg.asset.json";
 import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
@@ -192,7 +191,7 @@ function Index() {
                   <div className="pointer-events-none absolute -top-8 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
                   <div className="relative flex flex-col items-center text-center">
                     <img
-                      src={logoAsset.url}
+                      src="/images/miro-drive-logo.svg"
                       alt="MIRO-DRIVE Fahrschule Bochum Logo"
                       className="h-12 w-auto sm:h-20"
                     />

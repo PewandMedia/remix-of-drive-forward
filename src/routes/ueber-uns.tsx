@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import carAsset from "@/assets/miro-car.png.asset.json";
 import { Target, Award, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/ueber-uns")({
@@ -55,7 +54,7 @@ function AboutPage() {
         </div>
         <div className="relative">
           <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/15 to-transparent" />
-          <img src={carAsset.url} alt="Fahrschule MIRO-DRIVE Bochum – modernes Fahrschulauto in Bochum" className="w-full" loading="lazy" />
+          <img src="/images/miro-car.png" alt="Fahrschule MIRO-DRIVE Bochum – modernes Fahrschulauto in Bochum" className="w-full" loading="lazy" />
         </div>
       </div>
     </SiteLayout>
