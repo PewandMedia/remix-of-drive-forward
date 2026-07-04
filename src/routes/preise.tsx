@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import { supabase } from "@/integrations/supabase/client";
+import { getActivePrices } from "@/lib/public-data.functions";
 import { CONTACT } from "@/lib/contact";
 import { ErrorBox, NotFoundBox } from "@/components/site/QueryFallbacks";
 import { Car, Cog, Sparkles, MapPin, MessageCircle, ShieldCheck, ArrowRight, Route as RouteIcon, Moon, Gauge, BookOpen, UserCheck, CheckCircle2, Timer, Flame } from "lucide-react";
@@ -10,15 +10,7 @@ import { useEffect, useState } from "react";
 
 const pricesQuery = queryOptions({
   queryKey: ["prices"],
-  queryFn: async () => {
-    const { data, error } = await supabase
-      .from("prices")
-      .select("*")
-      .eq("active", true)
-      .order("sort_order");
-    if (error) throw error;
-    return data ?? [];
-  },
+  queryFn: () => getActivePrices(),
 });
 
 export const Route = createFileRoute("/preise")({
