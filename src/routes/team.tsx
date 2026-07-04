@@ -3,17 +3,13 @@ import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { useState } from "react";
 import { RotateCw } from "lucide-react";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import { supabase } from "@/integrations/supabase/client";
+import { getActiveTeamMembers } from "@/lib/public-data.functions";
 import { ErrorBox } from "@/components/site/QueryFallbacks";
 import { ReviewsBadge } from "@/components/site/ReviewsSection";
 
 const teamQuery = queryOptions({
   queryKey: ["team_members"],
-  queryFn: async () => {
-    const { data, error } = await supabase.from("team_members").select("*").eq("active", true).order("sort_order");
-    if (error) throw error;
-    return data ?? [];
-  },
+  queryFn: () => getActiveTeamMembers(),
 });
 
 export const Route = createFileRoute("/team")({
