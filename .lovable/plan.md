@@ -1,57 +1,58 @@
-## Was auf deinem Screenshot auffällt
+## Ziel
+Das remixede Projekt mit deinem eigenen Supabase-Backend verbinden, damit du unabhängig von Lovable Cloud bist.
 
-Auf dem hochgeladenen Screenshot ist noch die alte kaputte Team-Version sichtbar:
+## Voraussetzung
+Das Remix-Projekt darf noch nicht an Lovable Cloud gebunden sein. Wenn du beim Erstellen des Remixes **Cloud nicht aktiviert** hast, funktioniert der folgende Weg. War Cloud bereits aktiv, lässt sie sich laut Lovable-Regeln nicht mehr entfernen — dann müsstest du ein komplett neues, leeres Projekt ohne Cloud starten.
 
-- Es steht noch „KLICK FÜR MEHR“ unter den Karten.
-- Eine rote Rückseite/Flip-Karte hängt mitten über den anderen Karten.
-- Genau diese alte 3D-Flip-Technik wurde im aktuellen Code bereits entfernt.
+## Schritt-für-Schritt-Plan
 
-Das bedeutet: Die Laptop-/Desktop-Ansicht auf deiner Server-Domain lädt sehr wahrscheinlich noch einen alten Build oder gemischte gecachte Dateien. Mobile kann trotzdem normal aussehen, weil dort andere Assets/Chunks oder ein anderer Cache-Zustand geladen werden.
+### 1. Eigenes Supabase-Projekt anlegen
+- Auf supabase.com ein neues Projekt erstellen.
+- Region wählen (am besten Frankfurt/eu-central-1 für Deutschland).
+- Projekt-Passwort sicher speichern.
+- Folgende Werte notieren:
+  - Project URL (z. B. `https://xyz123.supabase.co`)
+  - Publishable/Anon Key (beginnt oft mit `eyJ...` oder `sb_publishable_...`)
+  - Service Role Key (nur für Server, niemals im Browser)
 
-## Lösungsvorschlag
+### 2. Supabase-Integration in Lovable verbinden
+- Im remixeden Projekt: **Connectors** im linken Sidebar öffnen.
+- **Supabase** auswählen und mit deinem Supabase-Account verknüpfen.
+- Das neu erstellte Supabase-Projekt auswählen.
 
-1. **Team-Seite noch härter absichern**
-   - Die Team-Seite bleibt ohne Flip-/3D-Logik.
-   - Zusätzlich mache ich das Desktop-Layout noch robuster: klare Section-Abstände, `overflow-visible/hidden` gezielt setzen, stabile Card-Höhen und ein weniger aggressives Desktop-Grid.
-   - Ziel: Auch bei Laptop-Breiten wie 999–1200px kann nichts mehr in den Footer laufen.
+### 3. Schema + Daten migrieren
+Ich generiere dir eine vollständige SQL-Migrationsdatei mit:
+- Enums (`app_role`)
+- Tabellen (`prices`, `team_members`, `first_aid_info`, `inquiries`, `instagram_posts`, `offers`, `user_roles`)
+- GRANTs für `anon`, `authenticated`, `service_role`
+- RLS-Policies
+- `has_role`-Funktion und `set_updated_at`-Trigger
+- Aktuelle Daten aus den Tabellen als INSERTs
 
-2. **Alte Flip-Spuren komplett entfernen**
-   - Prüfen, ob irgendwo noch alte Flip-Klassen, Texte wie „KLICK FÜR MEHR“, `rotate-y`, `backface`, `preserve-3d` oder `absolute inset-0` für Team-Karten übrig sind.
-   - Falls ja: vollständig entfernen.
+Du führst diese Datei im Supabase SQL-Editor aus.
 
-3. **Desktop gezielt testen**
-   - Test mit Laptop-/Desktop-Breite ähnlich deinem Screenshot.
-   - Prüfen:
-     - keine Karte überlappt andere Karten,
-     - keine Karte überlappt den Footer,
-     - „KLICK FÜR MEHR“ ist komplett weg,
-     - Bürokräfte starten erst nach den Fahrlehrer-Karten.
+### 4. Umgebungsvariablen prüfen
+Nach dem Connecten sollten diese Variablen automatisch gesetzt werden:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_SUPABASE_PROJECT_ID`
+- `SUPABASE_URL`
+- `SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
-4. **Server-Deployment-Anweisung ergänzen**
-   - Nach dem Code-Fix muss auf deinem Debian-Server wirklich ein frischer Build laufen.
-   - Danach Browser-Cache hart löschen, weil dein Screenshot klar nach altem Code aussieht.
+Falls etwas fehlt, ergänzen wir es manuell.
 
-## Befehle für deinen Debian-Server nach dem Fix
+### 5. Auth-Provider konfigurieren
+Falls du Google-Login oder E-Mail-Auth brauchst, müssen diese im eigenen Supabase-Projekt aktiviert werden.
 
-```bash
-cd /pfad/zu/deinem/projekt
-git pull
-rm -rf .output dist node_modules/.vite
-npm install
-npm run build
-pm2 restart all
-```
+### 6. Test
+- Öffentliche Seiten (`/`, `/team`, `/preise`) laden.
+- Admin-Login funktioniert.
+- Kontaktformular schreibt in `inquiries`.
 
-Wenn du nicht PM2 nutzt, statt `pm2 restart all` deinen systemd-Service neu starten.
+## Was ich jetzt von dir brauche
+1. Bist du sicher, dass das Remix-Projekt **noch nicht** an Lovable Cloud gebunden ist? (Wenn doch, müssen wir einen anderen Weg wählen.)
+2. Hast du bereits ein eigenes Supabase-Projekt erstellt?
+3. Falls ja: Kannst du mir URL, Publishable Key und Service Role Key über das sichere Secret-Formular geben?
 
-Danach im Browser auf Laptop:
-
-```text
-Cmd + Shift + R auf Mac
-oder
-Strg + F5 auf Windows/Linux
-```
-
-## Erwartetes Ergebnis
-
-Die Team-Seite zeigt auf Laptop/Desktop nur noch normale saubere Karten. Keine roten Flip-Rückseiten, kein „KLICK FÜR MEHR“, keine Überlappung mit dem Footer.
+Sobald ich das weiß, generiere ich die Migration und wir schließen die Anbindung ab.
