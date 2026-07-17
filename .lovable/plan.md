@@ -1,30 +1,41 @@
-## Nächste Schritte nach Supabase-Verbindung
+## Plan: Supabase-Projekt wechseln zu „Miro-Drive“
 
-Supabase ist verbunden (`uxcwnrfjlswmrpnjwubm`), aber die DB ist leer und es gibt einen Runtime-Fehler.
+### Ziel
+Die App wird vom aktuellen Supabase-Projekt (`pewandmediasupabase1@proton.me's Project`) komplett auf das neue, leere Supabase-Projekt **„Miro-Drive“** (`slrbtiviwvwvjjafbgkp`) umgestellt. Das Website-Schema wird frisch eingespielt und der aktuelle SSR-Fehler behoben.
 
-### 1. Schema in neuer Supabase-DB anlegen
-Die Datei `supabase/migration_new_project.sql` enthält das komplette Schema (Tabellen, Enums, RLS, Trigger, `has_role`). 
-→ Du öffnest den Supabase SQL-Editor und führst die Datei einmal aus.
-[SQL-Editor öffnen](https://supabase.com/dashboard/project/uxcwnrfjlswmrpnjwubm/sql/new)
+### Schritte
 
-### 2. SSR-Fehler beheben (`localStorage is not defined`)
-Der auto-generierte `src/integrations/supabase/client.ts` referenziert `localStorage` ohne `typeof window`-Guard beim SSR-Rendering. Ich patche den Client so, dass `storage` nur im Browser gesetzt wird — analog zum bestehenden Muster in anderen Lovable-Projekten.
+1. **Neue Supabase-Verbindung in der App hinterlegen**
+   - `supabase/config.toml` aktualisieren: `project_id = "slrbtiviwvwvjjafbgkp"`
+   - `.env` aktualisieren: `SUPABASE_URL`, `VITE_SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_PROJECT_ID`, `VITE_SUPABASE_PROJECT_ID`
+   - `src/integrations/supabase/client.ts` aktualisieren: URL + Publishable Key
+   - `src/integrations/supabase/types.ts` aus dem neuen Projekt neu generieren (oder zunächst als leere Database-Typen hinterlegen, bis die Migration gelaufen ist)
 
-### 3. Auth-Provider aktivieren
-E-Mail-Login in Supabase aktivieren, damit `/auth` funktioniert.
-[Auth-Provider öffnen](https://supabase.com/dashboard/project/uxcwnrfjlswmrpnjwubm/auth/providers)
+2. **Schema in neues Supabase-Projekt einspielen**
+   - Migration `supabase/migration_new_project.sql` ausführen (Enables RLS, erstellt Tabellen `first_aid_info`, `inquiries`, `instagram_posts`, `offers`, `prices`, `team_members`, `user_roles`, Funktionen, Trigger, Policies)
+   - Anschließend `src/integrations/supabase/types.ts` anhand des neuen Schemas neu generieren
 
-### 4. Ersten Admin-User anlegen
-- Über `/auth` mit E-Mail/Passwort registrieren (oder Nutzer manuell im Dashboard anlegen)
-- `bootstrapFirstAdmin` Server-Function aufrufen (existiert bereits in `src/lib/admin.functions.ts`) → weist dem ersten User automatisch die `admin`-Rolle zu
-[Users öffnen](https://supabase.com/dashboard/project/uxcwnrfjlswmrpnjwubm/auth/users)
+3. **SSR-Fehler beheben (`localStorage is not defined`)**
+   - `src/integrations/supabase/client.ts` patchen: `storage` nur im Browser setzen (`typeof window !== "undefined" ? localStorage : undefined`), damit SSR nicht crasht
 
-### 5. Test
-- `/` lädt ohne Fehler
-- `/preise`, `/team` zeigen (leere) Daten aus der neuen DB
-- `/auth` → `/admin` funktioniert
+4. **Auth-Provider aktivieren**
+   - Hinweis/Link zum Supabase-Dashboard, um E-Mail/Passwort-Auth für den Admin-Bereich zu aktivieren
 
-### Reihenfolge
-Zuerst mache ich Schritt 2 (Code-Fix), damit die Vorschau wieder läuft. Schritte 1, 3, 4 machst du im Supabase-Dashboard — ich sage dir jeweils genau was zu tun ist.
+5. **Ersten Admin-User einrichten**
+   - Nach dem Login über `/auth` wird die bestehende `bootstrapFirstAdmin`-Server-Funktion aufgerufen, um dem ersten Nutzer die `admin`-Rolle zu geben
 
-Passt das so, oder willst du eine andere Reihenfolge?
+6. **Verifizierung**
+   - `bun run build` oder Vite-Build prüft, dass keine Import-/Typfehler mehr auftreten
+   - Vorschau öffnen: `/`, `/preise`, `/team` laden ohne `localStorage`-Fehler
+   - `/auth` ist erreichbar
+
+### Technische Details
+- Das alte Supabase-Projekt wird nicht mehr referenziert; alle Dateien mit hartkodierten Projekt-IDs/Keys werden ersetzt.
+- Die Migration enthält bereits alle nötigen GRANTs, RLS-Policies, Trigger und die `has_role`-Hilfsfunktion.
+- Keine Edge Functions nötig; App-Logik bleibt bei TanStack `createServerFn`.
+
+### Nach dem Implementieren
+- Du musst im Supabase-Dashboard noch E-Mail-Auth aktivieren und ggf. den ersten Admin-User anlegen/registrieren.
+- Ich gebe dir die direkten Dashboard-Links mit.
+
+Sobald du den Plan freigibst, führe ich die Änderungen durch.
