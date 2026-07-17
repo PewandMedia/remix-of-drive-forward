@@ -1,41 +1,38 @@
-## Plan: Supabase-Projekt wechseln zu „Miro-Drive“
+Ich habe die Ursache gefunden: Die App ist teilweise auf das neue Supabase-Projekt `slrbtiviwvwvjjafbgkp` konfiguriert, aber `.env` und `src/integrations/supabase/client.ts` zeigen noch auf das alte Projekt `elvsfhgnrjusgfxqhpiq`. Dadurch fragt die App teils die falsche Datenbank ab. Zusätzlich fehlt im neuen Projekt die Data-API-Berechtigung auf die Public-Tabellen, und öffentliche RLS-Policies rufen `has_role()` auf, obwohl anonyme Besucher diese Funktion nicht ausführen dürfen. Genau daher kommt `permission denied for function has_role`.
 
-### Ziel
-Die App wird vom aktuellen Supabase-Projekt (`pewandmediasupabase1@proton.me's Project`) komplett auf das neue, leere Supabase-Projekt **„Miro-Drive“** (`slrbtiviwvwvjjafbgkp`) umgestellt. Das Website-Schema wird frisch eingespielt und der aktuelle SSR-Fehler behoben.
+## Plan
 
-### Schritte
+1. **Supabase-Verbindung vollständig auf Miro-Drive umstellen**
+   - `.env` auf `slrbtiviwvwvjjafbgkp` aktualisieren.
+   - `src/integrations/supabase/client.ts` so ändern, dass es die `VITE_SUPABASE_*` Variablen nutzt statt hart codierter alter Projektwerte.
+   - Dadurch nutzen Browser und Server dieselbe Supabase-Instanz.
 
-1. **Neue Supabase-Verbindung in der App hinterlegen**
-   - `supabase/config.toml` aktualisieren: `project_id = "slrbtiviwvwvjjafbgkp"`
-   - `.env` aktualisieren: `SUPABASE_URL`, `VITE_SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_PROJECT_ID`, `VITE_SUPABASE_PROJECT_ID`
-   - `src/integrations/supabase/client.ts` aktualisieren: URL + Publishable Key
-   - `src/integrations/supabase/types.ts` aus dem neuen Projekt neu generieren (oder zunächst als leere Database-Typen hinterlegen, bis die Migration gelaufen ist)
+2. **Datenbank-Berechtigungen korrekt nachziehen**
+   - Per Migration `GRANT`-Berechtigungen für alle App-Tabellen setzen:
+     - öffentliche Lesetabellen: `offers`, `prices`, `team_members`, `instagram_posts`, `first_aid_info`
+     - Kontaktformular: `inquiries` mit öffentlichem Erstellen, aber nur Admin-Lesen/Bearbeiten/Löschen
+     - Rollen: `user_roles` nur für angemeldete Nutzer und Service-Rolle
+   - Das behebt fehlende Data-API-Zugriffe.
 
-2. **Schema in neues Supabase-Projekt einspielen**
-   - Migration `supabase/migration_new_project.sql` ausführen (Enables RLS, erstellt Tabellen `first_aid_info`, `inquiries`, `instagram_posts`, `offers`, `prices`, `team_members`, `user_roles`, Funktionen, Trigger, Policies)
-   - Anschließend `src/integrations/supabase/types.ts` anhand des neuen Schemas neu generieren
+3. **RLS-Policies reparieren**
+   - Öffentliche Lesepolicies ändern, damit sie nur öffentlich sichtbare aktive Daten lesen lassen und nicht mehr `has_role()` für anonyme Nutzer aufrufen.
+   - Separate Admin-Policies bleiben für angemeldete Admins bestehen.
+   - Dadurch ist `has_role()` nicht mehr Teil öffentlicher Website-Abfragen.
 
-3. **SSR-Fehler beheben (`localStorage is not defined`)**
-   - `src/integrations/supabase/client.ts` patchen: `storage` nur im Browser setzen (`typeof window !== "undefined" ? localStorage : undefined`), damit SSR nicht crasht
+4. **Admin-Rollenfunktion sicher und funktionsfähig lassen**
+   - `has_role()` bleibt `SECURITY DEFINER`, weil RLS-Policies damit Adminrechte prüfen.
+   - Execute bleibt nur für `authenticated` und `service_role`, nicht für anonyme Besucher.
+   - Damit ist der Runtime-Fehler weg, ohne die Funktion öffentlich zu öffnen.
 
-4. **Auth-Provider aktivieren**
-   - Hinweis/Link zum Supabase-Dashboard, um E-Mail/Passwort-Auth für den Admin-Bereich zu aktivieren
+5. **Prüfen nach Umsetzung**
+   - Datenbank-Linter erneut laufen lassen.
+   - Public-Abfragen für Preise, Team, Angebote und Erste-Hilfe testen.
+   - Preview prüfen, dass die Startseite ohne `has_role`-Fehler lädt.
 
-5. **Ersten Admin-User einrichten**
-   - Nach dem Login über `/auth` wird die bestehende `bootstrapFirstAdmin`-Server-Funktion aufgerufen, um dem ersten Nutzer die `admin`-Rolle zu geben
+## Hinweis
 
-6. **Verifizierung**
-   - `bun run build` oder Vite-Build prüft, dass keine Import-/Typfehler mehr auftreten
-   - Vorschau öffnen: `/`, `/preise`, `/team` laden ohne `localStorage`-Fehler
-   - `/auth` ist erreichbar
+Für den finalen Verbindungswechsel brauche ich den neuen `anon public` Key aus dem Supabase-Projekt **Miro-Drive**. Falls er noch nicht in Lovable verfügbar ist, öffne bitte in Supabase:
 
-### Technische Details
-- Das alte Supabase-Projekt wird nicht mehr referenziert; alle Dateien mit hartkodierten Projekt-IDs/Keys werden ersetzt.
-- Die Migration enthält bereits alle nötigen GRANTs, RLS-Policies, Trigger und die `has_role`-Hilfsfunktion.
-- Keine Edge Functions nötig; App-Logik bleibt bei TanStack `createServerFn`.
+`Project Settings → API → anon public key`
 
-### Nach dem Implementieren
-- Du musst im Supabase-Dashboard noch E-Mail-Auth aktivieren und ggf. den ersten Admin-User anlegen/registrieren.
-- Ich gebe dir die direkten Dashboard-Links mit.
-
-Sobald du den Plan freigibst, führe ich die Änderungen durch.
+Dann kann ich die App komplett auf das neue Projekt umstellen.
