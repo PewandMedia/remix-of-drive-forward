@@ -2,19 +2,15 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-
-if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  throw new Error("Supabase environment variables are missing");
-}
+const SUPABASE_URL = "https://slrbtiviwvwvjjafbgkp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNscmJ0aXZpd3Z3dmpqYWZiZ2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzgxMjYsImV4cCI6MjA5OTg1NDEyNn0.S8uIxRqhGUCTCB7skOWloLEsaNL-zq-t5B7_Ba18BrY";
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: typeof window !== "undefined" ? localStorage : undefined,
+    storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
   }
