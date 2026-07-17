@@ -14,593 +14,285 @@ export type Database = {
   }
   public: {
     Tables: {
-      activity_log: {
+      first_aid_info: {
         Row: {
-          action: string
-          created_at: string
-          details: string | null
-          entity_id: string | null
-          entity_type: string
+          active: boolean
+          dates: string | null
+          description: string
+          duration: string | null
           id: string
-          user_id: string | null
-          user_name: string | null
+          price: string | null
+          updated_at: string
         }
         Insert: {
-          action: string
-          created_at?: string
-          details?: string | null
-          entity_id?: string | null
-          entity_type: string
+          active?: boolean
+          dates?: string | null
+          description: string
+          duration?: string | null
           id?: string
-          user_id?: string | null
-          user_name?: string | null
+          price?: string | null
+          updated_at?: string
         }
         Update: {
-          action?: string
-          created_at?: string
-          details?: string | null
-          entity_id?: string | null
-          entity_type?: string
+          active?: boolean
+          dates?: string | null
+          description?: string
+          duration?: string | null
           id?: string
-          user_id?: string | null
-          user_name?: string | null
+          price?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
-      driving_lessons: {
+      inquiries: {
         Row: {
-          created_at: string
-          datum: string
-          dauer_minuten: number
-          einheiten: number
-          fahrzeug_typ: Database["public"]["Enums"]["fahrzeug_typ"]
-          id: string
-          instructor_id: string | null
-          preis: number
-          student_id: string
-          typ: Database["public"]["Enums"]["driving_lesson_typ"]
-        }
-        Insert: {
-          created_at?: string
-          datum?: string
-          dauer_minuten?: number
-          einheiten?: number
-          fahrzeug_typ?: Database["public"]["Enums"]["fahrzeug_typ"]
-          id?: string
-          instructor_id?: string | null
-          preis?: number
-          student_id: string
-          typ: Database["public"]["Enums"]["driving_lesson_typ"]
-        }
-        Update: {
-          created_at?: string
-          datum?: string
-          dauer_minuten?: number
-          einheiten?: number
-          fahrzeug_typ?: Database["public"]["Enums"]["fahrzeug_typ"]
-          id?: string
-          instructor_id?: string | null
-          preis?: number
-          student_id?: string
-          typ?: Database["public"]["Enums"]["driving_lesson_typ"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "driving_lessons_instructor_id_fkey"
-            columns: ["instructor_id"]
-            isOneToOne: false
-            referencedRelation: "instructors"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "driving_lessons_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "students"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      exams: {
-        Row: {
-          created_at: string
-          datum: string
-          fahrzeug_typ: Database["public"]["Enums"]["fahrzeug_typ"]
-          id: string
-          instructor_id: string | null
-          preis: number
-          status: string
-          student_id: string
-          typ: Database["public"]["Enums"]["exam_typ"]
-        }
-        Insert: {
-          created_at?: string
-          datum?: string
-          fahrzeug_typ?: Database["public"]["Enums"]["fahrzeug_typ"]
-          id?: string
-          instructor_id?: string | null
-          preis?: number
-          status?: string
-          student_id: string
-          typ: Database["public"]["Enums"]["exam_typ"]
-        }
-        Update: {
-          created_at?: string
-          datum?: string
-          fahrzeug_typ?: Database["public"]["Enums"]["fahrzeug_typ"]
-          id?: string
-          instructor_id?: string | null
-          preis?: number
-          status?: string
-          student_id?: string
-          typ?: Database["public"]["Enums"]["exam_typ"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "exams_instructor_id_fkey"
-            columns: ["instructor_id"]
-            isOneToOne: false
-            referencedRelation: "instructors"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "exams_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "students"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      gear_lessons: {
-        Row: {
-          created_at: string
-          datum: string
-          dauer_minuten: number
-          id: string
-          student_id: string
-        }
-        Insert: {
-          created_at?: string
-          datum?: string
-          dauer_minuten?: number
-          id?: string
-          student_id: string
-        }
-        Update: {
-          created_at?: string
-          datum?: string
-          dauer_minuten?: number
-          id?: string
-          student_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "gear_lessons_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "students"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      instructors: {
-        Row: {
-          aktiv: boolean
+          contact_pref: string | null
           created_at: string
           email: string | null
+          first_aid_interest: boolean
           id: string
-          nachname: string
-          telefon: string | null
-          vorname: string
+          license_class: string | null
+          message: string | null
+          name: string
+          phone: string | null
+          status: Database["public"]["Enums"]["inquiry_status"]
+          type: Database["public"]["Enums"]["inquiry_type"]
         }
         Insert: {
-          aktiv?: boolean
+          contact_pref?: string | null
           created_at?: string
           email?: string | null
+          first_aid_interest?: boolean
           id?: string
-          nachname: string
-          telefon?: string | null
-          vorname: string
+          license_class?: string | null
+          message?: string | null
+          name: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["inquiry_status"]
+          type?: Database["public"]["Enums"]["inquiry_type"]
         }
         Update: {
-          aktiv?: boolean
+          contact_pref?: string | null
           created_at?: string
           email?: string | null
+          first_aid_interest?: boolean
           id?: string
-          nachname?: string
-          telefon?: string | null
-          vorname?: string
+          license_class?: string | null
+          message?: string | null
+          name?: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["inquiry_status"]
+          type?: Database["public"]["Enums"]["inquiry_type"]
         }
         Relationships: []
       }
-      open_items: {
+      instagram_posts: {
         Row: {
-          beschreibung: string
-          betrag_bezahlt: number
-          betrag_gesamt: number
+          active: boolean
+          caption: string | null
           created_at: string
-          datum: string
           id: string
-          referenz_id: string
-          status: string
-          student_id: string
-          typ: string
+          image_url: string
+          post_url: string
+          sort_order: number
+          updated_at: string
         }
         Insert: {
-          beschreibung: string
-          betrag_bezahlt?: number
-          betrag_gesamt: number
+          active?: boolean
+          caption?: string | null
           created_at?: string
-          datum?: string
           id?: string
-          referenz_id: string
-          status?: string
-          student_id: string
-          typ: string
+          image_url: string
+          post_url?: string
+          sort_order?: number
+          updated_at?: string
         }
         Update: {
-          beschreibung?: string
-          betrag_bezahlt?: number
-          betrag_gesamt?: number
+          active?: boolean
+          caption?: string | null
           created_at?: string
-          datum?: string
           id?: string
-          referenz_id?: string
-          status?: string
-          student_id?: string
-          typ?: string
+          image_url?: string
+          post_url?: string
+          sort_order?: number
+          updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "open_items_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "students"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      payment_allocations: {
+      offers: {
         Row: {
-          betrag: number
+          active: boolean
+          button_text: string
           created_at: string
+          extra_line: string | null
+          headline: string | null
           id: string
-          open_item_id: string
-          payment_id: string
+          image_url: string | null
+          items: string[]
+          price_blocks: Json
+          price_label: string | null
+          short_desc: string | null
+          show_on_home: boolean
+          sort_order: number
+          subline: string | null
+          title: string | null
+          updated_at: string
+          valid_from: string | null
+          valid_until: string | null
         }
         Insert: {
-          betrag: number
+          active?: boolean
+          button_text?: string
           created_at?: string
+          extra_line?: string | null
+          headline?: string | null
           id?: string
-          open_item_id: string
-          payment_id: string
+          image_url?: string | null
+          items?: string[]
+          price_blocks?: Json
+          price_label?: string | null
+          short_desc?: string | null
+          show_on_home?: boolean
+          sort_order?: number
+          subline?: string | null
+          title?: string | null
+          updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
         }
         Update: {
-          betrag?: number
+          active?: boolean
+          button_text?: string
           created_at?: string
+          extra_line?: string | null
+          headline?: string | null
           id?: string
-          open_item_id?: string
-          payment_id?: string
+          image_url?: string | null
+          items?: string[]
+          price_blocks?: Json
+          price_label?: string | null
+          short_desc?: string | null
+          show_on_home?: boolean
+          sort_order?: number
+          subline?: string | null
+          title?: string | null
+          updated_at?: string
+          valid_from?: string | null
+          valid_until?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "payment_allocations_open_item_id_fkey"
-            columns: ["open_item_id"]
-            isOneToOne: false
-            referencedRelation: "open_items"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "payment_allocations_payment_id_fkey"
-            columns: ["payment_id"]
-            isOneToOne: false
-            referencedRelation: "payments"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      payments: {
-        Row: {
-          betrag: number
-          created_at: string
-          datum: string
-          einreichungsdatum: string | null
-          filiale: string | null
-          id: string
-          instructor_id: string | null
-          service_id: string | null
-          student_id: string
-          zahlungsart: Database["public"]["Enums"]["zahlungsart_enum"]
-        }
-        Insert: {
-          betrag?: number
-          created_at?: string
-          datum?: string
-          einreichungsdatum?: string | null
-          filiale?: string | null
-          id?: string
-          instructor_id?: string | null
-          service_id?: string | null
-          student_id: string
-          zahlungsart?: Database["public"]["Enums"]["zahlungsart_enum"]
-        }
-        Update: {
-          betrag?: number
-          created_at?: string
-          datum?: string
-          einreichungsdatum?: string | null
-          filiale?: string | null
-          id?: string
-          instructor_id?: string | null
-          service_id?: string | null
-          student_id?: string
-          zahlungsart?: Database["public"]["Enums"]["zahlungsart_enum"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "payments_instructor_id_fkey"
-            columns: ["instructor_id"]
-            isOneToOne: false
-            referencedRelation: "instructors"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "payments_service_id_fkey"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "payments_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "students"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       prices: {
         Row: {
-          aktiv: boolean
-          bezeichnung: string
+          active: boolean
+          category: string
           created_at: string
-          einheit: string | null
+          description: string | null
           id: string
-          kategorie: string
-          preis: number
+          offer_active: boolean
+          offer_label: string | null
+          offer_note: string | null
+          offer_valid_from: string | null
+          offer_valid_until: string | null
+          old_price: string | null
+          price: string
+          sort_order: number
+          title: string
+          updated_at: string
         }
         Insert: {
-          aktiv?: boolean
-          bezeichnung: string
+          active?: boolean
+          category: string
           created_at?: string
-          einheit?: string | null
+          description?: string | null
           id?: string
-          kategorie: string
-          preis?: number
+          offer_active?: boolean
+          offer_label?: string | null
+          offer_note?: string | null
+          offer_valid_from?: string | null
+          offer_valid_until?: string | null
+          old_price?: string | null
+          price: string
+          sort_order?: number
+          title: string
+          updated_at?: string
         }
         Update: {
-          aktiv?: boolean
-          bezeichnung?: string
+          active?: boolean
+          category?: string
           created_at?: string
-          einheit?: string | null
+          description?: string | null
           id?: string
-          kategorie?: string
-          preis?: number
+          offer_active?: boolean
+          offer_label?: string | null
+          offer_note?: string | null
+          offer_valid_from?: string | null
+          offer_valid_until?: string | null
+          old_price?: string | null
+          price?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
-      profiles: {
+      team_members: {
         Row: {
-          aktiv: boolean
+          active: boolean
+          bio: string | null
           created_at: string
-          display_name: string | null
-          email: string | null
+          description: string | null
           id: string
-          last_sign_in: string | null
+          image_url: string | null
+          name: string
+          role: string
+          sort_order: number
+          updated_at: string
         }
         Insert: {
-          aktiv?: boolean
+          active?: boolean
+          bio?: string | null
           created_at?: string
-          display_name?: string | null
-          email?: string | null
-          id: string
-          last_sign_in?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          role: string
+          sort_order?: number
+          updated_at?: string
         }
         Update: {
-          aktiv?: boolean
+          active?: boolean
+          bio?: string | null
           created_at?: string
-          display_name?: string | null
-          email?: string | null
+          description?: string | null
           id?: string
-          last_sign_in?: string | null
+          image_url?: string | null
+          name?: string
+          role?: string
+          sort_order?: number
+          updated_at?: string
         }
         Relationships: []
-      }
-      services: {
-        Row: {
-          bezeichnung: string
-          created_at: string
-          datum: string
-          id: string
-          notiz: string | null
-          preis: number
-          preis_id: string | null
-          status: Database["public"]["Enums"]["service_status"]
-          student_id: string
-        }
-        Insert: {
-          bezeichnung: string
-          created_at?: string
-          datum?: string
-          id?: string
-          notiz?: string | null
-          preis?: number
-          preis_id?: string | null
-          status?: Database["public"]["Enums"]["service_status"]
-          student_id: string
-        }
-        Update: {
-          bezeichnung?: string
-          created_at?: string
-          datum?: string
-          id?: string
-          notiz?: string | null
-          preis?: number
-          preis_id?: string | null
-          status?: Database["public"]["Enums"]["service_status"]
-          student_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "services_preis_id_fkey"
-            columns: ["preis_id"]
-            isOneToOne: false
-            referencedRelation: "prices"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "services_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "students"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      students: {
-        Row: {
-          adresse: string | null
-          created_at: string
-          email: string | null
-          fahrschule: string
-          fuehrerscheinklasse: Database["public"]["Enums"]["fuehrerscheinklasse_enum"]
-          geburtsdatum: string | null
-          id: string
-          ist_umschreiber: boolean
-          nachname: string
-          status: string | null
-          telefon: string | null
-          vorname: string
-        }
-        Insert: {
-          adresse?: string | null
-          created_at?: string
-          email?: string | null
-          fahrschule?: string
-          fuehrerscheinklasse: Database["public"]["Enums"]["fuehrerscheinklasse_enum"]
-          geburtsdatum?: string | null
-          id?: string
-          ist_umschreiber?: boolean
-          nachname: string
-          status?: string | null
-          telefon?: string | null
-          vorname: string
-        }
-        Update: {
-          adresse?: string | null
-          created_at?: string
-          email?: string | null
-          fahrschule?: string
-          fuehrerscheinklasse?: Database["public"]["Enums"]["fuehrerscheinklasse_enum"]
-          geburtsdatum?: string | null
-          id?: string
-          ist_umschreiber?: boolean
-          nachname?: string
-          status?: string | null
-          telefon?: string | null
-          vorname?: string
-        }
-        Relationships: []
-      }
-      theory_sessions: {
-        Row: {
-          created_at: string
-          datum: string
-          id: string
-          instructor_id: string | null
-          lektion: number | null
-          student_id: string
-          typ: string
-        }
-        Insert: {
-          created_at?: string
-          datum?: string
-          id?: string
-          instructor_id?: string | null
-          lektion?: number | null
-          student_id: string
-          typ?: string
-        }
-        Update: {
-          created_at?: string
-          datum?: string
-          id?: string
-          instructor_id?: string | null
-          lektion?: number | null
-          student_id?: string
-          typ?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "theory_sessions_instructor_id_fkey"
-            columns: ["instructor_id"]
-            isOneToOne: false
-            referencedRelation: "instructors"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "theory_sessions_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "students"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       user_roles: {
         Row: {
+          created_at: string
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
+          created_at?: string
           id?: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
+          created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
-        }
-        Relationships: []
-      }
-      vehicles: {
-        Row: {
-          aktiv: boolean
-          bezeichnung: string
-          created_at: string
-          id: string
-          kennzeichen: string
-          typ: Database["public"]["Enums"]["fahrzeug_typ"]
-        }
-        Insert: {
-          aktiv?: boolean
-          bezeichnung: string
-          created_at?: string
-          id?: string
-          kennzeichen?: string
-          typ?: Database["public"]["Enums"]["fahrzeug_typ"]
-        }
-        Update: {
-          aktiv?: boolean
-          bezeichnung?: string
-          created_at?: string
-          id?: string
-          kennzeichen?: string
-          typ?: Database["public"]["Enums"]["fahrzeug_typ"]
         }
         Relationships: []
       }
@@ -616,22 +308,16 @@ export type Database = {
         }
         Returns: boolean
       }
-      reset_demo_wipe: { Args: never; Returns: undefined }
     }
     Enums: {
-      app_role: "admin" | "sekretaerin"
-      driving_lesson_typ:
-        | "uebungsstunde"
-        | "ueberland"
-        | "autobahn"
-        | "nacht"
-        | "fehlstunde"
-        | "testfahrt_b197"
-      exam_typ: "theorie" | "praxis"
-      fahrzeug_typ: "automatik" | "schaltwagen"
-      fuehrerscheinklasse_enum: "B" | "B78" | "B197"
-      service_status: "offen" | "bezahlt" | "erledigt"
-      zahlungsart_enum: "bar" | "ec" | "ueberweisung"
+      app_role: "admin" | "user"
+      inquiry_status: "neu" | "in_bearbeitung" | "erledigt"
+      inquiry_type:
+        | "kontakt"
+        | "anmeldung"
+        | "angebot"
+        | "erste_hilfe"
+        | "sonstiges"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -759,20 +445,15 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "sekretaerin"],
-      driving_lesson_typ: [
-        "uebungsstunde",
-        "ueberland",
-        "autobahn",
-        "nacht",
-        "fehlstunde",
-        "testfahrt_b197",
+      app_role: ["admin", "user"],
+      inquiry_status: ["neu", "in_bearbeitung", "erledigt"],
+      inquiry_type: [
+        "kontakt",
+        "anmeldung",
+        "angebot",
+        "erste_hilfe",
+        "sonstiges",
       ],
-      exam_typ: ["theorie", "praxis"],
-      fahrzeug_typ: ["automatik", "schaltwagen"],
-      fuehrerscheinklasse_enum: ["B", "B78", "B197"],
-      service_status: ["offen", "bezahlt", "erledigt"],
-      zahlungsart_enum: ["bar", "ec", "ueberweisung"],
     },
   },
 } as const
