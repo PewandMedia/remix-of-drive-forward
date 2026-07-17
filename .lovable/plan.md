@@ -1,58 +1,30 @@
-## Ziel
-Das remixede Projekt mit deinem eigenen Supabase-Backend verbinden, damit du unabhängig von Lovable Cloud bist.
+## Nächste Schritte nach Supabase-Verbindung
 
-## Voraussetzung
-Das Remix-Projekt darf noch nicht an Lovable Cloud gebunden sein. Wenn du beim Erstellen des Remixes **Cloud nicht aktiviert** hast, funktioniert der folgende Weg. War Cloud bereits aktiv, lässt sie sich laut Lovable-Regeln nicht mehr entfernen — dann müsstest du ein komplett neues, leeres Projekt ohne Cloud starten.
+Supabase ist verbunden (`uxcwnrfjlswmrpnjwubm`), aber die DB ist leer und es gibt einen Runtime-Fehler.
 
-## Schritt-für-Schritt-Plan
+### 1. Schema in neuer Supabase-DB anlegen
+Die Datei `supabase/migration_new_project.sql` enthält das komplette Schema (Tabellen, Enums, RLS, Trigger, `has_role`). 
+→ Du öffnest den Supabase SQL-Editor und führst die Datei einmal aus.
+[SQL-Editor öffnen](https://supabase.com/dashboard/project/uxcwnrfjlswmrpnjwubm/sql/new)
 
-### 1. Eigenes Supabase-Projekt anlegen
-- Auf supabase.com ein neues Projekt erstellen.
-- Region wählen (am besten Frankfurt/eu-central-1 für Deutschland).
-- Projekt-Passwort sicher speichern.
-- Folgende Werte notieren:
-  - Project URL (z. B. `https://xyz123.supabase.co`)
-  - Publishable/Anon Key (beginnt oft mit `eyJ...` oder `sb_publishable_...`)
-  - Service Role Key (nur für Server, niemals im Browser)
+### 2. SSR-Fehler beheben (`localStorage is not defined`)
+Der auto-generierte `src/integrations/supabase/client.ts` referenziert `localStorage` ohne `typeof window`-Guard beim SSR-Rendering. Ich patche den Client so, dass `storage` nur im Browser gesetzt wird — analog zum bestehenden Muster in anderen Lovable-Projekten.
 
-### 2. Supabase-Integration in Lovable verbinden
-- Im remixeden Projekt: **Connectors** im linken Sidebar öffnen.
-- **Supabase** auswählen und mit deinem Supabase-Account verknüpfen.
-- Das neu erstellte Supabase-Projekt auswählen.
+### 3. Auth-Provider aktivieren
+E-Mail-Login in Supabase aktivieren, damit `/auth` funktioniert.
+[Auth-Provider öffnen](https://supabase.com/dashboard/project/uxcwnrfjlswmrpnjwubm/auth/providers)
 
-### 3. Schema + Daten migrieren
-Ich generiere dir eine vollständige SQL-Migrationsdatei mit:
-- Enums (`app_role`)
-- Tabellen (`prices`, `team_members`, `first_aid_info`, `inquiries`, `instagram_posts`, `offers`, `user_roles`)
-- GRANTs für `anon`, `authenticated`, `service_role`
-- RLS-Policies
-- `has_role`-Funktion und `set_updated_at`-Trigger
-- Aktuelle Daten aus den Tabellen als INSERTs
+### 4. Ersten Admin-User anlegen
+- Über `/auth` mit E-Mail/Passwort registrieren (oder Nutzer manuell im Dashboard anlegen)
+- `bootstrapFirstAdmin` Server-Function aufrufen (existiert bereits in `src/lib/admin.functions.ts`) → weist dem ersten User automatisch die `admin`-Rolle zu
+[Users öffnen](https://supabase.com/dashboard/project/uxcwnrfjlswmrpnjwubm/auth/users)
 
-Du führst diese Datei im Supabase SQL-Editor aus.
+### 5. Test
+- `/` lädt ohne Fehler
+- `/preise`, `/team` zeigen (leere) Daten aus der neuen DB
+- `/auth` → `/admin` funktioniert
 
-### 4. Umgebungsvariablen prüfen
-Nach dem Connecten sollten diese Variablen automatisch gesetzt werden:
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
-- `VITE_SUPABASE_PROJECT_ID`
-- `SUPABASE_URL`
-- `SUPABASE_PUBLISHABLE_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
+### Reihenfolge
+Zuerst mache ich Schritt 2 (Code-Fix), damit die Vorschau wieder läuft. Schritte 1, 3, 4 machst du im Supabase-Dashboard — ich sage dir jeweils genau was zu tun ist.
 
-Falls etwas fehlt, ergänzen wir es manuell.
-
-### 5. Auth-Provider konfigurieren
-Falls du Google-Login oder E-Mail-Auth brauchst, müssen diese im eigenen Supabase-Projekt aktiviert werden.
-
-### 6. Test
-- Öffentliche Seiten (`/`, `/team`, `/preise`) laden.
-- Admin-Login funktioniert.
-- Kontaktformular schreibt in `inquiries`.
-
-## Was ich jetzt von dir brauche
-1. Bist du sicher, dass das Remix-Projekt **noch nicht** an Lovable Cloud gebunden ist? (Wenn doch, müssen wir einen anderen Weg wählen.)
-2. Hast du bereits ein eigenes Supabase-Projekt erstellt?
-3. Falls ja: Kannst du mir URL, Publishable Key und Service Role Key über das sichere Secret-Formular geben?
-
-Sobald ich das weiß, generiere ich die Migration und wir schließen die Anbindung ab.
+Passt das so, oder willst du eine andere Reihenfolge?
