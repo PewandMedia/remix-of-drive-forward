@@ -60,13 +60,15 @@ function AdminPage() {
           <Button variant="outline" onClick={signOut} className="rounded-full"><LogOut className="h-4 w-4" /> Abmelden</Button>
         </div>
 
-        <Tabs defaultValue="prices" className="mt-8">
+        <Tabs defaultValue="inquiries" className="mt-8">
           <TabsList className="flex flex-wrap">
+            <TabsTrigger value="inquiries">Anmeldungen</TabsTrigger>
             <TabsTrigger value="prices">Preise</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="first_aid">Erste-Hilfe</TabsTrigger>
             <TabsTrigger value="instagram">Instagram</TabsTrigger>
           </TabsList>
+          <TabsContent value="inquiries"><InquiriesAdmin /></TabsContent>
           <TabsContent value="prices"><PricesAdmin /></TabsContent>
           <TabsContent value="team"><TeamAdmin /></TabsContent>
           <TabsContent value="first_aid"><FirstAidAdmin /></TabsContent>
