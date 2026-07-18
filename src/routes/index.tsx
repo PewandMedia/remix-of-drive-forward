@@ -447,23 +447,34 @@ function Index() {
               <p className="mt-4 text-muted-foreground">
                 {faInfo?.description ?? "Bei uns kannst du dich direkt über Erste-Hilfe-Kurse informieren – kompakt, verständlich und perfekt abgestimmt auf deine Fahrausbildung."}
               </p>
-              <div className="mt-6 grid grid-cols-3 gap-3">
-                {faInfo?.price && (
-                  <InfoStat icon={Euro} label="Preis" value={faInfo.price} />
+              <div className="mt-6 space-y-3">
+                {(faInfo?.duration || nextFaDate) && (
+                  <div className="flex items-start gap-4 rounded-2xl border bg-muted/40 p-4">
+                    <span className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground"><Clock className="h-5 w-5" /></span>
+                    <div className="min-w-0">
+                      <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Dauer & nächster Termin</div>
+                      <div className="mt-1 text-sm font-semibold leading-snug">
+                        {faInfo?.duration ?? "8 Stunden (08:00 – 16:00)"}
+                        {nextFaDate && (
+                          <>
+                            {" · "}
+                            {new Date(nextFaDate.starts_at).toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })}
+                          </>
+                        )}
+                      </div>
+                      {!nextFaDate && faInfo?.dates && (
+                        <div className="mt-0.5 text-xs text-muted-foreground">{faInfo.dates}</div>
+                      )}
+                    </div>
+                  </div>
                 )}
-                {faInfo?.duration && (
-                  <InfoStat icon={Clock} label="Dauer" value={faInfo.duration} />
-                )}
-                {faInfo?.dates && (
-                  <InfoStat icon={Calendar} label="Termine" value={faInfo.dates} />
-                )}
-                {!faInfo && (
-                  <>
-                    <InfoStat icon={Heart} label="Kompakt" value="1 Tag" />
-                    <InfoStat icon={FileText} label="Anerkannt" value="für TÜV" />
-                    <InfoStat icon={Calendar} label="Anmeldung" value="vor Ort" />
-                  </>
-                )}
+                <div className="flex items-start gap-4 rounded-2xl border bg-muted/40 p-4">
+                  <span className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground"><MessageCircle className="h-5 w-5" /></span>
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Anmeldung</div>
+                    <div className="mt-1 text-sm font-semibold leading-snug">Unkompliziert per WhatsApp oder vor Ort in der Fahrschule.</div>
+                  </div>
+                </div>
               </div>
               <Link to="/erste-hilfe-kurs" className="mt-7 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-primary">
                 Zum Erste-Hilfe-Kurs <ArrowRight className="h-4 w-4" />
