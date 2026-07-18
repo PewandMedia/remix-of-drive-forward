@@ -37,10 +37,9 @@ export const getTeamPreview = createServerFn({ method: "GET" }).handler(async ()
   const supabase = serverPublicClient();
   const { data, error } = await supabase
     .from("team_members")
-    .select("id,name,role,image_url")
+    .select("id,name,role,image_url,description,sort_order")
     .eq("active", true)
-    .order("sort_order")
-    .limit(4);
+    .order("sort_order");
   if (error) throw new Error(error.message);
   return data ?? [];
 });
