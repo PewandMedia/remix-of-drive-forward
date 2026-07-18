@@ -1,32 +1,38 @@
-# Plan: Durchlaufende Führerscheinklassen entfernen
-
 ## Ziel
-Der Bereich, in dem Führerscheinklassen (B197, B78 etc.) automatisch von rechts nach links durchlaufen, soll komplett aus der Website entfernt werden. Er wird nicht durch einen Slider oder ähnliches ersetzt, damit die Seite ruhiger und professioneller wirkt.
 
-## Aktueller Stand
-- Das eigentliche Marquee-UI ist bereits nicht mehr in `src/routes/index.tsx` vorhanden.
-- In `src/styles.css` existiert aber noch toter Code: `@keyframes marquee` und `@utility animate-marquee`.
-- Eine Prüfung des aktuellen Previews ergab keine sichtbaren Marquee-Elemente.
+Startseiten-Hero ersetzen durch einen modernen, hochwertigen Full-Bleed Hero mit dem hochgeladenen Seedance-2.0-Video als Hintergrund, neuer Headline/Subheadline und drei klaren CTAs.
 
-## Schritte
+## Umsetzung
 
-1. **Toter CSS-Code entfernen**
-   - Datei: `src/styles.css`
-   - Lösche die Zeilen 208–215:
-     ```css
-     @keyframes marquee { ... }
-     @utility animate-marquee { ... }
-     ```
-   - Damit ist die Animation endgültig aus dem Projekt entfernt.
+**1. Video als Asset einbinden**
+- Hochgeladenes MP4 aus `user-uploads://hf_20260718_145213_bf877e7f-128c-4b93-8d47-74c0ebe78d2e.mp4` via `lovable-assets` CDN hochladen als `src/assets/hero-video.mp4.asset.json`.
+- Nutzung als `<video autoPlay muted loop playsInline preload="auto" poster>` für saubere mobile Wiedergabe.
 
-2. **Quer-Check aller Routen**
-   - Prüfe `src/routes/*.tsx` auf verbliebene horizontale Auto-Scroll-/Ticker-Elemente (z. B. Klassen, die `animate-marquee`, `translateX` mit `infinite` oder ähnliche Bewegungsmuster nutzen).
-   - Falls noch ein solches Element gefunden wird, wird es entfernt.
+**2. Hero neu bauen (`src/routes/index.tsx`, Zeilen 102–232)**
 
-3. **Build & Preview-Validierung**
-   - Führe den Build durch, um sicherzustellen, dass das Entfernen des CSS keine Fehler verursacht.
-   - Öffne das Preview der Startseite und bestätige visuell, dass kein durchlaufender Bereich mehr vorhanden ist.
+Layout (Full-Bleed, ~min-h-[90vh] Desktop / 85vh Mobile):
+- Hintergrund: Video absolut, `object-cover`, mit dunklem Verlaufs-Overlay (`from-black/85 via-black/60 to-black/40`) + subtiler roter Radial-Glow rechts unten für Brand-Akzent.
+- Container zentriert links-ausgerichtet, max-w-4xl.
+- Oben: Google-Bewertungs-Pill (transparent/glasig, weißer Text).
+- Eyebrow: `Fahrschule · Bochum · NRW` in roter Signatur.
+- **Headline (H1, riesig, weiß, Display):** „Fahrschule Bochum – modern, persönlich und sicher zum Führerschein." — mit „modern, persönlich und sicher" als roter Kursiv-Akzent.
+- **Subheadline (weiß/80):** „MIRO-DRIVE ist deine moderne Fahrschule in Bochum Innenstadt, am Rathaus und in Bochum Riemke. Wir begleiten dich persönlich von der Anmeldung bis zur bestandenen Prüfung."
+- **3 Buttons:**
+  - Primary Rot: „Jetzt online anmelden" → `/anmeldung`
+  - Weiß/Glas: „Kostenlose Beratung anfragen" → `/kontakt`
+  - Outline weiß: „Preise ansehen" → `/preise`
+- Trust-Zeile unten: Filialen · WhatsApp-Anmeldung · Automatik & Schalter · Persönliche Betreuung (weiße Checks).
+- Scroll-Indikator am unteren Rand (dezent).
 
-## Nicht im Scope
-- Die statischen Preis-Karten auf der Startseite (manuell swipebar auf Mobil, aber nicht automatisch) bleiben erhalten.
-- Inhaltliche Texte oder andere Animationen werden nicht verändert.
+**3. Rechte Bento-Spalte entfernen**
+- Die aktuelle Stats-Bento (Logo/Rating/Filialen/Klassen/WhatsApp-Card) fällt weg — der Video-Hero übernimmt die visuelle Wirkung. Rating und Trust bleiben integriert im Overlay.
+
+**4. Accessibility & Performance**
+- `poster`-Bild vom ersten Frame (optional, fallback ohne).
+- `prefers-reduced-motion`: Video pausiert (via CSS `@media`), Poster bleibt sichtbar.
+- Video `muted` + `playsInline` für iOS-Autoplay.
+
+## Nicht-Ziele
+
+- Preis-Sektion, restliche Startseiten-Sektionen bleiben unverändert.
+- Keine neuen Routen, keine DB-Änderungen.
