@@ -628,127 +628,18 @@ function FirstAidAdmin() {
     onError: (e: any) => toast.error(e.message),
   });
   return (
-    <div className="mt-6 max-w-2xl space-y-8">
+    <div className="mt-6 max-w-2xl">
       <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3 rounded-xl border bg-white p-6">
-        <h3 className="font-display text-lg">Allgemeine Info</h3>
         <div><Label>Beschreibung</Label><Textarea name="description" rows={4} required defaultValue={data?.description ?? ""} /></div>
-        <div><Label>Dauer</Label><Input name="duration" defaultValue={data?.duration ?? ""} placeholder="z. B. 8 Stunden (1 Tag)" /></div>
-        {/* Preis wird auf der Website nicht mehr angezeigt */}
-        <input type="hidden" name="price" value={data?.price ?? ""} />
-        <input type="hidden" name="dates" value={data?.dates ?? ""} />
+        <div className="grid gap-3 md:grid-cols-3">
+          <div><Label>Preis</Label><Input name="price" defaultValue={data?.price ?? ""} /></div>
+          <div><Label>Dauer</Label><Input name="duration" defaultValue={data?.duration ?? ""} /></div>
+          <div><Label>Termine</Label><Input name="dates" defaultValue={data?.dates ?? ""} /></div>
+        </div>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={data?.active ?? true} /> Aktiv</label>
         <Button type="submit" className="rounded-full">Speichern</Button>
       </form>
-
-      <FirstAidDatesAdmin />
     </div>
-  );
-}
-
-/* ============== FIRST AID DATES ============== */
-function FirstAidDatesAdmin() {
-  const qc = useQueryClient();
-  const { data = [] } = useQuery({
-    queryKey: ["admin-first-aid-dates"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("first_aid_dates").select("*").order("starts_at", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const del = useMutation({
-    mutationFn: async (id: string) => { const { error } = await supabase.from("first_aid_dates").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] }); qc.invalidateQueries({ queryKey: ["first_aid_dates"] }); toast.success("Termin gelöscht"); },
-    onError: (e: any) => toast.error(e.message),
-  });
-
-  const toggleActive = useMutation({
-    mutationFn: async (p: { id: string; active: boolean }) => { const { error } = await supabase.from("first_aid_dates").update({ active: p.active }).eq("id", p.id); if (error) throw error; },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] }); qc.invalidateQueries({ queryKey: ["first_aid_dates"] }); },
-    onError: (e: any) => toast.error(e.message),
-  });
-
-  const fmt = new Intl.DateTimeFormat("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
-
-  return (
-    <div className="rounded-xl border bg-white p-6">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <div>
-          <h3 className="font-display text-lg">Termine</h3>
-          <p className="text-xs text-muted-foreground">Diese Termine erscheinen öffentlich auf der Erste-Hilfe-Seite.</p>
-        </div>
-        <FirstAidDateDialog />
-      </div>
-      {data.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Noch keine Termine angelegt.</p>
-      ) : (
-        <ul className="divide-y">
-          {data.map((d) => (
-            <li key={d.id} className="flex items-center gap-3 py-3">
-              <div className="min-w-0 flex-1">
-                <p className="font-medium">{fmt.format(new Date(d.starts_at))}{d.ends_at ? ` – ${fmt.format(new Date(d.ends_at))}` : ""}</p>
-                {d.note && <p className="truncate text-xs text-muted-foreground">{d.note}</p>}
-              </div>
-              <Switch checked={d.active} onCheckedChange={(v) => toggleActive.mutate({ id: d.id, active: v })} />
-              <FirstAidDateDialog existing={d} />
-              <Button variant="ghost" size="icon" onClick={() => { if (confirm("Termin löschen?")) del.mutate(d.id); }}>
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-function toLocalInput(iso?: string | null) {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function FirstAidDateDialog({ existing }: { existing?: { id: string; starts_at: string; ends_at: string | null; note: string | null; active: boolean } }) {
-  const qc = useQueryClient();
-  const [open, setOpen] = useState(false);
-  const save = useMutation({
-    mutationFn: async (form: FormData) => {
-      const startsLocal = String(form.get("starts_at") || "");
-      const endsLocal = String(form.get("ends_at") || "");
-      if (!startsLocal) throw new Error("Startzeit erforderlich");
-      const row = {
-        starts_at: new Date(startsLocal).toISOString(),
-        ends_at: endsLocal ? new Date(endsLocal).toISOString() : null,
-        note: String(form.get("note") || "") || null,
-        active: form.get("active") === "on",
-      };
-      if (existing) { const { error } = await supabase.from("first_aid_dates").update(row).eq("id", existing.id); if (error) throw error; }
-      else { const { error } = await supabase.from("first_aid_dates").insert(row); if (error) throw error; }
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] }); qc.invalidateQueries({ queryKey: ["first_aid_dates"] }); toast.success("Gespeichert"); setOpen(false); },
-    onError: (e: any) => toast.error(e.message),
-  });
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {existing
-          ? <Button variant="ghost" size="icon"><Pencil className="h-4 w-4" /></Button>
-          : <Button size="sm" className="rounded-full"><Plus className="mr-1 h-4 w-4" /> Termin</Button>}
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader><DialogTitle>{existing ? "Termin bearbeiten" : "Neuer Termin"}</DialogTitle></DialogHeader>
-        <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3">
-          <div><Label>Start (Datum & Uhrzeit)</Label><Input type="datetime-local" name="starts_at" required defaultValue={toLocalInput(existing?.starts_at)} /></div>
-          <div><Label>Ende (optional)</Label><Input type="datetime-local" name="ends_at" defaultValue={toLocalInput(existing?.ends_at)} /></div>
-          <div><Label>Notiz (optional)</Label><Input name="note" defaultValue={existing?.note ?? ""} placeholder="z. B. Ort, Hinweise" /></div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={existing?.active ?? true} /> Aktiv (öffentlich sichtbar)</label>
-          <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
   );
 }
 
