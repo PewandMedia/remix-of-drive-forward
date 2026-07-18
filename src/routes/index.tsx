@@ -500,7 +500,7 @@ function Index() {
             {(() => {
               const instructors = (team as TeamMember[]).filter((m) => (m.sort_order ?? 0) < 8);
               const owner = instructors.find((m) => m.name.toLowerCase().includes("ilkay"));
-              const others = instructors.filter((m) => m !== owner);
+              const others = instructors.filter((m) => m !== owner).slice(0, 3);
               return (
                 <div className="space-y-8 sm:space-y-12">
                   {owner && (
