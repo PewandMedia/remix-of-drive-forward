@@ -46,41 +46,59 @@ export type Database = {
       }
       inquiries: {
         Row: {
+          address: string | null
+          birth_date: string | null
+          city: string | null
           contact_pref: string | null
           created_at: string
           email: string | null
           first_aid_interest: boolean
+          first_name: string | null
           id: string
+          last_name: string | null
           license_class: string | null
           message: string | null
           name: string
           phone: string | null
+          postal_code: string | null
           status: Database["public"]["Enums"]["inquiry_status"]
           type: Database["public"]["Enums"]["inquiry_type"]
         }
         Insert: {
+          address?: string | null
+          birth_date?: string | null
+          city?: string | null
           contact_pref?: string | null
           created_at?: string
           email?: string | null
           first_aid_interest?: boolean
+          first_name?: string | null
           id?: string
+          last_name?: string | null
           license_class?: string | null
           message?: string | null
           name: string
           phone?: string | null
+          postal_code?: string | null
           status?: Database["public"]["Enums"]["inquiry_status"]
           type?: Database["public"]["Enums"]["inquiry_type"]
         }
         Update: {
+          address?: string | null
+          birth_date?: string | null
+          city?: string | null
           contact_pref?: string | null
           created_at?: string
           email?: string | null
           first_aid_interest?: boolean
+          first_name?: string | null
           id?: string
+          last_name?: string | null
           license_class?: string | null
           message?: string | null
           name?: string
           phone?: string | null
+          postal_code?: string | null
           status?: Database["public"]["Enums"]["inquiry_status"]
           type?: Database["public"]["Enums"]["inquiry_type"]
         }
