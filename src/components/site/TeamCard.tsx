@@ -15,16 +15,24 @@ export function Avatar({
 }: {
   name: string;
   src?: string | null;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "featured";
 }) {
   const dim =
     size === "lg"
       ? "h-36 w-36 sm:h-40 sm:w-40"
+      : size === "featured"
+      ? "h-28 w-28 sm:h-32 sm:w-32"
       : size === "sm"
       ? "h-16 w-16 sm:h-28 sm:w-28"
       : "h-24 w-24 sm:h-28 sm:w-28";
   const textSize =
-    size === "lg" ? "text-5xl" : size === "sm" ? "text-xl sm:text-3xl" : "text-3xl";
+    size === "lg"
+      ? "text-5xl"
+      : size === "featured"
+      ? "text-4xl"
+      : size === "sm"
+      ? "text-xl sm:text-3xl"
+      : "text-3xl";
 
   if (src) {
     return (
