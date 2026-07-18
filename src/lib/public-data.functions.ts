@@ -56,6 +56,19 @@ export const getFirstAidInfo = createServerFn({ method: "GET" }).handler(async (
   return data?.[0] ?? null;
 });
 
+export const getFirstAidDates = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = serverPublicClient();
+  const nowIso = new Date().toISOString();
+  const { data, error } = await supabase
+    .from("first_aid_dates")
+    .select("id,starts_at,ends_at,note")
+    .eq("active", true)
+    .gte("starts_at", nowIso)
+    .order("starts_at", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
 export const hasActiveOffer = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = serverPublicClient();
   const { count, error } = await supabase
