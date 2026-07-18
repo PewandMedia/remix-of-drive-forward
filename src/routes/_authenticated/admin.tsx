@@ -739,7 +739,7 @@ function FirstAidDateDialog({ initial }: { initial?: FaDate }) {
       <DialogContent>
         <DialogHeader><DialogTitle>{initial ? "Termin bearbeiten" : "Neuer Termin"}</DialogTitle></DialogHeader>
         <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3">
-          <div><Label>Datum</Label><Input type="date" name="date" required defaultValue={toDateInput(initial?.starts_at)} /></div>
+          <div><Label>Datum</Label><Input type="date" name="date" required defaultValue={faToDateInput(initial?.starts_at)} /></div>
           <div className="grid grid-cols-2 gap-3">
             <div><Label>Startzeit</Label><Input type="time" name="start" required defaultValue={toTimeInput(initial?.starts_at) || "08:00"} /></div>
             <div><Label>Endzeit</Label><Input type="time" name="end" defaultValue={toTimeInput(initial?.ends_at) || "16:00"} /></div>
