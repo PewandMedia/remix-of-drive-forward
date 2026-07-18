@@ -42,20 +42,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const marqueeItems = [
-  "Führerschein Bochum",
-  "Klasse B",
-  "Klasse B197",
-  "Klasse B78",
-  "Automatik & Schalter",
-  "Erste-Hilfe-Kurs 50 €",
-  "NRW",
-  "5,0 ★ Google",
-  "549+ Bewertungen",
-  "WhatsApp Anmeldung",
-  "Bochum Zentrum",
-  "Bochum Riemke",
-];
 
 const steps = [
   { n: "01", icon: Send, title: "Melde dich per WhatsApp", text: "Schreib uns direkt – wir antworten meist innerhalb weniger Minuten." },
