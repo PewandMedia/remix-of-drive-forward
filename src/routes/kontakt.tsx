@@ -30,11 +30,16 @@ function ContactPage() {
       />
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mb-10 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-5">
-          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-          <p className="text-sm leading-relaxed">
-            <span className="font-bold">Hinweis:</span> Eine Anmeldung zur Fahrschule ist nur persönlich in einer unserer Filialen möglich – nicht online. Wir freuen uns auf deinen Besuch!
-          </p>
+        <div className="mb-10 flex flex-wrap items-start justify-between gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+            <p className="text-sm leading-relaxed">
+              <span className="font-bold">Tipp:</span> Du kannst dich auch direkt online anmelden – wir schicken dir den Ausbildungsvertrag anschließend per E-Mail.
+            </p>
+          </div>
+          <a href="/anmeldung" className="inline-flex items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+            Zur Online-Anmeldung
+          </a>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
