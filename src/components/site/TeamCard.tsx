@@ -5,6 +5,7 @@ export type TeamMember = {
   description: string | null;
   bio?: string | null;
   image_url: string | null;
+  sort_order?: number | null;
 };
 
 export function Avatar({
