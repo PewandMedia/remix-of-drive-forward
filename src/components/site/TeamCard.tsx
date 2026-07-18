@@ -76,7 +76,7 @@ export function TeamCard({
   size = "md",
 }: {
   member: TeamMember;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "featured";
 }) {
   const languages = renderLanguages(member.description);
   const extraDesc =
@@ -86,10 +86,13 @@ export function TeamCard({
   const bio = member.bio;
 
   const isLg = size === "lg";
+  const isFeatured = size === "featured";
   const isSm = size === "sm";
 
   const cardSize = isLg
     ? "min-h-[420px] w-full max-w-md p-8 sm:p-10"
+    : isFeatured
+    ? "min-h-[340px] w-full max-w-sm p-6 sm:p-8"
     : isSm
     ? "min-h-[200px] p-3 sm:min-h-[320px] sm:p-7"
     : "min-h-[320px] p-5 sm:p-7";
@@ -97,7 +100,7 @@ export function TeamCard({
   return (
     <article
       className={`relative isolate flex h-full min-w-0 flex-col items-center overflow-hidden rounded-2xl border bg-card ${cardSize} text-center shadow-sm transition-shadow hover:shadow-lg ${
-        isLg ? "border-primary/30" : "border-border"
+        isLg || isFeatured ? "border-primary/30" : "border-border"
       }`}
       aria-label={member.name}
     >
