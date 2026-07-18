@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useQueries } from "@tanstack/react-query";
-import { getHomePrices, getTeamPreview, getFirstAidInfo } from "@/lib/public-data.functions";
+import { getHomePrices, getTeamPreview, getFirstAidInfo, getUpcomingFirstAidDates } from "@/lib/public-data.functions";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
