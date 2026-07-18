@@ -107,32 +107,35 @@ function FAPage() {
             <div className="relative overflow-hidden rounded-2xl bg-foreground p-8 text-white">
               <div className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-primary opacity-20 blur-[100px]" />
               <div className="relative z-10">
-                <h2 className="mb-4 font-display text-2xl leading-none tracking-tight sm:text-3xl">Anmeldung & Infos</h2>
+                <h2 className="mb-4 font-display text-2xl leading-none tracking-tight sm:text-3xl">Nächste Termine</h2>
                 <p className="mb-8 text-sm leading-relaxed text-white/60">
-                  Der Kurs läuft von 8:00 bis 16:00 Uhr und findet jeden Monat in unserer Fahrschule statt. Sichere dir deinen Platz – unkompliziert per WhatsApp oder Anruf.
+                  Wir bieten <strong className="text-white">regelmäßig Erste-Hilfe-Kurse</strong> an – 8 Stunden an einem Tag, direkt in unserer Fahrschule. Sichere dir deinen Platz unkompliziert per WhatsApp oder Anruf.
                 </p>
-                {info && (
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-6 border-t border-white/10 pt-8">
-                    {info.price && (
-                      <div>
-                        <span className="mb-1 block font-display text-[10px] uppercase tracking-widest text-primary">Preis</span>
-                        <p className="text-2xl font-bold tracking-tighter">{info.price}</p>
-                      </div>
-                    )}
-                    {info.dates && (
-                      <div>
-                        <span className="mb-1 block font-display text-[10px] uppercase tracking-widest text-primary">Termine</span>
-                        <p className="text-base font-bold leading-tight tracking-tight">{info.dates}</p>
-                      </div>
-                    )}
-                    {info.duration && (
-                      <div className="col-span-2">
-                        <span className="mb-1 block font-display text-[10px] uppercase tracking-widest text-primary">Dauer</span>
-                        <p className="text-lg font-bold tracking-tight">{info.duration}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
+                <div className="border-t border-white/10 pt-6">
+                  {dates.length > 0 ? (
+                    <ul className="space-y-3">
+                      {dates.map((d) => (
+                        <li key={d.id} className="flex items-start gap-3 rounded-lg bg-white/5 p-4">
+                          <Calendar className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                          <div className="min-w-0">
+                            <p className="font-bold tracking-tight">{formatDateRange(d.starts_at, d.ends_at)}</p>
+                            {d.note && <p className="mt-1 text-xs text-white/60">{d.note}</p>}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-white/70">
+                      Aktuell ist noch kein Termin veröffentlicht. Melde dich kurz bei uns – wir informieren dich sofort über den nächsten freien Kurstag.
+                    </p>
+                  )}
+                  {info?.duration && (
+                    <div className="mt-6 border-t border-white/10 pt-4">
+                      <span className="mb-1 block font-display text-[10px] uppercase tracking-widest text-primary">Dauer</span>
+                      <p className="text-lg font-bold tracking-tight">{info.duration}</p>
+                    </div>
+                  )}
+                </div>
                 <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                   <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="inline-flex flex-1 items-center justify-center gap-2 bg-[#25D366] px-6 py-4 font-display text-xs uppercase tracking-widest text-white transition-all hover:brightness-110 active:scale-95">
                     WhatsApp
