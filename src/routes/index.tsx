@@ -445,29 +445,39 @@ function Index() {
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Erste-Hilfe-Kurs</span>
               <h2 className="mt-2 text-4xl sm:text-5xl">Pflichtkurs für deinen Führerschein.</h2>
               <p className="mt-4 text-muted-foreground">
-                {faInfo?.description ?? "Bei uns kannst du dich direkt über Erste-Hilfe-Kurse informieren – kompakt, verständlich und perfekt abgestimmt auf deine Fahrausbildung."}
+                Wir bieten regelmäßig Erste-Hilfe-Kurse direkt bei uns in der Fahrschule an – kompakt an einem Tag und amtlich anerkannt.
               </p>
-              <div className="mt-6 grid grid-cols-3 gap-3">
-                {faInfo?.price && (
-                  <InfoStat icon={Euro} label="Preis" value={faInfo.price} />
-                )}
-                {faInfo?.duration && (
-                  <InfoStat icon={Clock} label="Dauer" value={faInfo.duration} />
-                )}
-                {faInfo?.dates && (
-                  <InfoStat icon={Calendar} label="Termine" value={faInfo.dates} />
-                )}
-                {!faInfo && (
-                  <>
-                    <InfoStat icon={Heart} label="Kompakt" value="1 Tag" />
-                    <InfoStat icon={FileText} label="Anerkannt" value="für TÜV" />
-                    <InfoStat icon={Calendar} label="Anmeldung" value="vor Ort" />
-                  </>
+              <div className="mt-6">
+                <p className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/70">Nächste Termine</p>
+                {faDates.length === 0 ? (
+                  <p className="rounded-xl bg-muted/60 p-4 text-sm text-muted-foreground">
+                    Aktuell keine Termine online – frag uns kurz per WhatsApp, wir nennen dir sofort den nächsten Kurs.
+                  </p>
+                ) : (
+                  <ul className="space-y-2">
+                    {faDates.slice(0, 3).map((d: any) => {
+                      const start = new Date(d.starts_at);
+                      const dateStr = start.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "long" });
+                      const startTime = start.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+                      const end = d.ends_at ? new Date(d.ends_at) : null;
+                      const endTime = end ? end.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
+                      return (
+                        <li key={d.id} className="flex items-center gap-3 rounded-xl border bg-white px-4 py-3">
+                          <Calendar className="h-4 w-4 flex-shrink-0 text-primary" />
+                          <span className="text-sm font-semibold">{dateStr}</span>
+                          <span className="ml-auto text-xs text-muted-foreground">
+                            {endTime ? `${startTime}–${endTime} Uhr` : `${startTime} Uhr`}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 )}
               </div>
               <Link to="/erste-hilfe-kurs" className="mt-7 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-bold text-white hover:bg-primary">
                 Zum Erste-Hilfe-Kurs <ArrowRight className="h-4 w-4" />
               </Link>
+
             </div>
             <div className="relative order-first lg:order-none">
               <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/25 blur-3xl" />
