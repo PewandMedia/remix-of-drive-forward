@@ -101,136 +101,96 @@ function Index() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-background">
-        {/* soft radial glow + dot grid */}
-        <div className="pointer-events-none absolute inset-0 hero-dot-grid opacity-[0.14]" />
+      <section className="relative isolate overflow-hidden bg-black text-white">
+        {/* Video background */}
+        <video
+          className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        >
+          <source src={heroVideo.url} type="video/mp4" />
+        </video>
 
-        <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-28">
-          <div className="grid items-center gap-8 lg:gap-12 lg:grid-cols-[1.15fr_1fr]">
-            {/* left column */}
-            <div className="animate-fade-up">
-              <a
-                href={CONTACT.googleProfileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-primary transition-colors hover:bg-primary/10 sm:text-xs"
-              >
-                <span className="flex">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-3 w-3 fill-primary text-primary" />
-                  ))}
-                </span>
-                {CONTACT.googleRating} · {CONTACT.googleReviewCount} Google-Bewertungen
-              </a>
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+        <div className="pointer-events-none absolute -right-32 -bottom-32 h-[520px] w-[520px] rounded-full bg-primary/40 blur-[140px]" />
+        <div className="pointer-events-none absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-primary via-primary/60 to-transparent" />
 
-              <p className="mb-4 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-muted-foreground">
-                <span className="h-px w-8 bg-primary" /> Fahrschule · Bochum · NRW
-              </p>
-              <h1 className="font-display text-[2rem] leading-[1.04] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5.25rem]">
-                Fahrschule MIRO-DRIVE –<br className="hidden sm:block" />
-                die <span className="italic text-primary">Nr. 1 Fahrschule</span> in Bochum.
-              </h1>
-              <p className="mt-5 max-w-2xl text-sm text-muted-foreground sm:text-lg lg:text-xl">
-                Zwei Filialen in Bochum: <strong className="text-foreground">Bochum Zentrum – Brückstraße 53</strong> und{" "}
-                <strong className="text-foreground">Bochum Riemke – Herner Straße 365</strong>. Klasse B, B197 & B78 –
-                persönlich betreut, fair bepreist. Für Fahrschüler aus Bochum und ganz NRW.
-              </p>
-
-              <div className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
-                <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="col-span-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-xs font-bold text-white shadow-xl shadow-[#25D366]/25 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-[#25D366]/30 sm:col-span-1 sm:px-7 sm:py-4 sm:text-sm">
-                  <MessageCircle className="h-4 w-4" /> Jetzt per WhatsApp anmelden
-                </a>
-                <Link to="/preise" className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-5 py-3 text-xs font-bold text-background transition-all hover:-translate-y-0.5 hover:bg-foreground/90 sm:px-7 sm:py-4 sm:text-sm">
-                  Preise ansehen <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link to="/kontakt" className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-foreground/10 bg-background px-5 py-3 text-xs font-bold text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background sm:px-7 sm:py-4 sm:text-sm">
-                  Beratung anfragen
-                </Link>
-              </div>
-
-              <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-muted-foreground sm:mt-8 sm:flex sm:flex-wrap sm:gap-x-6 sm:text-sm">
-                {["2 Filialen in Bochum", "WhatsApp-Anmeldung", "Automatik & Schalter", "Persönliche Betreuung"].map((f) => (
-                  <li key={f} className="inline-flex items-center gap-2">
-                    <Check className="h-3.5 w-3.5 shrink-0 text-primary sm:h-4 sm:w-4" /> {f}
-                  </li>
+        <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+          <div className="max-w-3xl animate-fade-up">
+            <a
+              href={CONTACT.googleProfileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md transition-colors hover:bg-white/20 sm:text-xs"
+            >
+              <span className="flex">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3 w-3 fill-primary text-primary" />
                 ))}
-              </ul>
+              </span>
+              {CONTACT.googleRating} · {CONTACT.googleReviewCount} Google-Bewertungen
+            </a>
+
+            <p className="mb-5 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.28em] text-white/80">
+              <span className="h-px w-10 bg-primary" /> Fahrschule · Bochum · NRW
+            </p>
+
+            <h1 className="font-display text-[2.25rem] leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem]">
+              Fahrschule Bochum –{" "}
+              <span className="italic text-primary">modern, persönlich und sicher</span>{" "}
+              zum Führerschein
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-base text-white/85 sm:text-lg lg:text-xl">
+              MIRO-DRIVE ist deine moderne Fahrschule in <strong className="font-semibold text-white">Bochum Innenstadt</strong>, am{" "}
+              <strong className="font-semibold text-white">Rathaus</strong> und in{" "}
+              <strong className="font-semibold text-white">Bochum Riemke</strong>. Wir begleiten dich persönlich von der Anmeldung bis zur bestandenen Prüfung.
+            </p>
+
+            <div className="mt-8 grid grid-cols-1 gap-2.5 sm:flex sm:flex-wrap sm:gap-3">
+              <Link
+                to="/anmeldung"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-xl shadow-primary/30 transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-2xl hover:shadow-primary/40 sm:px-7 sm:py-4"
+              >
+                Jetzt online anmelden <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/kontakt"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-white/20 sm:px-7 sm:py-4"
+              >
+                Kostenlose Beratung anfragen
+              </Link>
+              <Link
+                to="/preise"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-transparent px-6 py-3.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-foreground sm:px-7 sm:py-4"
+              >
+                Preise ansehen
+              </Link>
             </div>
 
-            {/* right column – stat bento */}
-            <div className="relative">
-              <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/20 via-transparent to-transparent blur-2xl" />
-              <div className="relative grid grid-cols-2 gap-2.5 sm:gap-3">
-                {/* Brand logo panel */}
-                <div className="col-span-2 relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-white to-white/70 p-5 shadow-xl sm:p-8">
-                  <div className="pointer-events-none absolute -top-8 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
-                  <div className="relative flex flex-col items-center text-center">
-                    <img
-                      src="/images/miro-drive-logo.svg"
-                      alt="MIRO-DRIVE Fahrschule Bochum Logo"
-                      className="h-12 w-auto sm:h-20"
-                    />
-                    <div className="mt-4 flex items-center gap-3">
-                      <span className="h-px w-8 bg-primary" />
-                      <span className="text-[10px] font-black uppercase tracking-[0.25em] text-primary">
-                        Nr. 1 Fahrschule in Bochum
-                      </span>
-                      <span className="h-px w-8 bg-primary" />
-                    </div>
-                  </div>
-                </div>
+            <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-white/80 sm:flex sm:flex-wrap sm:gap-x-6 sm:text-sm">
+              {["2 Filialen in Bochum", "WhatsApp-Anmeldung", "Automatik & Schalter", "Persönliche Betreuung"].map((f) => (
+                <li key={f} className="inline-flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 shrink-0 text-primary sm:h-4 sm:w-4" /> {f}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-                <a
-                  href={CONTACT.googleProfileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="col-span-2 group overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-white to-white/60 p-4 shadow-xl transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl sm:p-6"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-primary text-primary sm:h-5 sm:w-5" />
-                        ))}
-                      </div>
-                      <p className="mt-2 font-display text-4xl leading-none sm:text-5xl">{CONTACT.googleRating}</p>
-                      <p className="mt-1 text-xs font-semibold text-muted-foreground sm:text-sm">
-                        {CONTACT.googleReviewCount} Google-Bewertungen
-                      </p>
-                    </div>
-                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-foreground text-white sm:h-14 sm:w-14">
-                      <Award className="h-5 w-5 sm:h-7 sm:w-7" />
-                    </div>
-                  </div>
-                </a>
-
-                <div className="rounded-3xl border border-border bg-card p-4 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl sm:p-5">
-                  <MapPin className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
-                  <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground sm:mt-3">Filialen</p>
-                  <p className="mt-1 font-display text-base leading-tight sm:text-xl">Bochum Zentrum & Riemke</p>
-                </div>
-                <div className="rounded-3xl border border-border bg-card p-4 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl sm:p-5">
-                  <GraduationCap className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
-                  <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground sm:mt-3">Klassen</p>
-                  <p className="mt-1 font-display text-base leading-tight sm:text-xl">B · B197 · B78</p>
-                </div>
-                <div className="col-span-2 rounded-3xl bg-foreground p-4 text-white shadow-xl sm:p-5">
-                  <div className="flex items-center gap-3">
-                    <Zap className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Anmeldung in Minuten</p>
-                  </div>
-                  <p className="mt-2 font-display text-lg leading-tight sm:text-2xl">
-                    Schreib uns per WhatsApp – wir antworten meist innerhalb weniger Minuten.
-                  </p>
-                  <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-bold text-white transition-all hover:opacity-90">
-                    <MessageCircle className="h-4 w-4" /> Chat starten
-                  </a>
-                </div>
-              </div>
-            </div>
+          {/* Scroll indicator */}
+          <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60 sm:flex">
+            Scrollen
+            <ChevronDown className="h-4 w-4 animate-bounce" />
           </div>
         </div>
       </section>
+
 
       {/* PREISE AUF EINEN BLICK */}
       <section className="border-y bg-muted/30 py-12 sm:py-16">
