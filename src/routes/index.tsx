@@ -65,6 +65,109 @@ const PRICE_CLASSES = [
 ];
 
 
+function HeroSection() {
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoDone, setVideoDone] = useState(false);
+
+  return (
+    <section className="relative isolate overflow-hidden bg-black text-white">
+      {/* Poster (immer da, sichtbar bis Video bereit + wieder wenn Video zu Ende) */}
+      <img
+        src={heroPoster.url}
+        alt=""
+        aria-hidden="true"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoReady && !videoDone ? "opacity-0" : "opacity-100"}`}
+      />
+
+      {/* Video */}
+      <video
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 motion-reduce:hidden ${videoReady && !videoDone ? "opacity-100" : "opacity-0"}`}
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        poster={heroPoster.url}
+        aria-label="MIRO-DRIVE Fahrschulfahrzeug fährt ins Bild"
+        onLoadedData={() => setVideoReady(true)}
+        onEnded={() => setVideoDone(true)}
+      >
+        <source src={heroVideo.url} type="video/mp4" />
+      </video>
+
+      {/* Overlays */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
+      <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_180px_rgba(0,0,0,0.55)]" />
+      <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/80 via-primary/30 to-transparent" />
+
+      {/* Roter Shimmer nach Videoende – einmalig */}
+      {videoDone && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="hero-shine absolute -inset-y-10 -left-1/3 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-primary/25 to-transparent blur-2xl" />
+        </div>
+      )}
+
+      <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 sm:py-24 lg:min-h-[92svh] lg:px-8 lg:py-32">
+        <div className="max-w-2xl">
+          <p className="animate-fade-up mb-5 flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.32em] text-white/85" style={{ animationDelay: "0.05s" }}>
+            <span className="h-px w-10 bg-primary" /> Deine moderne Fahrschule in Bochum
+          </p>
+
+          <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem]" style={{ animationDelay: "0.15s" }}>
+            Fahrschule Bochum –{" "}
+            <span className="italic text-primary">modern, persönlich und sicher</span>{" "}
+            zum Führerschein
+          </h1>
+
+          <p className="animate-fade-up mt-6 max-w-xl text-base text-white/85 sm:text-lg" style={{ animationDelay: "0.3s" }}>
+            MIRO-DRIVE begleitet dich von der Anmeldung bis zur bestandenen Prüfung. Persönliche Betreuung, moderne Fahrzeuge und eine professionelle Fahrausbildung in{" "}
+            <strong className="font-semibold text-white">Bochum Innenstadt</strong>, am{" "}
+            <strong className="font-semibold text-white">Rathaus</strong> und in{" "}
+            <strong className="font-semibold text-white">Bochum Riemke</strong>.
+          </p>
+
+          <div className="animate-fade-up mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" style={{ animationDelay: "0.45s" }}>
+            <Link
+              to="/anmeldung"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-bold text-primary-foreground shadow-xl shadow-primary/30 transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-2xl hover:shadow-primary/40"
+            >
+              Jetzt online anmelden <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/kontakt"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-7 py-4 text-sm font-bold text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-white/20"
+            >
+              Kostenlose Beratung
+            </Link>
+            <Link
+              to="/preise"
+              className="group inline-flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-white/85 transition-colors hover:text-white sm:ml-2"
+            >
+              Preise ansehen
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+
+          <p className="animate-fade-up mt-10 text-xs text-white/70 sm:text-sm" style={{ animationDelay: "0.6s" }}>
+            Klasse B <span className="mx-2 text-white/30">·</span> B197
+            <span className="mx-2 text-white/30">·</span> Mehrsprachige Beratung
+            <span className="mx-2 text-white/30">·</span> Erste-Hilfe-Kurse
+          </p>
+        </div>
+
+        {/* Scroll-Hinweis */}
+        <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60 sm:flex">
+          Mehr entdecken
+          <ChevronDown className="h-4 w-4 animate-bounce" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+
 function Index() {
   const [, setTick] = useState(0);
   useEffect(() => { const id = setInterval(() => setTick((n) => n + 1), 60_000); return () => clearInterval(id); }, []);
