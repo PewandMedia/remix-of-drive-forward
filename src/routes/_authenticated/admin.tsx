@@ -695,7 +695,7 @@ function FirstAidDatesAdmin() {
   );
 }
 
-function toDateInput(iso?: string | null) {
+function faToDateInput(iso?: string | null) {
   if (!iso) return "";
   const d = new Date(iso);
   const p = (n: number) => String(n).padStart(2, "0");
