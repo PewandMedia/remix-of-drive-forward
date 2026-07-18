@@ -7,7 +7,8 @@ import { CONTACT } from "@/lib/contact";
 import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
-import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy, Flame, Timer } from "lucide-react";
+import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy, Flame, Timer, ChevronDown } from "lucide-react";
+import heroVideo from "@/assets/hero-video.mp4.asset.json";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 
