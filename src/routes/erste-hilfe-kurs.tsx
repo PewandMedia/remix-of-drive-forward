@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import { getFirstAidInfo } from "@/lib/public-data.functions";
+import { getFirstAidInfo, getFirstAidDates } from "@/lib/public-data.functions";
 import { ErrorBox } from "@/components/site/QueryFallbacks";
 import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
@@ -12,6 +12,11 @@ import ersteHilfeImg from "@/assets/erste-hilfe-hero.jpg";
 const faQuery = queryOptions({
   queryKey: ["first_aid_info"],
   queryFn: () => getFirstAidInfo(),
+});
+
+const datesQuery = queryOptions({
+  queryKey: ["first_aid_dates"],
+  queryFn: () => getFirstAidDates(),
 });
 
 export const Route = createFileRoute("/erste-hilfe-kurs")({
