@@ -172,7 +172,7 @@ function HeroSection() {
 function Index() {
   const [, setTick] = useState(0);
   useEffect(() => { const id = setInterval(() => setTick((n) => n + 1), 60_000); return () => clearInterval(id); }, []);
-  const [pricesQ, teamQ, faQ] = useQueries({
+  const [pricesQ, teamQ, faQ, faDatesQ] = useQueries({
     queries: [
       {
         queryKey: ["home-prices"],
@@ -186,12 +186,18 @@ function Index() {
         queryKey: ["home-first-aid"],
         queryFn: () => getFirstAidInfo(),
       },
+      {
+        queryKey: ["home-first-aid-dates"],
+        queryFn: () => getUpcomingFirstAidDates(),
+      },
     ],
   });
 
   const prices = pricesQ.data ?? [];
   const team = teamQ.data ?? [];
   const faInfo = faQ.data;
+  const faDates = faDatesQ.data ?? [];
+
 
   const hasActiveOffer = prices.some((p: any) => isOfferLive(p));
 
