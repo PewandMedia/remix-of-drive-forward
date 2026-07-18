@@ -12,6 +12,7 @@ import heroVideo from "@/assets/miro-drive-hero.mp4.asset.json";
 import heroPoster from "@/assets/miro-drive-hero-poster.jpg.asset.json";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
+import { TeamCard, type TeamMember } from "@/components/site/TeamCard";
 
 import { ReviewsSection } from "@/components/site/ReviewsSection";
 import { InstagramSection } from "@/components/site/InstagramSection";
@@ -495,17 +496,28 @@ function Index() {
                 Ganzes Team ansehen <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-              {team.map((m) => (
-                <Link key={m.id} to="/team" className="group rounded-2xl border bg-white p-3 text-center transition-transform hover:-translate-y-1 sm:rounded-3xl sm:p-5">
-                  <div className="mx-auto mb-4">
-                    <MiniAvatar name={m.name} src={m.image_url} />
-                  </div>
-                  <p className="font-display text-sm sm:text-base">{m.name}</p>
-                  {m.role && <p className="mt-0.5 text-[10px] uppercase tracking-wider text-muted-foreground sm:text-xs">{m.role}</p>}
-                </Link>
-              ))}
-            </div>
+
+            {(() => {
+              const instructors = (team as TeamMember[]).filter((m) => (m.sort_order ?? 0) < 8);
+              const owner = instructors.find((m) => m.name.toLowerCase().includes("ilkay"));
+              const others = instructors.filter((m) => m !== owner);
+              return (
+                <div className="space-y-8 sm:space-y-12">
+                  {owner && (
+                    <div className="flex justify-center">
+                      <TeamCard member={owner} size="lg" />
+                    </div>
+                  )}
+                  {others.length > 0 && (
+                    <div className="grid grid-cols-3 items-stretch gap-2 sm:gap-4 lg:gap-6">
+                      {others.map((m) => (
+                        <TeamCard key={m.id} member={m} size="sm" />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         </section>
       )}
@@ -640,12 +652,3 @@ function InfoStat({ icon: Icon, label, value }: { icon: typeof Heart; label: str
   );
 }
 
-function MiniAvatar({ name, src }: { name: string; src?: string | null }) {
-  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className="mx-auto h-20 w-20 rounded-full object-cover" />;
-  const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
-  return (
-    <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a14] font-display text-xl text-white">
-      {initials}
-    </div>
-  );
-}
