@@ -15,16 +15,24 @@ export function Avatar({
 }: {
   name: string;
   src?: string | null;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "featured";
 }) {
   const dim =
     size === "lg"
       ? "h-36 w-36 sm:h-40 sm:w-40"
+      : size === "featured"
+      ? "h-28 w-28 sm:h-32 sm:w-32"
       : size === "sm"
       ? "h-16 w-16 sm:h-28 sm:w-28"
       : "h-24 w-24 sm:h-28 sm:w-28";
   const textSize =
-    size === "lg" ? "text-5xl" : size === "sm" ? "text-xl sm:text-3xl" : "text-3xl";
+    size === "lg"
+      ? "text-5xl"
+      : size === "featured"
+      ? "text-4xl"
+      : size === "sm"
+      ? "text-xl sm:text-3xl"
+      : "text-3xl";
 
   if (src) {
     return (
@@ -68,7 +76,7 @@ export function TeamCard({
   size = "md",
 }: {
   member: TeamMember;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "featured";
 }) {
   const languages = renderLanguages(member.description);
   const extraDesc =
@@ -78,10 +86,13 @@ export function TeamCard({
   const bio = member.bio;
 
   const isLg = size === "lg";
+  const isFeatured = size === "featured";
   const isSm = size === "sm";
 
   const cardSize = isLg
     ? "min-h-[420px] w-full max-w-md p-8 sm:p-10"
+    : isFeatured
+    ? "min-h-[340px] w-full max-w-sm p-6 sm:p-8"
     : isSm
     ? "min-h-[200px] p-3 sm:min-h-[320px] sm:p-7"
     : "min-h-[320px] p-5 sm:p-7";
@@ -89,21 +100,33 @@ export function TeamCard({
   return (
     <article
       className={`relative isolate flex h-full min-w-0 flex-col items-center overflow-hidden rounded-2xl border bg-card ${cardSize} text-center shadow-sm transition-shadow hover:shadow-lg ${
-        isLg ? "border-primary/30" : "border-border"
+        isLg || isFeatured ? "border-primary/30" : "border-border"
       }`}
       aria-label={member.name}
     >
       <Avatar name={member.name} src={member.image_url} size={size} />
       <h3
         className={`${
-          isLg ? "mt-6 text-3xl" : isSm ? "mt-4 text-base sm:text-xl" : "mt-5 text-xl"
+          isLg
+            ? "mt-6 text-3xl"
+            : isFeatured
+            ? "mt-5 text-2xl"
+            : isSm
+            ? "mt-4 text-base sm:text-xl"
+            : "mt-5 text-xl"
         } max-w-full truncate font-display text-foreground`}
       >
         {member.name}
       </h3>
       <p
         className={`mt-1 ${
-          isLg ? "text-base" : isSm ? "text-[10px] sm:text-sm" : "text-sm"
+          isLg
+            ? "text-base"
+            : isFeatured
+            ? "text-sm"
+            : isSm
+            ? "text-[10px] sm:text-sm"
+            : "text-sm"
         } font-bold text-primary`}
       >
         {member.role}
@@ -111,14 +134,20 @@ export function TeamCard({
       {languages.length > 0 && (
         <div
           className={`${
-            isLg ? "mt-4" : isSm ? "mt-2 sm:mt-3" : "mt-3"
+            isLg ? "mt-4" : isFeatured ? "mt-3" : isSm ? "mt-2 sm:mt-3" : "mt-3"
           } flex flex-wrap justify-center gap-1.5`}
         >
           {languages.map((lang) => (
             <span
               key={lang}
               className={`rounded-full border border-border bg-muted/50 ${
-                isLg ? "px-3 py-1" : isSm ? "px-2 py-0.5 text-[10px] sm:px-2.5 sm:text-xs" : "px-2.5 py-0.5"
+                isLg
+                  ? "px-3 py-1"
+                  : isFeatured
+                  ? "px-2.5 py-1"
+                  : isSm
+                  ? "px-2 py-0.5 text-[10px] sm:px-2.5 sm:text-xs"
+                  : "px-2.5 py-0.5"
               } text-xs text-muted-foreground`}
             >
               {lang}
@@ -130,7 +159,13 @@ export function TeamCard({
       {bio && (
         <p
           className={`${
-            isLg ? "mt-6 text-base" : isSm ? "mt-4 text-xs sm:text-sm" : "mt-5 text-sm"
+            isLg
+              ? "mt-6 text-base"
+              : isFeatured
+              ? "mt-5 text-sm"
+              : isSm
+              ? "mt-4 text-xs sm:text-sm"
+              : "mt-5 text-sm"
           } leading-relaxed text-muted-foreground`}
         >
           {bio}

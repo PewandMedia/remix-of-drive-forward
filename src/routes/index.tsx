@@ -505,7 +505,7 @@ function Index() {
                 <div className="space-y-8 sm:space-y-12">
                   {owner && (
                     <div className="flex justify-center">
-                      <TeamCard member={owner} size="lg" />
+                      <TeamCard member={owner} size="featured" />
                     </div>
                   )}
                   {others.length > 0 && (
@@ -538,7 +538,7 @@ function Index() {
               Mehr über uns <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-3 lg:col-span-2 lg:grid-cols-2">
+          <div className="grid gap-3 lg:col-span-2 lg:grid-cols-1">
             {reasons.map((r, i) => (
               <div key={r.title} className="rounded-2xl border bg-white p-5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
