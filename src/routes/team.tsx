@@ -4,6 +4,7 @@ import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { getActiveTeamMembers } from "@/lib/public-data.functions";
 import { ErrorBox } from "@/components/site/QueryFallbacks";
 import { ReviewsBadge } from "@/components/site/ReviewsSection";
+import { TeamCard, type TeamMember } from "@/components/site/TeamCard";
 
 const teamQuery = queryOptions({
   queryKey: ["team_members"],
@@ -26,78 +27,23 @@ export const Route = createFileRoute("/team")({
   errorComponent: ErrorBox,
 });
 
-function Avatar({ name, src, size = "md" }: { name: string; src?: string | null; size?: "md" | "lg" }) {
-  const dim = size === "lg" ? "h-36 w-36 sm:h-40 sm:w-40" : "h-24 w-24 sm:h-28 sm:w-28";
-  const textSize = size === "lg" ? "text-5xl" : "text-3xl";
-  if (src) return <img src={src} alt={name} loading="lazy" decoding="async" className={`${dim} shrink-0 rounded-full object-cover`} />;
-  const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2).toUpperCase();
-  return (
-    <div className={`flex ${dim} shrink-0 items-center justify-center rounded-full bg-primary font-display ${textSize} text-primary-foreground`}>
-      {initials}
-    </div>
-  );
-}
-
-function renderLanguages(description: string | null | undefined) {
-  if (!description?.startsWith("Sprachen:")) return [];
-  return description.replace("Sprachen:", "").split(",").map((s) => s.trim()).filter(Boolean);
-}
-
-type TeamMember = {
-  id: string;
-  name: string;
-  role: string;
-  description: string | null;
-  bio?: string | null;
-  image_url: string | null;
-};
-
-function TeamCard({ member, size = "md" }: { member: TeamMember; size?: "md" | "lg" }) {
-  const languages = renderLanguages(member.description);
-  const extraDesc = member.description && !member.description.startsWith("Sprachen:") ? member.description : null;
-  const bio = (member as any).bio as string | null | undefined;
-
-  const isLg = size === "lg";
-  const cardSize = isLg ? "min-h-[420px] w-full max-w-md p-8 sm:p-10" : "min-h-[320px] p-5 sm:p-7";
-
-  return (
-    <article
-      className={`relative isolate flex h-full min-w-0 flex-col items-center overflow-hidden rounded-2xl border bg-card ${cardSize} text-center shadow-sm transition-shadow hover:shadow-lg ${
-        isLg ? "border-primary/30" : "border-border"
-      }`}
-      aria-label={member.name}
-    >
-      <Avatar name={member.name} src={member.image_url} size={size} />
-      <h3 className={`${isLg ? "mt-6 text-3xl" : "mt-5 text-xl"} max-w-full truncate font-display text-foreground`}>{member.name}</h3>
-      <p className={`mt-1 ${isLg ? "text-base" : "text-sm"} font-bold text-primary`}>{member.role}</p>
-      {languages.length > 0 && (
-        <div className={`${isLg ? "mt-4" : "mt-3"} flex flex-wrap justify-center gap-1.5`}>
-          {languages.map((lang) => (
-            <span key={lang} className={`rounded-full border border-border bg-muted/50 ${isLg ? "px-3 py-1" : "px-2.5 py-0.5"} text-xs text-muted-foreground`}>
-              {lang}
-            </span>
-          ))}
-        </div>
-      )}
-      {extraDesc && <p className="mt-3 text-sm text-muted-foreground">{extraDesc}</p>}
-      {bio && <p className={`${isLg ? "mt-6 text-base" : "mt-5 text-sm"} leading-relaxed text-muted-foreground`}>{bio}</p>}
-    </article>
-  );
-}
+type MemberWithOrder = TeamMember & { sort_order?: number };
 
 function TeamPage() {
   const { data: team } = useSuspenseQuery(teamQuery);
-  const allInstructors = team.filter((m) => (m.sort_order ?? 0) < 8);
+  const allInstructors = (team as MemberWithOrder[]).filter((m) => (m.sort_order ?? 0) < 8);
   const owner = allInstructors.find((m) => m.name.toLowerCase().includes("ilkay"));
   let otherInstructors = allInstructors.filter((m) => m !== owner);
-  const office = team.filter((m) => (m.sort_order ?? 0) >= 8);
+  const office = (team as MemberWithOrder[]).filter((m) => (m.sort_order ?? 0) >= 8);
   const birtan = office.find((m) => m.name.toLowerCase().includes("birtan"));
   const officeWithoutBirtan = birtan ? office.filter((m) => m !== birtan) : office;
   if (birtan) otherInstructors = [...otherInstructors, birtan];
 
-  const renderGroup = (members: typeof team) => (
+  const renderGroup = (members: MemberWithOrder[]) => (
     <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
-      {members.map((m) => <TeamCard key={m.id} member={m as TeamMember} />)}
+      {members.map((m) => (
+        <TeamCard key={m.id} member={m} />
+      ))}
     </div>
   );
 
@@ -117,7 +63,7 @@ function TeamPage() {
             </h2>
             {owner && (
               <div className="mb-12 flex justify-center">
-                <TeamCard member={owner as TeamMember} size="lg" />
+                <TeamCard member={owner} size="lg" />
               </div>
             )}
             {otherInstructors.length > 0 && renderGroup(otherInstructors)}
