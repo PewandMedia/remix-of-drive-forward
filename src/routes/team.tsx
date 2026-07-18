@@ -27,19 +27,17 @@ export const Route = createFileRoute("/team")({
   errorComponent: ErrorBox,
 });
 
-type MemberWithOrder = TeamMember & { sort_order?: number };
-
 function TeamPage() {
   const { data: team } = useSuspenseQuery(teamQuery);
-  const allInstructors = (team as MemberWithOrder[]).filter((m) => (m.sort_order ?? 0) < 8);
+  const allInstructors = (team as TeamMember[]).filter((m) => (m.sort_order ?? 0) < 8);
   const owner = allInstructors.find((m) => m.name.toLowerCase().includes("ilkay"));
   let otherInstructors = allInstructors.filter((m) => m !== owner);
-  const office = (team as MemberWithOrder[]).filter((m) => (m.sort_order ?? 0) >= 8);
+  const office = (team as TeamMember[]).filter((m) => (m.sort_order ?? 0) >= 8);
   const birtan = office.find((m) => m.name.toLowerCase().includes("birtan"));
   const officeWithoutBirtan = birtan ? office.filter((m) => m !== birtan) : office;
   if (birtan) otherInstructors = [...otherInstructors, birtan];
 
-  const renderGroup = (members: MemberWithOrder[]) => (
+  const renderGroup = (members: TeamMember[]) => (
     <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
       {members.map((m) => (
         <TeamCard key={m.id} member={m} />
