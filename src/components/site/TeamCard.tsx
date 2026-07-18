@@ -107,14 +107,26 @@ export function TeamCard({
       <Avatar name={member.name} src={member.image_url} size={size} />
       <h3
         className={`${
-          isLg ? "mt-6 text-3xl" : isSm ? "mt-4 text-base sm:text-xl" : "mt-5 text-xl"
+          isLg
+            ? "mt-6 text-3xl"
+            : isFeatured
+            ? "mt-5 text-2xl"
+            : isSm
+            ? "mt-4 text-base sm:text-xl"
+            : "mt-5 text-xl"
         } max-w-full truncate font-display text-foreground`}
       >
         {member.name}
       </h3>
       <p
         className={`mt-1 ${
-          isLg ? "text-base" : isSm ? "text-[10px] sm:text-sm" : "text-sm"
+          isLg
+            ? "text-base"
+            : isFeatured
+            ? "text-sm"
+            : isSm
+            ? "text-[10px] sm:text-sm"
+            : "text-sm"
         } font-bold text-primary`}
       >
         {member.role}
@@ -122,14 +134,20 @@ export function TeamCard({
       {languages.length > 0 && (
         <div
           className={`${
-            isLg ? "mt-4" : isSm ? "mt-2 sm:mt-3" : "mt-3"
+            isLg ? "mt-4" : isFeatured ? "mt-3" : isSm ? "mt-2 sm:mt-3" : "mt-3"
           } flex flex-wrap justify-center gap-1.5`}
         >
           {languages.map((lang) => (
             <span
               key={lang}
               className={`rounded-full border border-border bg-muted/50 ${
-                isLg ? "px-3 py-1" : isSm ? "px-2 py-0.5 text-[10px] sm:px-2.5 sm:text-xs" : "px-2.5 py-0.5"
+                isLg
+                  ? "px-3 py-1"
+                  : isFeatured
+                  ? "px-2.5 py-1"
+                  : isSm
+                  ? "px-2 py-0.5 text-[10px] sm:px-2.5 sm:text-xs"
+                  : "px-2.5 py-0.5"
               } text-xs text-muted-foreground`}
             >
               {lang}
@@ -141,7 +159,13 @@ export function TeamCard({
       {bio && (
         <p
           className={`${
-            isLg ? "mt-6 text-base" : isSm ? "mt-4 text-xs sm:text-sm" : "mt-5 text-sm"
+            isLg
+              ? "mt-6 text-base"
+              : isFeatured
+              ? "mt-5 text-sm"
+              : isSm
+              ? "mt-4 text-xs sm:text-sm"
+              : "mt-5 text-sm"
           } leading-relaxed text-muted-foreground`}
         >
           {bio}
