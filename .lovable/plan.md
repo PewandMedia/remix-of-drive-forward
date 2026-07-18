@@ -1,37 +1,34 @@
 ## Ziel
-Zwei visuelle Verbesserungen auf der Startseite:
+1. `/erste-hilfe-kurs` optischer & inhaltlicher Umbau: weniger Scroll, kein Preis.
+2. Admin-Panel: Termine (Datum + Uhrzeit) für Erste-Hilfe-Kurse anlegen/bearbeiten/löschen.
+3. Nächste Termine dynamisch auf Startseite und Unterseite anzeigen.
 
-1. **Ilkays Team-Karte im Teaser verkleinern** – sie soll weiterhin größer sein als die drei anderen Fahrlehrer, aber nicht mehr so extrem groß wirken. Sein Bild bleibt zentriert.
-2. **"Warum MIRO-DRIVE"-Kästchen auf Desktop neu anordnen** – die drei Kästchen sollen entweder nebeneinander oder untereinander stehen, je nachdem was im aktuellen Layout besser aussieht.
+## Datenbank
+Die Tabelle `public.first_aid_dates` existiert bereits (`starts_at`, `ends_at`, `note`, `active`). Falls RLS/Grants noch nicht öffentlich lesbar sind, per Migration ergänzen:
+- `GRANT SELECT ON public.first_aid_dates TO anon, authenticated;`
+- Public-Read-Policy `active = true`, Admin-Full-Access via `has_role`.
 
-## Schritte
+## Server Functions (`src/lib/public-data.functions.ts`)
+- `getUpcomingFirstAidDates`: liest aktive `first_aid_dates` mit `starts_at >= now()`, sortiert aufsteigend, limitiert (z. B. 5).
 
-### 1. Neue Größen-Variante für Ilkays Startseiten-Karte
-- Datei: `src/components/site/TeamCard.tsx`
-- Eine neue `size`-Variante hinzufügen, z. B. `"featured"`, die zwischen der aktuellen `lg` (zu groß) und `md` liegt.
-- Maße grob:
-  - Avatar: `h-28 w-28 sm:h-32 sm:w-32`
-  - Karte: `min-h-[340px] w-full max-w-sm p-6 sm:p-8`
-  - Name: `text-2xl`
-- Bestehende `lg`/`md`/`sm` Varianten bleiben unverändert, damit die Team-Unterseite nicht verändert wird.
+## Erste-Hilfe-Unterseite (`src/routes/erste-hilfe-kurs.tsx`)
+- Layout kompakter: Zwei-Spalten-Grid entfernen bzw. straffen; Info-Karte und Benefit-Liste in eine ausgewogenere Anordnung bringen, damit weniger vertikaler Scroll entsteht.
+- **Preisfeld komplett entfernen** (auch aus `getFirstAidInfo`-Nutzung). Stattdessen Text: „Wir bieten regelmäßig Erste-Hilfe-Kurse in unserer Fahrschule an."
+- Neuer Termin-Block: Liste der kommenden Termine aus `first_aid_dates` (Datum, Uhrzeit von–bis, optionale Notiz). Wenn leer: Hinweistext „Neue Termine folgen in Kürze – melde dich per WhatsApp."
+- Standorte-Sektion beibehalten, aber näher an Termin-Block ranrücken.
 
-### 2. Startseiten-Teaser auf neue Größe umstellen
-- Datei: `src/routes/index.tsx`
-- Im Team-Teaser für `owner` (`Ilkay`) statt `size="lg"` die neue `size="featured"` verwenden.
-- Die drei anderen Fahrlehrer bleiben `size="sm"` in der 3er-Reihe.
+## Startseite (`src/routes/index.tsx`)
+- Im bestehenden Erste-Hilfe-Teaser die nächsten 2–3 Termine dynamisch anzeigen (Datum + Uhrzeit) statt statischer Beschreibung.
+- Kein Preis.
 
-### 3. Vorteils-Kästchen auf Desktop anordnen
-- Datei: `src/routes/index.tsx`, Bereich "Warum MIRO-DRIVE" (Zeilen ~541–551).
-- Aktuell sind die drei Kästchen in einem 2-Spalten-Grid innerhalb der schmalen rechten Spalte (2/5 Breite), was ein ungleiches Layout erzeugt (2 oben, 1 unten links).
-- Lösung: Auf Desktop (`lg:`) die Kästchen **untereinander** in einer Spalte anordnen (`grid-cols-1`), damit sie gleichmäßig und lesbar verteilt sind.
-- Alternative kurz prüfen: Falls drei Kästchen nebeneinander (`grid-cols-3`) in der schmalen Spalte zu gequetscht wirken, wird die 1-Spalten-Variante beibehalten.
-- Kästchen-Höhen und Abstände leicht anpassen, damit die Säule optisch zur linken Textspalte passt.
+## Admin-Panel (`src/routes/_authenticated/admin.tsx`)
+- Im Tab **Erste-Hilfe** neben dem bestehenden Info-Editor einen neuen Abschnitt „Termine":
+  - Liste mit allen Terminen (Datum, Uhrzeit, Notiz, Aktiv-Toggle, Bearbeiten, Löschen).
+  - Dialog zum Anlegen/Bearbeiten mit Feldern: Datum, Startzeit, Endzeit, Notiz, Aktiv.
+  - CRUD über `supabase.from("first_aid_dates")` (RLS erlaubt das für Admins).
+- Preisfeld im Info-Editor bleibt technisch bestehen (Datenbank), wird aber öffentlich nicht mehr angezeigt.
 
-## Ergebnis
-- Ilkay hebt sich deutlich, aber dezenter ab.
-- Die drei Vorteils-Kästchen wirken auf Desktop aufgeräumt und gleichmäßig.
-- Team-Unterseite bleibt unverändert.
-
-## Validierung
-- `bun run build` bzw. Vite-Build muss fehlerfrei durchlaufen.
-- Visueller Check in Desktop- und Mobile-Vorschau für Team-Teaser und Vorteils-Kästchen.
+## Verifikation
+- Build läuft sauber.
+- Neuer Termin im Admin → erscheint auf `/` und `/erste-hilfe-kurs`.
+- Kein Preis mehr sichtbar auf der Unterseite.
