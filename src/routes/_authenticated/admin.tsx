@@ -727,3 +727,184 @@ function InstagramDialog({ initial }: { initial?: any }) {
     </Dialog>
   );
 }
+/* ============== INQUIRIES ============== */
+type Inquiry = {
+  id: string;
+  type: string;
+  name: string;
+  first_name: string | null;
+  last_name: string | null;
+  birth_date: string | null;
+  address: string | null;
+  postal_code: string | null;
+  city: string | null;
+  phone: string | null;
+  email: string | null;
+  license_class: string | null;
+  message: string | null;
+  status: "neu" | "in_bearbeitung" | "erledigt";
+  contact_pref: string | null;
+  created_at: string;
+};
+
+const STATUS_LABEL: Record<Inquiry["status"], string> = {
+  neu: "Neu",
+  in_bearbeitung: "In Bearbeitung",
+  erledigt: "Erledigt",
+};
+const STATUS_STYLE: Record<Inquiry["status"], string> = {
+  neu: "bg-primary/10 text-primary",
+  in_bearbeitung: "bg-amber-100 text-amber-800",
+  erledigt: "bg-emerald-100 text-emerald-800",
+};
+
+function InquiriesAdmin() {
+  const qc = useQueryClient();
+  const list = useServerFn(listInquiries);
+  const updateStatus = useServerFn(updateInquiryStatus);
+  const del = useServerFn(deleteInquiry);
+  const [selected, setSelected] = useState<Inquiry | null>(null);
+
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["admin-inquiries"],
+    queryFn: () => list() as Promise<Inquiry[]>,
+  });
+
+  const statusMut = useMutation({
+    mutationFn: (v: { id: string; status: Inquiry["status"] }) => updateStatus({ data: v }),
+    onSuccess: () => {
+      toast.success("Status aktualisiert");
+      qc.invalidateQueries({ queryKey: ["admin-inquiries"] });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Fehler"),
+  });
+
+  const deleteMut = useMutation({
+    mutationFn: (id: string) => del({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Anmeldung gelöscht");
+      setSelected(null);
+      qc.invalidateQueries({ queryKey: ["admin-inquiries"] });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Fehler"),
+  });
+
+  if (isLoading) return <div className="p-8 text-center text-sm text-muted-foreground">Wird geladen…</div>;
+
+  return (
+    <div className="mt-6 space-y-4">
+      <div className="rounded-2xl border bg-white">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="px-4 py-3">Datum</th>
+                <th className="px-4 py-3">Name</th>
+                <th className="px-4 py-3">Typ</th>
+                <th className="px-4 py-3">Klasse</th>
+                <th className="px-4 py-3">Kontakt</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3 text-right">Aktion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.length === 0 && (
+                <tr><td colSpan={7} className="px-4 py-10 text-center text-muted-foreground">Noch keine Anmeldungen.</td></tr>
+              )}
+              {data.map((i) => (
+                <tr key={i.id} className="border-t">
+                  <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
+                    {new Date(i.created_at).toLocaleDateString("de-DE")}
+                  </td>
+                  <td className="px-4 py-3 font-medium">{i.name}</td>
+                  <td className="px-4 py-3 capitalize">{i.type}</td>
+                  <td className="px-4 py-3">{i.license_class ?? "–"}</td>
+                  <td className="px-4 py-3">
+                    <div className="text-xs">{i.email ?? "–"}</div>
+                    <div className="text-xs text-muted-foreground">{i.phone ?? ""}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <select
+                      value={i.status}
+                      onChange={(e) => statusMut.mutate({ id: i.id, status: e.target.value as Inquiry["status"] })}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLE[i.status]}`}
+                    >
+                      <option value="neu">Neu</option>
+                      <option value="in_bearbeitung">In Bearbeitung</option>
+                      <option value="erledigt">Erledigt</option>
+                    </select>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <Button size="sm" variant="ghost" onClick={() => setSelected(i)}>
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Anmeldedetails</DialogTitle>
+          </DialogHeader>
+          {selected && (
+            <div className="space-y-2 text-sm">
+              <Row label="Name">{selected.first_name || selected.last_name ? `${selected.first_name ?? ""} ${selected.last_name ?? ""}`.trim() : selected.name}</Row>
+              <Row label="Geburtsdatum">{selected.birth_date ? new Date(selected.birth_date).toLocaleDateString("de-DE") : "–"}</Row>
+              <Row label="Adresse">{selected.address ?? "–"}</Row>
+              <Row label="PLZ / Ort">{[selected.postal_code, selected.city].filter(Boolean).join(" ") || "–"}</Row>
+              <Row label="Telefon">{selected.phone ?? "–"}</Row>
+              <Row label="E-Mail">{selected.email ?? "–"}</Row>
+              <Row label="Klasse">{selected.license_class ?? "–"}</Row>
+              <Row label="Typ">{selected.type}</Row>
+              <Row label="Status">{STATUS_LABEL[selected.status]}</Row>
+              <Row label="Eingegangen">{new Date(selected.created_at).toLocaleString("de-DE")}</Row>
+              {selected.message && (
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Nachricht</div>
+                  <p className="mt-1 whitespace-pre-wrap rounded-xl bg-muted/40 p-3">{selected.message}</p>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter className="flex-wrap gap-2">
+            {selected?.email && (
+              <Button asChild variant="outline" className="rounded-full">
+                <a href={`mailto:${selected.email}`}>E-Mail schreiben</a>
+              </Button>
+            )}
+            {selected?.phone && (
+              <Button asChild variant="outline" className="rounded-full">
+                <a href={`tel:${selected.phone}`}>Anrufen</a>
+              </Button>
+            )}
+            {selected && (
+              <Button
+                variant="destructive"
+                className="rounded-full"
+                onClick={() => {
+                  if (confirm("Diese Anmeldung wirklich löschen?")) deleteMut.mutate(selected.id);
+                }}
+              >
+                <Trash2 className="h-4 w-4" /> Löschen
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex justify-between gap-4 border-b py-1.5 last:border-b-0">
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className="text-right">{children}</span>
+    </div>
+  );
+}
