@@ -616,6 +616,7 @@ function FirstAidAdmin() {
     mutationFn: async (form: FormData) => {
       const row = {
         description: String(form.get("description") || ""),
+        price: String(form.get("price") || "") || null,
         duration: String(form.get("duration") || "") || null,
         dates: String(form.get("dates") || "") || null,
         active: form.get("active") === "on",
@@ -627,129 +628,18 @@ function FirstAidAdmin() {
     onError: (e: any) => toast.error(e.message),
   });
   return (
-    <div className="mt-6 max-w-3xl space-y-8">
+    <div className="mt-6 max-w-2xl">
       <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3 rounded-xl border bg-white p-6">
-        <h3 className="font-display text-lg">Allgemeine Info</h3>
         <div><Label>Beschreibung</Label><Textarea name="description" rows={4} required defaultValue={data?.description ?? ""} /></div>
-        <div className="grid gap-3 md:grid-cols-2">
-          <div><Label>Dauer</Label><Input name="duration" placeholder="z. B. 8 Stunden (08:00 – 16:00)" defaultValue={data?.duration ?? ""} /></div>
-          <div><Label>Termin-Hinweis (optional)</Label><Input name="dates" placeholder="z. B. Jeden Monat samstags" defaultValue={data?.dates ?? ""} /></div>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div><Label>Preis</Label><Input name="price" defaultValue={data?.price ?? ""} /></div>
+          <div><Label>Dauer</Label><Input name="duration" defaultValue={data?.duration ?? ""} /></div>
+          <div><Label>Termine</Label><Input name="dates" defaultValue={data?.dates ?? ""} /></div>
         </div>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={data?.active ?? true} /> Aktiv</label>
         <Button type="submit" className="rounded-full">Speichern</Button>
       </form>
-
-      <FirstAidDatesAdmin />
     </div>
-  );
-}
-
-type FaDate = { id: string; starts_at: string; ends_at: string | null; note: string | null; active: boolean };
-
-function FirstAidDatesAdmin() {
-  const qc = useQueryClient();
-  const { data = [] } = useQuery<FaDate[]>({
-    queryKey: ["admin-first-aid-dates"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("first_aid_dates").select("*").order("starts_at", { ascending: true });
-      if (error) throw error;
-      return (data ?? []) as FaDate[];
-    },
-  });
-  const del = useMutation({
-    mutationFn: async (id: string) => { const { error } = await supabase.from("first_aid_dates").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] }); qc.invalidateQueries({ queryKey: ["first_aid_dates"] }); toast.success("Gelöscht"); },
-    onError: (e: any) => toast.error(e.message),
-  });
-  const toggle = useMutation({
-    mutationFn: async (p: { id: string; active: boolean }) => { const { error } = await supabase.from("first_aid_dates").update({ active: p.active }).eq("id", p.id); if (error) throw error; },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] }); qc.invalidateQueries({ queryKey: ["first_aid_dates"] }); },
-  });
-
-  const fmt = (iso: string) => new Date(iso).toLocaleString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
-
-  return (
-    <div className="rounded-xl border bg-white p-6">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h3 className="font-display text-lg">Offizielle Termine</h3>
-          <p className="text-xs text-muted-foreground">Diese Termine erscheinen auf der Startseite und der Erste-Hilfe-Kurs-Seite.</p>
-        </div>
-        <FirstAidDateDialog />
-      </div>
-      {data.length === 0 && <p className="text-sm text-muted-foreground">Noch keine Termine gepflegt.</p>}
-      <ul className="divide-y">
-        {data.map((d) => (
-          <li key={d.id} className="flex flex-wrap items-center gap-3 py-3">
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold">{fmt(d.starts_at)}{d.ends_at ? ` – ${new Date(d.ends_at).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })}` : ""}</p>
-              {d.note && <p className="text-xs text-muted-foreground">{d.note}</p>}
-            </div>
-            <Switch checked={d.active} onCheckedChange={(v) => toggle.mutate({ id: d.id, active: v })} />
-            <FirstAidDateDialog initial={d} />
-            <Button variant="ghost" size="icon" onClick={() => { if (confirm("Termin löschen?")) del.mutate(d.id); }}><Trash2 className="h-4 w-4" /></Button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function faToDateInput(iso?: string | null) {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-}
-function toTimeInput(iso?: string | null) {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${p(d.getHours())}:${p(d.getMinutes())}`;
-}
-
-function FirstAidDateDialog({ initial }: { initial?: FaDate }) {
-  const qc = useQueryClient();
-  const [open, setOpen] = useState(false);
-  const save = useMutation({
-    mutationFn: async (form: FormData) => {
-      const date = String(form.get("date") || "");
-      const start = String(form.get("start") || "08:00");
-      const end = String(form.get("end") || "");
-      if (!date) throw new Error("Datum erforderlich");
-      const starts_at = new Date(`${date}T${start}:00`).toISOString();
-      const ends_at = end ? new Date(`${date}T${end}:00`).toISOString() : null;
-      const row = {
-        starts_at,
-        ends_at,
-        note: String(form.get("note") || "") || null,
-        active: form.get("active") === "on",
-      };
-      if (initial) { const { error } = await supabase.from("first_aid_dates").update(row).eq("id", initial.id); if (error) throw error; }
-      else { const { error } = await supabase.from("first_aid_dates").insert(row); if (error) throw error; }
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] }); qc.invalidateQueries({ queryKey: ["first_aid_dates"] }); toast.success("Gespeichert"); setOpen(false); },
-    onError: (e: any) => toast.error(e.message),
-  });
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {initial ? <Button variant="ghost" size="icon"><Pencil className="h-4 w-4" /></Button> : <Button className="rounded-full"><Plus className="h-4 w-4" /> Termin</Button>}
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader><DialogTitle>{initial ? "Termin bearbeiten" : "Neuer Termin"}</DialogTitle></DialogHeader>
-        <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3">
-          <div><Label>Datum</Label><Input type="date" name="date" required defaultValue={faToDateInput(initial?.starts_at)} /></div>
-          <div className="grid grid-cols-2 gap-3">
-            <div><Label>Startzeit</Label><Input type="time" name="start" required defaultValue={toTimeInput(initial?.starts_at) || "08:00"} /></div>
-            <div><Label>Endzeit</Label><Input type="time" name="end" defaultValue={toTimeInput(initial?.ends_at) || "16:00"} /></div>
-          </div>
-          <div><Label>Notiz (optional)</Label><Input name="note" placeholder="z. B. Nur wenige Plätze" defaultValue={initial?.note ?? ""} /></div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
-          <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
   );
 }
 
