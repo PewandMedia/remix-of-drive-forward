@@ -1,25 +1,18 @@
-# Punkt 2 + 3: Preise sichtbarer, Laufband entfernen
+## Was gemacht wird
 
-## Was ich ändere
+Die Unterseite `/preise` existiert bereits und der Admin-Bereich kann die Preise (Titel, Kategorie, Beschreibung, Preis, Aktiv/Inaktiv) schon bearbeiten. Es fehlt nur der vom Kunden gewünschte Text-Block auf der Startseite.
 
-### 1. Laufband entfernen (Punkt 3)
-In `src/routes/index.tsx` den kompletten Abschnitt „MARQUEE TICKER" (Zeilen 248–258) entfernen — das durchlaufende Klassenband unter dem Hero.
+### Änderung in `src/routes/index.tsx`
 
-### 2. Preise sichtbarer machen (Punkt 2)
-Der Preisbereich existiert bereits weiter unten (Sektion „Drei Klassen, transparente Preise"), aber er ist tief auf der Seite versteckt. Zwei Verbesserungen:
+Der bestehende Preis-Abschnitt „Unsere Preise auf einen Blick" (direkt nach dem Hero) wird an die vorgegebenen Texte angepasst:
 
-**a) Zusätzlicher, kompakter Preis-Anker direkt nach dem Hero**  
-An der Stelle, wo bisher das Laufband war, kommt ein neuer, klarer Block:
-- Überschrift „Unsere Preise auf einen Blick"
-- 3 kompakte Karten nebeneinander (Klasse B · B197 · B78) mit Grundbetrag aus der Datenbank
-- Wenn ein Angebot aktiv ist, wird der Aktionspreis mit durchgestrichenem alten Preis angezeigt
-- Button „Alle Preise ansehen" → `/preise`
-- Mobil: horizontal scrollbare Karten statt Grid
+- **Headline:** „Transparente Preise für deinen Führerschein in Bochum"
+- **Text:** „Bei MIRO-DRIVE findest du alle wichtigen Preise übersichtlich und verständlich dargestellt. So weißt du von Anfang an, womit du rechnen kannst."
+- **Button:** „Preise ansehen" → verlinkt auf `/preise`
 
-**b) Bestehende ausführliche Preissektion bleibt**  
-Die tiefer liegende Sektion mit der vollständigen Preistabelle bleibt unverändert — sie liefert die Details für Interessenten, die weiter scrollen.
+Die 3 kompakten Preis-Karten (Klasse B, B197, B78) darunter bleiben erhalten, damit sofort ein Eindruck der Preise sichtbar ist.
 
-## Ergebnis
-- Der „Spielothek-Effekt" ist weg.
-- Preise sind sofort nach dem Hero sichtbar, ohne den bestehenden ausführlichen Bereich zu verlieren.
-- Datenquelle bleibt die `prices`-Tabelle in Supabase — Änderungen im Admin wirken sofort.
+### Nicht geändert
+- `/preise` existiert und funktioniert.
+- Admin-Bereich für Preise ist vollständig.
+- Die ausführliche Preissektion weiter unten auf der Startseite bleibt unverändert.

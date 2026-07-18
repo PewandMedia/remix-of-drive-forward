@@ -237,17 +237,18 @@ function Index() {
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise</span>
-              <h2 className="mt-1 font-display text-3xl leading-tight sm:text-4xl">Unsere Preise auf einen Blick</h2>
+              <h2 className="mt-1 font-display text-3xl leading-tight sm:text-4xl">Transparente Preise für deinen Führerschein in Bochum</h2>
               <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-                Grundbeträge unserer Führerscheinklassen – transparent, fair und ohne versteckte Kosten.
+                Bei MIRO-DRIVE findest du alle wichtigen Preise übersichtlich und verständlich dargestellt. So weißt du von Anfang an, womit du rechnen kannst.
               </p>
             </div>
             <Link
               to="/preise"
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
             >
-              Alle Preise ansehen <ArrowRight className="h-4 w-4" />
+              Preise ansehen <ArrowRight className="h-4 w-4" />
             </Link>
+
           </div>
 
           <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:px-0">
