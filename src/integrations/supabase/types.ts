@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      first_aid_dates: {
+        Row: {
+          active: boolean
+          created_at: string
+          ends_at: string | null
+          id: string
+          note: string | null
+          starts_at: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          note?: string | null
+          starts_at: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          note?: string | null
+          starts_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       first_aid_info: {
         Row: {
           active: boolean
