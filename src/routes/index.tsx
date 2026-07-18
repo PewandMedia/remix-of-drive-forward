@@ -207,69 +207,6 @@ function Index() {
       {/* HERO */}
       <HeroSection />
 
-
-
-      {/* PREISE AUF EINEN BLICK */}
-      <section className="border-y bg-muted/30 py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise</span>
-              <h2 className="mt-1 font-display text-3xl leading-tight sm:text-4xl">Transparente Preise für deinen Führerschein in Bochum</h2>
-              <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-                Bei MIRO-DRIVE findest du alle wichtigen Preise übersichtlich und verständlich dargestellt. So weißt du von Anfang an, womit du rechnen kannst.
-              </p>
-            </div>
-            <Link
-              to="/preise"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
-            >
-              Preise ansehen <ArrowRight className="h-4 w-4" />
-            </Link>
-
-          </div>
-
-          <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:px-0">
-            {[
-              { cat: "Klasse B", label: "Klasse B", note: "Schaltgetriebe" },
-              { cat: "Klasse B197", label: "Klasse B197", note: "Automatik + Schalter" },
-              { cat: "Klasse B78", label: "Klasse B78", note: "Automatik" },
-            ].map(({ cat, label, note }) => {
-              const row: any = rowFor(cat);
-              const live = row && isOfferLive(row);
-              return (
-                <div
-                  key={cat}
-                  className="min-w-[260px] snap-start rounded-2xl border bg-white p-6 shadow-sm transition-shadow hover:shadow-md sm:min-w-0"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-display text-xl">{label}</span>
-                    {live && (
-                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
-                        Aktion
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">{note}</p>
-                  <div className="mt-5 flex items-baseline gap-2">
-                    {live && row?.old_price && (
-                      <span className="text-base font-semibold text-muted-foreground line-through">
-                        {row.old_price}
-                      </span>
-                    )}
-                    <span className="font-display text-3xl text-primary">
-                      {row?.price ?? "–"}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">Grundbetrag</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-
       {/* PROCESS / SO GEHTS */}
       <section className="bg-[#0a0a0a] py-20 text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
