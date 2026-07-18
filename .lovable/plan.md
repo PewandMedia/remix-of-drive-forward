@@ -1,38 +1,22 @@
-Ich habe die Ursache gefunden: Die App ist teilweise auf das neue Supabase-Projekt `slrbtiviwvwvjjafbgkp` konfiguriert, aber `.env` und `src/integrations/supabase/client.ts` zeigen noch auf das alte Projekt `elvsfhgnrjusgfxqhpiq`. Dadurch fragt die App teils die falsche Datenbank ab. Zusätzlich fehlt im neuen Projekt die Data-API-Berechtigung auf die Public-Tabellen, und öffentliche RLS-Policies rufen `has_role()` auf, obwohl anonyme Besucher diese Funktion nicht ausführen dürfen. Genau daher kommt `permission denied for function has_role`.
+## Ziel
+Miro-Drive Supabase-Projekt (`slrbtiviwvwvjjafbgkp`) mit den Inhalten des alten Projekts (`elvsfhgnrjusgfxqhpiq`) befüllen und `admin@gmail.com` als Admin einrichten. Verbindung bleibt Supabase, keine Fehler.
 
-## Plan
+## Schritte
 
-1. **Supabase-Verbindung vollständig auf Miro-Drive umstellen**
-   - `.env` auf `slrbtiviwvwvjjafbgkp` aktualisieren.
-   - `src/integrations/supabase/client.ts` so ändern, dass es die `VITE_SUPABASE_*` Variablen nutzt statt hart codierter alter Projektwerte.
-   - Dadurch nutzen Browser und Server dieselbe Supabase-Instanz.
+1. **Daten aus altem Projekt exportieren**
+   - Auslesen aller Zeilen aus `prices`, `team_members`, `first_aid_info`, `offers`, `instagram_posts` im alten Projekt (`elvsfhgnrjusgfxqhpiq`) per Read-Query.
 
-2. **Datenbank-Berechtigungen korrekt nachziehen**
-   - Per Migration `GRANT`-Berechtigungen für alle App-Tabellen setzen:
-     - öffentliche Lesetabellen: `offers`, `prices`, `team_members`, `instagram_posts`, `first_aid_info`
-     - Kontaktformular: `inquiries` mit öffentlichem Erstellen, aber nur Admin-Lesen/Bearbeiten/Löschen
-     - Rollen: `user_roles` nur für angemeldete Nutzer und Service-Rolle
-   - Das behebt fehlende Data-API-Zugriffe.
+2. **Daten in Miro-Drive einspielen**
+   - `INSERT`-Statements gegen `slrbtiviwvwvjjafbgkp` mit den exportierten Zeilen (inkl. Original-IDs, damit Bildpfade/Referenzen konsistent bleiben).
+   - Nur öffentliche Inhalts-Tabellen — `inquiries` (Kundenanfragen) und `user_roles` (alte User-IDs existieren im neuen Auth nicht) werden nicht kopiert.
 
-3. **RLS-Policies reparieren**
-   - Öffentliche Lesepolicies ändern, damit sie nur öffentlich sichtbare aktive Daten lesen lassen und nicht mehr `has_role()` für anonyme Nutzer aufrufen.
-   - Separate Admin-Policies bleiben für angemeldete Admins bestehen.
-   - Dadurch ist `has_role()` nicht mehr Teil öffentlicher Website-Abfragen.
+3. **Admin-User anlegen**
+   - Du registrierst dich einmal auf `/auth` mit `admin@gmail.com` und einem Passwort deiner Wahl.
+   - Danach trage ich die neue `auth.users`-ID in `public.user_roles` als `admin` ein.
 
-4. **Admin-Rollenfunktion sicher und funktionsfähig lassen**
-   - `has_role()` bleibt `SECURITY DEFINER`, weil RLS-Policies damit Adminrechte prüfen.
-   - Execute bleibt nur für `authenticated` und `service_role`, nicht für anonyme Besucher.
-   - Damit ist der Runtime-Fehler weg, ohne die Funktion öffentlich zu öffnen.
+4. **Verifikation**
+   - Startseite, Preise, Team, Erste-Hilfe laden mit Inhalten.
+   - Login mit `admin@gmail.com` funktioniert, `/admin` ist zugänglich.
 
-5. **Prüfen nach Umsetzung**
-   - Datenbank-Linter erneut laufen lassen.
-   - Public-Abfragen für Preise, Team, Angebote und Erste-Hilfe testen.
-   - Preview prüfen, dass die Startseite ohne `has_role`-Fehler lädt.
-
-## Hinweis
-
-Für den finalen Verbindungswechsel brauche ich den neuen `anon public` Key aus dem Supabase-Projekt **Miro-Drive**. Falls er noch nicht in Lovable verfügbar ist, öffne bitte in Supabase:
-
-`Project Settings → API → anon public key`
-
-Dann kann ich die App komplett auf das neue Projekt umstellen.
+## Was du tun musst
+- Nach Schritt 2: auf `/auth` mit `admin@gmail.com` registrieren und mir Bescheid geben, dann setze ich die Admin-Rolle.
