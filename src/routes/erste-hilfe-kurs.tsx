@@ -30,13 +30,32 @@ export const Route = createFileRoute("/erste-hilfe-kurs")({
     ],
     links: [{ rel: "canonical", href: "/erste-hilfe-kurs" }],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(faQuery),
+  loader: ({ context }) => Promise.all([
+    context.queryClient.ensureQueryData(faQuery),
+    context.queryClient.ensureQueryData(datesQuery),
+  ]),
   component: FAPage,
   errorComponent: ErrorBox,
 });
 
+function formatDateRange(startsAt: string, endsAt?: string | null) {
+  const start = new Date(startsAt);
+  const dateFmt = new Intl.DateTimeFormat("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" });
+  const timeFmt = new Intl.DateTimeFormat("de-DE", { hour: "2-digit", minute: "2-digit" });
+  const datePart = dateFmt.format(start);
+  const startTime = timeFmt.format(start);
+  if (endsAt) {
+    const end = new Date(endsAt);
+    const sameDay = start.toDateString() === end.toDateString();
+    const endTime = timeFmt.format(end);
+    return sameDay ? `${datePart} · ${startTime}–${endTime} Uhr` : `${datePart} ${startTime} – ${dateFmt.format(end)} ${endTime}`;
+  }
+  return `${datePart} · ${startTime} Uhr`;
+}
+
 function FAPage() {
   const { data: info } = useSuspenseQuery(faQuery);
+  const { data: dates } = useSuspenseQuery(datesQuery);
   const benefits = [
     { icon: Heart, label: "Erste-Hilfe-Kurs für Führerscheinbewerber" },
     { icon: GraduationCap, label: "Anfrage direkt online oder per WhatsApp" },
