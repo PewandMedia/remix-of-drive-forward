@@ -66,3 +66,15 @@ export const hasActiveOffer = createServerFn({ method: "GET" }).handler(async ()
   if (error) throw new Error(error.message);
   return (count ?? 0) > 0;
 });
+
+export const getFirstAidDates = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = serverPublicClient();
+  const { data, error } = await supabase
+    .from("first_aid_dates")
+    .select("id,starts_at,ends_at,note")
+    .eq("active", true)
+    .gte("starts_at", new Date().toISOString())
+    .order("starts_at", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
