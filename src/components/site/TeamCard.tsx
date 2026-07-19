@@ -23,7 +23,7 @@ export function Avatar({
       : size === "featured"
       ? "h-28 w-28 sm:h-32 sm:w-32"
       : size === "sm"
-      ? "h-16 w-16 sm:h-28 sm:w-28"
+      ? "h-20 w-20 sm:h-28 sm:w-28"
       : "h-24 w-24 sm:h-28 sm:w-28";
   const textSize =
     size === "lg"
@@ -94,7 +94,7 @@ export function TeamCard({
     : isFeatured
     ? "min-h-[340px] w-full max-w-sm p-6 sm:p-8"
     : isSm
-    ? "min-h-[200px] p-3 sm:min-h-[320px] sm:p-7"
+    ? "min-h-[230px] p-4 sm:min-h-[320px] sm:p-7"
     : "min-h-[320px] p-5 sm:p-7";
 
   return (
@@ -112,7 +112,7 @@ export function TeamCard({
             : isFeatured
             ? "mt-5 text-2xl"
             : isSm
-            ? "mt-4 text-base sm:text-xl"
+            ? "mt-4 text-lg sm:text-xl"
             : "mt-5 text-xl"
         } max-w-full truncate font-display text-foreground`}
       >
@@ -125,7 +125,7 @@ export function TeamCard({
             : isFeatured
             ? "text-sm"
             : isSm
-            ? "text-[10px] sm:text-sm"
+            ? "text-xs sm:text-sm"
             : "text-sm"
         } font-bold text-primary`}
       >
@@ -146,7 +146,7 @@ export function TeamCard({
                   : isFeatured
                   ? "px-2.5 py-1"
                   : isSm
-                  ? "px-2 py-0.5 text-[10px] sm:px-2.5 sm:text-xs"
+                  ? "px-2 py-0.5 text-[11px] sm:px-2.5 sm:text-xs"
                   : "px-2.5 py-0.5"
               } text-xs text-muted-foreground`}
             >

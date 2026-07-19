@@ -69,7 +69,12 @@ function TeamPage() {
             </h2>
             {owner && (
               <div className="mb-12 flex justify-center">
-                <TeamCard member={owner} size="lg" />
+                <div className="w-full max-w-[280px] sm:hidden">
+                  <TeamCard member={owner} size="featured" />
+                </div>
+                <div className="hidden sm:block">
+                  <TeamCard member={owner} size="lg" />
+                </div>
               </div>
             )}
             {otherInstructors.length > 0 && instructorGrid(otherInstructors)}
