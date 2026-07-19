@@ -37,8 +37,16 @@ function TeamPage() {
   const officeWithoutBirtan = birtan ? office.filter((m) => m !== birtan) : office;
   if (birtan) otherInstructors = [...otherInstructors, birtan];
 
-  const renderGroup = (members: TeamMember[]) => (
-    <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
+  const instructorGrid = (members: TeamMember[]) => (
+    <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+      {members.map((m) => (
+        <TeamCard key={m.id} member={m} />
+      ))}
+    </div>
+  );
+
+  const officeGrid = (members: TeamMember[]) => (
+    <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-8 lg:grid-cols-4">
       {members.map((m) => (
         <TeamCard key={m.id} member={m} />
       ))}
