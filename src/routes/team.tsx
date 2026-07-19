@@ -72,7 +72,7 @@ function TeamPage() {
                 <TeamCard member={owner} size="lg" />
               </div>
             )}
-            {otherInstructors.length > 0 && renderGroup(otherInstructors)}
+            {otherInstructors.length > 0 && instructorGrid(otherInstructors)}
           </section>
         )}
         {officeWithoutBirtan.length > 0 && (
@@ -80,7 +80,7 @@ function TeamPage() {
             <h2 className="mb-8 text-center font-display text-2xl text-primary sm:text-3xl">
               Bürokräfte der Fahrschule MIRO-DRIVE
             </h2>
-            {renderGroup(officeWithoutBirtan)}
+            {officeGrid(officeWithoutBirtan)}
           </section>
         )}
       </div>
