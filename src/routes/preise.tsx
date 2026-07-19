@@ -1,10 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
+import { SiteLayout } from "@/components/site/SiteLayout";
 import { getActivePrices } from "@/lib/public-data.functions";
 import { CONTACT } from "@/lib/contact";
 import { ErrorBox, NotFoundBox } from "@/components/site/QueryFallbacks";
-import { Car, Cog, Sparkles, MapPin, MessageCircle, ShieldCheck, ArrowRight, Route as RouteIcon, Moon, Gauge, BookOpen, UserCheck, CheckCircle2, Timer, Flame } from "lucide-react";
+import {
+  Car,
+  Cog,
+  Sparkles,
+  MapPin,
+  MessageCircle,
+  ShieldCheck,
+  ArrowRight,
+  Flame,
+  Timer,
+  CheckCircle2,
+  Info,
+} from "lucide-react";
 import { isOfferLive, formatRemaining } from "@/lib/offer";
 import { useEffect, useState } from "react";
 
@@ -17,9 +29,17 @@ export const Route = createFileRoute("/preise")({
   head: () => ({
     meta: [
       { title: "Preise Fahrschule Bochum | MIRO-DRIVE" },
-      { name: "description", content: "Klare Paketpreise für Klasse B, B197, B78 und Erste-Hilfe-Kurs – ohne versteckte Kosten." },
+      {
+        name: "description",
+        content:
+          "Transparente Preise für Klasse B, B197 und B78 – Grundbetrag, Lernprogramm, Übungsstunde, Prüfungen. Klar, fair und ohne versteckte Kosten.",
+      },
       { property: "og:title", content: "Preise Fahrschule Bochum | MIRO-DRIVE" },
-      { property: "og:description", content: "Klare Paketpreise für Klasse B, B197, B78 und Erste-Hilfe-Kurs – ohne versteckte Kosten." },
+      {
+        property: "og:description",
+        content:
+          "Transparente Preise für Klasse B, B197 und B78 – Grundbetrag, Lernprogramm, Übungsstunde, Prüfungen.",
+      },
       { property: "og:url", content: "/preise" },
     ],
     links: [{ rel: "canonical", href: "/preise" }],
@@ -30,337 +50,346 @@ export const Route = createFileRoute("/preise")({
   notFoundComponent: () => <NotFoundBox label="Keine Preise verfügbar." />,
 });
 
-type CategoryMeta = {
+// Canonical price rows shown in the central price table.
+// We source them from the "Klasse B" category (same prices apply to B197 & B78).
+const STANDARD_ROWS: { key: string; label: string; hint?: string }[] = [
+  { key: "Grundbetrag", label: "Grundbetrag", hint: "Einmalig – Anmeldung & Verwaltung" },
+  { key: "Lernprogramm", label: "Lernprogramm", hint: "Theorie-App & Lernmaterial" },
+  { key: "Übungsstunde", label: "Übungsstunde", hint: "45 Minuten Fahrunterricht" },
+  { key: "Vorstellung Theorieprüfung", label: "Theorieprüfung", hint: "Vorstellungsgebühr Fahrschule" },
+  { key: "Vorstellung Praxisprüfung", label: "Praxisprüfung", hint: "Vorstellungsgebühr Fahrschule" },
+];
+
+type ClassMeta = {
   key: string;
   short: string;
-  mobileLabel: string;
+  title: string;
   tagline: string;
   icon: typeof Car;
   featured?: boolean;
   badge?: string;
-  sonderfahrten: { ueberland: number; autobahn: number; dunkel: number };
-  theorie: string;
-  mindestalter: string;
-  pruefung: string;
-  extraNote?: string;
-  requirements: string[];
+  facts: string[];
 };
 
-const CATEGORIES: CategoryMeta[] = [
+const CLASSES: ClassMeta[] = [
   {
     key: "Klasse B",
     short: "B",
-    mobileLabel: "Klasse B – Schaltgetriebe",
-    tagline: "Klassischer Führerschein mit Schaltgetriebe – volle Flexibilität.",
+    title: "Klasse B",
+    tagline: "Der klassische Führerschein mit Schaltgetriebe.",
     icon: Car,
-    sonderfahrten: { ueberland: 5, autobahn: 4, dunkel: 3 },
-    theorie: "12 Grundstoff + 2 Zusatzstoff (Doppelstunden à 90 Min.)",
-    mindestalter: "18 Jahre (17 bei BF17)",
-    pruefung: "Theorie- & Praxisprüfung beim TÜV",
-    requirements: ["Lichtbildausweis", "Sehtest", "Erste-Hilfe-Kurs"],
+    facts: [
+      "Ausbildung auf Schaltfahrzeug",
+      "12 Grundstoff + 2 Zusatzstoff Theorie",
+      "Sonderfahrten: 5 Überland · 4 Autobahn · 3 Dunkelheit",
+      "Führerschein gilt für Schalt- und Automatik-Fahrzeuge",
+    ],
   },
   {
     key: "Klasse B197",
     short: "B197",
-    mobileLabel: "Klasse B197 – Automatik mit Schaltberechtigung",
-    tagline: "Ausbildung auf Automatik – Führerschein gilt trotzdem für Schalter.",
+    title: "Klasse B197",
+    tagline: "Automatik lernen – Führerschein gilt trotzdem für Schalter.",
     icon: Sparkles,
     featured: true,
     badge: "Am beliebtesten",
-    sonderfahrten: { ueberland: 5, autobahn: 4, dunkel: 3 },
-    theorie: "12 Grundstoff + 2 Zusatzstoff (Doppelstunden à 90 Min.)",
-    mindestalter: "18 Jahre (17 bei BF17)",
-    pruefung: "Theorie- & Praxisprüfung beim TÜV (auf Automatik)",
-    extraNote: "Zusätzlich: mind. 10 Schaltstunden + interne Testfahrt beim Fahrlehrer – kein extra TÜV-Termin.",
-    requirements: ["Lichtbildausweis", "Sehtest", "Erste-Hilfe-Kurs"],
+    facts: [
+      "Ausbildung & Prüfung auf Automatik",
+      "Zusätzlich mind. 10 Schaltkompetenz-Fahrten",
+      "Interne Testfahrt statt zweiter TÜV-Prüfung",
+      "Führerschein gilt für Schalt- und Automatik-Fahrzeuge",
+    ],
   },
   {
     key: "Klasse B78",
     short: "B78",
-    mobileLabel: "Klasse B78 – Reine Automatik",
-    tagline: "Reine Automatik-Klasse – schneller und entspannter ans Ziel.",
+    title: "Klasse B78",
+    tagline: "Reine Automatik – entspannt und effizient ans Ziel.",
     icon: Cog,
-    sonderfahrten: { ueberland: 5, autobahn: 4, dunkel: 3 },
-    theorie: "12 Grundstoff + 2 Zusatzstoff (Doppelstunden à 90 Min.)",
-    mindestalter: "18 Jahre (17 bei BF17)",
-    pruefung: "Theorie- & Praxisprüfung beim TÜV",
-    extraNote: "Führerschein gilt ausschließlich für Automatik-Fahrzeuge.",
-    requirements: ["Lichtbildausweis", "Sehtest", "Erste-Hilfe-Kurs"],
+    facts: [
+      "Ausbildung & Prüfung auf Automatik",
+      "Keine Schaltkompetenz-Fahrten nötig",
+      "Sonderfahrten: 5 Überland · 4 Autobahn · 3 Dunkelheit",
+      "Führerschein gilt nur für Automatik-Fahrzeuge",
+    ],
   },
 ];
 
 function PricesPage() {
   const { data: prices } = useSuspenseQuery(pricesQuery);
-  // tick every 60s so countdown updates
+  // countdown tick
   const [, setTick] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setTick((n) => n + 1), 60_000);
     return () => clearInterval(id);
   }, []);
-  const cards = CATEGORIES
-    .map((meta) => ({ meta, items: prices.filter((p) => p.category === meta.key) }))
-    .filter((g) => g.items.length > 0);
+
+  // Build canonical rows from "Klasse B" pool (same prices for B, B197, B78)
+  const pool = prices.filter((p) => p.category === "Klasse B");
+  const standardRows = STANDARD_ROWS.map((row) => ({
+    row,
+    price: pool.find((p) => p.title === row.key) ?? null,
+  })).filter((r) => r.price);
+
   const tuev = prices.filter((p) => p.category === "Externe TÜV-Gebühren");
 
   return (
     <SiteLayout>
-      <PageHero
-        eyebrow="Preise"
-        title="Preise für deinen Führerschein in Bochum"
-        subtitle="Transparente Preise bei MIRO-DRIVE – deiner Fahrschule in Bochum. Klasse B, B197 (Automatik mit Schaltberechtigung) und B78."
-      />
-
-      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(ellipse_at_top,theme(colors.primary/10),transparent_60%)]" />
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:items-stretch">
-          {cards.map(({ meta, items }) => {
-            const Icon = meta.icon;
-            const featured = meta.featured;
-            return (
-              <article
-                key={meta.key}
-                className={[
-                  "group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-300",
-                  featured
-                    ? "border-primary/40 bg-white shadow-[0_30px_60px_-30px_theme(colors.primary/50)] ring-1 ring-primary/30 lg:-translate-y-3 lg:scale-[1.02]"
-                    : "border-border bg-white hover:-translate-y-1 hover:shadow-2xl",
-                ].join(" ")}
-              >
-                {/* Removed continuous conic-gradient overlay for scroll perf */}
-
-                <div
-                  className={[
-                    "relative px-3 pt-4 pb-3 sm:px-7 sm:pt-7 sm:pb-6",
-                    featured
-                      ? "bg-gradient-to-br from-primary via-primary to-[#7a0010] text-white"
-                      : "bg-gradient-to-br from-foreground via-foreground to-[#1a1a1a] text-white",
-                  ].join(" ")}
-                >
-                  <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:14px_14px]" />
-                  <div className="relative flex items-center justify-between gap-2">
-                    <div className="flex min-w-0 items-center gap-3">
-                      {/* Premium icon: gradient ring + glow */}
-                      <div className="relative shrink-0">
-                        <div
-                          className={[
-                            "pointer-events-none absolute inset-0 -m-1.5 rounded-2xl blur-md opacity-70 animate-pulse",
-                            featured ? "bg-white/40" : "bg-primary/50",
-                          ].join(" ")}
-                        />
-                        <div
-                          className={[
-                            "relative grid h-11 w-11 place-items-center rounded-2xl p-[1.5px] sm:h-14 sm:w-14",
-                            featured
-                              ? "bg-gradient-to-br from-white via-white/70 to-white/20"
-                              : "bg-gradient-to-br from-primary via-primary/60 to-white/30",
-                          ].join(" ")}
-                        >
-                          <div className="grid h-full w-full place-items-center rounded-[14px] bg-black/40 backdrop-blur-md ring-1 ring-white/20">
-                            <Icon className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.55)] sm:h-7 sm:w-7" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-white/70 sm:text-[11px]">
-                          Führerschein
-                        </div>
-                        <h3 className="font-display text-xl leading-none sm:text-2xl">
-                          <span className="sm:hidden">{meta.mobileLabel}</span>
-                          <span className="hidden sm:inline">Klasse {meta.short}</span>
-                        </h3>
-                        <p className="mt-1 line-clamp-1 text-[11px] text-white/70 sm:hidden">{meta.tagline}</p>
-                      </div>
-                    </div>
-                    {meta.badge && (
-                      <span className="rounded-full bg-white px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary shadow sm:px-3 sm:py-1 sm:text-[10px]">
-                        {meta.badge}
-                      </span>
-                    )}
-                  </div>
-                  <p className="relative mt-2 hidden text-sm leading-relaxed text-white/80 sm:mt-4 sm:block">{meta.tagline}</p>
-                </div>
-
-                <div className="flex flex-1 flex-col px-3 pb-4 pt-3 sm:px-7 sm:pb-7 sm:pt-5">
-                  <div className="mb-3 space-y-2 rounded-2xl border border-border/60 bg-muted/30 p-3 sm:mb-5 sm:space-y-3 sm:p-4">
-                    <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-                      <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
-                        <RouteIcon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
-                        <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.ueberland}</span>
-                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Überland</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
-                        <Gauge className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
-                        <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.autobahn}</span>
-                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Autobahn</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-0.5 rounded-lg bg-white px-1 py-1.5 text-center shadow-sm sm:gap-1 sm:rounded-xl sm:px-2 sm:py-2">
-                        <Moon className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
-                        <span className="font-display text-sm leading-none text-foreground sm:text-base">{meta.sonderfahrten.dunkel}</span>
-                        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground sm:text-[10px]">Dunkel</span>
-                      </div>
-                    </div>
-                    <ul className="space-y-1 text-[11px] leading-snug text-foreground/80 sm:space-y-1.5 sm:text-xs">
-                      <li className="flex items-start gap-1.5 sm:gap-2">
-                        <BookOpen className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Theorie:</span> {meta.theorie}</span>
-                      </li>
-                      <li className="flex items-start gap-1.5 sm:gap-2">
-                        <UserCheck className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Alter:</span> {meta.mindestalter}</span>
-                      </li>
-                      <li className="flex items-start gap-1.5 sm:gap-2">
-                        <ShieldCheck className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Prüfung:</span> {meta.pruefung}</span>
-                      </li>
-                      <li className="flex items-start gap-1.5 sm:gap-2">
-                        <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-primary sm:h-3.5 sm:w-3.5" />
-                        <span><span className="font-semibold">Voraussetzungen:</span> {meta.requirements.join(", ")}</span>
-                      </li>
-                    </ul>
-                    {meta.extraNote && (
-                      <div className="rounded-lg border border-primary/30 bg-primary/5 px-2 py-1.5 text-[10px] leading-snug text-foreground/80 sm:px-3 sm:py-2 sm:text-[11px]">
-                        <span className="font-bold text-primary">Hinweis: </span>{meta.extraNote}
-                      </div>
-                    )}
-                  </div>
-                  <ul className="flex-1 divide-y divide-border/60">
-                    {items.map((it) => {
-                      const live = isOfferLive(it as any);
-                      const remaining = live ? formatRemaining((it as any).offer_valid_until) : null;
-                      return (
-                      <li
-                        key={it.id}
-                        className="flex items-start justify-between gap-3 py-2 sm:gap-4 sm:py-3.5"
-                      >
-                        <div className="min-w-0">
-                          <p className="text-[12px] font-semibold leading-snug sm:text-sm">{it.title}</p>
-                          {it.description && (
-                            <p className="mt-0.5 line-clamp-1 text-[10px] leading-snug text-muted-foreground sm:line-clamp-none sm:text-xs">{it.description}</p>
-                          )}
-                          {live && (it.offer_label || remaining) && (
-                            <div className="mt-1 flex flex-wrap items-center gap-1">
-                              {it.offer_label && (
-                                <span className="inline-flex items-center gap-0.5 rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary-foreground shadow-sm sm:px-2 sm:text-[9px]">
-                                  <Flame className="h-2.5 w-2.5" /> {it.offer_label}
-                                </span>
-                              )}
-                              {remaining && (
-                                <span className="inline-flex items-center gap-0.5 rounded-full bg-foreground/90 px-1.5 py-0.5 text-[8px] font-bold text-white sm:px-2 sm:text-[9px]">
-                                  <Timer className="h-2.5 w-2.5" /> {remaining}
-                                </span>
-                              )}
-                            </div>
-                          )}
-                          {live && (it as any).offer_note && (
-                            <p className="mt-1 text-[10px] italic leading-snug text-muted-foreground sm:text-[11px]">{(it as any).offer_note}</p>
-                          )}
-                        </div>
-                        <div className="flex shrink-0 flex-col items-end gap-0.5">
-                          {live && it.old_price && (
-                            <span className="text-[10px] font-semibold text-muted-foreground line-through sm:text-sm">{it.old_price}</span>
-                          )}
-                          <span
-                            className={[
-                              "rounded-full px-2 py-0.5 font-display sm:px-3 sm:py-1",
-                              live
-                                ? "bg-primary text-primary-foreground text-[13px] font-black shadow-md ring-2 ring-primary/30 sm:text-lg"
-                                : featured
-                                ? "bg-primary/10 text-primary text-[11px] sm:text-sm"
-                                : "bg-foreground/5 text-foreground text-[11px] sm:text-sm",
-                            ].join(" ")}
-                          >
-                            {it.price}
-                          </span>
-                        </div>
-                      </li>
-                      );
-                    })}
-                  </ul>
-
-                  <div className="mt-3 flex flex-row gap-2 sm:mt-6">
-                    <a
-                      href={CONTACT.whatsapp}
-                      target="_blank"
-                      rel="noopener"
-                      className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-3 py-2.5 text-xs font-black text-white transition-all hover:opacity-90 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm"
-                    >
-                      <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                      <span>WhatsApp</span>
-                    </a>
-                    <Link
-                      to="/kontakt"
-                      className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-foreground/15 px-3 py-2.5 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary sm:gap-2 sm:px-4 sm:py-3 sm:text-sm"
-                    >
-                      <MapPin className="h-4 w-4" />
-                      Filiale
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        {tuev.length > 0 && (
-          <div className="mt-12 rounded-3xl border bg-muted/30 p-6 sm:p-8">
+      {/* Hero */}
+      <section className="border-b border-slate-200/70 bg-gradient-to-b from-white to-slate-50">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+          <div className="flex flex-col items-center text-center">
             <div className="flex items-center gap-3">
-              <ShieldCheck className="h-5 w-5 text-foreground/70" />
-              <h3 className="font-display text-lg">Externe TÜV-Gebühren</h3>
-              <span className="ml-auto text-xs text-muted-foreground">Werden direkt an den TÜV gezahlt</span>
+              <img
+                src="/images/miro-drive-logo.svg"
+                alt="MIRO-DRIVE Logo"
+                className="h-10 w-auto sm:h-12"
+              />
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary sm:text-xs">
+                Fahrschule Bochum
+              </span>
             </div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {tuev.map((it) => (
-                <div
-                  key={it.id}
-                  className="flex items-center justify-between rounded-2xl border bg-white px-5 py-4"
-                >
-                  <div>
-                    <p className="text-sm font-semibold">{it.title}</p>
-                    {it.description && (
-                      <p className="text-xs text-muted-foreground">{it.description}</p>
-                    )}
-                  </div>
-                  <span className="font-display text-base text-foreground">{it.price}</span>
-                </div>
-              ))}
+            <h1 className="mt-6 font-display text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
+              MIRO-DRIVE Preise
+            </h1>
+            <p className="mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
+              Transparent. Fair. Ohne versteckte Kosten. Die gleichen Preise für Klasse B, B197 und B78 –
+              nur die Ausbildung unterscheidet sich.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1">
+                <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Keine versteckten Kosten
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1">
+                <ShieldCheck className="h-3.5 w-3.5 text-primary" /> TÜV-geprüfte Ausbildung
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1">
+                <Info className="h-3.5 w-3.5 text-primary" /> Beratung persönlich vor Ort
+              </span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        {/* Central price table */}
+        <section className="relative">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">
+                Preisübersicht
+              </p>
+              <h2 className="mt-1 font-display text-2xl text-foreground sm:text-3xl">
+                Gültig für Klasse B, B197 und B78
+              </h2>
+            </div>
+            <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-semibold text-muted-foreground">
+              Stand: aktuell
+            </span>
+          </div>
+
+          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.25)]">
+            <ul className="divide-y divide-slate-100">
+              {standardRows.map(({ row, price }) => {
+                const live = price ? isOfferLive(price as any) : false;
+                const remaining = live ? formatRemaining((price as any).offer_valid_until) : null;
+                return (
+                  <li
+                    key={row.key}
+                    className="flex items-center justify-between gap-6 px-5 py-5 sm:px-8 sm:py-6"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-display text-base text-foreground sm:text-lg">{row.label}</p>
+                      {row.hint && (
+                        <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">{row.hint}</p>
+                      )}
+                      {live && (price!.offer_label || remaining) && (
+                        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                          {price!.offer_label && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-primary-foreground shadow-sm sm:text-[10px]">
+                              <Flame className="h-3 w-3" /> {price!.offer_label}
+                            </span>
+                          )}
+                          {remaining && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-foreground/90 px-2 py-0.5 text-[9px] font-bold text-white sm:text-[10px]">
+                              <Timer className="h-3 w-3" /> {remaining}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex shrink-0 flex-col items-end">
+                      {live && price!.old_price && (
+                        <span className="text-xs font-semibold text-muted-foreground line-through sm:text-sm">
+                          {price!.old_price}
+                        </span>
+                      )}
+                      <span
+                        className={[
+                          "font-display tabular-nums",
+                          live
+                            ? "text-2xl font-black text-primary sm:text-3xl"
+                            : "text-2xl text-foreground sm:text-3xl",
+                        ].join(" ")}
+                      >
+                        {price!.price}
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-xs text-muted-foreground sm:px-8">
+              <span className="font-semibold text-foreground">Hinweis:</span> Sonderfahrten (Überland,
+              Autobahn, Dunkelheit) werden wie eine Übungsstunde à 45 Minuten abgerechnet. Bei Klasse B197
+              zusätzlich mind. 10 Schaltkompetenz-Fahrten zum gleichen Preis.
+            </div>
+          </div>
+        </section>
+
+        {/* Class comparison */}
+        <section className="mt-16">
+          <div className="mb-6">
+            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">
+              Klassen im Vergleich
+            </p>
+            <h2 className="mt-1 font-display text-2xl text-foreground sm:text-3xl">
+              Welche Klasse passt zu dir?
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Die Preise sind identisch – der Unterschied liegt in der Ausbildung und im späteren Umfang
+              der Fahrerlaubnis.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {CLASSES.map((c) => {
+              const Icon = c.icon;
+              return (
+                <article
+                  key={c.key}
+                  className={[
+                    "relative flex flex-col rounded-3xl border bg-white p-6 transition-all",
+                    c.featured
+                      ? "border-primary/40 shadow-[0_20px_50px_-30px_rgba(200,16,46,0.4)] ring-1 ring-primary/20"
+                      : "border-slate-200 hover:-translate-y-0.5 hover:shadow-lg",
+                  ].join(" ")}
+                >
+                  {c.badge && (
+                    <span className="absolute -top-3 right-6 rounded-full bg-primary px-3 py-1 text-[9px] font-black uppercase tracking-wider text-primary-foreground shadow">
+                      {c.badge}
+                    </span>
+                  )}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={[
+                        "grid h-11 w-11 place-items-center rounded-2xl",
+                        c.featured
+                          ? "bg-primary/10 text-primary"
+                          : "bg-slate-100 text-foreground",
+                      ].join(" ")}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Führerschein
+                      </div>
+                      <h3 className="font-display text-xl leading-none">{c.title}</h3>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm text-muted-foreground">{c.tagline}</p>
+                  <ul className="mt-5 space-y-2.5">
+                    {c.facts.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-foreground/85">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* External TÜV fees */}
+        {tuev.length > 0 && (
+          <section className="mt-16">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="h-5 w-5 text-foreground/70" />
+                <h3 className="font-display text-lg">Externe TÜV-Gebühren</h3>
+                <span className="ml-auto text-xs text-muted-foreground">
+                  Werden direkt an den TÜV gezahlt
+                </span>
+              </div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {tuev.map((it) => (
+                  <div
+                    key={it.id}
+                    className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/60 px-5 py-4"
+                  >
+                    <div>
+                      <p className="text-sm font-semibold">{it.title}</p>
+                      {it.description && (
+                        <p className="text-xs text-muted-foreground">{it.description}</p>
+                      )}
+                    </div>
+                    <span className="font-display text-base tabular-nums text-foreground">
+                      {it.price}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
         )}
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2">
+        {/* Teasers */}
+        <section className="mt-12 grid gap-4 sm:grid-cols-2">
           <Link
             to="/erste-hilfe-kurs"
-            className="group flex items-center justify-between rounded-3xl border bg-white p-6 transition-transform hover:-translate-y-0.5"
+            className="group flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 transition-transform hover:-translate-y-0.5"
           >
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-primary">Pflichtkurs</div>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                Pflichtkurs
+              </div>
               <h4 className="mt-1 font-display text-xl">Erste-Hilfe-Kurs</h4>
-              <p className="mt-1 text-sm text-muted-foreground">Termine & Preise auf der separaten Seite.</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Termine & Preise auf der separaten Seite.
+              </p>
             </div>
             <ArrowRight className="h-5 w-5 text-foreground/50 transition-transform group-hover:translate-x-1 group-hover:text-primary" />
           </Link>
           <Link
             to="/kontakt"
-            className="group flex items-center justify-between rounded-3xl border bg-white p-6 transition-transform hover:-translate-y-0.5"
+            className="group flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 transition-transform hover:-translate-y-0.5"
           >
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-primary">Standorte</div>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                Standorte
+              </div>
               <h4 className="mt-1 font-display text-xl">Vorbeikommen & anmelden</h4>
-              <p className="mt-1 text-sm text-muted-foreground">Bochum Zentrum & Riemke – mit Route-Button.</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Bochum Zentrum & Riemke – mit Route-Button.
+              </p>
             </div>
             <ArrowRight className="h-5 w-5 text-foreground/50 transition-transform group-hover:translate-x-1 group-hover:text-primary" />
           </Link>
-        </div>
+        </section>
 
-        <div className="relative mt-12 overflow-hidden rounded-3xl bg-[#0a0a0a] p-10 text-white">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/30 hidden lg:block blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 -left-10 h-64 w-64 rounded-full bg-primary/20 hidden lg:block blur-3xl" />
+        {/* Dark CTA */}
+        <section className="relative mt-12 overflow-hidden rounded-3xl bg-[#0a0a0a] p-10 text-white">
+          <div className="pointer-events-none absolute -right-20 -top-20 hidden h-72 w-72 rounded-full bg-primary/30 blur-3xl lg:block" />
+          <div className="pointer-events-none absolute -bottom-24 -left-10 hidden h-64 w-64 rounded-full bg-primary/20 blur-3xl lg:block" />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h3 className="font-display text-2xl sm:text-3xl">Noch Fragen zu den Klassen?</h3>
               <p className="mt-2 max-w-xl text-white/70">
-                Schreib uns per WhatsApp – wir beraten dich kurz, welche Klasse für dich passt. Die Anmeldung selbst läuft entspannt vor Ort in der Filiale.
+                Schreib uns per WhatsApp – wir beraten dich kurz, welche Klasse für dich passt. Die
+                Anmeldung selbst läuft entspannt vor Ort in der Filiale.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -382,7 +411,7 @@ function PricesPage() {
               </Link>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </SiteLayout>
   );
