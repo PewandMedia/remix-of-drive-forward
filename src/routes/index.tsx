@@ -47,7 +47,7 @@ export const Route = createFileRoute("/")({
 
 
 const steps = [
-  { n: "01", icon: Send, title: "Online oder per WhatsApp anmelden", text: "Wähle zwischen dem Online-Formular oder einer schnellen WhatsApp-Nachricht." },
+  { n: "01", icon: Send, title: "Melde dich per WhatsApp", text: "Schreib uns einfach über WhatsApp – wir melden uns umgehend." },
   { n: "02", icon: ClipboardCheck, title: "Anmeldung in der Filiale", text: "Kurze Anmeldung bei uns in Bochum Zentrum oder Riemke." },
   { n: "03", icon: GraduationCap, title: "Theorie & Praxis", text: "Strukturierter Unterricht, moderne Fahrzeuge und persönliche Betreuung." },
   { n: "04", icon: Trophy, title: "Bestanden", text: "Wir begleiten dich bis zur bestandenen TÜV-Prüfung." },
