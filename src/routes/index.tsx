@@ -84,11 +84,11 @@ function HeroSection() {
           </p>
 
           <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.25rem]" style={{ animationDelay: "0.15s" }}>
-            <span className="italic text-primary">MIRO-DRIVE</span> Fahrschule Bochum
+            Führerschein in Bochum <span className="italic text-primary">einfach & unkompliziert</span>
           </h1>
 
           <p className="animate-fade-up mt-6 max-w-xl text-base text-slate-600 sm:text-lg" style={{ animationDelay: "0.3s" }}>
-            Deine moderne Fahrschule in Bochum. Persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum und Umgebung.
+            Melde dich in unter 2 Minuten online an oder schreib uns direkt per WhatsApp. Persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum.
           </p>
 
 
