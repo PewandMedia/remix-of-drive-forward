@@ -1,28 +1,47 @@
 ## Ziel
 
-- `/team` (Unterseite): Fahrlehrer symmetrisch **1 (Ilkay) + 3 + 3**, Bürokräfte in **2er-Reihen** auf Mobile.
-- `/` (Startseite): Team-Teaser **unverändert** bei Ilkay + 3 Fahrlehrern, **keine** Bürokräfte.
+Auf der Unterseite `/team` soll die **mobile Ansicht** exakt so aussehen:
 
-## Aktueller Zustand
+```text
+     Ilkay (allein, mittig)
 
-- `/team`: Fahrlehrer-Grid nutzt `sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4` → bei 6 weiteren Fahrlehrern entsteht auf breiten Screens das unsymmetrische Muster **1 + 4 + 2**. Bürokräfte nutzen dasselbe Grid, mobil aber nur 1 Spalte.
-- Startseite: Teaser zeigt bereits Ilkay + 3 Fahrlehrer, keine Bürokräfte – bleibt so.
+ [Fahrlehrer] [Fahrlehrer] [Fahrlehrer]
+ [Fahrlehrer] [Fahrlehrer] [Fahrlehrer]
 
-## Geplante Änderungen
+     [Bürokraft] [Bürokraft]
+     [Bürokraft] [Bürokraft]
+```
 
-### `/team` – Fahrlehrer-Grid
-- Grid auf fix **3 Spalten** ab `lg` (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`), das `2xl:grid-cols-4` entfällt.
-- Ergebnis: **1 (Ilkay zentriert) + 3 + 3**.
+Also: Fahrlehrer auf Mobile in **3er-Reihen**, Bürokräfte auf Mobile in **2er-Reihen**. Desktop bleibt wie es ist.
 
-### `/team` – Bürokräfte-Grid
-- Mobil künftig **2 Spalten** (`grid-cols-2`), auf Desktop weiterhin bis zu 4 Spalten (`sm:grid-cols-2 lg:grid-cols-4`).
-- Damit passen die 4 Bürokräfte auf Desktop in eine Reihe und mobil sauber in 2×2.
+## Aktueller Zustand (Mobile)
 
-### Startseite (`/`)
-- **Keine Änderungen** am Team-Teaser (Ilkay + 3 Fahrlehrer, keine Bürokräfte).
+- Fahrlehrer-Grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` → auf Mobile aktuell **1 pro Reihe** statt 3.
+- Bürokräfte-Grid: `grid-cols-2 sm:gap-8 lg:grid-cols-4` → auf Mobile bereits 2 pro Reihe (bleibt).
+
+## Änderungen
+
+### `src/routes/team.tsx`
+
+- **Fahrlehrer-Grid** auf Mobile fix auf 3 Spalten setzen: `grid-cols-3 lg:grid-cols-3` (Desktop unverändert 3er).
+- Abstände (`gap`) mobil verkleinern, damit 3 Karten nebeneinander sauber passen (`gap-2 sm:gap-8`).
+- **Bürokräfte-Grid** bleibt `grid-cols-2 ... lg:grid-cols-4` (Mobile schon korrekt).
+
+### `src/components/site/TeamCard.tsx`
+
+- Da drei Karten nebeneinander auf schmalen Screens sehr wenig Platz haben, die `size="sm"`-Variante der Karte kompakter machen (kleinere Avatar-Größe, kleinere Schrift, geringeres Padding), damit Name, Rolle und Sprachen sauber in der Karte bleiben.
+- Auf der `/team`-Fahrlehrerreihe wird `size="sm"` nur mobil greifen; ab `sm:` wieder die normalen Größen – das ist bereits so in der Karte über die responsive Klassen (`sm:` Präfixe) vorgesehen und wird lediglich für den kleineren Mobile-State feinjustiert.
+
+## Nicht ändern
+
+- Ilkay-Karte oben (bleibt `size="lg"` zentriert).
+- Team-Teaser auf der Startseite (`/`) bleibt unverändert (keine Bürokräfte, keine zusätzlichen Fahrlehrer).
+- Keine DB-, Admin- oder Datenänderungen.
 
 ## Technische Details
 
-- Betroffene Datei: `src/routes/team.tsx` (Grid-Klassen in `renderGroup` bzw. separate Grids für Fahrlehrer und Bürokräfte).
-- Keine DB-, Schema- oder Dependency-Änderungen.
+- Betroffene Dateien:
+  - `src/routes/team.tsx` — Grid-Klassen der Fahrlehrer-Reihe.
+  - `src/components/site/TeamCard.tsx` — kompaktere `size="sm"`-Variante für die 3-spaltige Mobile-Ansicht.
+- Fahrlehrer-Karten in der 3er-Reihe werden auf Mobile mit `size="sm"` gerendert und ab `sm:` wieder größer dargestellt.
 - Build-Validierung nach den Änderungen.
