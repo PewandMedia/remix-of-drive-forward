@@ -203,6 +203,23 @@ function KurdistanFlag({ className = "" }: { className?: string }) {
   );
 }
 
+function LanguageChip({ l, animated = false }: { l: typeof LANGUAGES[0]; animated?: boolean }) {
+  return (
+    <div
+      className={`flex shrink-0 items-center gap-2.5 rounded-full border border-slate-200 bg-slate-50/70 px-4 py-2 shadow-sm ${
+        animated ? "" : "transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md"
+      }`}
+    >
+      {l.flag ? (
+        <span className="text-xl leading-none">{l.flag}</span>
+      ) : (
+        <KurdistanFlag className="h-4 w-6 rounded-sm shadow-sm" />
+      )}
+      <span className="text-sm font-semibold text-slate-800">{l.label}</span>
+    </div>
+  );
+}
+
 function LanguageStrip() {
   return (
     <section className="relative border-y border-slate-200 bg-white">
@@ -214,21 +231,26 @@ function LanguageStrip() {
               Wir beraten & unterrichten in
             </p>
           </div>
-          <ul className="-mx-1 flex w-full items-center gap-2 overflow-x-auto pb-1 sm:gap-3 lg:w-auto lg:justify-end lg:overflow-visible lg:pb-0">
+
+          {/* Desktop: statische Liste */}
+          <ul className="hidden w-full items-center gap-2 overflow-x-auto pb-1 sm:gap-3 lg:flex lg:w-auto lg:justify-end lg:overflow-visible lg:pb-0">
             {LANGUAGES.map((l) => (
-              <li
-                key={l.code}
-                className="group flex shrink-0 items-center gap-2.5 rounded-full border border-slate-200 bg-slate-50/70 px-4 py-2 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md"
-              >
-                {l.flag ? (
-                  <span className="text-xl leading-none">{l.flag}</span>
-                ) : (
-                  <KurdistanFlag className="h-4 w-6 rounded-sm shadow-sm" />
-                )}
-                <span className="text-sm font-semibold text-slate-800">{l.label}</span>
+              <li key={l.code}>
+                <LanguageChip l={l} />
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+
+      {/* Mobile: Dauerschleife */}
+      <div className="lg:hidden">
+        <div className="relative overflow-hidden py-1">
+          <div className="animate-marquee flex w-max items-center gap-3 px-4">
+            {[...LANGUAGES, ...LANGUAGES, ...LANGUAGES, ...LANGUAGES].map((l, i) => (
+              <LanguageChip key={`${l.code}-${i}`} l={l} animated />
+            ))}
+          </div>
         </div>
       </div>
     </section>
