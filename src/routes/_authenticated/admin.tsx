@@ -631,12 +631,12 @@ function FirstAidAdmin() {
     <div className="mt-6 grid gap-8 lg:grid-cols-2">
       <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3 rounded-xl border bg-white p-6">
         <h3 className="font-display text-lg">Allgemeine Info</h3>
-        <p className="text-xs text-muted-foreground">Beschreibung & Rahmendaten. Der Preis wird auf der Website aktuell nicht angezeigt – Termine verwaltest du rechts.</p>
-        <div><Label>Beschreibung</Label><Textarea name="description" rows={4} required defaultValue={data?.description ?? ""} /></div>
+        <p className="text-xs text-muted-foreground">Diese Angaben erscheinen automatisch auf der Startseite und der Unterseite „Erste-Hilfe-Kurs".</p>
+        <div><Label>Beschreibung (Startseite & Unterseite)</Label><Textarea name="description" rows={4} required defaultValue={data?.description ?? ""} /></div>
         <div className="grid gap-3 md:grid-cols-3">
-          <div><Label>Preis (intern)</Label><Input name="price" defaultValue={data?.price ?? ""} /></div>
-          <div><Label>Dauer</Label><Input name="duration" defaultValue={data?.duration ?? ""} placeholder="z. B. 8 Stunden" /></div>
-          <div><Label>Termin-Hinweis</Label><Input name="dates" defaultValue={data?.dates ?? ""} /></div>
+          <div><Label>Preis (Unterseite)</Label><Input name="price" defaultValue={data?.price ?? ""} placeholder="z. B. 55 €" /></div>
+          <div><Label>Dauer (Start- & Unterseite)</Label><Input name="duration" defaultValue={data?.duration ?? ""} placeholder="z. B. 8 Stunden" /></div>
+          <div><Label>Termin-Hinweis (Unterseite)</Label><Input name="dates" defaultValue={data?.dates ?? ""} placeholder="Zusatzhinweis unter Terminen" /></div>
         </div>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={data?.active ?? true} /> Aktiv</label>
         <Button type="submit" className="rounded-full">Speichern</Button>
