@@ -8,8 +8,8 @@ import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy, Flame, Timer, ChevronDown, User, Eye } from "lucide-react";
-import heroVideo from "@/assets/miro-drive-hero.mp4.asset.json";
-import heroPoster from "@/assets/miro-drive-hero-poster.jpg.asset.json";
+import heroVideo from "@/assets/miro-drive-hero-v2.mp4.asset.json";
+import heroPoster from "@/assets/miro-drive-hero-v2-poster.jpg.asset.json";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { TeamCard, type TeamMember } from "@/components/site/TeamCard";
@@ -67,58 +67,22 @@ const PRICE_CLASSES = [
 
 
 function HeroSection() {
-  const [videoReady, setVideoReady] = useState(false);
-  const [videoDone, setVideoDone] = useState(false);
-
   return (
-    <section className="relative isolate overflow-hidden bg-black text-white">
-      {/* Poster (immer da, sichtbar bis Video bereit + wieder wenn Video zu Ende) */}
-      <img
-        src={heroPoster.url}
-        alt=""
-        aria-hidden="true"
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoReady && !videoDone ? "opacity-0" : "opacity-100"}`}
-      />
-
-      {/* Video */}
-      <video
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 motion-reduce:hidden ${videoReady && !videoDone ? "opacity-100" : "opacity-0"}`}
-        autoPlay
-        muted
-        playsInline
-        preload="auto"
-        poster={heroPoster.url}
-        aria-label="MIRO-DRIVE Fahrschulfahrzeug fährt ins Bild"
-        onLoadedData={() => setVideoReady(true)}
-        onEnded={() => setVideoDone(true)}
-      >
-        <source src={heroVideo.url} type="video/mp4" />
-      </video>
-
-      {/* Overlays */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
-      <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_180px_rgba(0,0,0,0.55)]" />
+    <section className="relative isolate overflow-hidden bg-gradient-to-br from-black via-neutral-950 to-black text-white">
+      {/* dezente Deko */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:56px_56px]" />
+      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/25 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/15 blur-[140px]" />
       <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/80 via-primary/30 to-transparent" />
 
-      {/* Roter Shimmer nach Videoende – einmalig */}
-      {videoDone && (
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="hero-shine absolute -inset-y-10 -left-1/3 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-primary/25 to-transparent blur-2xl" />
-        </div>
-      )}
-
-      <LanguagePanel />
-
-
-
-      <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 sm:py-24 lg:min-h-[92svh] lg:px-8 lg:py-32">
+      <div className="relative mx-auto grid min-h-[88svh] max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:min-h-[92svh] lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:px-8 lg:py-28">
+        {/* LINKS: Text */}
         <div className="max-w-2xl">
           <p className="animate-fade-up mb-5 flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.32em] text-white/85" style={{ animationDelay: "0.05s" }}>
             <span className="h-px w-10 bg-primary" /> Deine moderne Fahrschule in Bochum
           </p>
 
-          <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem]" style={{ animationDelay: "0.15s" }}>
+          <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.25rem]" style={{ animationDelay: "0.15s" }}>
             Fahrschule Bochum –{" "}
             <span className="italic text-primary">modern, persönlich und sicher</span>{" "}
             zum Führerschein
@@ -160,15 +124,55 @@ function HeroSection() {
           </p>
         </div>
 
-        {/* Scroll-Hinweis */}
-        <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60 sm:flex">
-          Mehr entdecken
-          <ChevronDown className="h-4 w-4 animate-bounce" />
+        {/* RECHTS: Video-Karte */}
+        <div className="animate-fade-up relative mx-auto w-full max-w-xl lg:max-w-none" style={{ animationDelay: "0.35s" }}>
+          <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-primary/25 blur-3xl" />
+          <div className="pointer-events-none absolute -inset-px rounded-[1.75rem] bg-gradient-to-br from-primary/60 via-white/10 to-primary/40 opacity-80" />
+          <div className="relative aspect-video overflow-hidden rounded-3xl border border-white/15 bg-black shadow-2xl shadow-primary/25 lg:aspect-[4/5]">
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              autoPlay
+              muted
+              playsInline
+              loop
+              preload="auto"
+              poster={heroPoster.url}
+              aria-label="MIRO-DRIVE Fahrschulfahrzeug"
+            >
+              <source src={heroVideo.url} type="video/mp4" />
+            </video>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+            <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.55)]" />
+
+            {/* Badge oben links auf der Karte */}
+            <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/20 bg-black/50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              </span>
+              MIRO-DRIVE · Bochum
+            </div>
+
+            {/* Untere Info-Zeile */}
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
+              <div className="flex items-center gap-2 text-xs font-semibold">
+                <Star className="h-4 w-4 fill-primary text-primary" />
+                5.0 · über 500 Bewertungen
+              </div>
+              <div className="hidden items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-3 py-1 text-[11px] font-semibold backdrop-blur-md sm:flex">
+                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                TÜV-geprüft
+              </div>
+            </div>
+          </div>
         </div>
+
+        <LanguagePanel />
       </div>
     </section>
   );
 }
+
 
 const LANGUAGES: { code: string; label: string; flag?: string }[] = [
   { code: "de", label: "Deutsch", flag: "🇩🇪" },
