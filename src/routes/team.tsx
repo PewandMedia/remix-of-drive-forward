@@ -37,8 +37,16 @@ function TeamPage() {
   const officeWithoutBirtan = birtan ? office.filter((m) => m !== birtan) : office;
   if (birtan) otherInstructors = [...otherInstructors, birtan];
 
-  const renderGroup = (members: TeamMember[]) => (
-    <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
+  const instructorGrid = (members: TeamMember[]) => (
+    <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+      {members.map((m) => (
+        <TeamCard key={m.id} member={m} />
+      ))}
+    </div>
+  );
+
+  const officeGrid = (members: TeamMember[]) => (
+    <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-8 lg:grid-cols-4">
       {members.map((m) => (
         <TeamCard key={m.id} member={m} />
       ))}
@@ -64,7 +72,7 @@ function TeamPage() {
                 <TeamCard member={owner} size="lg" />
               </div>
             )}
-            {otherInstructors.length > 0 && renderGroup(otherInstructors)}
+            {otherInstructors.length > 0 && instructorGrid(otherInstructors)}
           </section>
         )}
         {officeWithoutBirtan.length > 0 && (
@@ -72,7 +80,7 @@ function TeamPage() {
             <h2 className="mb-8 text-center font-display text-2xl text-primary sm:text-3xl">
               Bürokräfte der Fahrschule MIRO-DRIVE
             </h2>
-            {renderGroup(officeWithoutBirtan)}
+            {officeGrid(officeWithoutBirtan)}
           </section>
         )}
       </div>

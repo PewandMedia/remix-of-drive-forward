@@ -1,38 +1,28 @@
 ## Ziel
-Auf der Startseite (`/`) soll nach dem Preis-Teaser ein neuer Bereich erklären, welche Unterlagen für den Führerscheinantrag nötig sind, und dass MIRO-DRIVE den kompletten Service inklusive Einreichung beim Straßenverkehrsamt für Bochum und Herne übernimmt.
 
-## Wo eingebaut
-- Datei: `src/routes/index.tsx`
-- Position: direkt nach dem Preis-Teaser (endet aktuell bei Zeile 437) und vor dem Erste-Hilfe-Kurs-Teaser (beginnt aktuell bei Zeile 439).
+- `/team` (Unterseite): Fahrlehrer symmetrisch **1 (Ilkay) + 3 + 3**, Bürokräfte in **2er-Reihen** auf Mobile.
+- `/` (Startseite): Team-Teaser **unverändert** bei Ilkay + 3 Fahrlehrern, **keine** Bürokräfte.
 
-## Inhaltliche Struktur
-1. **Eyebrow:** „Führerscheinantrag“ in `text-primary`.
-2. **Headline:** z. B. „So einfach ist die Anmeldung.“
-3. **Subtext:** Kurzer Satz, dass wir die nötigen Unterlagen kennen und alles übernehmen.
-4. **Dokumenten-Checkliste** als 3 Karten/Items:
-   - Biometrisches Passbild
-   - Sehtest
-   - Erste-Hilfe-Nachweis
-5. **Service-Promise-Box:** „Wir übernehmen den kompletten Service und reichen die Antragsunterlagen für dich beim Straßenverkehrsamt ein – sowohl in Bochum als auch in Herne.“
-6. **CTA:** Button „Jetzt online anmelden“ → `/anmeldung` (optional sekundärer WhatsApp-Link).
+## Aktueller Zustand
 
-## Design
-- Bestehende Design-Sprache beibehalten: `max-w-7xl`, `rounded-2xl/rounded-3xl`, Karten mit leichtem Schatten/Rand.
-- Icons aus dem bereits importierten `lucide-react`-Set verwenden (z. B. `User`, `Eye`, `Heart`, `FileText`, `ShieldCheck`).
-- Keine neuen Farben oder hartkodierte Werte verwenden, nur Tailwind-Design-Tokens (`primary`, `muted`, `foreground`, etc.).
-- Auf Mobile 1-spaltig, auf Desktop 3-spaltige Checkliste + darunter die Service-Promise-Box.
+- `/team`: Fahrlehrer-Grid nutzt `sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4` → bei 6 weiteren Fahrlehrern entsteht auf breiten Screens das unsymmetrische Muster **1 + 4 + 2**. Bürokräfte nutzen dasselbe Grid, mobil aber nur 1 Spalte.
+- Startseite: Teaser zeigt bereits Ilkay + 3 Fahrlehrer, keine Bürokräfte – bleibt so.
 
-## Technische Schritte
-1. `src/routes/index.tsx`: Import der benötigten Lucide-Icons ergänzen (falls noch nicht vorhanden).
-2. Neue Sektion als JSX-Komponente inline einfügen oder als kleine lokale Hilfskomponente oberhalb der `Index`-Komponente definieren.
-3. Sicherstellen, dass keine neuen Datenbankabfragen nötig sind (reiner statischer Inhalt).
-4. Build prüfen.
+## Geplante Änderungen
 
-## Verifikation
-- `bun run build` läuft ohne Fehler.
-- Visueller Check im Preview: neuer Abschnitt erscheint nach Preisen, Inhalt vollständig und responsive.
+### `/team` – Fahrlehrer-Grid
+- Grid auf fix **3 Spalten** ab `lg` (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`), das `2xl:grid-cols-4` entfällt.
+- Ergebnis: **1 (Ilkay zentriert) + 3 + 3**.
 
-## Nicht im Scope
-- Keine neue Route.
-- Keine Datenbank- oder Admin-Änderungen.
-- Keine Änderungen an `/preise` oder anderen Seiten.
+### `/team` – Bürokräfte-Grid
+- Mobil künftig **2 Spalten** (`grid-cols-2`), auf Desktop weiterhin bis zu 4 Spalten (`sm:grid-cols-2 lg:grid-cols-4`).
+- Damit passen die 4 Bürokräfte auf Desktop in eine Reihe und mobil sauber in 2×2.
+
+### Startseite (`/`)
+- **Keine Änderungen** am Team-Teaser (Ilkay + 3 Fahrlehrer, keine Bürokräfte).
+
+## Technische Details
+
+- Betroffene Datei: `src/routes/team.tsx` (Grid-Klassen in `renderGroup` bzw. separate Grids für Fahrlehrer und Bürokräfte).
+- Keine DB-, Schema- oder Dependency-Änderungen.
+- Build-Validierung nach den Änderungen.
