@@ -1,32 +1,24 @@
-## Ziel
-Den Hero-Text und die Anmelde-Callouts auf der Startseite so überarbeiten, dass klar wird: Anmeldung geht sowohl per WhatsApp als auch bequem online über das Formular.
+Der Nutzer möchte den Hero-Bereich in den Zustand vor der letzten Textänderung zurückversetzen.
 
-## Geplante Änderungen
+Geplante Änderungen in `src/routes/index.tsx`:
 
-### 1. Hero-Text überarbeiten (`src/routes/index.tsx`)
-- **Überschrift (H1):** Kurz, SEO-relevant, ohne Aneinanderreihung von Fahrklassen. Beispiel:
-  > „Führerschein in Bochum – einfach & unkompliziert“
-- **Unterzeile:** Stärkeres Alleinstellungsmerkmal mit beiden Anmeldekanälen. Beispiel:
-  > „Melde dich in unter 2 Minuten online an oder schreib uns direkt per WhatsApp. Persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum.“
-- **CTAs:**
-  - Primär: „Jetzt online anmelden“ (Link `/anmeldung`)
-  - Sekundär: „WhatsApp schreiben“ (externer Link zur hinterlegten Nummer aus `src/lib/contact.ts`)
-  - Tertiär: „Preise ansehen“
+1. **H1 zurücksetzen**
+   - Aktuell: `Führerschein in Bochum <span class="italic text-primary">einfach & unkompliziert</span>`
+   - Zurück zu: `MIRO-DRIVE <span class="italic text-primary">Fahrschule Bochum</span>`
 
-### 2. 4-Schritte-Ablauf anpassen
-- Schritt 01 aktuell: „Melde dich per WhatsApp“
-- Neu: Beide Kanäle nennen, z. B.
-  > „Online oder per WhatsApp anmelden“
-  > „Wähle zwischen dem Online-Formular oder einer schnellen WhatsApp-Nachricht.“
+2. **Unterzeile zurücksetzen**
+   - Aktuell: Langfassung mit Online-Anmeldung & WhatsApp
+   - Zurück zu: `Deine moderne Fahrschule in Bochum. Persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum und Umgebung.`
 
-### 3. Sprach- und Stilvorgaben
-- Keine Bindestriche in Aufzählungen.
-- Kurze, seriöse Fahrschul-Sprache.
-- SEO-relevante Keywords: Führerschein Bochum, Fahrschule Bochum, Online-Anmeldung, WhatsApp.
+3. **4-Schritte-Ablauf Schritt 01 zurücksetzen**
+   - Aktuell: `Online oder per WhatsApp anmelden`
+   - Zurück zu: `Melde dich per WhatsApp`
 
-## Nicht im Scope
-- Keine Änderungen am Design, Layout, Video oder Farben.
-- Keine Änderungen an anderen Seiten außer der Startseite.
+4. **Sekundären CTA zurücksetzen**
+   - Aktuell: WhatsApp-Button mit `MessageCircle`-Icon
+   - Zurück zu: `Kostenlose Beratung` als Link zu `/kontakt`
 
-## Dateien
-- `src/routes/index.tsx`
+5. **Build prüfen**
+   - `bun run build` ausführen, um sicherzustellen, dass keine Syntax-Fehler entstehen.
+
+Keine Änderungen an Layout, Video, Farben, Animationen oder anderen Seiten.
