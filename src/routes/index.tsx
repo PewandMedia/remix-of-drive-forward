@@ -283,6 +283,8 @@ function Index() {
     <SiteLayout>
       {/* HERO */}
       <HeroSection />
+      <LanguageStrip />
+
 
       {/* PROCESS / SO GEHTS */}
       <section className="bg-[#0a0a0a] py-20 text-white">
