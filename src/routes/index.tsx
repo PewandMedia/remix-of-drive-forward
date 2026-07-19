@@ -84,11 +84,11 @@ function HeroSection() {
           </p>
 
           <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.25rem]" style={{ animationDelay: "0.15s" }}>
-            Führerschein in Bochum <span className="italic text-primary">einfach & unkompliziert</span>
+            MIRO-DRIVE <span className="italic text-primary">Fahrschule Bochum</span>
           </h1>
 
           <p className="animate-fade-up mt-6 max-w-xl text-base text-slate-600 sm:text-lg" style={{ animationDelay: "0.3s" }}>
-            Melde dich in unter 2 Minuten online an oder schreib uns direkt per WhatsApp. Persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum.
+            Deine moderne Fahrschule in Bochum. Persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum und Umgebung.
           </p>
 
 
@@ -102,15 +102,12 @@ function HeroSection() {
               <span className="relative">Jetzt online anmelden</span>
               <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <a
-              href={CONTACT.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/kontakt"
               className="inline-flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 text-sm font-bold text-slate-900 shadow-sm transition-all hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 hover:shadow-md"
             >
-              <MessageCircle className="h-5 w-5 text-green-600" />
-              WhatsApp schreiben
-            </a>
+              Kostenlose Beratung
+            </Link>
             <Link
               to="/preise"
               className="group inline-flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-primary sm:ml-1"
