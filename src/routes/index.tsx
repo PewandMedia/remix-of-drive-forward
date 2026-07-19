@@ -661,13 +661,17 @@ function Index() {
                 <div className="space-y-8 sm:space-y-12">
                   {owner && (
                     <div className="flex justify-center">
-                      <TeamCard member={owner} size="featured" />
+                      <Link to="/team" className="block transition-transform hover:-translate-y-1">
+                        <TeamCard member={owner} size="featured" />
+                      </Link>
                     </div>
                   )}
                   {others.length > 0 && (
                     <div className="grid grid-cols-3 items-stretch gap-2 sm:gap-4 lg:gap-6">
                       {others.map((m) => (
-                        <TeamCard key={m.id} member={m} size="sm" />
+                        <Link key={m.id} to="/team" className="block transition-transform hover:-translate-y-1">
+                          <TeamCard member={m} size="sm" />
+                        </Link>
                       ))}
                     </div>
                   )}
