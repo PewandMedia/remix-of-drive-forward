@@ -108,6 +108,10 @@ function HeroSection() {
         </div>
       )}
 
+      <LanguagePanel />
+
+
+
       <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 sm:py-24 lg:min-h-[92svh] lg:px-8 lg:py-32">
         <div className="max-w-2xl">
           <p className="animate-fade-up mb-5 flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.32em] text-white/85" style={{ animationDelay: "0.05s" }}>
@@ -165,6 +169,85 @@ function HeroSection() {
     </section>
   );
 }
+
+const LANGUAGES: { code: string; label: string; flag?: string }[] = [
+  { code: "de", label: "Deutsch", flag: "🇩🇪" },
+  { code: "en", label: "Englisch", flag: "🇬🇧" },
+  { code: "ku", label: "Kurdisch" },
+  { code: "tr", label: "Türkisch", flag: "🇹🇷" },
+  { code: "ar", label: "Arabisch", flag: "🇸🇦" },
+];
+
+function KurdistanFlag({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 30 20" className={className} aria-hidden="true">
+      <rect width="30" height="20" fill="#fff" />
+      <rect width="30" height="6.67" fill="#ED2024" />
+      <rect y="13.33" width="30" height="6.67" fill="#278E43" />
+      <circle cx="15" cy="10" r="3" fill="#FEBD11" />
+    </svg>
+  );
+}
+
+function LanguagePanel() {
+  return (
+    <>
+      {/* Desktop / Tablet: vertikale Glass-Karte */}
+      <div
+        className="animate-fade-up pointer-events-auto absolute right-4 top-24 z-20 hidden sm:right-6 sm:top-28 sm:block lg:right-10 lg:top-32"
+        style={{ animationDelay: "0.75s" }}
+      >
+        <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-2xl shadow-primary/20 backdrop-blur-xl transition-transform hover:-translate-y-0.5">
+          <div className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+          <div className="pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-white/5" />
+          <div className="relative p-4 lg:p-5">
+            <p className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-white/80">
+              <span className="h-px w-5 bg-primary" />
+              Wir sprechen deine Sprache
+            </p>
+            <ul className="flex flex-col gap-1.5">
+              {LANGUAGES.map((l) => (
+                <li
+                  key={l.code}
+                  className="flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5"
+                >
+                  {l.flag ? (
+                    <span className="text-xl leading-none">{l.flag}</span>
+                  ) : (
+                    <KurdistanFlag className="h-4 w-6 rounded-sm shadow" />
+                  )}
+                  <span className="text-sm font-semibold text-white">{l.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile: kompakte Flag-Reihe */}
+      <div
+        className="animate-fade-up pointer-events-auto absolute right-3 top-20 z-20 sm:hidden"
+        style={{ animationDelay: "0.75s" }}
+      >
+        <div className="relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-3 py-2 shadow-xl shadow-primary/20 backdrop-blur-xl">
+          <div className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+          <div className="flex items-center gap-2">
+            {LANGUAGES.map((l) => (
+              <span key={l.code} className="flex items-center" aria-label={l.label} title={l.label}>
+                {l.flag ? (
+                  <span className="text-base leading-none">{l.flag}</span>
+                ) : (
+                  <KurdistanFlag className="h-3 w-[18px] rounded-[2px]" />
+                )}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 
 
 
