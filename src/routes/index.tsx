@@ -163,17 +163,6 @@ function HeroSection() {
               MIRO-DRIVE · Bochum
             </div>
 
-            {/* Untere Info-Zeile */}
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
-              <div className="flex items-center gap-2 text-xs font-semibold drop-shadow">
-                <Star className="h-4 w-4 fill-primary text-primary" />
-                5.0 · über 500 Bewertungen
-              </div>
-              <div className="hidden items-center gap-1.5 rounded-full border border-white/25 bg-black/45 px-3 py-1 text-[11px] font-semibold backdrop-blur-md sm:flex">
-                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-                TÜV-geprüft
-              </div>
-            </div>
           </div>
         </div>
       </div>
