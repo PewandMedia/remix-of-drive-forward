@@ -585,8 +585,22 @@ function Index() {
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Erste-Hilfe-Kurs</span>
               <h2 className="mt-2 text-4xl sm:text-5xl">Pflichtkurs für deinen Führerschein.</h2>
               <p className="mt-4 text-muted-foreground">
-                Wir bieten regelmäßig Erste-Hilfe-Kurse direkt bei uns in der Fahrschule an – kompakt an einem Tag und amtlich anerkannt.
+                {faInfo?.description || "Wir bieten regelmäßig Erste-Hilfe-Kurse direkt bei uns in der Fahrschule an – kompakt an einem Tag und amtlich anerkannt."}
               </p>
+              {(faInfo?.duration || faInfo?.price) && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {faInfo?.duration && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                      <Clock className="h-3.5 w-3.5" /> {faInfo.duration}
+                    </span>
+                  )}
+                  {faInfo?.price && (
+                    <span className="inline-flex items-center rounded-full bg-foreground/5 px-3 py-1 text-xs font-semibold text-foreground">
+                      {faInfo.price}
+                    </span>
+                  )}
+                </div>
+              )}
               <div className="mt-6">
                 <p className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/70">Nächste Termine</p>
                 {faDates.length === 0 ? (
