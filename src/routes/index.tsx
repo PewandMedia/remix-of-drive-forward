@@ -273,11 +273,11 @@ function Index() {
         queryFn: () => getTeamPreview(),
       },
       {
-        queryKey: ["home-first-aid"],
+        queryKey: ["first_aid_info"],
         queryFn: () => getFirstAidInfo(),
       },
       {
-        queryKey: ["home-first-aid-dates"],
+        queryKey: ["first_aid_dates_upcoming"],
         queryFn: () => getUpcomingFirstAidDates(),
       },
     ],
