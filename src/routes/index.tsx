@@ -80,21 +80,22 @@ function HeroSection() {
         <div className="max-w-2xl">
           <p className="animate-fade-up mb-5 inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.28em] text-slate-700 shadow-sm backdrop-blur" style={{ animationDelay: "0.05s" }}>
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            Deine moderne Fahrschule in Bochum
+            MIRO-DRIVE · Fahrschule in Bochum
           </p>
 
           <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.25rem]" style={{ animationDelay: "0.15s" }}>
-            Fahrschule Bochum –{" "}
-            <span className="italic text-primary">modern, persönlich und sicher</span>{" "}
-            zum Führerschein
+            MIRO-DRIVE Fahrschule Bochum
+            <br className="hidden sm:block" />{" "}
+            <span className="italic text-primary">für deinen Führerschein Klasse B, B197 &amp; B78</span>
           </h1>
 
           <p className="animate-fade-up mt-6 max-w-xl text-base text-slate-600 sm:text-lg" style={{ animationDelay: "0.3s" }}>
-            MIRO-DRIVE begleitet dich von der Anmeldung bis zur bestandenen Prüfung. Persönliche Betreuung, moderne Fahrzeuge und eine professionelle Fahrausbildung in{" "}
+            Deine moderne Fahrschule in Bochum. Bei MIRO-DRIVE machst du deinen Führerschein Klasse B, B197 und B78 mit persönlicher Betreuung, modernen Fahrzeugen und flexiblen Fahrstunden in{" "}
             <strong className="font-semibold text-slate-900">Bochum Innenstadt</strong>, am{" "}
-            <strong className="font-semibold text-slate-900">Rathaus</strong> und in{" "}
-            <strong className="font-semibold text-slate-900">Bochum Riemke</strong>.
+            <strong className="font-semibold text-slate-900">Rathaus Bochum</strong>, in{" "}
+            <strong className="font-semibold text-slate-900">Bochum Riemke</strong> und Umgebung. Anmeldung, Theorie und Erste-Hilfe-Kurs aus einer Hand.
           </p>
+
 
           <div className="animate-fade-up mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" style={{ animationDelay: "0.45s" }}>
             <Link

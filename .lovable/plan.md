@@ -1,32 +1,24 @@
 ## Ziel
-Der Sprachen-Streifen (`LanguageStrip`) auf der Startseite soll auf der Mobile-Ansicht als endlos wiederholender Marquee von rechts nach links laufen. Desktop bleibt statisch.
+Hero-Sektion auf `/` bekommt einen SEO-optimierten Text mit dem Keyword „MIRO-DRIVE Fahrschule Bochum". Der aktuelle Gedankenstrich in der H1 wird entfernt (sieht optisch schlecht aus).
 
-## Änderungen
+## Änderungen in `src/routes/index.tsx` (HeroSection, Zeilen 81–97)
 
-### 1. CSS-Animation in `src/styles.css`
-Neue Keyframes `marquee-scroll` und Utility `animate-marquee` hinzufügen:
-```css
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-@utility animate-marquee {
-  animation: marquee-scroll 20s linear infinite;
-}
+### Eyebrow (Zeile 83)
+Neu: `MIRO-DRIVE · Fahrschule in Bochum` (Mittelpunkt statt Bindestrich).
+
+### H1 (Zeilen 86–90)
+Neu, ohne „–", mit Keyword vorn und Kursiv-Highlight für den Markenteil:
 ```
+MIRO-DRIVE Fahrschule Bochum
+für deinen Führerschein Klasse B, B197 & B78
+```
+(Zweite Zeile in `<span className="italic text-primary">` gehüllt, per `<br className="hidden sm:block" />` optisch getrennt, damit die Struktur ohne Bindestrich klar bleibt.)
 
-### 2. `LanguageStrip` in `src/routes/index.tsx` umbauen
-- Sprachenliste duplizieren, damit der Durchlauf nahtlos ist.
-- Inneren Container auf Mobile (`max-sm`) als flex-Row mit `animate-marquee` und `w-max` rendern.
-- Desktop weiterhin als statische, zentrierte Liste belassen.
-- Container auf Mobile `overflow-hidden`, damit nur die sichtbare Breite läuft.
-- Interaktion/Hover-Animationen im mobilen Marquee deaktivieren oder vereinfachen, damit nichts wackelt.
-
-### 3. Responsives Verhalten
-- `< sm`: Marquee läuft automatisch, horizontaler Overflow wird versteckt.
-- `>= sm`: Bestehendes Layout mit statischen Sprach-Chips.
+### Sub-Copy (Zeilen 92–97)
+Neu formuliert, mit relevanten Keywords (Fahrschule Bochum, Führerschein, Klasse B, B197, Erste-Hilfe-Kurs, Bochum Innenstadt/Rathaus/Riemke, Herne) und ohne Gedankenstrich:
+> Deine moderne Fahrschule in Bochum. Bei MIRO-DRIVE machst du deinen Führerschein Klasse B, B197 und B78 mit persönlicher Betreuung, modernen Fahrzeugen und flexiblen Fahrstunden in **Bochum Innenstadt**, am **Rathaus Bochum**, in **Bochum Riemke** und Umgebung. Anmeldung, Theorie und Erste-Hilfe-Kurs aus einer Hand.
 
 ## Nicht Teil des Plans
-- Keine Änderung an den Sprachen selbst.
-- Keine Änderung an Desktop-Layout oder Inhalt.
-- Keine neuen Daten oder Server-Funktionen.
+- Kein Umbau von Layout, Buttons, Video-Karte, Trust-Zeile.
+- Keine Änderung an `head()`-Meta-Tags (bereits SEO-tauglich).
+- Keine Änderungen an anderen Seiten.
