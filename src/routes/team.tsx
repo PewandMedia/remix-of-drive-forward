@@ -38,9 +38,9 @@ function TeamPage() {
   if (birtan) otherInstructors = [...otherInstructors, birtan];
 
   const instructorGrid = (members: TeamMember[]) => (
-    <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+    <div className="grid grid-cols-3 items-stretch gap-2 sm:gap-8">
       {members.map((m) => (
-        <TeamCard key={m.id} member={m} />
+        <TeamCard key={m.id} member={m} size="sm" />
       ))}
     </div>
   );
