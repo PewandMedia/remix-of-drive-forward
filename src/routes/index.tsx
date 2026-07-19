@@ -102,12 +102,15 @@ function HeroSection() {
               <span className="relative">Jetzt online anmelden</span>
               <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <Link
-              to="/kontakt"
+            <a
+              href={CONTACT.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 text-sm font-bold text-slate-900 shadow-sm transition-all hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 hover:shadow-md"
             >
-              Kostenlose Beratung
-            </Link>
+              <MessageCircle className="h-5 w-5 text-green-600" />
+              WhatsApp schreiben
+            </a>
             <Link
               to="/preise"
               className="group inline-flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-primary sm:ml-1"
