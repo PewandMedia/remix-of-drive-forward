@@ -151,7 +151,7 @@ function HeroSection() {
             >
               <source src={heroVideo.url} type="video/mp4" />
             </video>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 lg:from-black/25 lg:via-transparent lg:to-transparent" />
 
             {/* Badge oben links */}
             <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/25 bg-black/45 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">
