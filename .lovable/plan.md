@@ -1,24 +1,22 @@
 ## Ziel
-Hero-Sektion auf `/` bekommt einen SEO-optimierten Text mit dem Keyword „MIRO-DRIVE Fahrschule Bochum". Der aktuelle Gedankenstrich in der H1 wird entfernt (sieht optisch schlecht aus).
+Hero-Text auf `/` deutlich kürzen und die Klassen-Aufzählung („Klasse B, B197 & B78") komplett aus der H1 und der Sub-Copy entfernen.
 
-## Änderungen in `src/routes/index.tsx` (HeroSection, Zeilen 81–97)
+## Änderungen in `src/routes/index.tsx` (HeroSection)
 
-### Eyebrow (Zeile 83)
-Neu: `MIRO-DRIVE · Fahrschule in Bochum` (Mittelpunkt statt Bindestrich).
-
-### H1 (Zeilen 86–90)
-Neu, ohne „–", mit Keyword vorn und Kursiv-Highlight für den Markenteil:
+### H1
+Neu, kurz und klar, ohne Klassen-Aufzählung, ohne Bindestrich:
 ```
 MIRO-DRIVE Fahrschule Bochum
-für deinen Führerschein Klasse B, B197 & B78
 ```
-(Zweite Zeile in `<span className="italic text-primary">` gehüllt, per `<br className="hidden sm:block" />` optisch getrennt, damit die Struktur ohne Bindestrich klar bleibt.)
+Markenteil „MIRO-DRIVE" bleibt in `italic text-primary` als Highlight, „Fahrschule Bochum" in Standardfarbe.
 
-### Sub-Copy (Zeilen 92–97)
-Neu formuliert, mit relevanten Keywords (Fahrschule Bochum, Führerschein, Klasse B, B197, Erste-Hilfe-Kurs, Bochum Innenstadt/Rathaus/Riemke, Herne) und ohne Gedankenstrich:
-> Deine moderne Fahrschule in Bochum. Bei MIRO-DRIVE machst du deinen Führerschein Klasse B, B197 und B78 mit persönlicher Betreuung, modernen Fahrzeugen und flexiblen Fahrstunden in **Bochum Innenstadt**, am **Rathaus Bochum**, in **Bochum Riemke** und Umgebung. Anmeldung, Theorie und Erste-Hilfe-Kurs aus einer Hand.
+### Sub-Copy (unter der H1)
+Auf einen kurzen Satz reduziert, ohne „Klasse B / B197 / B78":
+> Deine moderne Fahrschule in Bochum – persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum und Umgebung.
+
+### Eyebrow
+Bleibt: `MIRO-DRIVE · Fahrschule in Bochum`.
 
 ## Nicht Teil des Plans
-- Kein Umbau von Layout, Buttons, Video-Karte, Trust-Zeile.
-- Keine Änderung an `head()`-Meta-Tags (bereits SEO-tauglich).
-- Keine Änderungen an anderen Seiten.
+- Keine Änderungen an Buttons, Trust-Zeile, Video-Karte, Layout.
+- Keine Änderungen an `head()`-Meta-Tags (SEO bleibt dort erhalten).
