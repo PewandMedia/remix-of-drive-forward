@@ -71,7 +71,7 @@ function FAPage() {
       <PageHero
         eyebrow="Erste-Hilfe-Kurs Bochum"
         title="Erste-Hilfe-Kurs in Bochum für deinen Führerschein"
-        subtitle="Wir bieten regelmäßig Erste-Hilfe-Kurse direkt bei uns in der Fahrschule an – kompakt an einem Tag und amtlich anerkannt."
+        subtitle={info?.description || "Wir bieten regelmäßig Erste-Hilfe-Kurse direkt bei uns in der Fahrschule an – kompakt an einem Tag und amtlich anerkannt."}
       />
       <div className="mx-auto max-w-7xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
         {/* Top: Info + Termine side-by-side */}
