@@ -7,6 +7,7 @@ import { CONTACT } from "@/lib/contact";
 import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
+import imgErsteHilfe from "@/assets/leistungen/erste-hilfe.jpg";
 import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Cog, Calendar, FileText, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy, Flame, Timer, ChevronDown, User, Eye } from "lucide-react";
 import heroVideo from "@/assets/miro-drive-hero-v2.mp4.asset.json";
 import heroPoster from "@/assets/miro-drive-hero-v2-poster.jpg.asset.json";
@@ -660,13 +661,17 @@ function Index() {
                 <div className="space-y-8 sm:space-y-12">
                   {owner && (
                     <div className="flex justify-center">
-                      <TeamCard member={owner} size="featured" />
+                      <Link to="/team" className="block transition-transform hover:-translate-y-1">
+                        <TeamCard member={owner} size="featured" />
+                      </Link>
                     </div>
                   )}
                   {others.length > 0 && (
                     <div className="grid grid-cols-3 items-stretch gap-2 sm:gap-4 lg:gap-6">
                       {others.map((m) => (
-                        <TeamCard key={m.id} member={m} size="sm" />
+                        <Link key={m.id} to="/team" className="block transition-transform hover:-translate-y-1">
+                          <TeamCard member={m} size="sm" />
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -724,11 +729,12 @@ function Index() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {[
               { image: imgKlasseB, title: "Klasse B", text: "Der klassische Führerschein mit Schaltgetriebe.", to: "/leistungen" },
               { image: imgB197, title: "Klasse B197", text: "Automatik lernen – Schalter fahren dürfen.", to: "/leistungen" },
               { image: imgKlasseB, title: "Klasse B78", text: "Reine Automatik – schnell & entspannt.", to: "/leistungen" },
+              { image: imgErsteHilfe, title: "Erste-Hilfe-Kurs", text: "Pflichtkurs für deinen Führerschein – direkt bei uns.", to: "/erste-hilfe-kurs" },
             ].map((s) => (
               <Link key={s.title} to={s.to} className="group flex flex-col overflow-hidden rounded-2xl border bg-white transition-all hover:-translate-y-1 hover:shadow-2xl">
                 <div className="relative aspect-[16/10] overflow-hidden bg-muted">
