@@ -729,11 +729,12 @@ function Index() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {[
               { image: imgKlasseB, title: "Klasse B", text: "Der klassische Führerschein mit Schaltgetriebe.", to: "/leistungen" },
               { image: imgB197, title: "Klasse B197", text: "Automatik lernen – Schalter fahren dürfen.", to: "/leistungen" },
               { image: imgKlasseB, title: "Klasse B78", text: "Reine Automatik – schnell & entspannt.", to: "/leistungen" },
+              { image: imgErsteHilfe, title: "Erste-Hilfe-Kurs", text: "Pflichtkurs für deinen Führerschein – direkt bei uns.", to: "/erste-hilfe-kurs" },
             ].map((s) => (
               <Link key={s.title} to={s.to} className="group flex flex-col overflow-hidden rounded-2xl border bg-white transition-all hover:-translate-y-1 hover:shadow-2xl">
                 <div className="relative aspect-[16/10] overflow-hidden bg-muted">
