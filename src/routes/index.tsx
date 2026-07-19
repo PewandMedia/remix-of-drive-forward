@@ -68,67 +68,80 @@ const PRICE_CLASSES = [
 
 function HeroSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-br from-black via-neutral-950 to-black text-white">
-      {/* dezente Deko */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:56px_56px]" />
-      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/25 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/15 blur-[140px]" />
-      <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/80 via-primary/30 to-transparent" />
+    <section className="relative isolate overflow-hidden bg-gradient-to-b from-white via-slate-50 to-red-50/40 text-slate-900">
+      {/* dezente Deko – hell */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.5] [background-image:linear-gradient(to_right,rgb(226_232_240/0.55)_1px,transparent_1px),linear-gradient(to_bottom,rgb(226_232_240/0.55)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
+      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/15 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-40 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-[140px]" />
+      <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/70 via-primary/20 to-transparent" />
 
-      <div className="relative mx-auto grid min-h-[88svh] max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:min-h-[92svh] lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:px-8 lg:py-28">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:px-8 lg:py-24">
         {/* LINKS: Text */}
         <div className="max-w-2xl">
-          <p className="animate-fade-up mb-5 flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.32em] text-white/85" style={{ animationDelay: "0.05s" }}>
-            <span className="h-px w-10 bg-primary" /> Deine moderne Fahrschule in Bochum
+          <p className="animate-fade-up mb-5 inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.28em] text-slate-700 shadow-sm backdrop-blur" style={{ animationDelay: "0.05s" }}>
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Deine moderne Fahrschule in Bochum
           </p>
 
-          <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.25rem]" style={{ animationDelay: "0.15s" }}>
+          <h1 className="animate-fade-up font-display text-[2.25rem] leading-[1.02] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.25rem]" style={{ animationDelay: "0.15s" }}>
             Fahrschule Bochum –{" "}
             <span className="italic text-primary">modern, persönlich und sicher</span>{" "}
             zum Führerschein
           </h1>
 
-          <p className="animate-fade-up mt-6 max-w-xl text-base text-white/85 sm:text-lg" style={{ animationDelay: "0.3s" }}>
+          <p className="animate-fade-up mt-6 max-w-xl text-base text-slate-600 sm:text-lg" style={{ animationDelay: "0.3s" }}>
             MIRO-DRIVE begleitet dich von der Anmeldung bis zur bestandenen Prüfung. Persönliche Betreuung, moderne Fahrzeuge und eine professionelle Fahrausbildung in{" "}
-            <strong className="font-semibold text-white">Bochum Innenstadt</strong>, am{" "}
-            <strong className="font-semibold text-white">Rathaus</strong> und in{" "}
-            <strong className="font-semibold text-white">Bochum Riemke</strong>.
+            <strong className="font-semibold text-slate-900">Bochum Innenstadt</strong>, am{" "}
+            <strong className="font-semibold text-slate-900">Rathaus</strong> und in{" "}
+            <strong className="font-semibold text-slate-900">Bochum Riemke</strong>.
           </p>
 
           <div className="animate-fade-up mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" style={{ animationDelay: "0.45s" }}>
             <Link
               to="/anmeldung"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-bold text-primary-foreground shadow-xl shadow-primary/30 transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-2xl hover:shadow-primary/40"
+              className="group relative inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-br from-primary to-[#a30016] px-7 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/30 ring-1 ring-primary/40 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-primary/40"
             >
-              Jetzt online anmelden <ArrowRight className="h-4 w-4" />
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <span className="relative">Jetzt online anmelden</span>
+              <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
               to="/kontakt"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-7 py-4 text-sm font-bold text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-white/20"
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 text-sm font-bold text-slate-900 shadow-sm transition-all hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 hover:shadow-md"
             >
               Kostenlose Beratung
             </Link>
             <Link
               to="/preise"
-              className="group inline-flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-white/85 transition-colors hover:text-white sm:ml-2"
+              className="group inline-flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-primary sm:ml-1"
             >
               Preise ansehen
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 
-          <p className="animate-fade-up mt-10 text-xs text-white/70 sm:text-sm" style={{ animationDelay: "0.6s" }}>
-            Klasse B <span className="mx-2 text-white/30">·</span> B197
-            <span className="mx-2 text-white/30">·</span> Mehrsprachige Beratung
-            <span className="mx-2 text-white/30">·</span> Erste-Hilfe-Kurse
-          </p>
+          {/* Trust-Zeile */}
+          <div className="animate-fade-up mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-600" style={{ animationDelay: "0.55s" }}>
+            <div className="flex items-center gap-1.5">
+              <div className="flex">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                ))}
+              </div>
+              <span className="font-semibold text-slate-900">5.0</span>
+              <span>· über 500 Bewertungen</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-primary" />
+              <span className="font-semibold text-slate-900">TÜV-geprüft</span>
+            </div>
+          </div>
         </div>
 
         {/* RECHTS: Video-Karte */}
         <div className="animate-fade-up relative mx-auto w-full max-w-xl lg:max-w-none" style={{ animationDelay: "0.35s" }}>
-          <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-primary/25 blur-3xl" />
-          <div className="pointer-events-none absolute -inset-px rounded-[1.75rem] bg-gradient-to-br from-primary/60 via-white/10 to-primary/40 opacity-80" />
-          <div className="relative aspect-video overflow-hidden rounded-3xl border border-white/15 bg-black shadow-2xl shadow-primary/25 lg:aspect-[4/5]">
+          <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-primary/15 blur-3xl" />
+          <div className="relative aspect-video overflow-hidden rounded-3xl border border-slate-200 bg-slate-900 shadow-2xl shadow-slate-300/60 ring-1 ring-slate-200 lg:aspect-[4/5]">
             <video
               className="absolute inset-0 h-full w-full object-cover"
               autoPlay
@@ -141,11 +154,10 @@ function HeroSection() {
             >
               <source src={heroVideo.url} type="video/mp4" />
             </video>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-            <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.55)]" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
 
-            {/* Badge oben links auf der Karte */}
-            <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/20 bg-black/50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">
+            {/* Badge oben links */}
+            <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/25 bg-black/45 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
@@ -155,19 +167,17 @@ function HeroSection() {
 
             {/* Untere Info-Zeile */}
             <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
-              <div className="flex items-center gap-2 text-xs font-semibold">
+              <div className="flex items-center gap-2 text-xs font-semibold drop-shadow">
                 <Star className="h-4 w-4 fill-primary text-primary" />
                 5.0 · über 500 Bewertungen
               </div>
-              <div className="hidden items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-3 py-1 text-[11px] font-semibold backdrop-blur-md sm:flex">
+              <div className="hidden items-center gap-1.5 rounded-full border border-white/25 bg-black/45 px-3 py-1 text-[11px] font-semibold backdrop-blur-md sm:flex">
                 <ShieldCheck className="h-3.5 w-3.5 text-primary" />
                 TÜV-geprüft
               </div>
             </div>
           </div>
         </div>
-
-        <LanguagePanel />
       </div>
     </section>
   );
@@ -193,62 +203,35 @@ function KurdistanFlag({ className = "" }: { className?: string }) {
   );
 }
 
-function LanguagePanel() {
+function LanguageStrip() {
   return (
-    <>
-      {/* Desktop / Tablet: vertikale Glass-Karte */}
-      <div
-        className="animate-fade-up pointer-events-auto absolute right-4 top-24 z-20 hidden sm:right-6 sm:top-28 sm:block lg:right-10 lg:top-32"
-        style={{ animationDelay: "0.75s" }}
-      >
-        <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-2xl shadow-primary/20 backdrop-blur-xl transition-transform hover:-translate-y-0.5">
-          <div className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-          <div className="pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-white/5" />
-          <div className="relative p-4 lg:p-5">
-            <p className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-white/80">
-              <span className="h-px w-5 bg-primary" />
-              Wir sprechen deine Sprache
+    <section className="relative border-y border-slate-200 bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="flex flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <div className="flex items-center gap-3">
+            <span className="h-px w-8 bg-primary" />
+            <p className="text-[11px] font-black uppercase tracking-[0.28em] text-slate-700 sm:text-xs">
+              Wir beraten & unterrichten in
             </p>
-            <ul className="flex flex-col gap-1.5">
-              {LANGUAGES.map((l) => (
-                <li
-                  key={l.code}
-                  className="flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5"
-                >
-                  {l.flag ? (
-                    <span className="text-xl leading-none">{l.flag}</span>
-                  ) : (
-                    <KurdistanFlag className="h-4 w-6 rounded-sm shadow" />
-                  )}
-                  <span className="text-sm font-semibold text-white">{l.label}</span>
-                </li>
-              ))}
-            </ul>
           </div>
-        </div>
-      </div>
-
-      {/* Mobile: kompakte Flag-Reihe */}
-      <div
-        className="animate-fade-up pointer-events-auto absolute right-3 top-20 z-20 sm:hidden"
-        style={{ animationDelay: "0.75s" }}
-      >
-        <div className="relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-3 py-2 shadow-xl shadow-primary/20 backdrop-blur-xl">
-          <div className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-          <div className="flex items-center gap-2">
+          <ul className="-mx-1 flex w-full items-center gap-2 overflow-x-auto pb-1 sm:gap-3 lg:w-auto lg:justify-end lg:overflow-visible lg:pb-0">
             {LANGUAGES.map((l) => (
-              <span key={l.code} className="flex items-center" aria-label={l.label} title={l.label}>
+              <li
+                key={l.code}
+                className="group flex shrink-0 items-center gap-2.5 rounded-full border border-slate-200 bg-slate-50/70 px-4 py-2 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md"
+              >
                 {l.flag ? (
-                  <span className="text-base leading-none">{l.flag}</span>
+                  <span className="text-xl leading-none">{l.flag}</span>
                 ) : (
-                  <KurdistanFlag className="h-3 w-[18px] rounded-[2px]" />
+                  <KurdistanFlag className="h-4 w-6 rounded-sm shadow-sm" />
                 )}
-              </span>
+                <span className="text-sm font-semibold text-slate-800">{l.label}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
-    </>
+    </section>
   );
 }
 
