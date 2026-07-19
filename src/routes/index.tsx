@@ -75,7 +75,7 @@ function HeroSection() {
       <div className="pointer-events-none absolute -bottom-40 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-[140px]" />
       <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/70 via-primary/20 to-transparent" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:px-8 lg:py-24">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:px-8 lg:py-24">
         {/* LINKS: Text */}
         <div className="max-w-2xl">
           <p className="animate-fade-up mb-5 inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.28em] text-slate-700 shadow-sm backdrop-blur" style={{ animationDelay: "0.05s" }}>

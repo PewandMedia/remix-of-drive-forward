@@ -1,24 +1,26 @@
-Der Nutzer möchte den Hero-Bereich in den Zustand vor der letzten Textänderung zurückversetzen.
+Problem: Auf Desktop wird das Hero-Video in einer hohen Portrait-Karte (`lg:aspect-[4/5]`) mit `object-cover` dargestellt. Dadurch wird das 16:9-Video an den Seiten abgeschnitten (vorderer Teil des Autos fehlt) und wirkt durch die dunkle Overlay-Fläche weniger hochwertig. Auf Mobilgeräten ist das Video im Querformat (`aspect-video`) perfekt.
 
-Geplante Änderungen in `src/routes/index.tsx`:
+Lösung: Das Video auf Desktop in eine breitere Querformat-Karte bringen, das volle Bild sichtbar machen und die Wiedergabe heller/sauberer wirken lassen. Die Mobilansicht bleibt exakt so wie jetzt.
 
-1. **H1 zurücksetzen**
-   - Aktuell: `Führerschein in Bochum <span class="italic text-primary">einfach & unkompliziert</span>`
-   - Zurück zu: `MIRO-DRIVE <span class="italic text-primary">Fahrschule Bochum</span>`
+Geplante Änderungen in `src/routes/index.tsx` (`HeroSection`):
 
-2. **Unterzeile zurücksetzen**
-   - Aktuell: Langfassung mit Online-Anmeldung & WhatsApp
-   - Zurück zu: `Deine moderne Fahrschule in Bochum. Persönliche Betreuung, moderne Fahrzeuge und flexible Fahrstunden in Bochum und Umgebung.`
+1. **Desktop-Seitenverhältnis des Video-Containers ändern**
+   - Ersetze `lg:aspect-[4/5]` durch `lg:aspect-video` (16:9).
+   - Passe das Grid leicht an, damit die Video-Karte auf Desktop genug Breite hat, z. B. `lg:grid-cols-[1fr_1.1fr]` statt `lg:grid-cols-[1.1fr_1fr]`.
+   - Behalte `aspect-video` für alle kleineren Breakpoints bei, damit Mobil nicht verändert wird.
 
-3. **4-Schritte-Ablauf Schritt 01 zurücksetzen**
-   - Aktuell: `Online oder per WhatsApp anmelden`
-   - Zurück zu: `Melde dich per WhatsApp`
+2. **Video sichtbarer & schärfer positionieren**
+   - `object-cover object-center` beibehalten.
+   - Durch das passende Seitenverhältnis wird das gesamte Auto ohne seitlichen Schnitt zu sehen sein.
 
-4. **Sekundären CTA zurücksetzen**
-   - Aktuell: WhatsApp-Button mit `MessageCircle`-Icon
-   - Zurück zu: `Kostenlose Beratung` als Link zu `/kontakt`
+3. **Overlay auf Desktop aufhellen**
+   - Der aktuelle Gradient `from-black/50 via-transparent to-black/10` dunkelt das Video stark ab.
+   - Auf Desktop (`lg:`) wird der Gradient reduziert, z. B. nur noch ein dezenter unterer Verlauf (`from-black/20 via-transparent to-transparent`), damit das Video heller und hochwertiger wirkt.
+   - Auf Mobil bleibt der Kontrast für die eingeblendeten Badges erhalten.
 
-5. **Build prüfen**
-   - `bun run build` ausführen, um sicherzustellen, dass keine Syntax-Fehler entstehen.
+4. **Validierung**
+   - `bun run build` ausführen.
+   - Desktop-Screenshot (1440 px) der Startseite erstellen und prüfen, dass das Auto komplett sichtbar ist und die Karte nicht mehr „abgehakt" wirkt.
+   - Optional: Screenshot in Mobilansicht erstellen, um zu bestätigen, dass sich dort nichts verändert hat.
 
-Keine Änderungen an Layout, Video, Farben, Animationen oder anderen Seiten.
+Hinweis: Ich lasse das Video rechts neben dem Text. Falls du es auf Desktop lieber als großes, durchgehendes Banner unter dem Text haben möchtest, sag kurz Bescheid – dann passe ich den Plan an.
