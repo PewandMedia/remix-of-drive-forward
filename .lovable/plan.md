@@ -1,34 +1,38 @@
 ## Ziel
-1. `/erste-hilfe-kurs` optischer & inhaltlicher Umbau: weniger Scroll, kein Preis.
-2. Admin-Panel: Termine (Datum + Uhrzeit) für Erste-Hilfe-Kurse anlegen/bearbeiten/löschen.
-3. Nächste Termine dynamisch auf Startseite und Unterseite anzeigen.
+Auf der Startseite (`/`) soll nach dem Preis-Teaser ein neuer Bereich erklären, welche Unterlagen für den Führerscheinantrag nötig sind, und dass MIRO-DRIVE den kompletten Service inklusive Einreichung beim Straßenverkehrsamt für Bochum und Herne übernimmt.
 
-## Datenbank
-Die Tabelle `public.first_aid_dates` existiert bereits (`starts_at`, `ends_at`, `note`, `active`). Falls RLS/Grants noch nicht öffentlich lesbar sind, per Migration ergänzen:
-- `GRANT SELECT ON public.first_aid_dates TO anon, authenticated;`
-- Public-Read-Policy `active = true`, Admin-Full-Access via `has_role`.
+## Wo eingebaut
+- Datei: `src/routes/index.tsx`
+- Position: direkt nach dem Preis-Teaser (endet aktuell bei Zeile 437) und vor dem Erste-Hilfe-Kurs-Teaser (beginnt aktuell bei Zeile 439).
 
-## Server Functions (`src/lib/public-data.functions.ts`)
-- `getUpcomingFirstAidDates`: liest aktive `first_aid_dates` mit `starts_at >= now()`, sortiert aufsteigend, limitiert (z. B. 5).
+## Inhaltliche Struktur
+1. **Eyebrow:** „Führerscheinantrag“ in `text-primary`.
+2. **Headline:** z. B. „So einfach ist die Anmeldung.“
+3. **Subtext:** Kurzer Satz, dass wir die nötigen Unterlagen kennen und alles übernehmen.
+4. **Dokumenten-Checkliste** als 3 Karten/Items:
+   - Biometrisches Passbild
+   - Sehtest
+   - Erste-Hilfe-Nachweis
+5. **Service-Promise-Box:** „Wir übernehmen den kompletten Service und reichen die Antragsunterlagen für dich beim Straßenverkehrsamt ein – sowohl in Bochum als auch in Herne.“
+6. **CTA:** Button „Jetzt online anmelden“ → `/anmeldung` (optional sekundärer WhatsApp-Link).
 
-## Erste-Hilfe-Unterseite (`src/routes/erste-hilfe-kurs.tsx`)
-- Layout kompakter: Zwei-Spalten-Grid entfernen bzw. straffen; Info-Karte und Benefit-Liste in eine ausgewogenere Anordnung bringen, damit weniger vertikaler Scroll entsteht.
-- **Preisfeld komplett entfernen** (auch aus `getFirstAidInfo`-Nutzung). Stattdessen Text: „Wir bieten regelmäßig Erste-Hilfe-Kurse in unserer Fahrschule an."
-- Neuer Termin-Block: Liste der kommenden Termine aus `first_aid_dates` (Datum, Uhrzeit von–bis, optionale Notiz). Wenn leer: Hinweistext „Neue Termine folgen in Kürze – melde dich per WhatsApp."
-- Standorte-Sektion beibehalten, aber näher an Termin-Block ranrücken.
+## Design
+- Bestehende Design-Sprache beibehalten: `max-w-7xl`, `rounded-2xl/rounded-3xl`, Karten mit leichtem Schatten/Rand.
+- Icons aus dem bereits importierten `lucide-react`-Set verwenden (z. B. `User`, `Eye`, `Heart`, `FileText`, `ShieldCheck`).
+- Keine neuen Farben oder hartkodierte Werte verwenden, nur Tailwind-Design-Tokens (`primary`, `muted`, `foreground`, etc.).
+- Auf Mobile 1-spaltig, auf Desktop 3-spaltige Checkliste + darunter die Service-Promise-Box.
 
-## Startseite (`src/routes/index.tsx`)
-- Im bestehenden Erste-Hilfe-Teaser die nächsten 2–3 Termine dynamisch anzeigen (Datum + Uhrzeit) statt statischer Beschreibung.
-- Kein Preis.
-
-## Admin-Panel (`src/routes/_authenticated/admin.tsx`)
-- Im Tab **Erste-Hilfe** neben dem bestehenden Info-Editor einen neuen Abschnitt „Termine":
-  - Liste mit allen Terminen (Datum, Uhrzeit, Notiz, Aktiv-Toggle, Bearbeiten, Löschen).
-  - Dialog zum Anlegen/Bearbeiten mit Feldern: Datum, Startzeit, Endzeit, Notiz, Aktiv.
-  - CRUD über `supabase.from("first_aid_dates")` (RLS erlaubt das für Admins).
-- Preisfeld im Info-Editor bleibt technisch bestehen (Datenbank), wird aber öffentlich nicht mehr angezeigt.
+## Technische Schritte
+1. `src/routes/index.tsx`: Import der benötigten Lucide-Icons ergänzen (falls noch nicht vorhanden).
+2. Neue Sektion als JSX-Komponente inline einfügen oder als kleine lokale Hilfskomponente oberhalb der `Index`-Komponente definieren.
+3. Sicherstellen, dass keine neuen Datenbankabfragen nötig sind (reiner statischer Inhalt).
+4. Build prüfen.
 
 ## Verifikation
-- Build läuft sauber.
-- Neuer Termin im Admin → erscheint auf `/` und `/erste-hilfe-kurs`.
-- Kein Preis mehr sichtbar auf der Unterseite.
+- `bun run build` läuft ohne Fehler.
+- Visueller Check im Preview: neuer Abschnitt erscheint nach Preisen, Inhalt vollständig und responsive.
+
+## Nicht im Scope
+- Keine neue Route.
+- Keine Datenbank- oder Admin-Änderungen.
+- Keine Änderungen an `/preise` oder anderen Seiten.
