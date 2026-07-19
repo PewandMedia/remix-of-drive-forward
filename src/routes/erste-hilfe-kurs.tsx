@@ -71,7 +71,7 @@ function FAPage() {
       <PageHero
         eyebrow="Erste-Hilfe-Kurs Bochum"
         title="Erste-Hilfe-Kurs in Bochum für deinen Führerschein"
-        subtitle="Wir bieten regelmäßig Erste-Hilfe-Kurse direkt bei uns in der Fahrschule an – kompakt an einem Tag und amtlich anerkannt."
+        subtitle={info?.description || "Wir bieten regelmäßig Erste-Hilfe-Kurse direkt bei uns in der Fahrschule an – kompakt an einem Tag und amtlich anerkannt."}
       />
       <div className="mx-auto max-w-7xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
         {/* Top: Info + Termine side-by-side */}
@@ -152,11 +152,20 @@ function FAPage() {
                   )}
                 </div>
 
-                {info?.duration && (
-                  <p className="mt-4 flex items-center gap-2 text-xs text-white/60">
-                    <Clock className="h-3.5 w-3.5" /> Dauer: {info.duration}
+                {info?.dates && (
+                  <p className="mt-4 rounded-lg bg-white/5 p-3 text-xs text-white/70">
+                    {info.dates}
                   </p>
                 )}
+
+                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/60">
+                  {info?.duration && (
+                    <span className="flex items-center gap-2"><Clock className="h-3.5 w-3.5" /> Dauer: {info.duration}</span>
+                  )}
+                  {info?.price && (
+                    <span className="flex items-center gap-2">Preis: {info.price}</span>
+                  )}
+                </div>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <a

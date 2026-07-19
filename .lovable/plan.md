@@ -1,12 +1,25 @@
-## 1. Fahrlehrer-Karten auf Startseite verlinken
+## Ziel
+Alle Inhalte des Erste-Hilfe-Kurses, die im Admin-Panel gepflegt werden (Beschreibung, Preis, Dauer, Termin-Hinweis), sollen live auf der Startseite und der Unterseite `/erste-hilfe-kurs` erscheinen. Die Termine sind bereits verbunden – jetzt kommen die restlichen Felder dazu.
 
-In `src/routes/index.tsx` (Team-Sektion, Zeilen ~660–673) die `TeamCard`-Elemente (sowohl Owner Ilkay als auch die drei weiteren Fahrlehrer) in ein `<Link to="/team">` einwickeln, damit ein Klick auf eine Fahrlehrer-Karte auf die Team-Unterseite führt. Styling der Karte bleibt unverändert; nur eine `block`-Wrapping mit Hover-Übergabe wird ergänzt.
+## Änderungen
 
-## 2. Vierte Leistungskarte auf Startseite
+### 1. Startseite (`src/routes/index.tsx`, Teaser-Sektion ~Zeile 579–625)
+- Beschreibungstext durch `info?.description` ersetzen (Fallback = aktueller Text, falls Feld leer)
+- Optional Dauer als kleiner Chip einblenden, wenn im Admin gepflegt
 
-In `src/routes/index.tsx` (Services-Teaser, Zeilen ~727–752) das Array von 3 auf 4 Einträge erweitern, damit auf Desktop/Tablet ein symmetrisches 2×2-Raster entsteht.
+### 2. Unterseite (`src/routes/erste-hilfe-kurs.tsx`)
+- `PageHero` subtitle dynamisch aus `info?.description` (Fallback = aktueller Text)
+- Preis (`info.price`) im dunklen Termin-Panel neben der Dauer anzeigen, wenn gepflegt
+- Termin-Hinweis-Freitext (`info.dates`) als Zusatzhinweis unter der Terminliste einblenden
 
-- Neuer Eintrag: **„Erste-Hilfe-Kurs"** (analog zur Unterseite `/leistungen`), mit Link auf `/erste-hilfe-kurs` und passendem Bild (`@/assets/leistungen/erste-hilfe.jpg` bzw. das bereits in `leistungen.tsx` genutzte `imgErsteHilfe`).
-- Grid-Klassen anpassen: `grid-cols-2 lg:grid-cols-4` (statt `lg:grid-cols-3`), damit die 4 Karten eine saubere 2er-Reihe auf Mobile und eine 4er-Reihe auf Desktop bilden.
+### 3. Admin-Panel (`src/routes/_authenticated/admin.tsx`, `FirstAidAdmin` ~Zeile 608–647)
+- Irreführenden Hinweis „Preis wird auf der Website aktuell nicht angezeigt" entfernen
+- Feld-Labels klarer beschriften, sodass sichtbar ist, wo welches Feld erscheint (Startseite / Unterseite)
 
-Keine weiteren Änderungen an Business-Logik oder anderen Sektionen.
+### 4. Query-Synchronisation
+- Sicherstellen, dass Startseite und Unterseite denselben Query-Key (`first_aid_info`) verwenden, damit nach dem Speichern im Admin beide Seiten sofort aktualisiert werden
+
+## Was unverändert bleibt
+- Termin-Verwaltung (bereits vollständig dynamisch)
+- Vorteils-Liste „Was dich erwartet" (statisch, nicht im Admin-Feld enthalten)
+- Design und Layout – nur Datenbindung, keine visuellen Änderungen
