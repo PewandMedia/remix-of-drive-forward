@@ -436,6 +436,54 @@ function Index() {
         </div>
       </section>
 
+      {/* FÜHRERSCHEINANTRAG */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mb-10 max-w-2xl">
+          <span className="text-xs font-bold uppercase tracking-wider text-primary">Führerscheinantrag</span>
+          <h2 className="mt-2 text-4xl sm:text-5xl">So einfach ist die Anmeldung.</h2>
+          <p className="mt-4 text-muted-foreground">
+            Für den Antrag beim Straßenverkehrsamt benötigst du nur drei Unterlagen. Den Rest erledigen wir für dich.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          {[
+            { icon: User, title: "Biometrisches Passbild", text: "Aktuelles Lichtbild für deinen Antrag." },
+            { icon: Eye, title: "Sehtest", text: "Gültiger Sehtest von einer anerkannten Stelle." },
+            { icon: Heart, title: "Erste-Hilfe-Nachweis", text: "Amtlicher Erste-Hilfe-Kurs, nicht älter als 2 Jahre." },
+          ].map((item) => (
+            <div key={item.title} className="rounded-2xl border bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md sm:p-7">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground sm:h-12 sm:w-12 sm:rounded-2xl">
+                <item.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+              </div>
+              <h3 className="mt-4 font-display text-lg sm:text-xl">{item.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{item.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 rounded-2xl border bg-muted/30 p-5 sm:p-7">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-foreground text-white">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-display text-lg sm:text-xl">Wir übernehmen den kompletten Service</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Wir reichen die Antragsunterlagen unserer Fahrschüler beim Straßenverkehrsamt ein – für Bochum und Herne.
+                </p>
+              </div>
+            </div>
+            <Link to="/anmeldung" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90">
+              Jetzt online anmelden <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+
+
       {/* ERSTE HILFE KURS TEASER */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl border bg-white">
