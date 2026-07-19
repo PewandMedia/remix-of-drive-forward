@@ -1,34 +1,34 @@
 ## Ziel
-Neues hochgeladenes Video als Hero verwenden und Hero so umbauen, dass Video und Text visuell getrennt sind (Split-Layout: Text links, Video rechts in eigener gerahmter Karte).
+Hero-Bereich der Startseite auf ein helles, seriöses Fahrschul-Design umstellen, Buttons visuell aufwerten und das Sprachen-Panel aus der engen Hero-Ecke an eine gut sichtbare, luftige Stelle verschieben.
 
-## Umsetzung
+## Änderungen in `src/routes/index.tsx`
 
-### 1. Video als CDN-Asset hochladen
-- `lovable-assets create --file /mnt/user-uploads/hf_20260718_154751_de96d321-f424-4191-9ab5-3866f4e791fd_1.mp4 --filename miro-drive-hero-v2.mp4 > src/assets/miro-drive-hero-v2.mp4.asset.json`
-- Aus dem ersten Frame ein Poster erzeugen (via `ffmpeg` in `/tmp/`, dann `lovable-assets create` als `miro-drive-hero-v2-poster.jpg`).
-- Alte Asset-Pointer bleiben unverfügt bestehen (können später manuell gelöscht werden).
+### 1. Heller Hero-Hintergrund
+- Dunklen Gradient (`bg-gradient-to-br from-slate-950 …`) ersetzen durch hellen, seriösen Look:
+  - Basis: `bg-white` mit sanftem Verlauf zu `bg-slate-50` / leichtem Rot-Tint (`from-white via-slate-50 to-red-50/40`).
+  - Dezentes Grid-Muster in `slate-200/40` statt weiß, damit es auf hell funktioniert.
+  - Weiche radial-Glows in `primary/10` statt harte dunkle Overlays.
+- Alle Textfarben im Hero von `text-white` / `text-slate-200` auf dunkle Töne umstellen:
+  - Headline: `text-slate-900`
+  - Body/Subline: `text-slate-600`
+  - Badges/Chips: helle Glass-Optik mit `bg-white/70`, `border-slate-200`, `text-slate-700`.
+- Video-Karte rechts bleibt als Cinema-Karte, aber Rahmen/Schatten an hellen Hintergrund angepasst (weicher `shadow-2xl shadow-slate-300/50`, `ring-slate-200`).
 
-### 2. `src/routes/index.tsx` — `HeroSection` neu strukturieren
-**Split-Layout** statt Full-Bleed-Video:
+### 2. Buttons aufwerten
+- Primär-CTA („Jetzt anmelden“): kräftiger Rot-Gradient mit Glow, klar dominanter Look — größerer Padding, `rounded-xl`, subtiler Shine-/Hover-Lift, Icon rechts.
+- Sekundär-CTA („Preise ansehen“ o. ä.): Outline-Variante auf hell (`border-slate-300`, `bg-white`, `hover:bg-slate-50`, dunkler Text) statt Glass-auf-Dunkel.
+- Konsistente Höhe, gleiche Radius-Familie, ordentliche Icon-Ausrichtung.
+- Trust-Zeile (Sterne / Bewertungen) unter den Buttons in dunkler Schrift auf hell.
 
-- Section-Hintergrund: dunkler Verlauf (`bg-gradient-to-br from-black via-neutral-950 to-black`) mit dezentem Grid/Noise-Overlay — kein Video mehr als Background.
-- Container: `grid lg:grid-cols-[1.1fr,1fr] gap-10 lg:gap-14 items-center` innerhalb `max-w-7xl mx-auto`.
-- **Linke Spalte (Text)**:
-  - Eyebrow, H1, Subtitle, CTAs, Trust-Zeile — bestehende Inhalte übernehmen.
-  - Textfarben bleiben auf dunklem Hintergrund lesbar.
-- **Rechte Spalte (Video-Karte)**:
-  - Wrapper: `relative aspect-[4/5] lg:aspect-[3/4] w-full rounded-3xl overflow-hidden border border-white/15 shadow-2xl shadow-primary/25`.
-  - Innen: neues Video (autoplay, muted, playsInline, loop), Poster als Fallback.
-  - Dekor: Roter Glow-Ring hinter der Karte (`absolute -inset-4 rounded-[2rem] bg-primary/20 blur-3xl`), dezente Diagonale/Gradient-Frame oben.
-  - Kleines "Live"-Badge oben links auf der Karte: „MIRO-DRIVE · Bochum".
-- **Sprachen-Panel (`LanguagePanel`)**: Bleibt oben rechts absolut positioniert, damit die Position auf dem Video-Rahmen liegt und weiterhin auffällt.
-- **Mobile**: Grid kollabiert auf 1 Spalte — Text oben, Video-Karte darunter (nicht mehr als Background). Karte bekommt `aspect-video` für kompakte Höhe.
+### 3. Sprachen-Panel neu platzieren
+- Bisheriges `LanguagePanel` aus der Hero-Ecke (oben rechts, gequetscht) entfernen.
+- Neue Platzierung: eigener schmaler Sprachen-Streifen **direkt unter der Hero-Sektion**, volle Breite, luftig zentriert.
+  - Helle Karte / Bar mit `bg-white`, feiner Border und dezentem Schatten.
+  - Zeile: kleine Überschrift links („Wir beraten & unterrichten in:“) + Flaggen mit Sprachnamen horizontal, großzügiger Abstand.
+  - Kurdistan bleibt als bestehendes SVG, restliche Sprachen als Emoji-Flaggen.
+  - Mobile: horizontal scrollbare Reihe, damit nichts quetscht.
+- Keine funktionalen Änderungen — nur Position, Layout und Styling.
 
-### 3. Alte Video-Referenzen ersetzen
-- Imports `heroVideo` / `heroPoster` auf neue Pointer umstellen.
-- Overlays über Video-Background entfernen; nur noch Overlay *innerhalb* der Video-Karte (subtiler unterer Gradient für Badge-Lesbarkeit).
-
-### 4. Verifikation
-- Build starten, Preview prüfen (Desktop: Split; Mobile: gestapelt).
-
-Ergebnis: Video wirkt als eigenständiges Cinematic-Element in einer Premium-Karte rechts, klar vom Text-Block getrennt — kein visueller "Verschmelzungseffekt" mehr.
+## Nicht Teil des Plans
+- Kein Umbau anderer Sektionen (Preise, Team, Führerschein-Info bleiben unverändert).
+- Keine Änderungen an Video-Datei, Daten oder Server-Funktionen.
