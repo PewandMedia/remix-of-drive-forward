@@ -108,6 +108,10 @@ function HeroSection() {
         </div>
       )}
 
+      <LanguagePanel />
+
+
+
       <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 sm:py-24 lg:min-h-[92svh] lg:px-8 lg:py-32">
         <div className="max-w-2xl">
           <p className="animate-fade-up mb-5 flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.32em] text-white/85" style={{ animationDelay: "0.05s" }}>
