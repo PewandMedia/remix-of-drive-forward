@@ -1,25 +1,21 @@
-Die drei Filial-Fotos (Außen, Theorieraum, Empfang) sind im Format 4/5 hochkant zugeschnitten, wodurch Motive abgeschnitten wirken. Sie werden auf ein echtes Foto-Verhältnis umgestellt und überall wirklich nebeneinander gerendert. Das KI-Bild in der Leistungen-Kachel „Theorieunterricht“ wird durch das echte Theorieraum-Foto ersetzt.
+## Ziel
+Die `FilialeGallery` in ein modernes Bento-/Mosaik-Gitter umbauen (angelehnt an das Referenzbild) mit sanftem Scroll-Effekt.
 
-## Änderungen
+## Änderungen (nur `src/components/site/FilialeGallery.tsx`)
 
-**1. `src/components/site/FilialeGallery.tsx`**
-- Bild-Container von `aspect-[4/5]` auf `aspect-[4/3]` (Landscape, Motiv wird nicht mehr abgeschnitten).
-- `object-cover` mit `object-center` erzwingen, damit Zentrum sichtbar bleibt.
-- Grid bleibt bei `sm:grid-cols-3`, aber zusätzlich auf Mobile 3 Spalten (`grid-cols-3`) mit kleinerem Gap, damit die Bilder auf dem Handy nebeneinander (statt untereinander) angezeigt werden — weniger Scrollen.
-- Caption kleiner (`text-xs sm:text-sm`) für die kompakte Mobil-Ansicht.
+**Neues Layout — asymmetrisches Bento-Grid (Desktop):**
+- CSS Grid `grid-cols-4 grid-rows-2` mit fester Höhe (~520px).
+- Bild 1 (Außenansicht) = großes Hero-Tile links: `col-span-2 row-span-2`.
+- Bild 2 (Theorieraum) = oben rechts breit: `col-span-2 row-span-1`.
+- Bild 3 (Empfang) = unten rechts breit: `col-span-2 row-span-1`.
+- Gap 3, abgerundete Ecken (`rounded-3xl`), feiner Border + Shadow.
 
-**2. `src/routes/ueber-uns.tsx`**
-- Rechte Spalte: Alle drei Fotos nebeneinander in einem 3-Spalten-Grid statt „1 groß oben + 2 unten“. Verhältnis `aspect-[4/3]`, damit nichts abgeschnitten wird und die Sektion kompakter bleibt.
-- Zweite große `FilialeGallery`-Sektion unten entfernen (doppelt) – spart Scroll.
+**Mobile:**
+- Horizontales Snap-Scroll-Karussell (`flex overflow-x-auto snap-x snap-mandatory`), Karten `min-w-[80%]` mit `snap-center`, versteckte Scrollbar (`scrollbar-none`). Erlaubt seitliches Wischen wie im Beispiel.
 
-**3. `src/routes/index.tsx`**
-- `<FilialeGallery />` bleibt an aktueller Stelle (vor Team), nutzt automatisch das neue kompakte 3er-Layout.
+**Hover / Feinschliff:**
+- Bildunterschrift als Overlay unten mit Gradient (`from-black/70 to-transparent`), weiße Schrift, kleiner Kicker.
+- `object-cover` + sanftes Zoom-in bei Hover (`group-hover:scale-105`).
+- Beibehalt der `compact`-Prop und der Header-Sektion.
 
-**4. `src/routes/kontakt.tsx`**
-- Nutzt weiterhin `FilialeGallery compact` — profitiert automatisch vom neuen Layout.
-
-**5. `src/routes/leistungen.tsx`**
-- Import `imgTheorie from "@/assets/leistungen/theorie.jpg"` ersetzen durch das echte Foto: `theorieraum from "@/assets/theorieraum.jpg.asset.json"` und `image: theorieraum.url` in der Theorie-Kachel.
-- Optional: `imgTheorie`-Import und Datei-Referenz entfernen (Datei bleibt liegen, keine DB-Änderung).
-
-Keine Änderungen an Backend, DB oder Business-Logik.
+Keine anderen Dateien werden angefasst — die Komponente wird bereits auf Startseite, Über-uns und Kontakt eingebunden und übernimmt das neue Layout automatisch.
