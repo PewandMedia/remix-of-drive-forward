@@ -250,3 +250,22 @@
   .animate-marquee { animation: none; }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hero-Video: native Media-Overlay-Buttons in allen Engines unterdrücken */
+video::-webkit-media-controls,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-enclosure,
+video::-webkit-media-controls-overlay-play-button,
+video::-webkit-media-controls-start-playback-button,
+video::-internal-media-controls-overlay-cast-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
