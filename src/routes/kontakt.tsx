@@ -43,15 +43,13 @@ function ContactPage() {
           </a>
         </div>
 
-        <div className="mb-12">
-          <FilialeGallery compact />
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="mb-12 grid gap-6 lg:grid-cols-2">
           {LOCATIONS.map((loc) => (
             <LocationCard key={loc.id} location={loc} />
           ))}
         </div>
+
+        <FilialeGallery compact />
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="flex items-center gap-3 rounded-2xl border bg-[#25D366] p-5 text-white transition-all hover:-translate-y-0.5 hover:shadow-md">
