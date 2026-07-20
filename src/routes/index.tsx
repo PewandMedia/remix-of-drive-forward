@@ -293,7 +293,7 @@ function Index() {
             <span className="text-xs font-bold uppercase tracking-wider text-primary">In 4 Schritten zum Führerschein</span>
             <h2 className="mt-2 font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">So einfach startest du.</h2>
             <p className="mt-4 text-white/60">
-              Von der ersten WhatsApp-Nachricht bis zur bestandenen Prüfung – wir machen es dir so unkompliziert wie möglich.
+              Von der Online-Anmeldung bis zur bestandenen Prüfung – wir machen es dir so unkompliziert wie möglich.
             </p>
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-4 lg:grid-cols-4">
