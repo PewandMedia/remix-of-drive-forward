@@ -1,34 +1,18 @@
-````text
-Ziel: Den aktuellen Preis-Teaser auf der Startseite (/index.tsx) vereinfachen. Statt dunkler Premium-Bühne mit Dot-Grid, diagonalen roten Streifen, Glows, Wasserzeichen und Eck-Winkeln soll ein sauberer, seriöser, weißer Teaser entstehen.
+Auf der Startseite gibt es mehrere dezente rote Blur-Glows im Hintergrund, die als Dekoration dienen. Diese sollen entfernt werden, damit der Hintergrund sauberer und seriöser wirkt.
 
-Schritt 1: Sektions-Container vereinfachen
-- Hintergrund von bg-slate-950 auf bg-white ändern.
-- Alle dekorativen absoluten Elemente entfernen: obere/untere Signal-Linie, Dot-Grid, diagonale rote Streifen, Radial-Glows.
-- Padding/Spacing anpassen: py-20 sm:py-24 statt py-24 sm:py-28.
+Geplante Änderungen:
 
-Schritt 2: Header-Bereich clean gestalten
-- Label "Preise & Klassen" beibehalten, aber ohne Glas/Backdrop-Effekt.
-- Headline auf seriöses Weiß/Slate-900 setzen.
-- Subtext kurz und klar: "Gleiche Preise für Klasse B, B197 und B78."
-- "Alle Preise ansehen"-Link als dezenter Text-Link mit Pfeil rechts neben der Headline oder darunter.
-- Aktions-Badge optional nur anzeigen, wenn eine Aktion läuft.
+1. **Hero-Bereich oben**
+   - Entferne die beiden großen radialen Blur-Glows hinter dem Hero-Text (Zeile 70–71 in `src/routes/index.tsx`).
+   - Entferne den roten Schatten-Glow hinter der Video-Karte (Zeile 136 in `src/routes/index.tsx`).
 
-Schritt 3: Preistafel vereinfachen
-- Gradient-Border-Wrapper, Eck-Winkel, Wasserzeichen und innere Kontur entfernen.
-- Karte mit weißem Hintergrund, feinem slate-200 Border und leichtem Schatten.
-- Header der Karte: "Preisliste 2026 · MIRO-DRIVE Fahrschule Bochum" und Klasse-Zeile.
-- Preiszeilen ohne Nummerierung, ohne Hover-Seitenlinie, ohne Dotted-Leader-Overlays.
-- Stattdessen klare Zeilen: Label links, Preis rechts, optional alter durchgestrichener Preis + Aktions-Badge.
-- Übungsstunde kann als wichtigste Zeile leicht hervorgehoben werden (z. B. fett oder primary-Farbe).
+2. **Erste-Hilfe-Kurs Teaser**
+   - Entferne den dekorativen roten Blur-Glow in der oberen rechten Ecke (Zeile 513 in `src/routes/index.tsx`).
 
-Schritt 4: CTA-Bereich vereinfachen
-- Button: "Vollständige Preisliste ansehen" als normale primary Button, ohne extremen Glow-Shadow.
-- Vertrauens-Icons darunter optional beibehalten, aber dezent.
+3. **Visuelle Prüfung**
+   - Nach dem Entfernen wird geprüft, ob die Sektionen weiterhin sauber und professionell aussehen. Falls nötig, wird der Hintergrund leicht angepasst, damit keine "leere" Stelle entsteht.
 
-Schritt 5: Visuelle Qualität sicherstellen
-- Keine hartkodierten Farben; primary-Token nutzen.
-- Responsive Verhalten beibehalten (mobile 1 Spalte, Desktop gleiche Breite).
-- Keine Änderungen an der Preis-Unterseite /preise.
+Betroffene Datei:
+- `src/routes/index.tsx`
 
-Abgrenzung: Nur der Preis-Teaser in src/routes/index.tsx wird angefasst. Datenquelle (prices) und Logik (isOfferLive, formatRemaining) bleiben unverändert.
-````
+Keine neuen Abhängigkeiten. Keine Datenbank-Änderungen.
