@@ -198,29 +198,19 @@ function KurdistanFlag({ className = "" }: { className?: string }) {
   );
 }
 
-function LanguageChip({ l, compact = false }: { l: typeof LANGUAGES[0]; compact?: boolean }) {
-  if (compact) {
-    return (
-      <div className="flex min-w-0 flex-col items-center gap-1 rounded-xl border border-slate-200 bg-slate-50/70 px-1.5 py-2 shadow-sm">
-        {l.flag ? (
-          <span className="text-lg leading-none">{l.flag}</span>
-        ) : (
-          <KurdistanFlag className="h-3.5 w-5 rounded-[2px] shadow-sm" />
-        )}
-        <span className="w-full truncate text-center text-[10px] font-semibold leading-tight text-slate-800">
-          {l.label}
-        </span>
-      </div>
-    );
-  }
+function LanguageChip({ l }: { l: typeof LANGUAGES[0] }) {
   return (
-    <div className="flex shrink-0 items-center gap-2.5 rounded-full border border-slate-200 bg-slate-50/70 px-4 py-2 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md">
-      {l.flag ? (
-        <span className="text-xl leading-none">{l.flag}</span>
-      ) : (
-        <KurdistanFlag className="h-4 w-6 rounded-sm shadow-sm" />
-      )}
-      <span className="text-sm font-semibold text-slate-800">{l.label}</span>
+    <div className="flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50/70 px-2 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md sm:px-3 sm:py-4">
+      <div className="flex h-6 items-center justify-center sm:h-7">
+        {l.flag ? (
+          <span className="text-2xl leading-none sm:text-3xl">{l.flag}</span>
+        ) : (
+          <KurdistanFlag className="h-5 w-[30px] rounded-sm shadow-sm sm:h-[26px] sm:w-[39px]" />
+        )}
+      </div>
+      <span className="w-full truncate text-center text-[11px] font-semibold leading-tight text-slate-800 sm:text-sm">
+        {l.label}
+      </span>
     </div>
   );
 }
@@ -228,28 +218,19 @@ function LanguageChip({ l, compact = false }: { l: typeof LANGUAGES[0]; compact?
 function LanguageStrip() {
   return (
     <section className="relative border-y border-slate-200 bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        <div className="flex flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-          <div className="flex items-center gap-3">
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="flex flex-col items-center gap-4 sm:gap-5">
+          <div className="flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-primary" />
-            <p className="text-[11px] font-black uppercase tracking-[0.28em] text-slate-700 sm:text-xs">
+            <p className="text-center text-[11px] font-black uppercase tracking-[0.28em] text-slate-700 sm:text-xs">
               Wir beraten & unterrichten in
             </p>
+            <span className="h-px w-8 bg-primary" />
           </div>
 
-          {/* Mobile: alle 5 Sprachen kompakt in einer Reihe */}
-          <ul className="grid w-full grid-cols-5 gap-1.5 lg:hidden">
+          <ul className="grid w-full grid-cols-5 items-stretch justify-items-center gap-2 sm:gap-4">
             {LANGUAGES.map((l) => (
-              <li key={l.code} className="min-w-0">
-                <LanguageChip l={l} compact />
-              </li>
-            ))}
-          </ul>
-
-          {/* Desktop: statische Chip-Reihe */}
-          <ul className="hidden lg:flex lg:w-auto lg:items-center lg:justify-end lg:gap-3">
-            {LANGUAGES.map((l) => (
-              <li key={l.code}>
+              <li key={l.code} className="flex w-full min-w-0 justify-center">
                 <LanguageChip l={l} />
               </li>
             ))}
@@ -259,6 +240,7 @@ function LanguageStrip() {
     </section>
   );
 }
+
 
 
 
