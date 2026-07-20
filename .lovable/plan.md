@@ -1,14 +1,12 @@
-Ziel: Die Leistungskarten auf der `/leistungen`-Unterseite sollen auf Desktop-Ansicht in 3er-Reihen angezeigt werden (statt aktuell 4er-Reihen).
+Auf der Preislisten-Unterseite `/preise` soll das MIRO-DRIVE Logo im Hero-Bereich nur auf der Mobile-Ansicht entfernt werden. Auf Desktop und Tablet soll es weiterhin sichtbar bleiben.
 
-Aktueller Stand:
-- In `src/routes/leistungen.tsx` wird das Grid mit `grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4` gerendert.
-- Auf dem Screenshot sind daher 4 Karten in der ersten Reihe und 2 Karten in der zweiten Reihe zu sehen.
+**Vorgehen**
+- Datei: `src/routes/preise.tsx`
+- Das Logo wird in Zeile 155-159 als `<img>` gerendert.
+- Am Logo-Element wird die Utility-Klasse `hidden sm:block` (bzw. `hidden sm:inline` je nach aktuellem Display) ergänzt, sodass es auf Bildschirmen unter `sm` (Mobile) ausgeblendet wird und ab `sm` wieder erscheint.
+- Keine weiteren Änderungen an Inhalt, Layout oder Styling der Seite.
 
-Geplante Änderung:
-- Ändere das Grid auf `grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-3`.
-- Damit werden auf Desktop 3 Karten pro Reihe dargestellt (2 Reihen mit je 3 Karten).
-- Tablet-Ansicht (`md`) wird ebenfalls auf 3 Spalten gesetzt, damit der Übergang sauber ist.
-- Keine weiteren inhaltlichen oder visuellen Änderungen an den Karten selbst.
-
-Betroffene Datei:
-- `src/routes/leistungen.tsx` (Zeile 45)
+**Technische Details**
+- Tailwind-CSS responsive Modifier: `hidden sm:block`
+- Betroffene Datei: `src/routes/preise.tsx`
+- Nach der Änderung erfolgt ein Build-Check, um sicherzustellen, dass keine Syntaxfehler entstehen.
