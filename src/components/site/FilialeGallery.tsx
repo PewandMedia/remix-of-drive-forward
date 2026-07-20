@@ -30,7 +30,7 @@ function Tile({
     <button
       type="button"
       onClick={onClick}
-      className={`group block overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary ${className}`}
+      className={`group block w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary ${className}`}
     >
       <img
         src={img.src}
