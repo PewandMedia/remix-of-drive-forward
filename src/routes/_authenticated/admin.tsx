@@ -515,7 +515,6 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
               </>
             )}
           </div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
           <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
         </form>
       </DialogContent>
