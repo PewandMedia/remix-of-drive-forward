@@ -82,7 +82,7 @@ function FAPage() {
               <img
                 src={ersteHilfeImg}
                 alt="Erste-Hilfe-Koffer mit rotem Kreuz"
-                loading="lazy"
+                loading="eager"
                 width={1280}
                 height={720}
                 className="absolute inset-0 h-full w-full object-cover"

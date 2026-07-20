@@ -57,7 +57,7 @@ function AboutPage() {
           {FILIALE_IMAGES.map((img) => (
             <figure key={img.src} className="overflow-hidden rounded-xl border bg-white shadow-sm sm:rounded-2xl">
               <div className="aspect-[4/3] overflow-hidden">
-                <img src={img.src} alt={img.alt} loading="lazy" className="h-full w-full object-cover object-center" />
+                <img src={img.src} alt={img.alt} loading="eager" className="h-full w-full object-cover object-center" />
               </div>
               <figcaption className="px-2 py-2 text-center text-[11px] font-semibold text-foreground sm:px-3 sm:py-2 sm:text-sm">{img.caption}</figcaption>
             </figure>

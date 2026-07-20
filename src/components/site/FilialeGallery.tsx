@@ -35,7 +35,7 @@ function Tile({
       <img
         src={img.src}
         alt={img.alt}
-        loading="lazy"
+        loading="eager"
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
       />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-4 sm:p-5">

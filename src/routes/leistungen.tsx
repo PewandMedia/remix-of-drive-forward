@@ -49,7 +49,7 @@ function LeistungenPage() {
                 <img
                   src={s.image}
                   alt={s.title}
-                  loading="lazy"
+                  loading="eager"
                   width={1024}
                   height={640}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

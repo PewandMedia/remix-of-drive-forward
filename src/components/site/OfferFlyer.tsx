@@ -23,7 +23,7 @@ export function OfferFlyer({ offer, compact = false }: { offer: OfferFlyerData; 
     <article className="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-[#1a0a0a] via-[#2a0f0f] to-[#0a0a0a] text-white shadow-xl">
       {offer.image_url && (
         <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/9]">
-          <img src={offer.image_url} alt={offer.headline ?? "Angebot"} loading="lazy" className="h-full w-full object-cover" />
+          <img src={offer.image_url} alt={offer.headline ?? "Angebot"} loading="eager" className="h-full w-full object-cover" />
         </div>
       )}
       <div className={compact ? "p-6" : "p-8 sm:p-10"}>

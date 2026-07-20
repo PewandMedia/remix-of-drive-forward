@@ -569,7 +569,7 @@ function Index() {
                   alt="Erste-Hilfe-Kurs bei Fahrschule MIRO-DRIVE in Bochum"
                   width={1280}
                   height={960}
-                  loading="lazy"
+                  loading="eager"
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -685,7 +685,7 @@ function Index() {
                   <img
                     src={s.image}
                     alt={s.title}
-                    loading="lazy"
+                    loading="eager"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-black/0 to-black/0" />
