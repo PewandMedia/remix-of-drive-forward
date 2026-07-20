@@ -155,7 +155,7 @@ function PricesPage() {
             <img
               src="/images/miro-drive-logo.svg"
               alt="MIRO-DRIVE Fahrschule Bochum"
-              className="h-14 w-auto sm:h-16"
+              className="hidden h-14 w-auto sm:block sm:h-16"
             />
             <div className="mt-8 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-primary sm:text-xs">
               <span className="h-px w-8 bg-primary/40" />
