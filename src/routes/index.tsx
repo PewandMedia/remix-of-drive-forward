@@ -202,15 +202,15 @@ function KurdistanFlag({ className = "" }: { className?: string }) {
 
 function LanguageChip({ l }: { l: typeof LANGUAGES[0] }) {
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50/70 px-2 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md sm:px-3 sm:py-4">
+    <div className="flex min-h-[80px] w-full flex-col items-center justify-start gap-1.5 rounded-xl border border-slate-200 bg-slate-50/70 px-1 py-2.5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md sm:min-h-[96px] sm:gap-2 sm:px-3 sm:py-4">
       <div className="flex h-6 items-center justify-center sm:h-7">
         {l.flag ? (
-          <span className="text-2xl leading-none sm:text-3xl">{l.flag}</span>
+          <span className="text-xl leading-none sm:text-3xl">{l.flag}</span>
         ) : (
-          <KurdistanFlag className="h-5 w-[30px] rounded-sm shadow-sm sm:h-[26px] sm:w-[39px]" />
+          <KurdistanFlag className="h-4 w-6 rounded-sm shadow-sm sm:h-[26px] sm:w-[39px]" />
         )}
       </div>
-      <span className="w-full truncate text-center text-[11px] font-semibold leading-tight text-slate-800 sm:text-sm">
+      <span className="block w-full whitespace-normal break-words text-center text-[10px] font-semibold leading-[1.15] text-slate-800 sm:text-sm">
         {l.label}
       </span>
     </div>
@@ -220,7 +220,7 @@ function LanguageChip({ l }: { l: typeof LANGUAGES[0] }) {
 function LanguageStrip() {
   return (
     <section className="relative border-y border-slate-200 bg-white">
-      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mx-auto max-w-5xl px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="flex flex-col items-center gap-4 sm:gap-5">
           <div className="flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-primary" />
@@ -230,9 +230,9 @@ function LanguageStrip() {
             <span className="h-px w-8 bg-primary" />
           </div>
 
-          <ul className="grid w-full grid-cols-5 items-stretch justify-items-center gap-2 sm:gap-4">
+          <ul className="grid w-full grid-cols-5 items-stretch justify-items-stretch gap-1.5 sm:gap-4">
             {LANGUAGES.map((l) => (
-              <li key={l.code} className="flex w-full min-w-0 justify-center">
+              <li key={l.code} className="flex w-full min-w-0">
                 <LanguageChip l={l} />
               </li>
             ))}
@@ -242,6 +242,7 @@ function LanguageStrip() {
     </section>
   );
 }
+
 
 
 
