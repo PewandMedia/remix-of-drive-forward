@@ -79,7 +79,7 @@ export function HeroCanvasVideo({ src, poster, className, ariaLabel }: Props) {
         playsInline
         autoPlay
         preload="auto"
-        crossOrigin="anonymous"
+
         aria-hidden="true"
         style={{
           position: "absolute",
