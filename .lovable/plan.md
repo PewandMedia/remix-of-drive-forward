@@ -1,12 +1,16 @@
-## Änderung
-Datei `src/routes/index.tsx`, Zeilen 53–56 (Schritt-Array) und Intro-Text Zeile 296.
+Problem: Im Preis-Bearbeiten-Dialog gibt es unten eine Checkbox „Aktiv“, die nicht funktioniert. Die Aktivierung/Deaktivierung erfolgt bereits über den Switch in der Preistabelle.
 
-**Neue Schritte:**
-- 01 — Melde dich online oder per WhatsApp — „Nutze das Anmeldeformular oder schreib uns direkt über WhatsApp."
-- 02 — Finale Anmeldung in der Filiale — „Kurzer Termin in Bochum Zentrum oder Riemke zum Unterschreiben."
-- 03 — Theorie & Praxis — bleibt inhaltlich, Text ggf. leicht gestrafft.
-- 04 — Bestanden – erhalte deinen Führerschein — „Wir begleiten dich bis zur bestandenen TÜV-Prüfung."
+Änderungen in `src/routes/_authenticated/admin.tsx`:
 
-**Intro-Text (Z. 296):** „Von der Online-Anmeldung bis zur bestandenen Prüfung – wir machen es dir so unkompliziert wie möglich."
+1. Entferne die Checkbox-Zeile am Ende des `PriceDialog`-Formulars:
+   ```tsx
+   <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
+   ```
 
-Icons bleiben (Send / ClipboardCheck / GraduationCap / Trophy). Kein Layout-Umbau.
+2. Passe die Speicher-Logik an, damit das `active`-Feld nicht versehentlich auf `false` gesetzt wird:
+   - Beim Erstellen eines neuen Preises: `active: true` als Standardwert setzen.
+   - Beim Bearbeiten: Den bestehenden `active`-Zustand beibehalten, indem `initial?.active` als Hidden-Input übergeben oder im Update-Objekt explizit übernommen wird.
+
+3. Der Switch in der Preistabelle bleibt die einzige Stelle, um Preise aktiv/inaktiv zu schalten.
+
+Das ist eine kleine, isolierte Korrektur.

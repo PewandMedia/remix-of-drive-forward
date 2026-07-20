@@ -307,7 +307,7 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
         description: String(form.get("description") || "") || null,
         price: priceStr,
         sort_order: Number(form.get("sort_order") || 0),
-        active: form.get("active") === "on",
+        active: isEdit ? initial?.active ?? true : true,
         offer_active: offerActive,
         old_price: oldStr,
         offer_label: offerActive ? (offerLabel || null) : null,
@@ -515,7 +515,6 @@ function PriceDialog({ initial, group }: { initial?: any; group?: PriceGroup }) 
               </>
             )}
           </div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
           <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
         </form>
       </DialogContent>
