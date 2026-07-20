@@ -330,9 +330,8 @@ function Index() {
         </div>
       </section>
 
-      {/* REVIEWS */}
-      {/* PREISE TEASER */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      {/* PREISE TEASER — Sneak Peek der /preise-Tafel */}
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
             <div className="flex flex-wrap items-center gap-3">
@@ -343,10 +342,9 @@ function Index() {
                 </Link>
               )}
             </div>
-            <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Drei Klassen, transparente Preise.</h2>
+            <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Faire Preise. Klar aufgelistet.</h2>
             <p className="mt-4 text-muted-foreground">
-              Als Fahrschule in Bochum bilden wir in Klasse B, B197 und B78 aus – transparent, fair und übersichtlich.
-              Perfekt für deinen Führerschein in Bochum, Herne und Umgebung.
+              Gleiche Preise für Klasse B, B197 und B78 – der Unterschied liegt nur im Fahrzeug und in der Prüfung.
             </p>
           </div>
           <Link to="/preise" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
@@ -362,16 +360,14 @@ function Index() {
           const rem = offerRow ? formatRemaining(offerRow.offer_valid_until) : null;
           const label = offerRow?.offer_label || "Angebot";
           return (
-            <div className="relative mb-6 overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-primary via-[#c8102e] to-[#7a0010] p-5 text-white shadow-2xl shadow-primary/40 ring-1 ring-inset ring-white/20 sm:mb-8 sm:p-8">
+            <div className="relative mb-8 overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-primary via-[#c8102e] to-[#7a0010] p-5 text-white shadow-2xl shadow-primary/40 ring-1 ring-inset ring-white/20 sm:p-8">
               <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_0%_0%,rgba(255,255,255,0.25),transparent_55%),radial-gradient(80%_60%_at_100%_100%,rgba(255,180,180,0.18),transparent_60%)]" />
               <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur sm:text-xs">
                     <Flame className="h-3.5 w-3.5 animate-pulse" /> Jetzt sparen
                   </div>
-                  <h3 className="mt-3 font-display text-2xl leading-tight sm:text-4xl">
-                    {label}
-                  </h3>
+                  <h3 className="mt-3 font-display text-2xl leading-tight sm:text-4xl">{label}</h3>
                   <p className="mt-2 text-sm text-white/80 sm:text-base">
                     Anmeldegebühr nur <span className="font-display text-xl font-bold text-white sm:text-2xl">{newP}</span>{" "}
                     {oldP && <span className="text-sm text-white/50 line-through">statt {oldP}</span>}
@@ -403,120 +399,101 @@ function Index() {
           );
         })()}
 
-        <div className="grid grid-cols-3 gap-2.5 items-stretch sm:gap-4 md:gap-6">
-          {PRICE_CLASSES.map((c) => {
-            const row: any = rowFor(c.key);
-            const grund = row?.price ?? "";
-            const live = isOfferLive(row);
-            const remaining = live ? formatRemaining(row?.offer_valid_until) : null;
-            const featured = c.featured;
-            return (
-              <Link
-                key={c.key}
-                to="/preise"
-                className={[
-                  "group relative flex flex-col justify-between overflow-hidden p-3 transition-all duration-300 sm:p-6 lg:p-8",
-                  live
-                    ? "z-10 border-4 border-primary bg-white shadow-[0_0_40px_-12px_theme(colors.primary/45)] hover:-translate-y-1 hover:shadow-[0_0_60px_-12px_theme(colors.primary/55)]"
-                    : featured
-                    ? "z-10 bg-foreground text-white shadow-2xl md:scale-[1.03]"
-                    : "border-2 border-black/5 bg-white shadow-sm hover:-translate-y-1 hover:border-foreground hover:shadow-xl",
-                ].join(" ")}
-              >
-                {featured && !live && (
-                  <span className="absolute right-0 top-0 bg-primary px-2 py-0.5 font-display text-[8px] uppercase tracking-widest text-primary-foreground sm:px-4 sm:py-1 sm:text-[10px]">
-                    Beliebt
-                  </span>
-                )}
-                {live && (
-                  <span className="absolute left-0 top-0 z-20 inline-flex items-center gap-1 bg-primary px-2 py-0.5 font-display text-[8px] font-black uppercase tracking-widest text-primary-foreground shadow-lg sm:px-3 sm:py-1 sm:text-[10px]">
-                    <Flame className="h-2.5 w-2.5 animate-pulse sm:h-3 sm:w-3" /> {row?.offer_label || "Angebot"}
-                  </span>
-                )}
-                <div>
-                  <div
-                    className={[
-                      "mb-4 grid h-9 w-9 place-items-center rounded-full sm:mb-8 sm:h-12 sm:w-12",
-                      live || featured ? "bg-primary text-primary-foreground" : "bg-foreground text-white",
-                    ].join(" ")}
-                  >
-                    <c.icon className="h-4 w-4 sm:h-6 sm:w-6" />
+        {/* SNEAK PEEK — Preistafel im Stil von /preise */}
+        {(() => {
+          const SNEAK_ROWS: { key: string; label: string; hint: string }[] = [
+            { key: "Grundbetrag", label: "Grundbetrag", hint: "Einmalig – Anmeldung & Verwaltung" },
+            { key: "Lernprogramm", label: "Lernprogramm", hint: "Theorie-App & Lernmaterial" },
+            { key: "Übungsstunde", label: "Übungsstunde", hint: "45 Minuten Fahrunterricht" },
+            { key: "Vorstellung Theorieprüfung", label: "Theorieprüfung", hint: "Vorstellungsgebühr Fahrschule" },
+            { key: "Vorstellung Praxisprüfung", label: "Praxisprüfung", hint: "Vorstellungsgebühr Fahrschule" },
+          ];
+          const pool = prices.filter((p: any) => p.category === "Klasse B");
+          const rows = SNEAK_ROWS.map((row) => ({ row, price: pool.find((p: any) => p.title === row.key) ?? null })).filter((r) => r.price);
+          const grundOffer = rows.find((r) => r.row.key === "Grundbetrag" && isOfferLive(r.price as any));
+
+          return (
+            <div className="relative">
+              {/* Eck-Akzente */}
+              <div className="pointer-events-none absolute -left-3 -top-3 h-8 w-8 border-l-2 border-t-2 border-primary/60" />
+              <div className="pointer-events-none absolute -right-3 -top-3 h-8 w-8 border-r-2 border-t-2 border-primary/60" />
+              <div className="pointer-events-none absolute -bottom-3 -left-3 h-8 w-8 border-b-2 border-l-2 border-primary/60" />
+              <div className="pointer-events-none absolute -bottom-3 -right-3 h-8 w-8 border-b-2 border-r-2 border-primary/60" />
+
+              <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] sm:p-10 lg:p-12">
+                {/* Roter Akzentstrich */}
+                <div aria-hidden className="mx-auto mb-6 h-[3px] w-16 rounded-full bg-gradient-to-r from-primary to-[#7a0010]" />
+
+                <div className="flex flex-col items-center border-b border-slate-200 pb-6 text-center">
+                  <img src="/images/miro-drive-logo.svg" alt="MIRO-DRIVE" className="h-8 w-auto sm:h-10" />
+                  <div className="mt-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500">
+                    <span className="h-px w-6 bg-slate-300" />
+                    Preise · Auszug
+                    <span className="h-px w-6 bg-slate-300" />
                   </div>
-                  <h3 className="mb-1 font-display text-lg leading-tight tracking-tighter sm:mb-2 sm:text-3xl">
-                    Klasse {c.short}
+                  <h3 className="mt-2 font-display text-2xl font-light tracking-tight text-slate-900 sm:text-3xl">
+                    Klasse B · B197 · B78
                   </h3>
-                  <p
-                    className={[
-                      "mb-1 text-[9px] font-bold leading-tight sm:hidden",
-                      live ? "text-muted-foreground" : featured ? "text-white/70" : "text-muted-foreground",
-                    ].join(" ")}
-                  >
-                    {c.mobileShort}
-                  </p>
-                  <p
-                    className={[
-                      "mb-4 hidden text-xs font-semibold uppercase tracking-wider sm:mb-6 sm:block",
-                      live ? "text-muted-foreground" : featured ? "text-white/60" : "text-muted-foreground",
-                    ].join(" ")}
-                  >
-                    {c.tagline}
-                  </p>
-                  <ul className="mb-4 hidden space-y-3 sm:mb-10 sm:block">
-                    {c.highlights.map((h) => (
-                      <li key={h} className="flex items-center gap-3 text-sm font-bold">
-                        <span className="h-2 w-2 rounded-full bg-primary" />
-                        {h}
-                      </li>
-                    ))}
+                </div>
+
+                {/* Fade-Maske über die letzten Zeilen */}
+                <div className="relative">
+                  <ul className="mt-2 divide-y divide-slate-100 [mask-image:linear-gradient(to_bottom,black_65%,transparent_100%)]">
+                    {rows.map(({ row, price }, idx) => {
+                      const live = price ? isOfferLive(price as any) : false;
+                      const isHighlight = row.key === "Übungsstunde";
+                      return (
+                        <li key={row.key} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-4 py-4 sm:gap-6 sm:py-5">
+                          <span className="font-display text-xs tabular-nums text-slate-400 sm:text-sm">
+                            {String(idx + 1).padStart(2, "0")}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="font-display text-base font-normal text-slate-900 sm:text-lg">{row.label}</p>
+                            <p className="mt-0.5 hidden text-xs text-slate-500 sm:block">{row.hint}</p>
+                          </div>
+                          <div className="flex shrink-0 flex-col items-end">
+                            {live && (price as any).old_price && (
+                              <span className="text-xs font-medium text-slate-400 line-through sm:text-sm">
+                                {(price as any).old_price}
+                              </span>
+                            )}
+                            <span
+                              className={[
+                                "font-display tabular-nums leading-none",
+                                live || isHighlight
+                                  ? "text-2xl font-medium text-primary sm:text-3xl"
+                                  : "text-2xl font-light text-slate-900 sm:text-3xl",
+                              ].join(" ")}
+                            >
+                              {(price as any).price}
+                            </span>
+                          </div>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
-                {grund && (
-                  <div
-                    className={[
-                      "flex items-end justify-between border-t pt-3 sm:pt-6",
-                      live ? "border-primary/20" : featured ? "border-white/10" : "border-black/10",
-                    ].join(" ")}
+
+                {/* CTA */}
+                <div className="mt-6 flex flex-col items-center gap-2">
+                  <Link
+                    to="/preise"
+                    className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-primary hover:shadow-xl sm:text-base"
                   >
-                    <div className="min-w-0">
-                      <p
-                        className={[
-                          "mb-1 text-[8px] font-black uppercase tracking-[0.15em] sm:text-[10px] sm:tracking-[0.2em]",
-                          live ? "text-primary/60" : featured ? "text-white/40" : "text-muted-foreground",
-                        ].join(" ")}
-                      >
-                        Ab
-                      </p>
-                      {live && row?.old_price && (
-                        <p className={["text-sm font-semibold line-through sm:text-lg", live ? "text-muted-foreground" : featured ? "text-white/50" : "text-muted-foreground"].join(" ")}>{row.old_price}</p>
-                      )}
-                      <p className={["font-display text-primary", live ? "text-3xl sm:text-6xl drop-shadow-sm" : "text-xl sm:text-4xl"].join(" ")}>{grund}</p>
-                      {remaining && (
-                        <p className="mt-1 inline-flex items-center gap-1 text-[9px] font-bold text-primary sm:text-[11px]">
-                          <Timer className="h-3 w-3" /> {remaining}
-                        </p>
-                      )}
-                      {live && row?.offer_note && (
-                        <p className={["mt-1 hidden text-[10px] italic leading-snug sm:block", live ? "text-muted-foreground" : featured ? "text-white/70" : "text-muted-foreground"].join(" ")}>{row.offer_note}</p>
-                      )}
-                    </div>
-                    <div
-                      className={[
-                        "hidden h-10 w-10 items-center justify-center transition-colors sm:flex",
-                        live
-                          ? "bg-primary text-primary-foreground group-hover:bg-foreground"
-                          : featured
-                          ? "bg-white/10 text-white group-hover:bg-primary"
-                          : "border border-black/10 text-foreground group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground",
-                      ].join(" ")}
-                    >
-                      <ArrowRight className="h-5 w-5" />
-                    </div>
-                  </div>
-                )}
-              </Link>
-            );
-          })}
-        </div>
+                    Mehr erfahren
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                  <p className="text-xs text-slate-500">Vollständige Preisliste & Klassen-Vergleich</p>
+                  {grundOffer && (
+                    <p className="mt-1 inline-flex items-center gap-1.5 text-[11px] font-bold text-primary">
+                      <Flame className="h-3 w-3" /> Aktuelles Angebot auf dem Grundbetrag
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </section>
 
       {/* FÜHRERSCHEINANTRAG */}
