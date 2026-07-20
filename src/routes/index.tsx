@@ -14,6 +14,7 @@ import heroPoster from "@/assets/miro-drive-hero-v2-poster.jpg.asset.json";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { TeamCard, type TeamMember } from "@/components/site/TeamCard";
+import { FilialeGallery } from "@/components/site/FilialeGallery";
 
 import { ReviewsSection } from "@/components/site/ReviewsSection";
 import { InstagramSection } from "@/components/site/InstagramSection";
@@ -576,6 +577,8 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <FilialeGallery />
 
       {/* TEAM TEASER */}
       {team.length > 0 && (
