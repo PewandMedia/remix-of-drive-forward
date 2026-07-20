@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import { FilialeGallery, FILIALE_IMAGES } from "@/components/site/FilialeGallery";
+import { FILIALE_IMAGES } from "@/components/site/FilialeGallery";
 import { Target, Award, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/ueber-uns")({
