@@ -1,32 +1,22 @@
-## Ziel
-Die `/preise` Seite auf ein hochwertiges, seriöses Fahrschul-Design heben. Doppeltes MIRO-DRIVE entfernen, externe TÜV-Gebühren raus, Preisliste als Premium-Design umsetzen.
+## Änderungen an `src/routes/preise.tsx`
 
-## Änderungen in `src/routes/preise.tsx`
+Nur die `CLASSES`-Facts und den Info-Hinweis unter der Preistafel anpassen. Keine anderen Sektionen berühren.
 
-### 1. Header aufräumen
-- Nur **ein** Logo/Wortmarke im Hero (aktuell steht MIRO-DRIVE im Logo UND in der H1 → doppelt).
-- Neue H1: **„Preise"** in großer, seriöser Serif-Typo (z. B. Instrument Serif Stil) mit dezenter Unterzeile „Transparent. Fair. Ohne versteckte Kosten." — Logo separat klein darüber als Emblem.
-- Ruhiger, heller Hintergrund mit sehr dezentem Rot-Akzent (kein Farbverlauf-Overkill).
+### Klasse B (facts)
+- Entfernen: „12 Grundstoff + 2 Zusatzstoff Theorie"
+- Ersetzen bzw. ergänzen mit:
+  - „Prüfung auf Schaltfahrzeug"
+  - „Danach fahrbar: Schalt- & Automatikfahrzeuge"
+- (Bestehende Zeilen zu Ausbildung auf Schalt & Sonderfahrten bleiben.)
 
-### 2. Zentrale Preistafel (Premium-Look)
-Umbau der bisherigen „Dotted Leader"-Liste zu einer echten Preistafel:
-- Große weiße Karte, edler Rahmen (1px `border-slate-200`), sanfter Schatten, mehr Padding.
-- Jede Zeile: Positionstitel links (seriöse Serif, größer), rechts Preis in Tabellen-Typo mit **€**-Symbol und Tabular-Nums, dezente Trennlinie darunter.
-- Kleiner grauer Sub-Text pro Zeile (z. B. „einmalig", „pro 45 Min.", „pro Antritt") für Kontext.
-- Rot als Akzent nur für die Preiszahl der Übungsstunde (Kern-USP) — Rest in `text-slate-900`.
-- Preise weiterhin dynamisch aus „Klasse B"-Kategorie (Grundbetrag, Lernprogramm, Übungsstunde, Theorieprüfung, Praxisprüfung).
+### Klasse B197 (facts)
+- Umformulieren: „Zusätzlich mind. 10 Schaltkompetenz-Fahrten" → **„Mindestens 10 Schaltkompetenz-Fahrten müssen absolviert werden"**
+- Entfernen: „Interne Testfahrt statt zweiter TÜV-Prüfung"
 
-### 3. Externe TÜV-Gebühren-Sektion komplett entfernen
-Kompletter Block raus (inkl. Überschrift, Karten, Hinweis-Text).
+### Klasse B78 (facts)
+- Entfernen: „Keine Schaltkompetenz-Fahrten nötig"
 
-### 4. Klassen-Vergleich behalten, aber ruhiger
-- Aktuelle 3 Karten (B / B197 / B78) beibehalten, aber Typo und Abstände an neuen Header angleichen.
-- Keine Preise in den Karten — nur inhaltliche Unterschiede.
+### Info-Box unter Preistafel (Zeilen 267–274)
+- Formulierung „Bei Klasse B197 zusätzlich mind. 10 Schaltkompetenz-Fahrten…" auf **„Bei Klasse B197 sind mind. 10 Schaltkompetenz-Fahrten zum gleichen Preis erforderlich."** anpassen (konsistent, kein „zusätzlich").
 
-### 5. Abschluss-CTA
-Schmaler Call-to-Action unter der Preistafel: „Jetzt online anmelden" + WhatsApp-Button (konsistent mit Startseite).
-
-## Technisch
-- Nur `src/routes/preise.tsx` wird angefasst.
-- Keine Datenbank-, Query- oder Admin-Änderungen.
-- Preisdaten-Quelle (`prices` Query, Kategorie „Klasse B") bleibt unverändert.
+Keine weiteren Änderungen (Header, Preistafel, CTA bleiben).
