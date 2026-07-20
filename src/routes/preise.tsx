@@ -80,9 +80,9 @@ const CLASSES: ClassMeta[] = [
     icon: Car,
     facts: [
       "Ausbildung auf Schaltfahrzeug",
-      "12 Grundstoff + 2 Zusatzstoff Theorie",
+      "Prüfung auf Schaltfahrzeug",
       "Sonderfahrten: 5 Überland · 4 Autobahn · 3 Dunkelheit",
-      "Führerschein gilt für Schalt- und Automatik-Fahrzeuge",
+      "Danach fahrbar: Schalt- & Automatikfahrzeuge",
     ],
   },
   {
@@ -95,8 +95,7 @@ const CLASSES: ClassMeta[] = [
     badge: "Am beliebtesten",
     facts: [
       "Ausbildung & Prüfung auf Automatik",
-      "Zusätzlich mind. 10 Schaltkompetenz-Fahrten",
-      "Interne Testfahrt statt zweiter TÜV-Prüfung",
+      "Mindestens 10 Schaltkompetenz-Fahrten müssen absolviert werden",
       "Führerschein gilt für Schalt- und Automatik-Fahrzeuge",
     ],
   },
@@ -108,10 +107,10 @@ const CLASSES: ClassMeta[] = [
     icon: Cog,
     facts: [
       "Ausbildung & Prüfung auf Automatik",
-      "Keine Schaltkompetenz-Fahrten nötig",
       "Sonderfahrten: 5 Überland · 4 Autobahn · 3 Dunkelheit",
       "Führerschein gilt nur für Automatik-Fahrzeuge",
     ],
+
   },
 ];
 
@@ -268,8 +267,9 @@ function PricesPage() {
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               <p>
                 <span className="font-semibold text-slate-900">Sonderfahrten</span> (Überland, Autobahn,
-                Dunkelheit) werden wie eine Übungsstunde à 45 Minuten abgerechnet. Bei Klasse B197
-                zusätzlich mind. 10 Schaltkompetenz-Fahrten zum gleichen Preis.
+                Dunkelheit) werden wie eine Übungsstunde à 45 Minuten abgerechnet. Bei Klasse B197 sind
+                mind. 10 Schaltkompetenz-Fahrten zum gleichen Preis erforderlich.
+
               </p>
             </div>
           </div>
