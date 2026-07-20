@@ -45,7 +45,7 @@ export function InstagramSection() {
               <img
                 src={src}
                 alt={`Bestandene Führerscheinprüfung bei MIRO-DRIVE – Beitrag ${idx + 1}`}
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
               />

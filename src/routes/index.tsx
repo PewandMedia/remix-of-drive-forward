@@ -144,6 +144,10 @@ function HeroSection() {
               disableRemotePlayback
               controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
               onContextMenu={(e) => e.preventDefault()}
+              onPlay={(e) => { (e.currentTarget as HTMLVideoElement).controls = false; }}
+              onSeeked={(e) => { const v = e.currentTarget as HTMLVideoElement; v.controls = false; v.play().catch(() => {}); }}
+              onEnded={(e) => { const v = e.currentTarget as HTMLVideoElement; v.controls = false; v.currentTime = 0; v.play().catch(() => {}); }}
+              onPause={(e) => { const v = e.currentTarget as HTMLVideoElement; v.play().catch(() => {}); }}
               poster={heroPoster.url}
               aria-label="MIRO-DRIVE Fahrschulfahrzeug"
               {...({ "x-webkit-airplay": "deny" } as Record<string, string>)}
@@ -153,7 +157,13 @@ function HeroSection() {
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 lg:from-black/25 lg:via-transparent lg:to-transparent" />
             {/* Klick-Fangschicht: hindert Opera/Safari daran, das Video als Popout/Fullscreen-Target zu erkennen */}
-            <div className="absolute inset-0 z-30" aria-hidden="true" onClick={(e) => e.preventDefault()} />
+            <div
+              className="absolute inset-0 z-30 cursor-default"
+              aria-hidden="true"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+              onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
+              onContextMenu={(e) => e.preventDefault()}
+            />
 
 
 
@@ -569,7 +579,7 @@ function Index() {
                   alt="Erste-Hilfe-Kurs bei Fahrschule MIRO-DRIVE in Bochum"
                   width={1280}
                   height={960}
-                  loading="lazy"
+                  loading="eager"
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -685,7 +695,7 @@ function Index() {
                   <img
                     src={s.image}
                     alt={s.title}
-                    loading="lazy"
+                    loading="eager"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-black/0 to-black/0" />
