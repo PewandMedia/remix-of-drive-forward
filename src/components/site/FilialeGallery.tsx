@@ -19,30 +19,30 @@ type Props = {
 
 function Tile({
   img,
-  className = "",
+  aspect,
   onClick,
 }: {
   img: (typeof FILIALE_IMAGES)[number];
-  className?: string;
+  aspect: string;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`group block w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary ${className}`}
+      className={`group relative block w-full overflow-hidden rounded-2xl bg-neutral-100 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/5 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary ${aspect}`}
     >
       <img
         src={img.src}
         alt={img.alt}
         loading="lazy"
-        className="block h-auto w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.01]"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
       />
-      <div className="bg-white px-3 py-2.5 sm:px-4 sm:py-3">
-        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-4 sm:p-5">
+        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/80">
           {img.kicker}
         </div>
-        <div className="font-display text-sm text-foreground sm:text-base">
+        <div className="mt-0.5 font-display text-base text-white sm:text-lg">
           {img.caption}
         </div>
       </div>
@@ -175,22 +175,24 @@ export function FilialeGallery({
           </div>
         )}
 
-        {/* Mobile: Mosaik wie Referenz, alle Bilder sofort sichtbar */}
+        {/* Mobile: Mosaik, alle Bilder sofort sichtbar, gleiche Ratios */}
         <div className="grid grid-cols-2 gap-2 sm:hidden">
-          <Tile img={hero} className="col-span-2" onClick={() => open(0)} />
-          <Tile img={top} onClick={() => open(1)} />
-          <Tile img={bottom} onClick={() => open(2)} />
-          <div className="col-span-2 mt-1 text-[11px] text-muted-foreground">
-            Tippen zum Vergrößern · in der Ansicht wischen
+          <div className="col-span-2">
+            <Tile img={hero} aspect="aspect-[4/3]" onClick={() => open(0)} />
+          </div>
+          <Tile img={top} aspect="aspect-square" onClick={() => open(1)} />
+          <Tile img={bottom} aspect="aspect-square" onClick={() => open(2)} />
+          <div className="col-span-2 mt-1 text-center text-[11px] text-muted-foreground">
+            Tippen zum Vergrößern
           </div>
         </div>
 
-        {/* Desktop: Collage wie Referenz, ohne Bild-Anschnitt */}
-        <div className="hidden sm:grid sm:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] sm:items-start sm:gap-4 lg:gap-5">
-          <Tile img={hero} onClick={() => open(0)} />
-          <div className="grid gap-4 lg:gap-5">
-            <Tile img={top} onClick={() => open(1)} />
-            <Tile img={bottom} onClick={() => open(2)} />
+        {/* Desktop: Collage – links Hero 4/5, rechts zwei Kacheln 5/4 = gleiche Gesamthöhe */}
+        <div className="hidden sm:grid sm:grid-cols-2 sm:gap-4 lg:gap-5">
+          <Tile img={hero} aspect="aspect-[4/5]" onClick={() => open(0)} />
+          <div className="grid grid-rows-2 gap-4 lg:gap-5">
+            <Tile img={top} aspect="h-full" onClick={() => open(1)} />
+            <Tile img={bottom} aspect="h-full" onClick={() => open(2)} />
           </div>
         </div>
       </div>
