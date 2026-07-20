@@ -1,23 +1,23 @@
-## Fixes
+# Opera Video-Overlay-Button entfernen
 
-### 1. Lazy-Loading entfernen
-Alle `loading="lazy"` Attribute aus Bildern entfernen, damit nichts mehr nachpoppt:
-- `src/routes/index.tsx` (2×), `src/routes/ueber-uns.tsx`, `src/routes/leistungen.tsx`, `src/routes/erste-hilfe-kurs.tsx`
-- `src/components/site/OfferFlyer.tsx`, `TeamCard.tsx`, `InstagramSection.tsx`, `FilialeGallery.tsx`
-→ Eager laden, damit Bilder direkt beim Scrollen sichtbar sind.
+## Problem
+Der Pfeil-Button oben rechts über dem Hero-Video ist **kein Teil der Website**, sondern das Opera-Browser-eigene „Video-Popout"-Overlay. Opera (und teils Chrome/Safari) blenden diesen Button automatisch über jedem `<video>`-Element ein, sobald es groß genug ist. HTML-Attribute wie `disablePictureInPicture`, `controlsList`, CSS `::-webkit-media-controls` oder eine Klick-Fangschicht können das **nicht zuverlässig** unterdrücken — der Browser rendert den Button oberhalb des DOM.
 
-### 2. Smoothes Scrolling
-In `src/styles.css` global aktivieren:
-```css
-html { scroll-behavior: smooth; }
-```
+## Lösung
+Das `<video>`-Element wird **unsichtbar** ins DOM gehängt (0×0 px, `opacity:0`) und die Frames werden pro `requestAnimationFrame` in ein sichtbares `<canvas>` gezeichnet. Da der Browser den Popout-Button nur an sichtbare `<video>`-Elemente andockt, verschwindet der Button vollständig — in Opera, Chrome, Safari und Edge.
 
-### 3. Hero-Video: Play-Button beim Loop entfernen
-In `src/routes/index.tsx` (Hero-Video, Zeile ~136):
-- `onPlay`, `onSeeked`, `onEnded` Handler ergänzen, die den nativen Playback-Button verhindern:
-  - `video.controls = false`
-  - bei jedem Loop-Restart `video.play()` sofort wieder auslösen
-- Fangschicht (`z-30`) auf `pointer-events-auto` setzen und `onMouseMove`/`onClick` abfangen, damit Opera/Chromium keine „Resume"-Overlay einblenden können.
-- Zusätzliche CSS-Regel für alle Media-Control-Pseudo-Elemente (`::-webkit-media-controls-overlay-play-button`, `::-internal-media-controls-overlay-cast-button`) global in `src/styles.css` hinzufügen mit `display: none !important`.
+## Änderungen
+**Datei:** `src/routes/index.tsx` (Hero-Video-Karte, Zeilen 133–172)
 
-Nur diese drei Punkte, kein weiterer Umbau.
+1. Neue kleine Komponente `HeroCanvasVideo` am Dateianfang (oder inline):
+   - hält `<video>` versteckt (`className="sr-only"` bzw. `width={0} height={0}`)
+   - `<canvas>` füllt die Karte via `object-cover`-äquivalentem Draw
+   - `useEffect` startet `video.play()`, `requestAnimationFrame` zeichnet `ctx.drawImage(video, …)` mit Cover-Fit-Berechnung
+   - Cleanup: `cancelAnimationFrame` + `video.pause()`
+2. In der Hero-Karte `<video>…</video>` durch `<HeroCanvasVideo src={heroVideo.url} poster={heroPoster.url} />` ersetzen.
+3. Klick-Fangschicht, Gradient-Overlay, Badges bleiben unverändert.
+
+## Ergebnis
+- Kein Popout-/Next-Button mehr über dem Hero-Video in Opera.
+- Video läuft weiterhin automatisch, stummgeschaltet, im Loop.
+- Poster bleibt sichtbar bis das erste Frame gezeichnet ist.

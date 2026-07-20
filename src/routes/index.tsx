@@ -15,6 +15,7 @@ import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { TeamCard, type TeamMember } from "@/components/site/TeamCard";
 import { FilialeGallery } from "@/components/site/FilialeGallery";
+import { HeroCanvasVideo } from "@/components/site/HeroCanvasVideo";
 
 import { ReviewsSection } from "@/components/site/ReviewsSection";
 import { InstagramSection } from "@/components/site/InstagramSection";
@@ -133,28 +134,13 @@ function HeroSection() {
         {/* RECHTS: Video-Karte */}
         <div className="animate-fade-up relative mx-auto w-full max-w-xl lg:max-w-none" style={{ animationDelay: "0.35s" }}>
           <div className="relative aspect-video overflow-hidden rounded-3xl border border-slate-200 bg-slate-900 shadow-2xl shadow-slate-300/60 ring-1 ring-slate-200 lg:aspect-video">
-            <video
-              className="pointer-events-none absolute inset-0 h-full w-full object-cover [&::-webkit-media-controls]:!hidden [&::-webkit-media-controls-enclosure]:!hidden [&::-webkit-media-controls-panel]:!hidden [&::-webkit-media-controls-start-playback-button]:!hidden"
-              autoPlay
-              muted
-              playsInline
-              loop
-              preload="auto"
-              disablePictureInPicture
-              disableRemotePlayback
-              controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-              onContextMenu={(e) => e.preventDefault()}
-              onPlay={(e) => { (e.currentTarget as HTMLVideoElement).controls = false; }}
-              onSeeked={(e) => { const v = e.currentTarget as HTMLVideoElement; v.controls = false; v.play().catch(() => {}); }}
-              onEnded={(e) => { const v = e.currentTarget as HTMLVideoElement; v.controls = false; v.currentTime = 0; v.play().catch(() => {}); }}
-              onPause={(e) => { const v = e.currentTarget as HTMLVideoElement; v.play().catch(() => {}); }}
+            <HeroCanvasVideo
+              src={heroVideo.url}
               poster={heroPoster.url}
-              aria-label="MIRO-DRIVE Fahrschulfahrzeug"
-              {...({ "x-webkit-airplay": "deny" } as Record<string, string>)}
-            >
-              <source src={heroVideo.url} type="video/mp4" />
+              ariaLabel="MIRO-DRIVE Fahrschulfahrzeug"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+            />
 
-            </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 lg:from-black/25 lg:via-transparent lg:to-transparent" />
             {/* Klick-Fangschicht: hindert Opera/Safari daran, das Video als Popout/Fullscreen-Target zu erkennen */}
             <div
