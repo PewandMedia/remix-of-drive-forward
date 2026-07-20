@@ -325,16 +325,30 @@ function Index() {
         </div>
       </section>
 
-      {/* PREISE TEASER — Sneak Peek der /preise-Tafel */}
-      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+      {/* PREISE TEASER — Premium Preistafel */}
+      <section className="relative mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        {/* dezenter Bühnen-Glow hinter der Karte */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            backgroundImage:
+              "radial-gradient(900px 400px at 50% 20%, rgba(200,16,46,0.06), transparent 60%), radial-gradient(600px 300px at 90% 80%, rgba(15,23,42,0.05), transparent 60%)",
+          }}
+        />
+
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise & Klassen</span>
               {hasActiveOffer && (
-                <Link to="/preise" className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary-foreground shadow">
-                  <Sparkles className="h-3 w-3" /> Aktion läuft
-                </Link>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary shadow-sm">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+                  </span>
+                  Aktion läuft
+                </span>
               )}
             </div>
             <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Faire Preise. Klar aufgelistet.</h2>
@@ -347,54 +361,7 @@ function Index() {
           </Link>
         </div>
 
-        {/* ANGEBOTS-BANNER */}
-        {hasActiveOffer && (() => {
-          const offerRow = rowFor("Klasse B") ?? prices.find((p: any) => isOfferLive(p));
-          const oldP = offerRow?.old_price;
-          const newP = offerRow?.price;
-          const rem = offerRow ? formatRemaining(offerRow.offer_valid_until) : null;
-          const label = offerRow?.offer_label || "Angebot";
-          return (
-            <div className="relative mb-8 overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-primary via-[#c8102e] to-[#7a0010] p-5 text-white shadow-2xl shadow-primary/40 ring-1 ring-inset ring-white/20 sm:p-8">
-              <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_0%_0%,rgba(255,255,255,0.25),transparent_55%),radial-gradient(80%_60%_at_100%_100%,rgba(255,180,180,0.18),transparent_60%)]" />
-              <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur sm:text-xs">
-                    <Flame className="h-3.5 w-3.5 animate-pulse" /> Jetzt sparen
-                  </div>
-                  <h3 className="mt-3 font-display text-2xl leading-tight sm:text-4xl">{label}</h3>
-                  <p className="mt-2 text-sm text-white/80 sm:text-base">
-                    Anmeldegebühr nur <span className="font-display text-xl font-bold text-white sm:text-2xl">{newP}</span>{" "}
-                    {oldP && <span className="text-sm text-white/50 line-through">statt {oldP}</span>}
-                  </p>
-                  {rem && (
-                    <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-white/90 sm:text-sm">
-                      <Timer className="h-4 w-4" /> {rem}
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2 sm:flex-col sm:gap-3">
-                  <a
-                    href={CONTACT.whatsapp}
-                    target="_blank"
-                    rel="noopener"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-primary shadow-lg transition-transform hover:scale-105 sm:px-6 sm:py-3"
-                  >
-                    <MessageCircle className="h-4 w-4" /> Jetzt anmelden
-                  </a>
-                  <Link
-                    to="/preise"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-bold text-white backdrop-blur transition-colors hover:bg-white/20 sm:px-6 sm:py-3"
-                  >
-                    Alle Preise <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          );
-        })()}
-
-        {/* SNEAK PEEK — Preistafel im Stil von /preise */}
+        {/* SPEKTAKULÄRE PREISTAFEL */}
         {(() => {
           const SNEAK_ROWS: { key: string; label: string; hint: string }[] = [
             { key: "Grundbetrag", label: "Grundbetrag", hint: "Einmalig – Anmeldung & Verwaltung" },
@@ -406,84 +373,150 @@ function Index() {
           const pool = prices.filter((p: any) => p.category === "Klasse B");
           const rows = SNEAK_ROWS.map((row) => ({ row, price: pool.find((p: any) => p.title === row.key) ?? null })).filter((r) => r.price);
           const grundOffer = rows.find((r) => r.row.key === "Grundbetrag" && isOfferLive(r.price as any));
+          const remaining = grundOffer ? formatRemaining((grundOffer.price as any).offer_valid_until) : null;
 
           return (
             <div className="relative">
-              {/* Eck-Akzente */}
-              <div className="pointer-events-none absolute -left-3 -top-3 h-8 w-8 border-l-2 border-t-2 border-primary/60" />
-              <div className="pointer-events-none absolute -right-3 -top-3 h-8 w-8 border-r-2 border-t-2 border-primary/60" />
-              <div className="pointer-events-none absolute -bottom-3 -left-3 h-8 w-8 border-b-2 border-l-2 border-primary/60" />
-              <div className="pointer-events-none absolute -bottom-3 -right-3 h-8 w-8 border-b-2 border-r-2 border-primary/60" />
+              {/* Längere, dezentere Eck-Akzente */}
+              <div className="pointer-events-none absolute -left-4 -top-4 h-12 w-12 border-l border-t border-slate-900/70" />
+              <div className="pointer-events-none absolute -right-4 -top-4 h-12 w-12 border-r border-t border-slate-900/70" />
+              <div className="pointer-events-none absolute -bottom-4 -left-4 h-12 w-12 border-b border-l border-slate-900/70" />
+              <div className="pointer-events-none absolute -bottom-4 -right-4 h-12 w-12 border-b border-r border-slate-900/70" />
 
-              <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] sm:p-10 lg:p-12">
-                {/* Roter Akzentstrich */}
-                <div aria-hidden className="mx-auto mb-6 h-[3px] w-16 rounded-full bg-gradient-to-r from-primary to-[#7a0010]" />
+              <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_50px_120px_-40px_rgba(15,23,42,0.45)] sm:p-12 lg:p-16">
+                {/* Wasserzeichen */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 select-none font-display text-[140px] font-light leading-none tracking-tighter text-slate-900/[0.03] sm:text-[220px]"
+                >
+                  PREISE
+                </div>
 
-                <div className="flex flex-col items-center border-b border-slate-200 pb-6 text-center">
-                  <img src="/images/miro-drive-logo.svg" alt="MIRO-DRIVE" className="h-8 w-auto sm:h-10" />
-                  <div className="mt-4 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500">
-                    <span className="h-px w-6 bg-slate-300" />
-                    Preise · Auszug
-                    <span className="h-px w-6 bg-slate-300" />
+                {/* Innere feine Kontur */}
+                <div className="pointer-events-none absolute inset-3 rounded-[26px] border border-slate-100" />
+
+                {/* Schwebender Aktions-Chip */}
+                {grundOffer && (
+                  <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-6">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-700 shadow-sm backdrop-blur">
+                      <span className="relative flex h-2 w-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
+                        <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                      </span>
+                      Aktion aktiv{remaining ? ` · ${remaining}` : ""}
+                    </div>
                   </div>
-                  <h3 className="mt-2 font-display text-2xl font-light tracking-tight text-slate-900 sm:text-3xl">
-                    Klasse B · B197 · B78
-                  </h3>
-                </div>
+                )}
 
-                {/* Fade-Maske über die letzten Zeilen */}
                 <div className="relative">
-                  <ul className="mt-2 divide-y divide-slate-100 [mask-image:linear-gradient(to_bottom,black_65%,transparent_100%)]">
-                    {rows.map(({ row, price }, idx) => {
-                      const live = price ? isOfferLive(price as any) : false;
-                      const isHighlight = row.key === "Übungsstunde";
-                      return (
-                        <li key={row.key} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-4 py-4 sm:gap-6 sm:py-5">
-                          <span className="font-display text-xs tabular-nums text-slate-400 sm:text-sm">
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-                          <div className="min-w-0">
-                            <p className="font-display text-base font-normal text-slate-900 sm:text-lg">{row.label}</p>
-                            <p className="mt-0.5 hidden text-xs text-slate-500 sm:block">{row.hint}</p>
-                          </div>
-                          <div className="flex shrink-0 flex-col items-end">
-                            {live && (price as any).old_price && (
-                              <span className="text-xs font-medium text-slate-400 line-through sm:text-sm">
-                                {(price as any).old_price}
-                              </span>
-                            )}
-                            <span
-                              className={[
-                                "font-display tabular-nums leading-none",
-                                live || isHighlight
-                                  ? "text-2xl font-medium text-primary sm:text-3xl"
-                                  : "text-2xl font-light text-slate-900 sm:text-3xl",
-                              ].join(" ")}
-                            >
-                              {(price as any).price}
-                            </span>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
+                  {/* Header der Tafel */}
+                  <div className="flex flex-col items-center pb-8 text-center">
+                    <img src="/images/miro-drive-logo.svg" alt="MIRO-DRIVE" className="h-10 w-auto sm:h-12" />
+                    <div className="mt-5 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-500">
+                      <span className="h-px w-8 bg-slate-300" />
+                      <span className="h-1 w-1 rounded-full bg-slate-400" />
+                      Preise · Auszug
+                      <span className="h-1 w-1 rounded-full bg-slate-400" />
+                      <span className="h-px w-8 bg-slate-300" />
+                    </div>
+                    <h3 className="mt-4 font-display text-3xl font-light tracking-tight text-slate-900 sm:text-4xl">
+                      Klasse B · B197 · B78
+                    </h3>
+                    <p className="mt-2 text-sm text-slate-500">Identische Preise – individuelle Ausbildung.</p>
+                  </div>
 
-                {/* CTA */}
-                <div className="mt-6 flex flex-col items-center gap-2">
-                  <Link
-                    to="/preise"
-                    className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-primary hover:shadow-xl sm:text-base"
-                  >
-                    Mehr erfahren
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                  <p className="text-xs text-slate-500">Vollständige Preisliste & Klassen-Vergleich</p>
-                  {grundOffer && (
-                    <p className="mt-1 inline-flex items-center gap-1.5 text-[11px] font-bold text-primary">
-                      <Flame className="h-3 w-3" /> Aktuelles Angebot auf dem Grundbetrag
-                    </p>
-                  )}
+                  <div className="mx-auto mb-2 h-px w-full max-w-md bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+
+                  {/* Preiszeilen mit Dotted-Leader */}
+                  <div className="relative">
+                    <ul className="mt-4 space-y-1 [mask-image:linear-gradient(to_bottom,black_72%,transparent_100%)]">
+                      {rows.map(({ row, price }, idx) => {
+                        const live = price ? isOfferLive(price as any) : false;
+                        const isHighlight = row.key === "Übungsstunde";
+                        return (
+                          <li
+                            key={row.key}
+                            className="group grid grid-cols-[auto_1fr_auto] items-baseline gap-3 py-4 sm:gap-5 sm:py-5"
+                          >
+                            <span className="font-display text-sm font-light tabular-nums text-slate-400 sm:text-base">
+                              {String(idx + 1).padStart(2, "0")}
+                            </span>
+                            <div className="flex min-w-0 items-baseline gap-3 overflow-hidden">
+                              <div className="min-w-0 shrink-0">
+                                <p className="font-display text-lg font-normal text-slate-900 sm:text-xl">
+                                  {row.label}
+                                  {live && (
+                                    <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 align-middle text-[9px] font-bold uppercase tracking-wider text-primary">
+                                      <Flame className="h-2.5 w-2.5" /> Aktion
+                                    </span>
+                                  )}
+                                </p>
+                                <p className="mt-0.5 hidden text-xs text-slate-500 sm:block">{row.hint}</p>
+                              </div>
+                              {/* Dotted-Leader */}
+                              <span
+                                aria-hidden
+                                className="mb-1 hidden h-px flex-1 translate-y-1 border-b border-dotted border-slate-300 sm:block"
+                              />
+                            </div>
+                            <div className="flex shrink-0 flex-col items-end">
+                              {live && (price as any).old_price && (
+                                <span className="text-xs font-medium text-slate-400 line-through sm:text-sm">
+                                  {(price as any).old_price}
+                                </span>
+                              )}
+                              <span
+                                className={[
+                                  "font-display tabular-nums leading-none",
+                                  live
+                                    ? "text-3xl font-medium text-primary sm:text-4xl"
+                                    : isHighlight
+                                      ? "text-2xl font-medium text-slate-900 sm:text-3xl"
+                                      : "text-2xl font-light text-slate-900 sm:text-3xl",
+                                ].join(" ")}
+                              >
+                                {(price as any).price}
+                              </span>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="mt-10 flex flex-col items-center gap-5">
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                      <Link
+                        to="/preise"
+                        className="group inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-primary hover:shadow-xl sm:text-base"
+                      >
+                        Vollständige Preisliste
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                      <a
+                        href={CONTACT.whatsapp}
+                        target="_blank"
+                        rel="noopener"
+                        className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-7 py-3.5 text-sm font-bold text-slate-900 transition-all hover:-translate-y-0.5 hover:border-primary hover:text-primary sm:text-base"
+                      >
+                        <MessageCircle className="h-4 w-4" /> Beratung per WhatsApp
+                      </a>
+                    </div>
+                    <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-medium text-slate-500 sm:text-xs">
+                      <span className="inline-flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Keine versteckten Kosten
+                      </span>
+                      <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
+                      <span className="inline-flex items-center gap-1.5">
+                        <ShieldCheck className="h-3.5 w-3.5 text-primary" /> Faire Konditionen
+                      </span>
+                      <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
+                      <span className="inline-flex items-center gap-1.5">
+                        <MessageCircle className="h-3.5 w-3.5 text-primary" /> Persönliche Beratung
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
