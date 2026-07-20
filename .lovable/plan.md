@@ -1,19 +1,26 @@
 ## Ziel
-Bilder in `FilialeGallery` vollständig sichtbar machen (kein Anschnitt) und einen Lightbox-Viewer mit Wisch-/Klick-Navigation zwischen allen 3 Bildern ergänzen.
+Die Filialbilder sollen wie im Referenzbild als saubere Collage wirken und auf Handy/Desktop komplett erkennbar sein. Kein schmaler Ausschnitt, kein abgeschnittenes Motiv.
 
-## Änderungen (nur `src/components/site/FilialeGallery.tsx`)
+## Umsetzung
 
-**1. Bilder nicht mehr anschneiden**
-- `object-cover` → `object-contain` in den Tiles, Tile-Hintergrund neutral (`bg-neutral-100`), damit das komplette Foto sichtbar bleibt.
-- Desktop-Bento wird höher (`h-[640px] lg:h-[720px]`) und nutzt das Original-Seitenverhältnis der Fotos.
-- Mobile: Karten-Verhältnis auf `aspect-[4/3]` (statt 4/5), damit die Landscape-Fotos vollständig hineinpassen.
-- Caption bleibt als Overlay, aber mit weißem Hintergrund-Balken statt Gradient über dem Motiv, damit nichts verdeckt wird.
+**1. Mobile Ansicht fixen**
+- Das aktuelle feste Kartenformat wird entfernt.
+- Mobile bekommt ein horizontales Swipe-Layout mit Karten in voller Bildschirmbreite.
+- Bilder werden in natürlicher Höhe angezeigt (`w-full h-auto`), damit man das komplette Bild sieht.
+- Klick auf ein Bild öffnet weiterhin die Lightbox.
 
-**2. Klickbar + Lightbox mit Swipe**
-- Jedes Tile wird ein `<button>` → öffnet ein Fullscreen-Modal (fixed inset-0, schwarzes Overlay).
-- Modal zeigt aktuelles Bild groß mit `object-contain`, Caption, Pfeil-Buttons links/rechts, Zähler (1/3), Close-X, Klick-außerhalb schließt.
-- **Swipe** via Touch-Handler (`onTouchStart`/`onTouchEnd`, Schwellwert 50px) für Mobile.
-- **Tastatur**: `←`/`→` navigieren, `Esc` schließt.
-- State: `openIndex: number | null`; öffnet mit dem geklickten Index.
+**2. Desktop Ansicht fixen**
+- Das feste hohe Bento-Grid mit abgeschnitten/leer wirkenden Bildflächen wird ersetzt.
+- Neue Collage wie das Referenzbild:
+  - großes Bild links
+  - zwei kleinere Bilder rechts untereinander
+- Keine feste Bildhöhe mehr, damit Bilder nicht gekappt werden.
+- Bildunterschriften bleiben sauber unter dem Bild, nicht über dem Motiv.
 
-Keine anderen Dateien betroffen.
+**3. Lightbox bleibt erhalten**
+- Klick auf jedes Bild öffnet Vollbildansicht.
+- Pfeile, Swipe und Escape bleiben aktiv.
+- Vollbild zeigt immer das komplette Bild mit `object-contain`.
+
+## Betroffene Datei
+- `src/components/site/FilialeGallery.tsx`
