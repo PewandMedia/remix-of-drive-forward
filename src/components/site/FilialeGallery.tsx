@@ -30,15 +30,15 @@ function Tile({
     <button
       type="button"
       onClick={onClick}
-      className={`group relative block overflow-hidden rounded-3xl border border-black/5 bg-neutral-100 shadow-sm ring-1 ring-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${className}`}
+      className={`group block overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary ${className}`}
     >
       <img
         src={img.src}
         alt={img.alt}
         loading="lazy"
-        className="h-full w-full object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
+        className="block h-auto w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.01]"
       />
-      <div className="absolute inset-x-0 bottom-0 bg-white/95 px-4 py-2.5 text-left backdrop-blur">
+      <div className="bg-white px-3 py-2.5 sm:px-4 sm:py-3">
         <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
           {img.kicker}
         </div>
@@ -175,12 +175,12 @@ export function FilialeGallery({
           </div>
         )}
 
-        {/* Mobile: Snap-Karussell, komplette Bilder */}
+        {/* Mobile: komplette Bilder in voller Breite mit Swipe */}
         <div className="-mx-4 sm:hidden">
           <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {FILIALE_IMAGES.map((img, i) => (
-              <div key={img.src} className="min-w-[85%] shrink-0 snap-center">
-                <Tile img={img} className="aspect-[4/3]" onClick={() => open(i)} />
+              <div key={img.src} className="w-[calc(100vw-2rem)] shrink-0 snap-center">
+                <Tile img={img} onClick={() => open(i)} />
               </div>
             ))}
           </div>
@@ -189,11 +189,13 @@ export function FilialeGallery({
           </div>
         </div>
 
-        {/* Desktop: Bento-Grid ohne Anschnitt */}
-        <div className="hidden sm:grid sm:grid-cols-4 sm:grid-rows-2 sm:gap-4 sm:h-[640px] lg:h-[720px]">
-          <Tile img={hero} className="col-span-2 row-span-2" onClick={() => open(0)} />
-          <Tile img={top} className="col-span-2 row-span-1" onClick={() => open(1)} />
-          <Tile img={bottom} className="col-span-2 row-span-1" onClick={() => open(2)} />
+        {/* Desktop: Collage wie Referenz, ohne Bild-Anschnitt */}
+        <div className="hidden sm:grid sm:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] sm:items-start sm:gap-4 lg:gap-5">
+          <Tile img={hero} onClick={() => open(0)} />
+          <div className="grid gap-4 lg:gap-5">
+            <Tile img={top} onClick={() => open(1)} />
+            <Tile img={bottom} onClick={() => open(2)} />
+          </div>
         </div>
       </div>
 
