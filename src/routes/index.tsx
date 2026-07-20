@@ -8,7 +8,7 @@ import ersteHilfeHero from "@/assets/erste-hilfe-hero.jpg";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
 import imgErsteHilfe from "@/assets/leistungen/erste-hilfe.jpg";
-import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Calendar, FileText, Star, Check, Award, Zap, Send, ClipboardCheck, Trophy, Flame, Timer, ChevronDown, User, Eye } from "lucide-react";
+import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, GraduationCap, MapPin, ArrowRight, Calendar, FileText, Star, Check, CheckCircle2, Award, Zap, Send, ClipboardCheck, Trophy, Flame, Timer, ChevronDown, User, Eye } from "lucide-react";
 import heroVideo from "@/assets/miro-drive-hero-v2.mp4.asset.json";
 import heroPoster from "@/assets/miro-drive-hero-v2-poster.jpg.asset.json";
 import { LocationCard } from "@/components/site/LocationCard";
