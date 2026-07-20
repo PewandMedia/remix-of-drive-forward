@@ -131,77 +131,101 @@ function PricesPage() {
     price: pool.find((p) => p.title === row.key) ?? null,
   })).filter((r) => r.price);
 
-  const tuev = prices.filter((p) => p.category === "Externe TÜV-Gebühren");
-
   return (
     <SiteLayout>
       {/* Hero */}
-      <section className="border-b border-slate-200/70 bg-gradient-to-b from-white to-slate-50">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+      <section className="relative overflow-hidden border-b border-slate-200/70 bg-white">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "radial-gradient(1200px 500px at 50% -10%, rgba(200,16,46,0.10), transparent 60%), radial-gradient(600px 300px at 90% 10%, rgba(15,23,42,0.06), transparent 60%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(15,23,42,0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,0.5) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+            maskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
           <div className="flex flex-col items-center text-center">
-            <div className="flex items-center gap-3">
-              <img
-                src="/images/miro-drive-logo.svg"
-                alt="MIRO-DRIVE Logo"
-                className="h-10 w-auto sm:h-12"
-              />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary sm:text-xs">
-                Fahrschule Bochum
-              </span>
+            <img
+              src="/images/miro-drive-logo.svg"
+              alt="MIRO-DRIVE Fahrschule Bochum"
+              className="h-14 w-auto sm:h-16"
+            />
+            <div className="mt-8 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-primary sm:text-xs">
+              <span className="h-px w-8 bg-primary/40" />
+              Preisübersicht
+              <span className="h-px w-8 bg-primary/40" />
             </div>
-            <h1 className="mt-6 font-display text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
-              MIRO-DRIVE Preise
+            <h1 className="mt-4 font-display text-5xl font-light leading-[1.05] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
+              Preise
             </h1>
-            <p className="mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Transparent. Fair. Ohne versteckte Kosten. Die gleichen Preise für Klasse B, B197 und B78 –
-              nur die Ausbildung unterscheidet sich.
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              Transparent. Fair. Ohne versteckte Kosten. Die gleichen Konditionen für Klasse B, B197 und B78.
             </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-slate-500">
+              <span className="inline-flex items-center gap-1.5">
                 <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Keine versteckten Kosten
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1">
+              <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
+              <span className="inline-flex items-center gap-1.5">
                 <ShieldCheck className="h-3.5 w-3.5 text-primary" /> TÜV-geprüfte Ausbildung
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1">
-                <Info className="h-3.5 w-3.5 text-primary" /> Beratung persönlich vor Ort
+              <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
+              <span className="inline-flex items-center gap-1.5">
+                <Info className="h-3.5 w-3.5 text-primary" /> Persönliche Beratung
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-        {/* Central price table */}
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        {/* Central premium price table */}
         <section className="relative">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">
-                Preisübersicht
-              </p>
-              <h2 className="mt-1 font-display text-2xl text-foreground sm:text-3xl">
-                Gültig für Klasse B, B197 und B78
-              </h2>
-            </div>
-            <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-semibold text-muted-foreground">
-              Stand: aktuell
-            </span>
-          </div>
+          <div className="pointer-events-none absolute -left-3 -top-3 h-8 w-8 border-l-2 border-t-2 border-primary/60" />
+          <div className="pointer-events-none absolute -right-3 -top-3 h-8 w-8 border-r-2 border-t-2 border-primary/60" />
+          <div className="pointer-events-none absolute -bottom-3 -left-3 h-8 w-8 border-b-2 border-l-2 border-primary/60" />
+          <div className="pointer-events-none absolute -bottom-3 -right-3 h-8 w-8 border-b-2 border-r-2 border-primary/60" />
 
-          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.25)]">
-            <ul className="divide-y divide-slate-100">
-              {standardRows.map(({ row, price }) => {
+          <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] sm:p-10 lg:p-14">
+            <div className="flex flex-col items-center border-b border-slate-200 pb-8 text-center">
+              <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500">
+                <span className="h-px w-6 bg-slate-300" />
+                Preisliste
+                <span className="h-px w-6 bg-slate-300" />
+              </div>
+              <h2 className="mt-3 font-display text-2xl font-light tracking-tight text-slate-900 sm:text-3xl">
+                Klasse B · B197 · B78
+              </h2>
+              <p className="mt-2 text-sm text-slate-500">Identische Preise – die Ausbildung unterscheidet sich.</p>
+            </div>
+
+            <ul className="mt-4 divide-y divide-slate-100">
+              {standardRows.map(({ row, price }, idx) => {
                 const live = price ? isOfferLive(price as any) : false;
                 const remaining = live ? formatRemaining((price as any).offer_valid_until) : null;
+                const isHighlight = row.key === "Übungsstunde";
                 return (
                   <li
                     key={row.key}
-                    className="flex items-center justify-between gap-6 px-5 py-5 sm:px-8 sm:py-6"
+                    className="grid grid-cols-[auto_1fr_auto] items-baseline gap-4 py-5 sm:gap-6 sm:py-6"
                   >
+                    <span className="font-display text-xs tabular-nums text-slate-400 sm:text-sm">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
                     <div className="min-w-0">
-                      <p className="font-display text-base text-foreground sm:text-lg">{row.label}</p>
+                      <p className="font-display text-lg font-normal text-slate-900 sm:text-xl">
+                        {row.label}
+                      </p>
                       {row.hint && (
-                        <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">{row.hint}</p>
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm">{row.hint}</p>
                       )}
                       {live && (price!.offer_label || remaining) && (
                         <div className="mt-2 flex flex-wrap items-center gap-1.5">
@@ -211,7 +235,7 @@ function PricesPage() {
                             </span>
                           )}
                           {remaining && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-foreground/90 px-2 py-0.5 text-[9px] font-bold text-white sm:text-[10px]">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-0.5 text-[9px] font-bold text-white sm:text-[10px]">
                               <Timer className="h-3 w-3" /> {remaining}
                             </span>
                           )}
@@ -220,16 +244,16 @@ function PricesPage() {
                     </div>
                     <div className="flex shrink-0 flex-col items-end">
                       {live && price!.old_price && (
-                        <span className="text-xs font-semibold text-muted-foreground line-through sm:text-sm">
+                        <span className="text-xs font-medium text-slate-400 line-through sm:text-sm">
                           {price!.old_price}
                         </span>
                       )}
                       <span
                         className={[
-                          "font-display tabular-nums",
-                          live
-                            ? "text-2xl font-black text-primary sm:text-3xl"
-                            : "text-2xl text-foreground sm:text-3xl",
+                          "font-display tabular-nums leading-none",
+                          live || isHighlight
+                            ? "text-3xl font-medium text-primary sm:text-4xl"
+                            : "text-3xl font-light text-slate-900 sm:text-4xl",
                         ].join(" ")}
                       >
                         {price!.price}
@@ -239,26 +263,31 @@ function PricesPage() {
                 );
               })}
             </ul>
-            <div className="border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-xs text-muted-foreground sm:px-8">
-              <span className="font-semibold text-foreground">Hinweis:</span> Sonderfahrten (Überland,
-              Autobahn, Dunkelheit) werden wie eine Übungsstunde à 45 Minuten abgerechnet. Bei Klasse B197
-              zusätzlich mind. 10 Schaltkompetenz-Fahrten zum gleichen Preis.
+
+            <div className="mt-8 flex items-start gap-3 rounded-2xl bg-slate-50 px-5 py-4 text-xs leading-relaxed text-slate-600 sm:text-sm">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <p>
+                <span className="font-semibold text-slate-900">Sonderfahrten</span> (Überland, Autobahn,
+                Dunkelheit) werden wie eine Übungsstunde à 45 Minuten abgerechnet. Bei Klasse B197
+                zusätzlich mind. 10 Schaltkompetenz-Fahrten zum gleichen Preis.
+              </p>
             </div>
           </div>
         </section>
 
         {/* Class comparison */}
-        <section className="mt-16">
-          <div className="mb-6">
-            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">
+        <section className="mt-20">
+          <div className="mb-8 text-center">
+            <div className="flex items-center justify-center gap-3 text-[10px] font-bold uppercase tracking-[0.32em] text-primary">
+              <span className="h-px w-6 bg-primary/40" />
               Klassen im Vergleich
-            </p>
-            <h2 className="mt-1 font-display text-2xl text-foreground sm:text-3xl">
+              <span className="h-px w-6 bg-primary/40" />
+            </div>
+            <h2 className="mt-3 font-display text-3xl font-light tracking-tight text-slate-900 sm:text-4xl">
               Welche Klasse passt zu dir?
             </h2>
-            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-              Die Preise sind identisch – der Unterschied liegt in der Ausbildung und im späteren Umfang
-              der Fahrerlaubnis.
+            <p className="mt-3 text-sm text-slate-500 sm:text-base">
+              Preise sind identisch – der Unterschied liegt in der Ausbildung.
             </p>
           </div>
 
@@ -284,24 +313,22 @@ function PricesPage() {
                     <div
                       className={[
                         "grid h-11 w-11 place-items-center rounded-2xl",
-                        c.featured
-                          ? "bg-primary/10 text-primary"
-                          : "bg-slate-100 text-foreground",
+                        c.featured ? "bg-primary/10 text-primary" : "bg-slate-100 text-slate-900",
                       ].join(" ")}
                     >
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Führerschein
                       </div>
-                      <h3 className="font-display text-xl leading-none">{c.title}</h3>
+                      <h3 className="font-display text-xl leading-none text-slate-900">{c.title}</h3>
                     </div>
                   </div>
-                  <p className="mt-4 text-sm text-muted-foreground">{c.tagline}</p>
+                  <p className="mt-4 text-sm text-slate-500">{c.tagline}</p>
                   <ul className="mt-5 space-y-2.5">
                     {c.facts.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-foreground/85">
+                      <li key={f} className="flex items-start gap-2 text-sm text-slate-700">
                         <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                         <span>{f}</span>
                       </li>
@@ -313,38 +340,6 @@ function PricesPage() {
           </div>
         </section>
 
-        {/* External TÜV fees */}
-        {tuev.length > 0 && (
-          <section className="mt-16">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="h-5 w-5 text-foreground/70" />
-                <h3 className="font-display text-lg">Externe TÜV-Gebühren</h3>
-                <span className="ml-auto text-xs text-muted-foreground">
-                  Werden direkt an den TÜV gezahlt
-                </span>
-              </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {tuev.map((it) => (
-                  <div
-                    key={it.id}
-                    className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/60 px-5 py-4"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold">{it.title}</p>
-                      {it.description && (
-                        <p className="text-xs text-muted-foreground">{it.description}</p>
-                      )}
-                    </div>
-                    <span className="font-display text-base tabular-nums text-foreground">
-                      {it.price}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
         {/* Teasers */}
         <section className="mt-12 grid gap-4 sm:grid-cols-2">
