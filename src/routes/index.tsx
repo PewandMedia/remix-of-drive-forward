@@ -190,13 +190,23 @@ function KurdistanFlag({ className = "" }: { className?: string }) {
   );
 }
 
-function LanguageChip({ l, animated = false }: { l: typeof LANGUAGES[0]; animated?: boolean }) {
+function LanguageChip({ l, compact = false }: { l: typeof LANGUAGES[0]; compact?: boolean }) {
+  if (compact) {
+    return (
+      <div className="flex min-w-0 flex-col items-center gap-1 rounded-xl border border-slate-200 bg-slate-50/70 px-1.5 py-2 shadow-sm">
+        {l.flag ? (
+          <span className="text-lg leading-none">{l.flag}</span>
+        ) : (
+          <KurdistanFlag className="h-3.5 w-5 rounded-[2px] shadow-sm" />
+        )}
+        <span className="w-full truncate text-center text-[10px] font-semibold leading-tight text-slate-800">
+          {l.label}
+        </span>
+      </div>
+    );
+  }
   return (
-    <div
-      className={`flex shrink-0 items-center gap-2.5 rounded-full border border-slate-200 bg-slate-50/70 px-4 py-2 shadow-sm ${
-        animated ? "" : "transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md"
-      }`}
-    >
+    <div className="flex shrink-0 items-center gap-2.5 rounded-full border border-slate-200 bg-slate-50/70 px-4 py-2 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-white hover:shadow-md">
       {l.flag ? (
         <span className="text-xl leading-none">{l.flag}</span>
       ) : (
@@ -219,8 +229,17 @@ function LanguageStrip() {
             </p>
           </div>
 
-          {/* Desktop: statische Liste */}
-          <ul className="hidden w-full items-center gap-2 overflow-x-auto pb-1 sm:gap-3 lg:flex lg:w-auto lg:justify-end lg:overflow-visible lg:pb-0">
+          {/* Mobile: alle 5 Sprachen kompakt in einer Reihe */}
+          <ul className="grid w-full grid-cols-5 gap-1.5 lg:hidden">
+            {LANGUAGES.map((l) => (
+              <li key={l.code} className="min-w-0">
+                <LanguageChip l={l} compact />
+              </li>
+            ))}
+          </ul>
+
+          {/* Desktop: statische Chip-Reihe */}
+          <ul className="hidden lg:flex lg:w-auto lg:items-center lg:justify-end lg:gap-3">
             {LANGUAGES.map((l) => (
               <li key={l.code}>
                 <LanguageChip l={l} />
@@ -229,20 +248,10 @@ function LanguageStrip() {
           </ul>
         </div>
       </div>
-
-      {/* Mobile: Dauerschleife */}
-      <div className="lg:hidden">
-        <div className="relative overflow-hidden py-1">
-          <div className="animate-marquee flex w-max items-center gap-3 px-4">
-            {[...LANGUAGES, ...LANGUAGES, ...LANGUAGES, ...LANGUAGES].map((l, i) => (
-              <LanguageChip key={`${l.code}-${i}`} l={l} animated />
-            ))}
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
+
 
 
 
