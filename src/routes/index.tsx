@@ -153,10 +153,10 @@ function HeroSection() {
               onContextMenu={(e) => e.preventDefault()}
               poster={heroPoster.url}
               aria-label="MIRO-DRIVE Fahrschulfahrzeug"
-              // @ts-expect-error – nicht-standardisiert, unterdrückt AirPlay-Overlay in WebKit
-              x-webkit-airplay="deny"
+              {...({ "x-webkit-airplay": "deny" } as Record<string, string>)}
             >
               <source src={heroVideo.url} type="video/mp4" />
+
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 lg:from-black/25 lg:via-transparent lg:to-transparent" />
             {/* Klick-Fangschicht: hindert Opera/Safari daran, das Video als Popout/Fullscreen-Target zu erkennen */}
