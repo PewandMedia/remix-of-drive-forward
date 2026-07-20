@@ -3,6 +3,7 @@ import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
+import { FilialeGallery } from "@/components/site/FilialeGallery";
 import { Phone, Mail, MessageCircle, AlertCircle } from "lucide-react";
 import { InstagramLogoIcon, TikTokIcon } from "@/components/icons/TikTokIcon";
 
@@ -40,6 +41,10 @@ function ContactPage() {
           <a href="/anmeldung" className="inline-flex items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
             Zur Online-Anmeldung
           </a>
+        </div>
+
+        <div className="mb-12">
+          <FilialeGallery compact />
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">

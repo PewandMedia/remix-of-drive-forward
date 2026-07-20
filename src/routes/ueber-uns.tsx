@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
+import { FilialeGallery, FILIALE_IMAGES } from "@/components/site/FilialeGallery";
 import { Target, Award, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/ueber-uns")({
@@ -52,11 +53,15 @@ function AboutPage() {
             <Link to="/preise" className="inline-flex rounded-full border-2 border-foreground bg-white px-6 py-3 text-sm font-bold text-foreground hover:bg-foreground hover:text-white transition-colors">Preise ansehen</Link>
           </div>
         </div>
-        <div className="relative">
-          <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/15 to-transparent" />
-          <img src="/images/miro-car.png" alt="Fahrschule MIRO-DRIVE Bochum – modernes Fahrschulauto in Bochum" className="w-full" loading="lazy" />
+        <div className="space-y-4">
+          <img src={FILIALE_IMAGES[0].src} alt={FILIALE_IMAGES[0].alt} loading="lazy" className="w-full rounded-3xl border object-cover shadow-sm aspect-[4/3]" />
+          <div className="grid grid-cols-2 gap-4">
+            <img src={FILIALE_IMAGES[1].src} alt={FILIALE_IMAGES[1].alt} loading="lazy" className="w-full rounded-2xl border object-cover shadow-sm aspect-square" />
+            <img src={FILIALE_IMAGES[2].src} alt={FILIALE_IMAGES[2].alt} loading="lazy" className="w-full rounded-2xl border object-cover shadow-sm aspect-square" />
+          </div>
         </div>
       </div>
+      <FilialeGallery eyebrow="Einblicke" title="Unsere Filiale in Bochum" subtitle="Modern eingerichtete Räume, freundliches Team und zentrale Lage – so sieht MIRO-DRIVE von innen und außen aus." />
     </SiteLayout>
   );
 }
