@@ -175,17 +175,13 @@ export function FilialeGallery({
           </div>
         )}
 
-        {/* Mobile: komplette Bilder in voller Breite mit Swipe */}
-        <div className="-mx-4 sm:hidden">
-          <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {FILIALE_IMAGES.map((img, i) => (
-              <div key={img.src} className="shrink-0 snap-center" style={{ width: "calc(100vw - 2rem)" }}>
-                <Tile img={img} onClick={() => open(i)} />
-              </div>
-            ))}
-          </div>
-          <div className="mt-3 px-4 text-[11px] text-muted-foreground">
-            Tippen zum Vergrößern · seitlich wischen
+        {/* Mobile: Mosaik wie Referenz, alle Bilder sofort sichtbar */}
+        <div className="grid grid-cols-2 gap-2 sm:hidden">
+          <Tile img={hero} className="col-span-2" onClick={() => open(0)} />
+          <Tile img={top} onClick={() => open(1)} />
+          <Tile img={bottom} onClick={() => open(2)} />
+          <div className="col-span-2 mt-1 text-[11px] text-muted-foreground">
+            Tippen zum Vergrößern · in der Ansicht wischen
           </div>
         </div>
 
