@@ -1,15 +1,16 @@
-## Änderungen an `src/routes/index.tsx`
+## Fix in `src/routes/index.tsx`
 
-### 1. Sprachen-Strip symmetrisch mit zentrierten Flaggen
-Im `LanguageStrip` (Zeilen 220–253):
-- Layout auf **zentrierte, symmetrische Anordnung** umstellen: Label „Wir beraten & unterrichten in" oben zentriert, darunter alle 5 Sprachen in einer gleichmäßigen Reihe (5 Spalten) **zentriert nebeneinander** – Desktop und Mobile identisch strukturiert, nur Skalierung anders.
-- `LanguageChip`: Flagge **oben zentriert**, Label darunter zentriert (statt Flagge-links / Text-rechts). Gleiche Chip-Breite für alle 5 Sprachen (`grid-cols-5` mit `justify-items-center`), damit optisch alles bündig sitzt.
-- Kurdistan-Flagge (SVG) in gleicher Größe wie die Emoji-Flaggen darstellen, damit die Reihe wirklich symmetrisch wirkt.
+### 1. Hero-Video: der letzte sichtbare Button ist Opera's Video-Popout-Overlay (browserseitig injiziert, nicht aus unserem Code)
+- Auf das `<video>` zusätzlich native Steuerelemente per CSS blockieren: `[&::-webkit-media-controls]:!hidden`, `[&::-webkit-media-controls-panel]:!hidden`, `[&::-webkit-media-controls-start-playback-button]:!hidden`.
+- Statt einer einfachen transparenten Overlay-Schicht das Video **hinter** einem Bild-`<div>` mit `background-image` (Poster) verstecken ist zu invasiv — stattdessen: den `<video>`-Tag selbst mit `pointer-events-none` belassen und eine **echte Klick-Fangschicht** (`absolute inset-0 z-30`) einbauen, die Opera daran hindert, das Video als „Hover-Target" zu erkennen. Zusätzlich `object-position: center` behalten.
+- Extra Hardening: `x-webkit-airplay="deny"`, `controls={undefined}` weglassen, und `data-no-fullscreen`.
+- Hinweis intern: Opera Popout ist nicht 100% garantiert entfernbar; die Kombination oben unterdrückt es in allen mir bekannten Fällen zuverlässig.
 
-### 2. Hero-Video: Browser-Steuerbuttons entfernen
-Die zwei Buttons, die beim Antippen erscheinen, sind die nativen Video-Controls des Browsers (Play/Pause + Fullscreen/PiP auf iOS). Fix im `<video>`-Element (Zeilen 143–154):
-- `controls={false}` explizit setzen, `disablePictureInPicture` und `controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"` ergänzen.
-- Über dem Video eine transparente `pointer-events-none`-Overlay-Schicht legen, damit Taps das Video nicht mehr aktivieren können – das Video läuft dauerhaft im Loop, ohne dass Steuerelemente auftauchen.
-- `onContextMenu`-Handler zum Blockieren des Rechtsklick-Menüs.
+### 2. Sprachen-Strip: Labels vollständig lesbar, nichts mehr abgeschnitten
+- Im `LanguageChip` `truncate` **entfernen** und stattdessen `whitespace-normal break-words leading-tight` verwenden, damit „Kurdisch" und „Arabisch" komplett sichtbar sind (bei Bedarf zweizeilig).
+- Font-Size auf Mobile leicht verkleinern (`text-[10px] sm:text-sm`), Padding reduzieren (`px-1 py-2`).
+- Chips einheitlich `min-h-[72px]` damit die Reihe bei Umbruch weiter symmetrisch bleibt.
+- Grid-Gap auf Mobile verkleinern (`gap-1.5 sm:gap-4`) damit mehr Platz für den Text ist.
+- Flaggen-Größe auf Mobile ebenfalls minimal reduzieren, sodass die volle Beschriftung sichtbar bleibt ohne die visuelle Wirkung zu verlieren.
 
-Keine Änderungen an Business-Logik, Datenquellen oder anderen Sektionen.
+Keine weiteren Änderungen.
