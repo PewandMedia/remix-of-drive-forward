@@ -141,18 +141,26 @@ function HeroSection() {
           <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-primary/15 blur-3xl" />
           <div className="relative aspect-video overflow-hidden rounded-3xl border border-slate-200 bg-slate-900 shadow-2xl shadow-slate-300/60 ring-1 ring-slate-200 lg:aspect-video">
             <video
-              className="absolute inset-0 h-full w-full object-cover"
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover"
               autoPlay
               muted
               playsInline
               loop
               preload="auto"
+              controls={false}
+              disablePictureInPicture
+              disableRemotePlayback
+              controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
+              onContextMenu={(e) => e.preventDefault()}
               poster={heroPoster.url}
               aria-label="MIRO-DRIVE Fahrschulfahrzeug"
             >
               <source src={heroVideo.url} type="video/mp4" />
             </video>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 lg:from-black/25 lg:via-transparent lg:to-transparent" />
+            {/* Overlay blockiert alle Klicks/Taps auf das Video */}
+            <div className="absolute inset-0 z-10" aria-hidden="true" />
+
 
             {/* Badge oben links */}
             <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/25 bg-black/45 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">

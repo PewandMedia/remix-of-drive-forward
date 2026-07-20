@@ -1,10 +1,15 @@
-## Änderung in `src/routes/index.tsx` – `LanguageStrip`
+## Änderungen an `src/routes/index.tsx`
 
-Mobile Dauerschleife entfernen, alle 5 Sprachen kompakt in einer Reihe auf Handy zeigen.
+### 1. Sprachen-Strip symmetrisch mit zentrierten Flaggen
+Im `LanguageStrip` (Zeilen 220–253):
+- Layout auf **zentrierte, symmetrische Anordnung** umstellen: Label „Wir beraten & unterrichten in" oben zentriert, darunter alle 5 Sprachen in einer gleichmäßigen Reihe (5 Spalten) **zentriert nebeneinander** – Desktop und Mobile identisch strukturiert, nur Skalierung anders.
+- `LanguageChip`: Flagge **oben zentriert**, Label darunter zentriert (statt Flagge-links / Text-rechts). Gleiche Chip-Breite für alle 5 Sprachen (`grid-cols-5` mit `justify-items-center`), damit optisch alles bündig sitzt.
+- Kurdistan-Flagge (SVG) in gleicher Größe wie die Emoji-Flaggen darstellen, damit die Reihe wirklich symmetrisch wirkt.
 
-- Marquee-Block (Zeilen 233–242) löschen.
-- Mobile-Liste als 5-spaltiges Grid (`grid grid-cols-5 gap-1.5`) direkt unter der Überschrift rendern, damit alle Chips auf 360–390px sichtbar bleiben.
-- `LanguageChip` bekommt eine `compact`-Variante für Mobile: kleineres Padding (`px-2 py-1.5`), Flagge oben, Label darunter in `text-[10px]` — so passen alle fünf Chips nebeneinander ohne Overflow.
-- Desktop-Verhalten (statische horizontale Chip-Reihe rechts) bleibt unverändert.
+### 2. Hero-Video: Browser-Steuerbuttons entfernen
+Die zwei Buttons, die beim Antippen erscheinen, sind die nativen Video-Controls des Browsers (Play/Pause + Fullscreen/PiP auf iOS). Fix im `<video>`-Element (Zeilen 143–154):
+- `controls={false}` explizit setzen, `disablePictureInPicture` und `controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"` ergänzen.
+- Über dem Video eine transparente `pointer-events-none`-Overlay-Schicht legen, damit Taps das Video nicht mehr aktivieren können – das Video läuft dauerhaft im Loop, ohne dass Steuerelemente auftauchen.
+- `onContextMenu`-Handler zum Blockieren des Rechtsklick-Menüs.
 
-Keine anderen Komponenten oder Styles ändern; `@keyframes marquee-scroll` in `styles.css` bleibt (wird nicht mehr genutzt, aber ungenutztes CSS ist unkritisch).
+Keine Änderungen an Business-Logik, Datenquellen oder anderen Sektionen.
