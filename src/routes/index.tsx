@@ -67,8 +67,6 @@ function HeroSection() {
     <section className="relative isolate overflow-hidden bg-gradient-to-b from-white via-slate-50 to-red-50/40 text-slate-900">
       {/* dezente Deko – hell */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.5] [background-image:linear-gradient(to_right,rgb(226_232_240/0.55)_1px,transparent_1px),linear-gradient(to_bottom,rgb(226_232_240/0.55)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
-      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/15 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-40 right-0 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-[140px]" />
       <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/70 via-primary/20 to-transparent" />
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:px-8 lg:py-24">
@@ -133,7 +131,6 @@ function HeroSection() {
 
         {/* RECHTS: Video-Karte */}
         <div className="animate-fade-up relative mx-auto w-full max-w-xl lg:max-w-none" style={{ animationDelay: "0.35s" }}>
-          <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-primary/15 blur-3xl" />
           <div className="relative aspect-video overflow-hidden rounded-3xl border border-slate-200 bg-slate-900 shadow-2xl shadow-slate-300/60 ring-1 ring-slate-200 lg:aspect-video">
             <video
               className="pointer-events-none absolute inset-0 h-full w-full object-cover [&::-webkit-media-controls]:!hidden [&::-webkit-media-controls-enclosure]:!hidden [&::-webkit-media-controls-panel]:!hidden [&::-webkit-media-controls-start-playback-button]:!hidden"
@@ -510,7 +507,6 @@ function Index() {
       {/* ERSTE HILFE KURS TEASER */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl border bg-white">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/15 hidden lg:block blur-3xl" />
           <div className="relative grid gap-6 p-5 sm:gap-10 sm:p-12 lg:grid-cols-2 lg:items-center">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-primary">Erste-Hilfe-Kurs</span>
