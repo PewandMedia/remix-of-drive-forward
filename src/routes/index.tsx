@@ -325,204 +325,247 @@ function Index() {
         </div>
       </section>
 
-      {/* PREISE TEASER — Premium Preistafel */}
-      <section className="relative mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
-        {/* dezenter Bühnen-Glow hinter der Karte */}
+      {/* PREISE TEASER — Premium Preistafel auf dunkler Bühne */}
+      <section className="relative overflow-hidden bg-slate-950 py-24 sm:py-28">
+        {/* Feine obere Signal-Linie */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+
+        {/* Dot-Grid Muster */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
+          className="pointer-events-none absolute inset-0 opacity-[0.35]"
           style={{
-            backgroundImage:
-              "radial-gradient(900px 400px at 50% 20%, rgba(200,16,46,0.06), transparent 60%), radial-gradient(600px 300px at 90% 80%, rgba(15,23,42,0.05), transparent 60%)",
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
           }}
         />
 
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <div className="max-w-2xl">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Preise & Klassen</span>
-              {hasActiveOffer && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary shadow-sm">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-                  </span>
-                  Aktion läuft
+        {/* Diagonale rote Signal-Streifen */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, rgba(200,16,46,0.9) 0px, rgba(200,16,46,0.9) 1px, transparent 1px, transparent 14px)",
+          }}
+        />
+
+        {/* Radial Glows */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(700px 380px at 12% 8%, rgba(200,16,46,0.22), transparent 65%), radial-gradient(700px 400px at 92% 96%, rgba(15,23,42,0.9), transparent 60%)",
+          }}
+        />
+
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-primary backdrop-blur">
+                  Preise & Klassen
                 </span>
-              )}
-            </div>
-            <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl">Faire Preise. Klar aufgelistet.</h2>
-            <p className="mt-4 text-muted-foreground">
-              Gleiche Preise für Klasse B, B197 und B78 – der Unterschied liegt nur im Fahrzeug und in der Prüfung.
-            </p>
-          </div>
-          <Link to="/preise" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
-            Alle Preise ansehen <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-
-        {/* SPEKTAKULÄRE PREISTAFEL */}
-        {(() => {
-          const SNEAK_ROWS: { key: string; label: string; hint: string }[] = [
-            { key: "Grundbetrag", label: "Grundbetrag", hint: "Einmalig – Anmeldung & Verwaltung" },
-            { key: "Lernprogramm", label: "Lernprogramm", hint: "Theorie-App & Lernmaterial" },
-            { key: "Übungsstunde", label: "Übungsstunde", hint: "45 Minuten Fahrunterricht" },
-            { key: "Vorstellung Theorieprüfung", label: "Theorieprüfung", hint: "Vorstellungsgebühr Fahrschule" },
-            { key: "Vorstellung Praxisprüfung", label: "Praxisprüfung", hint: "Vorstellungsgebühr Fahrschule" },
-          ];
-          const pool = prices.filter((p: any) => p.category === "Klasse B");
-          const rows = SNEAK_ROWS.map((row) => ({ row, price: pool.find((p: any) => p.title === row.key) ?? null })).filter((r) => r.price);
-          const grundOffer = rows.find((r) => r.row.key === "Grundbetrag" && isOfferLive(r.price as any));
-          const remaining = grundOffer ? formatRemaining((grundOffer.price as any).offer_valid_until) : null;
-
-          return (
-            <div className="relative">
-              {/* Längere, dezentere Eck-Akzente */}
-              <div className="pointer-events-none absolute -left-4 -top-4 h-12 w-12 border-l border-t border-slate-900/70" />
-              <div className="pointer-events-none absolute -right-4 -top-4 h-12 w-12 border-r border-t border-slate-900/70" />
-              <div className="pointer-events-none absolute -bottom-4 -left-4 h-12 w-12 border-b border-l border-slate-900/70" />
-              <div className="pointer-events-none absolute -bottom-4 -right-4 h-12 w-12 border-b border-r border-slate-900/70" />
-
-              <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_50px_120px_-40px_rgba(15,23,42,0.45)] sm:p-12 lg:p-16">
-                {/* Wasserzeichen */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 select-none font-display text-[140px] font-light leading-none tracking-tighter text-slate-900/[0.03] sm:text-[220px]"
-                >
-                  PREISE
-                </div>
-
-                {/* Innere feine Kontur */}
-                <div className="pointer-events-none absolute inset-3 rounded-[26px] border border-slate-100" />
-
-                {/* Schwebender Aktions-Chip */}
-                {grundOffer && (
-                  <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-6">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-700 shadow-sm backdrop-blur">
-                      <span className="relative flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-                      </span>
-                      Aktion aktiv{remaining ? ` · ${remaining}` : ""}
-                    </div>
-                  </div>
+                {hasActiveOffer && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/60 bg-transparent px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/70" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+                    </span>
+                    Aktion läuft
+                  </span>
                 )}
+              </div>
+              <h2 className="mt-3 font-display text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+                Faire Preise. <span className="text-primary">Klar</span> aufgelistet.
+              </h2>
+              <p className="mt-4 text-white/60">
+                Gleiche Preise für Klasse B, B197 und B78 – der Unterschied liegt nur im Fahrzeug und in der Prüfung.
+              </p>
+            </div>
+            <Link to="/preise" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+              Alle Preise ansehen <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
 
-                <div className="relative">
-                  {/* Header der Tafel */}
-                  <div className="flex flex-col items-center pb-8 text-center">
-                    <img src="/images/miro-drive-logo.svg" alt="MIRO-DRIVE" className="h-10 w-auto sm:h-12" />
-                    <div className="mt-5 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-500">
-                      <span className="h-px w-8 bg-slate-300" />
-                      <span className="h-1 w-1 rounded-full bg-slate-400" />
-                      Preise · Auszug
-                      <span className="h-1 w-1 rounded-full bg-slate-400" />
-                      <span className="h-px w-8 bg-slate-300" />
+          {/* PREISTAFEL */}
+          {(() => {
+            const SNEAK_ROWS: { key: string; label: string; hint: string }[] = [
+              { key: "Grundbetrag", label: "Grundbetrag", hint: "Einmalig – Anmeldung & Verwaltung" },
+              { key: "Lernprogramm", label: "Lernprogramm", hint: "Theorie-App & Lernmaterial" },
+              { key: "Übungsstunde", label: "Übungsstunde", hint: "45 Minuten Fahrunterricht" },
+              { key: "Vorstellung Theorieprüfung", label: "Theorieprüfung", hint: "Vorstellungsgebühr Fahrschule" },
+              { key: "Vorstellung Praxisprüfung", label: "Praxisprüfung", hint: "Vorstellungsgebühr Fahrschule" },
+            ];
+            const pool = prices.filter((p: any) => p.category === "Klasse B");
+            const rows = SNEAK_ROWS.map((row) => ({ row, price: pool.find((p: any) => p.title === row.key) ?? null })).filter((r) => r.price);
+            const grundOffer = rows.find((r) => r.row.key === "Grundbetrag" && isOfferLive(r.price as any));
+            const remaining = grundOffer ? formatRemaining((grundOffer.price as any).offer_valid_until) : null;
+
+            return (
+              <div className="relative">
+                {/* Rote Eck-Winkel */}
+                <div className="pointer-events-none absolute -left-3 -top-3 z-20 h-14 w-14 border-l-2 border-t-2 border-primary" />
+                <div className="pointer-events-none absolute -right-3 -top-3 z-20 h-14 w-14 border-r-2 border-t-2 border-primary" />
+                <div className="pointer-events-none absolute -bottom-3 -left-3 z-20 h-14 w-14 border-b-2 border-l-2 border-primary" />
+                <div className="pointer-events-none absolute -bottom-3 -right-3 z-20 h-14 w-14 border-b-2 border-r-2 border-primary" />
+
+                {/* Gradient-Border-Wrapper */}
+                <div
+                  className="rounded-[32px] p-[1.5px] shadow-[0_60px_140px_-40px_rgba(200,16,46,0.35)]"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(140deg, rgba(200,16,46,0.65), rgba(15,23,42,0.15) 45%, rgba(200,16,46,0.4))",
+                  }}
+                >
+                  <div
+                    className="relative overflow-hidden rounded-[30px] border border-slate-200 p-6 sm:p-12 lg:p-16"
+                    style={{
+                      backgroundColor: "#F7F5F2",
+                      backgroundImage:
+                        "repeating-linear-gradient(0deg, rgba(15,23,42,0.03) 0px, rgba(15,23,42,0.03) 1px, transparent 1px, transparent 26px), repeating-linear-gradient(90deg, rgba(15,23,42,0.03) 0px, rgba(15,23,42,0.03) 1px, transparent 1px, transparent 26px)",
+                    }}
+                  >
+                    {/* Wasserzeichen */}
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -top-4 left-1/2 -translate-x-1/2 select-none whitespace-nowrap font-display text-[110px] font-extralight leading-none tracking-[0.15em] text-slate-900/[0.04] sm:text-[180px]"
+                    >
+                      MIRO-DRIVE
                     </div>
-                    <h3 className="mt-4 font-display text-3xl font-light tracking-tight text-slate-900 sm:text-4xl">
-                      Klasse B · B197 · B78
-                    </h3>
-                    <p className="mt-2 text-sm text-slate-500">Identische Preise – individuelle Ausbildung.</p>
-                  </div>
 
-                  <div className="mx-auto mb-2 h-px w-full max-w-md bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+                    {/* Innere feine Kontur */}
+                    <div className="pointer-events-none absolute inset-3 rounded-[24px] border border-slate-900/[0.06]" />
 
-                  {/* Preiszeilen mit Dotted-Leader */}
-                  <div className="relative">
-                    <ul className="mt-4 space-y-1 [mask-image:linear-gradient(to_bottom,black_72%,transparent_100%)]">
-                      {rows.map(({ row, price }, idx) => {
-                        const live = price ? isOfferLive(price as any) : false;
-                        const isHighlight = row.key === "Übungsstunde";
-                        return (
-                          <li
-                            key={row.key}
-                            className="group grid grid-cols-[auto_1fr_auto] items-baseline gap-3 py-4 sm:gap-5 sm:py-5"
-                          >
-                            <span className="font-display text-sm font-light tabular-nums text-slate-400 sm:text-base">
-                              {String(idx + 1).padStart(2, "0")}
+                    <div className="relative">
+                      {/* Ticket-Kopfzeile */}
+                      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-900/10 pb-6">
+                        <div className="flex items-center gap-3">
+                          <span className="block h-10 w-[3px] bg-primary" />
+                          <div>
+                            <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-primary">Preisliste 2026</div>
+                            <div className="mt-1 text-xs text-slate-500">MIRO-DRIVE Fahrschule · Bochum</div>
+                          </div>
+                        </div>
+                        {grundOffer && (
+                          <div className="inline-flex items-center gap-2 rounded-full border border-primary/50 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-primary shadow-sm">
+                            <span className="relative flex h-2 w-2">
+                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
+                              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                             </span>
-                            <div className="flex min-w-0 items-baseline gap-3 overflow-hidden">
-                              <div className="min-w-0 shrink-0">
-                                <p className="font-display text-lg font-normal text-slate-900 sm:text-xl">
-                                  {row.label}
-                                  {live && (
-                                    <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 align-middle text-[9px] font-bold uppercase tracking-wider text-primary">
-                                      <Flame className="h-2.5 w-2.5" /> Aktion
+                            Aktion aktiv{remaining ? ` · ${remaining}` : ""}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Headline */}
+                      <div className="pt-8 text-center">
+                        <h3 className="font-display text-3xl font-light tracking-tight text-slate-900 sm:text-5xl">
+                          Klasse B <span className="text-slate-400">·</span> B197 <span className="text-slate-400">·</span> B78
+                        </h3>
+                        <p className="mt-2 text-sm text-slate-500">Identische Preise – individuelle Ausbildung.</p>
+                      </div>
+
+                      {/* Doppelte Trennlinie mit rotem Punkt */}
+                      <div className="mx-auto mt-6 flex max-w-md items-center gap-3">
+                        <span className="h-px flex-1 bg-slate-300" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(200,16,46,0.6)]" />
+                        <span className="h-px flex-1 bg-slate-300" />
+                      </div>
+
+                      {/* Preiszeilen */}
+                      <div className="relative">
+                        <ul className="mt-4 [mask-image:linear-gradient(to_bottom,black_75%,transparent_100%)]">
+                          {rows.map(({ row, price }, idx) => {
+                            const live = price ? isOfferLive(price as any) : false;
+                            const isHighlight = row.key === "Übungsstunde";
+                            return (
+                              <li
+                                key={row.key}
+                                className="group grid grid-cols-[auto_1fr_auto] items-baseline gap-3 border-l-2 border-transparent py-4 pl-3 transition-all duration-300 hover:border-primary hover:bg-primary/[0.03] sm:gap-5 sm:py-5 sm:pl-4"
+                              >
+                                <span className="font-display text-base font-medium tabular-nums text-primary sm:text-lg">
+                                  {String(idx + 1).padStart(2, "0")}
+                                </span>
+                                <div className="flex min-w-0 items-baseline gap-3 overflow-hidden">
+                                  <div className="min-w-0 shrink-0">
+                                    <p className="font-display text-lg font-normal text-slate-900 sm:text-xl">
+                                      {row.label}
+                                      {live && (
+                                        <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 align-middle text-[9px] font-bold uppercase tracking-wider text-primary">
+                                          <Flame className="h-2.5 w-2.5" /> Aktion
+                                        </span>
+                                      )}
+                                    </p>
+                                    <p className="mt-0.5 hidden text-xs text-slate-500 sm:block">{row.hint}</p>
+                                  </div>
+                                  <span
+                                    aria-hidden
+                                    className="mb-1 hidden h-px flex-1 translate-y-1 border-b border-dotted border-slate-400/60 sm:block"
+                                  />
+                                </div>
+                                <div className="flex shrink-0 flex-col items-end">
+                                  {live && (price as any).old_price && (
+                                    <span className="text-xs font-medium text-slate-400 line-through sm:text-sm">
+                                      {(price as any).old_price}
                                     </span>
                                   )}
-                                </p>
-                                <p className="mt-0.5 hidden text-xs text-slate-500 sm:block">{row.hint}</p>
-                              </div>
-                              {/* Dotted-Leader */}
-                              <span
-                                aria-hidden
-                                className="mb-1 hidden h-px flex-1 translate-y-1 border-b border-dotted border-slate-300 sm:block"
-                              />
-                            </div>
-                            <div className="flex shrink-0 flex-col items-end">
-                              {live && (price as any).old_price && (
-                                <span className="text-xs font-medium text-slate-400 line-through sm:text-sm">
-                                  {(price as any).old_price}
-                                </span>
-                              )}
-                              <span
-                                className={[
-                                  "font-display tabular-nums leading-none",
-                                  live
-                                    ? "text-3xl font-medium text-primary sm:text-4xl"
-                                    : isHighlight
-                                      ? "text-2xl font-medium text-slate-900 sm:text-3xl"
-                                      : "text-2xl font-light text-slate-900 sm:text-3xl",
-                                ].join(" ")}
-                              >
-                                {(price as any).price}
-                              </span>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
+                                  <span
+                                    className={[
+                                      "font-display tabular-nums leading-none",
+                                      live
+                                        ? "text-3xl font-semibold text-primary sm:text-4xl"
+                                        : isHighlight
+                                          ? "border-b-2 border-primary/60 pb-1 text-2xl font-medium text-slate-900 sm:text-3xl"
+                                          : "text-2xl font-light text-slate-900 sm:text-3xl",
+                                    ].join(" ")}
+                                  >
+                                    {(price as any).price}
+                                  </span>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
 
-                  {/* CTA */}
-                  <div className="mt-10 flex flex-col items-center gap-5">
-                    <div className="flex flex-col gap-3 sm:flex-row">
-                      <Link
-                        to="/preise"
-                        className="group inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-primary hover:shadow-xl sm:text-base"
-                      >
-                        Vollständige Preisliste
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Link>
-                      <a
-                        href={CONTACT.whatsapp}
-                        target="_blank"
-                        rel="noopener"
-                        className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-7 py-3.5 text-sm font-bold text-slate-900 transition-all hover:-translate-y-0.5 hover:border-primary hover:text-primary sm:text-base"
-                      >
-                        <MessageCircle className="h-4 w-4" /> Beratung per WhatsApp
-                      </a>
-                    </div>
-                    <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-medium text-slate-500 sm:text-xs">
-                      <span className="inline-flex items-center gap-1.5">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Keine versteckten Kosten
-                      </span>
-                      <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
-                      <span className="inline-flex items-center gap-1.5">
-                        <ShieldCheck className="h-3.5 w-3.5 text-primary" /> Faire Konditionen
-                      </span>
-                      <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
-                      <span className="inline-flex items-center gap-1.5">
-                        <MessageCircle className="h-3.5 w-3.5 text-primary" /> Persönliche Beratung
-                      </span>
+                      {/* CTA */}
+                      <div className="mt-10 flex flex-col items-center gap-5">
+                        <Link
+                          to="/preise"
+                          className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-9 py-4 text-base font-bold text-primary-foreground shadow-[0_20px_50px_-15px_rgba(200,16,46,0.55)] transition-all hover:-translate-y-0.5 hover:shadow-[0_30px_60px_-15px_rgba(200,16,46,0.75)]"
+                        >
+                          Vollständige Preisliste ansehen
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-medium text-slate-500 sm:text-xs">
+                          <span className="inline-flex items-center gap-1.5">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Keine versteckten Kosten
+                          </span>
+                          <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
+                          <span className="inline-flex items-center gap-1.5">
+                            <ShieldCheck className="h-3.5 w-3.5 text-primary" /> Faire Konditionen
+                          </span>
+                          <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block" />
+                          <span className="inline-flex items-center gap-1.5">
+                            <MessageCircle className="h-3.5 w-3.5 text-primary" /> Persönliche Beratung
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })()}
+            );
+          })()}
+        </div>
+
+        {/* Untere Signal-Linie */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
       </section>
+
+
 
       {/* FÜHRERSCHEINANTRAG */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">

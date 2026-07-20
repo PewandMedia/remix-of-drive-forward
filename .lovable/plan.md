@@ -1,46 +1,61 @@
 ## Ziel
-Der große rote Angebots-Kasten auf der Startseite wird ersatzlos entfernt. Stattdessen wird die darunterliegende Preistafel („Sneak Peek") deutlich spektakulärer inszeniert und übernimmt das Angebot dezent als Highlight – ohne den bisherigen roten Block-Look.
+Auf der Startseite den WhatsApp-Beratungs-Button aus dem Preis-Teaser entfernen und die Preistafel selbst zu einem "2027-Style" Wow-Moment umbauen: dunkle Bühne mit roten Signal-Akzenten, präzise Typografie, feines Grafik-Muster, aber weiterhin seriös.
 
-Scope: Nur `src/routes/index.tsx`, Sektion `PREISE TEASER` (Zeilen ~328–492). Keine Änderungen an `/preise`, DB oder Business-Logik.
+Scope: Nur die Sektion `PREISE TEASER` in `src/routes/index.tsx` (ca. Zeilen 328–525). Keine Änderungen an `/preise`, DB, Business-Logik oder anderen Sektionen.
 
 ## Änderungen
 
-### 1. Roten Angebots-Banner entfernen
-- Kompletter Block `{hasActiveOffer && (() => { ... })()}` (Zeilen 350–395) inkl. Gradient-Karte `from-primary via-[#c8102e] to-[#7a0010]` wird gelöscht.
-- Der kleine „Aktion läuft"-Pill im Header (Zeilen 334–338) bleibt als dezenter Hinweis erhalten.
+### 1. WhatsApp-Beratung entfernen
+- `<a href={CONTACT.whatsapp}>… Beratung per WhatsApp</a>` (Zeilen 497–504) inkl. umschließendem Flex-Container komplett löschen.
+- Der Primär-Button „Vollständige Preisliste" → `/preise` bleibt als einzige CTA, zentriert und etwas prominenter.
+- `MessageCircle` Icon bleibt weiterhin in der Trust-Zeile („Persönliche Beratung") und darf nicht aus den Imports entfernt werden.
 
-### 2. Preistafel spektakulärer machen
-Umbau der Sneak-Peek-Karte zu einer Premium-Preistafel im Stil einer edlen Speisekarte / Manufaktur-Preisliste:
+### 2. Preistafel: Redesign auf „Premium-Bühne"
+Von „hell + weiß" zu einer edlen, kontrastreichen Inszenierung mit Rot-Akzenten.
 
-**Rahmen & Bühne**
-- Große Karte mit doppelter Kontur (feine innere Linie + äußere Karte), stärkerer, weicher Schatten `shadow-[0_50px_120px_-40px_rgba(15,23,42,0.45)]`.
-- Dezenter Radial-Glow hinter der Karte (warmes Off-White + minimaler roter Schimmer oben rechts) statt roter Fläche.
-- Eck-Akzente in Gold-artigem Slate-900 statt Primary, feiner und länger.
-- Optional: dünner „Wasserzeichen"-Text „PREISLISTE" hinter der Kopfzeile (opacity ~4%, sehr groß, font-display).
+**Sektions-Hintergrund**
+- Neue Hintergrund-Bühne: sehr dunkles Slate/Ink (`bg-slate-950`) über die volle Sektionsbreite, mit:
+  - Dezentem Grid-/Dot-Muster (SVG-Pattern oder existierendes `hero-dot-grid` in gedämpfter Weiß-Opacity),
+  - Zwei Radial-Glows: warmer Rot-Glow oben links, tiefer Slate-Glow unten rechts,
+  - Diagonalen roten Signal-Streifen (dünn, ~1px, wiederholend, sehr niedrige Opacity) als grafisches Muster,
+  - Ganz oben feine, harte 1px-Linie in `primary/40`, um die Sektion abzugrenzen.
+- Sektions-Header (Titel „Faire Preise. Klar aufgelistet.", Chip, „Alle Preise ansehen") komplett auf Hell-auf-Dunkel invertiert.
 
-**Header der Tafel**
-- Logo bleibt; darüber kleine Zeile „Est. Bochum" o. ä. – NEIN, stattdessen ein Monogramm-Divider (dünne Linie – Punkt – dünne Linie).
-- Titel „Klasse B · B197 · B78" wird größer und in Serif-Light, darunter Untertitel „Identische Preise – individuelle Ausbildung".
-- Wenn Angebot aktiv: rechts oben in der Karte ein schwebender, kleiner Chip „Aktion aktiv · noch X Tage" (weiß, feine Border, roter Punkt) – deutlich zurückhaltender als der aktuelle rote Block.
+**Karte selbst**
+- Karten-Hintergrund bleibt „Papier"-Off-White (`#F7F5F2`), aber eingebettet in die dunkle Bühne → hoher Kontrast, wirkt wie ein Dokument auf einer Bühne.
+- Karte bekommt:
+  - Zwei sichtbare Layer: äußerer schmaler Rot-Rahmen (`ring-1 ring-primary/30` + `p-[2px]` Gradient-Border von `primary` → `slate-900`),
+  - Innere Karte mit doppelter Kontur wie bisher, plus dezentem Rasterlinien-Muster (repeat linear-gradient, 24px, `slate-900/[0.025]`) statt reinem Weiß.
+- Eck-Akzente werden zu roten L-Winkeln (`border-primary`), länger (h-16 w-16) und schärfer.
+- Wasserzeichen „PREISE" wird ersetzt durch groß gesetztes „MIRO-DRIVE" (font-display, extra-light, letter-spacing weit) in `slate-900/[0.04]` — bewusst ein Marken-Statement.
+- Neuer Kopfbereich: statt Logo + Text-Divider → kompakte „Ticket-Kopfzeile":
+  - Links: kleine rote vertikale Signal-Leiste + Label „PREISLISTE 2026" (uppercase, tracking-widest),
+  - Mitte/Rechts: Serifen-freie Headline „Klasse B · B197 · B78" mit dünnem Untertitel,
+  - Rechts: Aktions-Chip (falls Angebot aktiv) — bleibt, aber mit rotem Rand statt neutralem Grau.
+- Zwischen Header und Preiszeilen: doppelte Trennlinie (dick + dünn) mit rotem Punkt in der Mitte („Manufaktur-Feel").
 
 **Preiszeilen**
-- Nummerierung (01, 02, …) in Serif light, größer.
-- Zeilen bekommen dezente Dotted-Leader zwischen Titel und Preis (`border-dotted`-Trick) für klassischen Speisekarten-Look.
-- Beim Angebots-Row (Grundbetrag): alter Preis durchgestrichen daneben, neuer Preis in Primary + kleiner Flame-Chip „Aktion" inline neben dem Titel. Kein farbiger Hintergrund für die Zeile.
-- Übungsstunde bleibt Primary-Highlight.
-- Fade-Maske am unteren Ende beibehalten (Sneak-Peek-Charakter).
+- Nummerierung `01` … in roter Farbe (`text-primary`), tabular-nums, größer, mit dezentem `after:` roter Punkt.
+- Hover-Effekt pro Zeile: linke rote 2px-Border-Left slidet ein (`hover:border-l-2 hover:border-primary` mit Transition, Padding-Ausgleich).
+- Dotted-Leader in `slate-300`, aber mit Farbverlauf zur Mitte hin.
+- Preise: Standardpreise in `slate-900`, Highlight (Übungsstunde) in Slate mit rotem Unterstrich, Aktions-Preise in `primary` + kleine Flame-Chip inline (bleibt).
+- Fade-Maske am Ende bleibt, aber weicher (75%).
 
 **CTA-Bereich**
-- Zwei Buttons nebeneinander:
-  - Primär (dunkel): „Vollständige Preisliste" → `/preise`.
-  - Sekundär (Outline): „Beratung per WhatsApp" → `CONTACT.whatsapp`.
-- Trust-Zeile darunter: „Keine versteckten Kosten · Faire Konditionen · Persönliche Beratung" mit Mini-Icons.
+- Nur noch ein zentraler Primär-Button „Vollständige Preisliste ansehen" → `/preise`.
+  - Style: `bg-primary text-white`, `rounded-full`, größer (`px-9 py-4`, `text-base`), mit sanftem Rot-Glow-Shadow (`shadow-[0_20px_50px_-15px_rgba(200,16,46,0.5)]`).
+  - Hover: leichter Lift + intensiverer Glow, Pfeil animiert nach rechts.
+- Trust-Zeile bleibt unter dem Button (3 Icons + Punkte-Trenner, keine Änderung am Wording).
 
-### 3. Header der Sektion
-- Der Chip „Aktion läuft" bleibt, wird aber als sanfter Outline-Chip (weißer Hintergrund, Primary-Text, kleiner pulsierender Punkt) statt gefülltem Primary umgebaut, damit er zur neuen Ästhetik passt.
+### 3. Sektions-Header (über der Karte)
+- Auf dunklem Hintergrund: Chip „Preise & Klassen" wird `text-primary`, `bg-white/5`, `border-primary/30`.
+- Aktions-Chip „Aktion läuft" mit rotem Rand + weißem Text auf transparentem Hintergrund.
+- Headline `text-white`, Subtext `text-white/60`.
+- „Alle Preise ansehen" Link: `text-primary`, hover underline bleibt.
 
 ## Technische Details
 - Datei: `src/routes/index.tsx`.
-- Keine neuen Abhängigkeiten, nur Tailwind-Klassen und bereits importierte Lucide-Icons (`Flame`, `Timer`, `ArrowRight`, `MessageCircle`, `CheckCircle2`, `ShieldCheck`).
-- Angebots-Detection weiterhin über `isOfferLive` / `formatRemaining` / `hasActiveOffer` (bereits im File vorhanden).
-- Keine Änderung an Queries, `getHomePrices`, DB-Schema oder `/preise`-Seite.
+- Keine neuen Dependencies. Alle Effekte via Tailwind-Utilities, inline `style` für Radial-/Pattern-Gradients, ggf. ein winziges SVG-Muster als data-URL.
+- `CONTACT` Import darf drin bleiben (wird an anderer Stelle verwendet), `MessageCircle` bleibt für die Trust-Zeile.
+- Angebots-Detection (`isOfferLive`, `formatRemaining`, `hasActiveOffer`) unverändert.
+- Keine Änderungen an Queries, `getHomePrices`, DB-Schema, `/preise`-Seite oder anderen Sektionen der Startseite.
