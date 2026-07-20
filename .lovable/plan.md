@@ -1,16 +1,14 @@
-## Fix in `src/routes/index.tsx`
+Ziel: Die Leistungskarten auf der `/leistungen`-Unterseite sollen auf Desktop-Ansicht in 3er-Reihen angezeigt werden (statt aktuell 4er-Reihen).
 
-### 1. Hero-Video: der letzte sichtbare Button ist Opera's Video-Popout-Overlay (browserseitig injiziert, nicht aus unserem Code)
-- Auf das `<video>` zusätzlich native Steuerelemente per CSS blockieren: `[&::-webkit-media-controls]:!hidden`, `[&::-webkit-media-controls-panel]:!hidden`, `[&::-webkit-media-controls-start-playback-button]:!hidden`.
-- Statt einer einfachen transparenten Overlay-Schicht das Video **hinter** einem Bild-`<div>` mit `background-image` (Poster) verstecken ist zu invasiv — stattdessen: den `<video>`-Tag selbst mit `pointer-events-none` belassen und eine **echte Klick-Fangschicht** (`absolute inset-0 z-30`) einbauen, die Opera daran hindert, das Video als „Hover-Target" zu erkennen. Zusätzlich `object-position: center` behalten.
-- Extra Hardening: `x-webkit-airplay="deny"`, `controls={undefined}` weglassen, und `data-no-fullscreen`.
-- Hinweis intern: Opera Popout ist nicht 100% garantiert entfernbar; die Kombination oben unterdrückt es in allen mir bekannten Fällen zuverlässig.
+Aktueller Stand:
+- In `src/routes/leistungen.tsx` wird das Grid mit `grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4` gerendert.
+- Auf dem Screenshot sind daher 4 Karten in der ersten Reihe und 2 Karten in der zweiten Reihe zu sehen.
 
-### 2. Sprachen-Strip: Labels vollständig lesbar, nichts mehr abgeschnitten
-- Im `LanguageChip` `truncate` **entfernen** und stattdessen `whitespace-normal break-words leading-tight` verwenden, damit „Kurdisch" und „Arabisch" komplett sichtbar sind (bei Bedarf zweizeilig).
-- Font-Size auf Mobile leicht verkleinern (`text-[10px] sm:text-sm`), Padding reduzieren (`px-1 py-2`).
-- Chips einheitlich `min-h-[72px]` damit die Reihe bei Umbruch weiter symmetrisch bleibt.
-- Grid-Gap auf Mobile verkleinern (`gap-1.5 sm:gap-4`) damit mehr Platz für den Text ist.
-- Flaggen-Größe auf Mobile ebenfalls minimal reduzieren, sodass die volle Beschriftung sichtbar bleibt ohne die visuelle Wirkung zu verlieren.
+Geplante Änderung:
+- Ändere das Grid auf `grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-3`.
+- Damit werden auf Desktop 3 Karten pro Reihe dargestellt (2 Reihen mit je 3 Karten).
+- Tablet-Ansicht (`md`) wird ebenfalls auf 3 Spalten gesetzt, damit der Übergang sauber ist.
+- Keine weiteren inhaltlichen oder visuellen Änderungen an den Karten selbst.
 
-Keine weiteren Änderungen.
+Betroffene Datei:
+- `src/routes/leistungen.tsx` (Zeile 45)
