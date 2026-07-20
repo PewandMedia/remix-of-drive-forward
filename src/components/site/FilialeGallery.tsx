@@ -179,7 +179,7 @@ export function FilialeGallery({
         <div className="-mx-4 sm:hidden">
           <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {FILIALE_IMAGES.map((img, i) => (
-              <div key={img.src} className="w-[calc(100vw-2rem)] shrink-0 snap-center">
+              <div key={img.src} className="shrink-0 snap-center" style={{ width: "calc(100vw - 2rem)" }}>
                 <Tile img={img} onClick={() => open(i)} />
               </div>
             ))}
