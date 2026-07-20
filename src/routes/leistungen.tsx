@@ -4,7 +4,7 @@ import { CONTACT } from "@/lib/contact";
 import { Car, GraduationCap, BookOpen, Wrench, Sun, Heart } from "lucide-react";
 import imgKlasseB from "@/assets/leistungen/klasse-b.jpg";
 import imgB197 from "@/assets/leistungen/b197.jpg";
-import imgTheorie from "@/assets/leistungen/theorie.jpg";
+import theorieraum from "@/assets/theorieraum.jpg.asset.json";
 import imgPraxis from "@/assets/leistungen/praxis.jpg";
 import imgSonder from "@/assets/leistungen/sonderfahrten.jpg";
 
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/leistungen")({
 const services = [
   { icon: GraduationCap, image: imgKlasseB, title: "Führerschein Klasse B in Bochum", text: "Starte deine Ausbildung für den Autoführerschein Klasse B bei MIRO-DRIVE. Wir begleiten dich professionell von der ersten Beratung bis zur praktischen Prüfung in Bochum.", cta: "Mehr erfahren", to: "/kontakt" },
   { icon: Car, image: imgB197, title: "B197 Führerschein in Bochum", text: "Mit der B197-Ausbildung lernst du modern und flexibel: Ausbildung auf Automatik – Führerschein gilt trotzdem für Schaltwagen.", cta: "Mehr erfahren", to: "/kontakt" },
-  { icon: BookOpen, image: imgTheorie, title: "Theorieunterricht in Bochum", text: "Unser Theorieunterricht in Bochum ist verständlich, strukturiert und praxisnah – optimale Vorbereitung auf deine Theorieprüfung.", cta: "Mehr erfahren", to: "/kontakt" },
+  { icon: BookOpen, image: theorieraum.url, title: "Theorieunterricht in Bochum", text: "Unser Theorieunterricht in Bochum ist verständlich, strukturiert und praxisnah – optimale Vorbereitung auf deine Theorieprüfung.", cta: "Mehr erfahren", to: "/kontakt" },
   { icon: Wrench, image: imgPraxis, title: "Fahrstunden in Bochum", text: "In den Fahrstunden in Bochum lernst du Schritt für Schritt sicheres Fahren im echten Straßenverkehr in Bochum und Umgebung.", cta: "Mehr erfahren", to: "/kontakt" },
   { icon: Sun, image: imgSonder, title: "Sonderfahrten", text: "Wir bereiten dich professionell auf Überlandfahrten, Autobahnfahrten und Nachtfahrten rund um Bochum und Herne vor.", cta: "Mehr erfahren", to: "/kontakt" },
   { icon: Heart, image: imgErsteHilfe, title: "Erste-Hilfe-Kurs Bochum", text: "Für deinen Führerschein brauchst du einen Erste-Hilfe-Kurs. Bei MIRO-DRIVE kannst du dich informieren und direkt eine Anfrage stellen.", cta: "Mehr erfahren", to: "/erste-hilfe-kurs" },

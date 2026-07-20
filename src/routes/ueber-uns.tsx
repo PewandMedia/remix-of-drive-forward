@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
-import { FilialeGallery, FILIALE_IMAGES } from "@/components/site/FilialeGallery";
+import { FILIALE_IMAGES } from "@/components/site/FilialeGallery";
 import { Target, Award, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/ueber-uns")({
@@ -53,15 +53,17 @@ function AboutPage() {
             <Link to="/preise" className="inline-flex rounded-full border-2 border-foreground bg-white px-6 py-3 text-sm font-bold text-foreground hover:bg-foreground hover:text-white transition-colors">Preise ansehen</Link>
           </div>
         </div>
-        <div className="space-y-4">
-          <img src={FILIALE_IMAGES[0].src} alt={FILIALE_IMAGES[0].alt} loading="lazy" className="w-full rounded-3xl border object-cover shadow-sm aspect-[4/3]" />
-          <div className="grid grid-cols-2 gap-4">
-            <img src={FILIALE_IMAGES[1].src} alt={FILIALE_IMAGES[1].alt} loading="lazy" className="w-full rounded-2xl border object-cover shadow-sm aspect-square" />
-            <img src={FILIALE_IMAGES[2].src} alt={FILIALE_IMAGES[2].alt} loading="lazy" className="w-full rounded-2xl border object-cover shadow-sm aspect-square" />
-          </div>
+        <div className="grid grid-cols-3 gap-3 sm:gap-4 self-start">
+          {FILIALE_IMAGES.map((img) => (
+            <figure key={img.src} className="overflow-hidden rounded-xl border bg-white shadow-sm sm:rounded-2xl">
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src={img.src} alt={img.alt} loading="lazy" className="h-full w-full object-cover object-center" />
+              </div>
+              <figcaption className="px-2 py-2 text-center text-[11px] font-semibold text-foreground sm:px-3 sm:py-2 sm:text-sm">{img.caption}</figcaption>
+            </figure>
+          ))}
         </div>
       </div>
-      <FilialeGallery eyebrow="Einblicke" title="Unsere Filiale in Bochum" subtitle="Modern eingerichtete Räume, freundliches Team und zentrale Lage – so sieht MIRO-DRIVE von innen und außen aus." />
     </SiteLayout>
   );
 }

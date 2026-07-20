@@ -1,23 +1,25 @@
-Drei neue Fotos der Fahrschule (Außenansicht, Theorieraum, Empfang/Büro) werden als Assets hochgeladen und an passenden Stellen platziert.
+Die drei Filial-Fotos (Außen, Theorieraum, Empfang) sind im Format 4/5 hochkant zugeschnitten, wodurch Motive abgeschnitten wirken. Sie werden auf ein echtes Foto-Verhältnis umgestellt und überall wirklich nebeneinander gerendert. Das KI-Bild in der Leistungen-Kachel „Theorieunterricht“ wird durch das echte Theorieraum-Foto ersetzt.
 
-## Assets
-- Upload aller drei Bilder via `lovable-assets` nach `src/assets/`:
-  - `filiale-aussen.jpg` (Außenansicht)
-  - `theorieraum.jpg` (Theorieraum)
-  - `empfang.jpg` (Empfang/Büro)
+## Änderungen
 
-## Platzierung
+**1. `src/components/site/FilialeGallery.tsx`**
+- Bild-Container von `aspect-[4/5]` auf `aspect-[4/3]` (Landscape, Motiv wird nicht mehr abgeschnitten).
+- `object-cover` mit `object-center` erzwingen, damit Zentrum sichtbar bleibt.
+- Grid bleibt bei `sm:grid-cols-3`, aber zusätzlich auf Mobile 3 Spalten (`grid-cols-3`) mit kleinerem Gap, damit die Bilder auf dem Handy nebeneinander (statt untereinander) angezeigt werden — weniger Scrollen.
+- Caption kleiner (`text-xs sm:text-sm`) für die kompakte Mobil-Ansicht.
 
-**1. Über uns (`src/routes/ueber-uns.tsx`)**
-- Ersetze das einzelne `miro-car.png` in der rechten Spalte durch eine Foto-Collage: großes Bild oben (Außenansicht), darunter zwei kleinere nebeneinander (Theorieraum + Empfang), jeweils mit `rounded-2xl` und leichtem Border.
-- Neue Sektion „Unsere Filiale in Bochum" unterhalb des Grids mit den 3 Bildern in einer responsiven Galerie (1 Spalte mobil, 3 Spalten Desktop), jedes mit kleiner Bildunterschrift (Außenansicht / Theorieraum / Empfang & Beratung).
+**2. `src/routes/ueber-uns.tsx`**
+- Rechte Spalte: Alle drei Fotos nebeneinander in einem 3-Spalten-Grid statt „1 groß oben + 2 unten“. Verhältnis `aspect-[4/3]`, damit nichts abgeschnitten wird und die Sektion kompakter bleibt.
+- Zweite große `FilialeGallery`-Sektion unten entfernen (doppelt) – spart Scroll.
 
-**2. Kontakt (`src/routes/kontakt.tsx`)**
-- Kompaktes Bild-Trio oberhalb der Location-Cards mit den drei Fotos, jeweils mit Bildunterschrift – gibt Besuchern visuellen Kontext zur Filiale.
+**3. `src/routes/index.tsx`**
+- `<FilialeGallery />` bleibt an aktueller Stelle (vor Team), nutzt automatisch das neue kompakte 3er-Layout.
 
-**3. Startseite (`src/routes/index.tsx`)**
-- Neue schlanke Sektion „So sieht deine Fahrschule aus" vor dem Team-Bereich: 3-Spalten-Grid (Desktop) / horizontales Scroll (Mobile) mit den drei Bildern, dezentem weißen Hintergrund, passend zum aktuellen cleanen Design – kein Glow.
+**4. `src/routes/kontakt.tsx`**
+- Nutzt weiterhin `FilialeGallery compact` — profitiert automatisch vom neuen Layout.
 
-Alle Bilder mit sinnvollen `alt`-Texten (SEO: „Fahrschule MIRO-DRIVE Bochum Außenansicht" etc.) und `loading="lazy"`.
+**5. `src/routes/leistungen.tsx`**
+- Import `imgTheorie from "@/assets/leistungen/theorie.jpg"` ersetzen durch das echte Foto: `theorieraum from "@/assets/theorieraum.jpg.asset.json"` und `image: theorieraum.url` in der Theorie-Kachel.
+- Optional: `imgTheorie`-Import und Datei-Referenz entfernen (Datei bleibt liegen, keine DB-Änderung).
 
-Keine Änderungen an Datenbank, Business-Logik oder Backend.
+Keine Änderungen an Backend, DB oder Business-Logik.
