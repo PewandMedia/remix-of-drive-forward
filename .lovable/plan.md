@@ -1,26 +1,20 @@
 ## Ziel
-Das erste hochgeladene Foto (Filialfassade "FAHRSCHULE MIRO-DRIVE") wird der Riemke-Filiale zugeordnet. Die sechs Mercedes-Fotos werden als neue "Unsere Fahrzeuge"-Sektion auf der Startseite ausgespielt.
+Die Bewertungssektion soll auf Mobilgeräten wieder wie die Desktop-Ansicht wirken: eine große Bewertung oben, darunter drei kleinere Bewertungen nebeneinander, damit man weniger scrollen muss. Gleichzeitig soll der Text lesbar bleiben und nicht so stark gequetscht werden.
 
 ## Plan
+1. **Mobile Layout auf Desktop-Logik zurückstellen**
+   - Featured-Bewertung oben bleibt als große Karte.
+   - Die drei kleineren Bewertungen darunter werden auch auf Mobil in einer 3er-Reihe angezeigt.
 
-1. **Assets hochladen**
-   - Alle 7 Uploads über `lovable-assets` als CDN-Pointer in `src/assets/` ablegen (`.asset.json`).
-   - Zusätzlich in `public/media/` kopieren, damit auch der Live-VPS-Build die Dateien ausliefert (wie bei den bestehenden Bildern gehandhabt).
+2. **Mobile Lesbarkeit verbessern**
+   - Die drei kleinen Karten werden deutlich kompakter: kleinere Portraits, weniger Padding, kürzere sichtbare Review-Texte.
+   - Namen/Zeit bleiben sichtbar, lange Texte werden begrenzt statt die Karten extrem hoch zu machen.
+   - Die große Bewertung oben bekommt weiterhin genug Platz für lesbaren Text.
 
-2. **Riemke-Bild einbinden**
-   - In `src/components/site/FilialeGallery.tsx` das Riemke-Foto als erstes Bild in `FILIALEN[1].images` eintragen.
-   - Damit im Tab-Umschalter „Riemke Markt" mindestens ein Bild erscheint. Da das Mosaik-Layout 3 Bilder erwartet, wird für Riemke ein leichter Fallback ergänzt: bei nur 1 Bild wird es großflächig (aspect 4/3) einzeln angezeigt statt EmptyState.
+3. **Weniger Scrollen**
+   - Vertikale Abstände in der Bewertungssektion mobil reduzieren.
+   - Buttons und Hinweistext unten kompakter darstellen.
 
-3. **Neue Sektion "Unsere Fahrzeuge"**
-   - Neue Komponente `src/components/site/FleetSection.tsx`:
-     - Eyebrow „Unser Fuhrpark", Headline „Lerne in modernen Mercedes-Modellen", kurzer Subtext.
-     - Responsive Bento-Grid mit den 6 Autofotos (1 großes Hero-Bild + 5 kleinere; mobil 2 Spalten, Desktop asymmetrisches Grid).
-     - Klick öffnet ein Lightbox-Overlay (analog zur `FilialeGallery`).
-   - Einbindung in `src/routes/index.tsx` an passender Stelle (nach den Bewertungen oder vor der Filialen-Galerie – ich schlage direkt vor `FilialeGallery` vor, damit "Autos → Filiale → Kontakt" logisch fließt).
-
-4. **Nur Präsentation**
-   - Keine DB-, Admin- oder Backend-Änderungen.
-   - Desktop- und Mobil-Layout beide berücksichtigt, Bewertungs- und Kontaktänderungen bleiben unangetastet.
-
-## Offene Rückfrage
-Passt dir die Reihenfolge auf der Startseite so: **Hero → … → Bewertungen → Fahrzeuge (neu) → Filialen-Galerie → Kontakt-CTA**? Falls du die Fahrzeug-Sektion an einer anderen Stelle willst (z. B. direkt unter dem Hero), sag kurz Bescheid.
+4. **Desktop unverändert lassen**
+   - Desktop-Ansicht bleibt wie aktuell/gut.
+   - Änderungen werden nur über mobile Klassen umgesetzt.
