@@ -677,6 +677,7 @@ function FirstAidAdmin() {
 
 function FirstAidDatesAdmin() {
   const qc = useQueryClient();
+  const router = useRouter();
   const { data = [] } = useQuery({
     queryKey: ["admin-first-aid-dates"],
     queryFn: async () => {
@@ -689,6 +690,7 @@ function FirstAidDatesAdmin() {
     qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] });
     qc.invalidateQueries({ queryKey: ["first_aid_dates_upcoming"] });
     qc.invalidateQueries({ queryKey: ["home-first-aid-dates"] });
+    router.invalidate();
   };
   const del = useMutation({
     mutationFn: async (id: string) => { const { error } = await supabase.from("first_aid_dates").delete().eq("id", id); if (error) throw error; },
