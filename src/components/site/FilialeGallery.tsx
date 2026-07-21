@@ -301,12 +301,12 @@ export function FilialeGallery({
             {/* Mobile Mosaik */}
             <div className="grid grid-cols-2 gap-2 sm:hidden">
               <div className="col-span-2">
-                <Tile img={hero} aspect="aspect-[4/3]" onClick={() => open(0)} />
+                <Tile img={hero} aspect="aspect-[4/3]" onClick={() => open(0)} showCaption={active.id !== "autos"} />
               </div>
-              <Tile img={top} aspect="aspect-square" onClick={() => open(1)} />
-              <Tile img={bottom} aspect="aspect-square" onClick={() => open(2)} />
+              <Tile img={top} aspect="aspect-square" onClick={() => open(1)} showCaption={active.id !== "autos"} />
+              <Tile img={bottom} aspect="aspect-square" onClick={() => open(2)} showCaption={active.id !== "autos"} />
               {images.slice(3).map((img, i) => (
-                <Tile key={i + 3} img={img} aspect="aspect-square" onClick={() => open(i + 3)} />
+                <Tile key={i + 3} img={img} aspect="aspect-square" onClick={() => open(i + 3)} showCaption={active.id !== "autos"} />
               ))}
               <div className="col-span-2 mt-1 text-center text-[11px] text-muted-foreground">
                 Tippen zum Vergrößern
@@ -316,21 +316,27 @@ export function FilialeGallery({
             {/* Desktop Collage */}
             <div className="hidden sm:block">
               <div className="grid sm:grid-cols-2 sm:gap-4 lg:gap-5">
-                <Tile img={hero} aspect="aspect-[4/5]" onClick={() => open(0)} />
+                <Tile img={hero} aspect="aspect-[4/5]" onClick={() => open(0)} showCaption={active.id !== "autos"} />
                 <div className="grid grid-rows-2 gap-4 lg:gap-5">
-                  <Tile img={top} aspect="h-full" onClick={() => open(1)} />
-                  <Tile img={bottom} aspect="h-full" onClick={() => open(2)} />
+                  <Tile img={top} aspect="h-full" onClick={() => open(1)} showCaption={active.id !== "autos"} />
+                  <Tile img={bottom} aspect="h-full" onClick={() => open(2)} showCaption={active.id !== "autos"} />
                 </div>
               </div>
               {images.length > 3 && (
                 <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-5">
                   {images.slice(3).map((img, i) => (
-                    <Tile key={i + 3} img={img} aspect="aspect-[4/3]" onClick={() => open(i + 3)} />
+                    <Tile key={i + 3} img={img} aspect="aspect-[4/3]" onClick={() => open(i + 3)} showCaption={active.id !== "autos"} />
                   ))}
                 </div>
               )}
             </div>
           </>
+        ) : images.length === 2 ? (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:gap-5">
+            {images.map((img, i) => (
+              <Tile key={i} img={img} aspect="aspect-[4/3]" onClick={() => open(i)} showCaption={active.id !== "autos"} />
+            ))}
+          </div>
         ) : (
           <EmptyState filiale={active} />
         )}
