@@ -15,6 +15,7 @@ import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
 import { TeamCard, type TeamMember } from "@/components/site/TeamCard";
 import { FilialeGallery } from "@/components/site/FilialeGallery";
+import { FleetSection } from "@/components/site/FleetSection";
 import { HeroCanvasVideo } from "@/components/site/HeroCanvasVideo";
 
 import { ReviewsSection } from "@/components/site/ReviewsSection";
@@ -572,7 +573,10 @@ function Index() {
         </div>
       </section>
 
+      <FleetSection />
+
       <FilialeGallery />
+
 
       {/* TEAM TEASER */}
       {team.length > 0 && (

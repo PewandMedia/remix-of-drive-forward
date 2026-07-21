@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
 import filialeAussen from "@/assets/filiale-aussen.jpg.asset.json";
 import theorieraum from "@/assets/theorieraum.jpg.asset.json";
 import empfang from "@/assets/empfang.jpg.asset.json";
+import filialeRiemkeAussen from "@/assets/filiale-riemke-aussen.jpg.asset.json";
 
 export type FilialeImage = {
   src: string;
@@ -33,8 +34,9 @@ export const FILIALEN: Filiale[] = [
     id: "riemke",
     name: "Riemke Markt",
     address: "Herner Straße 365, 44807 Bochum",
-    // Bilder folgen – hier später die 3 Riemke-Bilder eintragen (gleiches Schema wie oben).
-    images: [],
+    images: [
+      { src: filialeRiemkeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Riemke – Außenansicht der Filiale an der Herner Straße" },
+    ],
   },
 ];
 
@@ -301,6 +303,13 @@ export function FilialeGallery({
               </div>
             </div>
           </>
+        ) : images.length > 0 ? (
+          <div className="grid gap-3 sm:gap-4">
+            <Tile img={images[0]} aspect="aspect-[16/9]" onClick={() => open(0)} />
+            <div className="text-center text-[11px] text-muted-foreground">
+              Weitere Fotos folgen – Tippen zum Vergrößern
+            </div>
+          </div>
         ) : (
           <EmptyState filiale={active} />
         )}
