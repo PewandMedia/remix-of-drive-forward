@@ -210,10 +210,12 @@ function EmptyState({ filiale }: { filiale: Filiale }) {
           Wir bereiten aktuell die Fotos unserer Filiale {filiale.name} für dich vor. Schau bald wieder vorbei –
           bis dahin freuen wir uns auf deinen persönlichen Besuch.
         </p>
-        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm">
-          <MapPin className="h-3.5 w-3.5 text-primary" />
-          {filiale.address}
-        </div>
+        {filiale.address && (
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm">
+            <MapPin className="h-3.5 w-3.5 text-primary" />
+            {filiale.address}
+          </div>
+        )}
       </div>
     </div>
   );
