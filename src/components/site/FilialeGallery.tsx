@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
 import filialeAussen from "@/assets/filiale-aussen.jpg.asset.json";
 import theorieraum from "@/assets/theorieraum.jpg.asset.json";
 import empfang from "@/assets/empfang.jpg.asset.json";
+import filialeRiemkeAussen from "@/assets/filiale-riemke-aussen.jpg.asset.json";
 
 export type FilialeImage = {
   src: string;
