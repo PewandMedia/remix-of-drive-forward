@@ -185,13 +185,13 @@ function PricesAdmin() {
       <div className="overflow-x-auto rounded-xl border bg-white">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left text-xs uppercase">
-            <tr><th className="p-3">Gilt für</th><th className="p-3">Titel</th><th className="p-3">Preis</th><th className="p-3">Angebot</th><th className="p-3">Aktiv</th><th className="p-3 text-right">Aktion</th></tr>
+            <tr><th className="p-3">Gilt für</th><th className="p-3">Titel</th><th className="p-3">Preis</th><th className="p-3">Angebot aktiv</th><th className="p-3 text-right">Aktion</th></tr>
           </thead>
           <tbody>
             {groups.map((g) => {
               const p = g.representative;
-              const allActive = g.rows.every((r) => r.active);
               const ids = g.rows.map((r) => r.id);
+              const offerOn = g.rows.every((r) => r.offer_active);
               return (
                 <tr key={g.key} className="border-t">
                   <td className="p-3 font-bold">
@@ -215,15 +215,15 @@ function PricesAdmin() {
                     <span className="text-primary">{p.price}</span>
                   </td>
                   <td className="p-3">
-                    {p.offer_active ? (
-                      <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-black uppercase text-primary-foreground">
-                        {p.offer_label || "Aktion"}
-                      </span>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">–</span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <Switch checked={offerOn} onCheckedChange={(v) => toggleOffer.mutate({ rows: g.rows, on: v })} />
+                      {offerOn && (
+                        <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-black uppercase text-primary-foreground">
+                          {p.offer_label || "Aktion"}
+                        </span>
+                      )}
+                    </div>
                   </td>
-                  <td className="p-3"><Switch checked={allActive} onCheckedChange={(v) => toggleActive.mutate({ ids, active: v })} /></td>
                   <td className="p-3"><div className="flex justify-end gap-2"><PriceDialog initial={p} group={g} /><Button size="icon" variant="ghost" onClick={() => del.mutate(ids)}><Trash2 className="h-4 w-4" /></Button></div></td>
                 </tr>
               );
