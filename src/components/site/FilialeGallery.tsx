@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
+import { Car, ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
 import filialeAussen from "@/assets/filiale-aussen.jpg.asset.json";
 import theorieraum from "@/assets/theorieraum.jpg.asset.json";
 import empfang from "@/assets/empfang.jpg.asset.json";
@@ -12,9 +12,10 @@ export type FilialeImage = {
 };
 
 export type Filiale = {
-  id: "rathaus" | "riemke";
+  id: "rathaus" | "riemke" | "autos";
   name: string;
-  address: string;
+  address?: string;
+  icon?: "map" | "car";
   images: FilialeImage[];
 };
 
@@ -23,6 +24,7 @@ export const FILIALEN: Filiale[] = [
     id: "rathaus",
     name: "Rathaus",
     address: "Brückstraße 53, 44787 Bochum",
+    icon: "map",
     images: [
       { src: filialeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Rathaus – Außenansicht der Filiale" },
       { src: theorieraum.url, caption: "Theorieraum", kicker: "Unterricht", alt: "MIRO-DRIVE Bochum Rathaus – moderner Theorieraum mit Großbildschirm" },
@@ -33,8 +35,21 @@ export const FILIALEN: Filiale[] = [
     id: "riemke",
     name: "Riemke Markt",
     address: "Herner Straße 365, 44807 Bochum",
-    // Bilder folgen – hier später die 3 Riemke-Bilder eintragen (gleiches Schema wie oben).
+    icon: "map",
     images: [],
+  },
+  {
+    id: "autos",
+    name: "Unsere Autos",
+    icon: "car",
+    images: [
+      { src: "/media/autos/auto-1.jpg", caption: "Mercedes A-Klasse", kicker: "Fuhrpark", alt: "MIRO-DRIVE Fahrschulwagen Mercedes weiß Frontansicht" },
+      { src: "/media/autos/auto-3.jpg", caption: "Frontansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulauto weiß mit Logo auf der Motorhaube" },
+      { src: "/media/autos/auto-2.jpg", caption: "Heckansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen Heckansicht mit Kennzeichen BO FM 621" },
+      { src: "/media/autos/auto-4.jpg", caption: "Seitenprofil", kicker: "Design", alt: "MIRO-DRIVE Fahrschulwagen Seitenansicht" },
+      { src: "/media/autos/auto-5.jpg", caption: "Auf der Straße", kicker: "Fahrpraxis", alt: "MIRO-DRIVE Fahrschulauto während der Fahrstunde im Tunnel" },
+      { src: "/media/autos/auto-6.jpg", caption: "Neonlicht", kicker: "Style", alt: "MIRO-DRIVE Fahrschulwagen unter roten Neonlichtern" },
+    ],
   },
 ];
 
@@ -195,10 +210,12 @@ function EmptyState({ filiale }: { filiale: Filiale }) {
           Wir bereiten aktuell die Fotos unserer Filiale {filiale.name} für dich vor. Schau bald wieder vorbei –
           bis dahin freuen wir uns auf deinen persönlichen Besuch.
         </p>
-        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm">
-          <MapPin className="h-3.5 w-3.5 text-primary" />
-          {filiale.address}
-        </div>
+        {filiale.address && (
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm">
+            <MapPin className="h-3.5 w-3.5 text-primary" />
+            {filiale.address}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -270,7 +287,7 @@ export function FilialeGallery({
                 }`}
               >
                 <span className="flex items-center justify-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5" />
+                  {f.icon === "car" ? <Car className="h-3.5 w-3.5" /> : <MapPin className="h-3.5 w-3.5" />}
                   {f.name}
                 </span>
               </button>
@@ -287,18 +304,30 @@ export function FilialeGallery({
               </div>
               <Tile img={top} aspect="aspect-square" onClick={() => open(1)} />
               <Tile img={bottom} aspect="aspect-square" onClick={() => open(2)} />
+              {images.slice(3).map((img, i) => (
+                <Tile key={i + 3} img={img} aspect="aspect-square" onClick={() => open(i + 3)} />
+              ))}
               <div className="col-span-2 mt-1 text-center text-[11px] text-muted-foreground">
                 Tippen zum Vergrößern
               </div>
             </div>
 
             {/* Desktop Collage */}
-            <div className="hidden sm:grid sm:grid-cols-2 sm:gap-4 lg:gap-5">
-              <Tile img={hero} aspect="aspect-[4/5]" onClick={() => open(0)} />
-              <div className="grid grid-rows-2 gap-4 lg:gap-5">
-                <Tile img={top} aspect="h-full" onClick={() => open(1)} />
-                <Tile img={bottom} aspect="h-full" onClick={() => open(2)} />
+            <div className="hidden sm:block">
+              <div className="grid sm:grid-cols-2 sm:gap-4 lg:gap-5">
+                <Tile img={hero} aspect="aspect-[4/5]" onClick={() => open(0)} />
+                <div className="grid grid-rows-2 gap-4 lg:gap-5">
+                  <Tile img={top} aspect="h-full" onClick={() => open(1)} />
+                  <Tile img={bottom} aspect="h-full" onClick={() => open(2)} />
+                </div>
               </div>
+              {images.length > 3 && (
+                <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-5">
+                  {images.slice(3).map((img, i) => (
+                    <Tile key={i + 3} img={img} aspect="aspect-[4/3]" onClick={() => open(i + 3)} />
+                  ))}
+                </div>
+              )}
             </div>
           </>
         ) : (
