@@ -1,49 +1,39 @@
-Das Impressum der Website soll mit den vom Betreiber gelieferten Angaben vollständig und rechtskonform ausgestattet werden. Alle anderen Seiteninhalte bleiben unverändert.
+## Neues Impressum für Miro-Drive
 
-## Ziel
-Die Route `/impressum` wird durch ein vollständiges Impressum nach deutschem Recht ersetzt. Alle Angaben bleiben im JSX als statischer Content, keine externen Datenquellen.
+`src/routes/impressum.tsx` komplett neu aufbauen – ohne Facebook-Bezüge, mit den vom Nutzer bestätigten Daten und passend zum Design der übrigen Seiten (gleiche Container-/Typografie-Struktur wie z. B. Datenschutz/AGB).
 
-## Änderungen
+### Inhalt (finale Fassung)
 
-### 1. `src/routes/impressum.tsx` erweitern
-- **Angaben gemäß § 5 TMG:**
-  - Fahrschule Miro-Drive
-  - Ilkay Altin (Einzelunternehmen)
-  - Herner Str. 365, 44807 Bochum
-  - USt-IdNr.: DE341767395
-- **Kontakt:**
-  - Telefon: 01772358248
-  - E-Mail: info@miro-drive.de
-- **Aufsichtsbehörde:**
-  - Straßenverkehrsamt Bochum
-  - Bulksmühle 17, 44809 Bochum
-  - Link: Straßenverkehrsamt | Stadt Bochum
-- **EU-Online-Streitbeilegung:**
-  - Hinweis mit externem Link http://ec.europa.eu/consumers/odr/
-- **Social-Media-Geltungsbereich:**
-  - Hinweis, dass das Impressum für alle verlinkten Social-Media-Kanäle gilt.
-- **Disclaimer / Haftungsausschluss:**
-  - Inhalt des Onlineangebotes
-  - Verweise und Links
-  - Urheber- und Kennzeichenrecht
-  - Rechtswirksamkeit des Haftungsausschlusses
-- **Datenschutz-Verweis:**
-  - Kurzer Satz mit internem Link zu `/datenschutz`.
-- **Facebook Social Plugins Hinweis:**
-  - Hinweis auf Einbindung von Facebook-Plugins, Datenübermittlung an Facebook Inc., Rechte/Einstellungen.
-- **Google Analytics Hinweis:**
-  - Hinweis auf Verwendung von Google Analytics, Cookies, IP-Anonymisierung, Opt-Out-Link.
+**Angaben gemäß § 5 TMG**
+- Fahrschule Miro-Drive
+- Ilkay Altin (Einzelunternehmen)
+- Herner Str. 365, 44807 Bochum
 
-### 2. SEO-Metadaten anpassen
-- Titel: `Impressum – MIRO-DRIVE Fahrschule`
-- Description: Rechtliche Angaben gemäß § 5 TMG.
-- Canonical und og:url auf `/impressum`.
+**Kontakt**
+- Telefon: 01772358248
+- E-Mail: info@miro-drive.de
 
-### 3. Design & Layout
-- Bestehende `SiteLayout` und `PageHero` beibehalten.
-- Inhalt in mehrere übersichtliche Abschnitte mit Zwischenüberschriften gliedern.
-- Externe Links mit `target="_blank" rel="noopener noreferrer"` versehen.
-- Keine hartkodierten Farbwerte außerhalb des bestehenden Design-Systems verwenden.
+**Umsatzsteuer-ID**
+- gemäß § 27a UStG: DE341767395
 
-## Einschränkung
-Die Telefonnummer 01772358248 wird ausschließlich im Impressum eingetragen. Die allgemeinen Kontaktdaten in `src/lib/contact.ts` und andere Seiten bleiben unverändert.
+**Aufsichtsbehörde**
+- Straßenverkehrsamt Bochum
+- Bulksmühle 17, 44809 Bochum
+
+**Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV**
+- Ilkay Altin, Anschrift wie oben
+
+**Weitere rechtliche Standardabschnitte** (ohne Facebook, ohne Google Analytics – nur allgemein gehalten, passend zur aktuellen Seite):
+- Haftung für Inhalte
+- Haftung für Links
+- Urheberrecht
+- Hinweis EU-Streitschlichtung / Verbraucherstreitbeilegung
+
+### Umsetzung
+- Datei: `src/routes/impressum.tsx` neu schreiben
+- Head-Meta beibehalten (Title „Impressum – Miro-Drive“, description, canonical `/impressum`)
+- Layout: bestehende `Navbar` + `Footer` + Container mit `prose`-artigem Styling wie bereits verwendet
+- Keine Änderungen an anderen Seiten
+
+### Offene Frage
+Falls noch fehlt: Handelsregister-/Kammer-Angaben, Berufsbezeichnung („Fahrlehrer“) samt zuständiger Erlaubnisbehörde und Fahrlehrerlaubnis-Nummer sind rechtlich üblich. Ich baue das Impressum ohne diese Punkte, wenn du keine Angabe machst – sag Bescheid, falls ich sie ergänzen soll.
