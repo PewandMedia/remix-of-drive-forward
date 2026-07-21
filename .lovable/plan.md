@@ -1,27 +1,20 @@
 ## Ziel
-Die letzten Änderungen an der Kontaktseite betreffen aktuell auch die Desktop-Ansicht (z. B. kleinere Icon-Padding, reduzierte Gaps, kleinere Textgrößen in den Kontakt-Karten). Der User will: Desktop bleibt **exakt wie vorher**, nur Mobil wird kompakter.
+Die Bewertungssektion soll auf Mobilgeräten wieder wie die Desktop-Ansicht wirken: eine große Bewertung oben, darunter drei kleinere Bewertungen nebeneinander, damit man weniger scrollen muss. Gleichzeitig soll der Text lesbar bleiben und nicht so stark gequetscht werden.
 
-## Änderungen in `src/routes/kontakt.tsx`
+## Plan
+1. **Mobile Layout auf Desktop-Logik zurückstellen**
+   - Featured-Bewertung oben bleibt als große Karte.
+   - Die drei kleineren Bewertungen darunter werden auch auf Mobil in einer 3er-Reihe angezeigt.
 
-1. **Header**
-   - Mobil: `text-2xl`, kein Eyebrow, `mb-4`, kleiner Untertitel.
-   - Ab `sm`: wieder Original – Eyebrow sichtbar, H1 `text-4xl`, Untertitel `text-base`, `mb-6`.
+2. **Mobile Lesbarkeit verbessern**
+   - Die drei kleinen Karten werden deutlich kompakter: kleinere Portraits, weniger Padding, kürzere sichtbare Review-Texte.
+   - Namen/Zeit bleiben sichtbar, lange Texte werden begrenzt statt die Karten extrem hoch zu machen.
+   - Die große Bewertung oben bekommt weiterhin genug Platz für lesbaren Text.
 
-2. **Anmeldungs-Tipp**
-   - Mobil: kompakte Zeile mit kleinem "Anmelden →"-Pill.
-   - Ab `sm`: originales Padding (`px-4 py-3`), normaler Button-Style, wie vor der Verdichtung.
+3. **Weniger Scrollen**
+   - Vertikale Abstände in der Bewertungssektion mobil reduzieren.
+   - Buttons und Hinweistext unten kompakter darstellen.
 
-3. **Kontakt-Karten (WhatsApp + 2×2 Grid)**
-   - WhatsApp-Karte: Mobil `p-3.5`, Text `text-base`; ab `sm` zurück auf `p-4`/`text-lg` und Original-Icon-Padding (`p-2.5`).
-   - Telefon / E-Mail / Instagram / TikTok:
-     - Mobil: 2×2 Grid, `p-3`, kleine Icons (`h-3.5 w-3.5`), Text `text-xs`, Icon-Bubble `p-1.5`.
-     - Ab `sm`: wieder Original – volle Breite pro Karte (1 Spalte im linken Bereich), `p-4`, Icon `h-5 w-5`, Text `text-sm`, Icon-Bubble `p-2.5`.
-   - Reihenabstand: mobil `gap-2.5`, ab `sm` `gap-3`.
-
-4. **Vertikale Container-Abstände**
-   - Mobil: `pt-5 pb-8`, Section-Abstände `mt-6`.
-   - Ab `sm`: Original `pt-10 pb-12`, `mt-8`.
-
-## Nicht geändert
-- Desktop-Layout / Zwei-Spalten-Grid (Kontakt links, Standorte rechts) bleibt.
-- `LocationCard`, `FilialeGallery`, Business-Logik, Kontaktdaten.
+4. **Desktop unverändert lassen**
+   - Desktop-Ansicht bleibt wie aktuell/gut.
+   - Änderungen werden nur über mobile Klassen umgesetzt.
