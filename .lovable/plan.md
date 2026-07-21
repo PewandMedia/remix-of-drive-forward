@@ -1,40 +1,22 @@
 ## Problem
-Alle Bilder/Videos nutzen `/__l5e/assets-v1/...` URLs (Lovable CDN). Auf deinem VPS existieren diese Pfade nicht → 404. Die 5 fehlenden Dateien sind:
-- `filiale-aussen.jpg`, `theorieraum.jpg`, `empfang.jpg` (Filial-Galerie)
-- `miro-drive-hero-v2.mp4` + Poster (Hero-Video)
-- `miro-drive-hero.mp4` + Poster (Backup)
 
-## Lösung
-Assets vom Lovable-CDN herunterladen und als echte Dateien in `public/media/` ablegen. Dann werden sie vom VPS selbst ausgeliefert.
+Auf dem VPS zeigen Unterseiten (z. B. `/erste-hilfe-kurs`) beim SSR „Backend server env missing". Ursache: `src/lib/public-data.server.ts` liest ausschließlich `process.env.SUPABASE_URL` / `process.env.SUPABASE_PUBLISHABLE_KEY`. Diese Vars sind auf dem VPS nicht gesetzt — nur die `VITE_`-Varianten stehen in der `.env`.
 
-## Umsetzung (im Build-Modus)
+## Fix
 
-1. **Download**: Alle 7 Dateien vom CDN nach `public/media/` laden
-   ```
-   public/media/filiale-aussen.jpg
-   public/media/theorieraum.jpg
-   public/media/empfang.jpg
-   public/media/miro-drive-hero-v2.mp4
-   public/media/miro-drive-hero-v2-poster.jpg
-   public/media/miro-drive-hero.mp4
-   public/media/miro-drive-hero-poster.jpg
-   ```
+`src/lib/public-data.server.ts` so anpassen, dass die Werte in dieser Reihenfolge gelesen werden:
 
-2. **`.asset.json` Pointer umschreiben** — jede der 7 JSON-Dateien in `src/assets/` bekommt `"url": "/media/<dateiname>"` statt der `/__l5e/...` URL. Vorteil: keine Änderung an Import-Code nötig, alles funktioniert weiter.
+1. `process.env.SUPABASE_URL` → Fallback `process.env.VITE_SUPABASE_URL`
+2. `process.env.SUPABASE_PUBLISHABLE_KEY` → Fallback `process.env.VITE_SUPABASE_PUBLISHABLE_KEY`
 
-3. **Push nach GitHub** durch Lovable's Auto-Sync.
+Wenn beide Paare leer sind, weiterhin klar loggen und werfen (damit Diagnose möglich bleibt).
 
-## Deploy auf VPS (danach)
-```bash
-cd /pfad/zur/app
-git pull
-bun install         # oder npm install
-bun run build       # oder npm run build
-pm2 restart mirodrive
-```
+Alles andere (Fetch-Shim, Auth-Optionen) bleibt unverändert.
 
-Nach dem Deploy sind alle Bilder + das Hero-Video sichtbar wie in der Lovable-Preview.
+## Betroffene Datei
 
-**Hinweis:** Die MP4s sind ca. 5 MB groß und landen im git-Repo. Das ist ok für ein einmaliges Setup, aber falls du sie später oft änderst, wäre ein separater CDN/S3 sauberer. Für jetzt reicht `public/media/`.
+- `src/lib/public-data.server.ts` — nur die `serverPublicClient()`-Funktion
 
-Sag „los" und ich mach das im nächsten Schritt.
+## Ergebnis
+
+Nach `git pull && bun run build && pm2 restart` laden alle SSR-Unterseiten auf dem VPS wieder Inhalte, weil der Server die vorhandenen `VITE_`-Vars nutzt.
