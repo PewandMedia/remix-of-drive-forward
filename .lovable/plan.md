@@ -1,28 +1,40 @@
-## Ziel
-Filialen-Umschalter in `FilialeGallery`: zwei Buttons („Rathaus" / „Riemke Markt"). Rathaus zeigt die 3 bestehenden Fotos, Riemke zeigt einen sauberen „Bilder folgen"-Platzhalter, bis Bilder nachgeliefert werden.
+## Problem
+Alle Bilder/Videos nutzen `/__l5e/assets-v1/...` URLs (Lovable CDN). Auf deinem VPS existieren diese Pfade nicht → 404. Die 5 fehlenden Dateien sind:
+- `filiale-aussen.jpg`, `theorieraum.jpg`, `empfang.jpg` (Filial-Galerie)
+- `miro-drive-hero-v2.mp4` + Poster (Hero-Video)
+- `miro-drive-hero.mp4` + Poster (Backup)
 
-## Änderungen in `src/components/site/FilialeGallery.tsx`
+## Lösung
+Assets vom Lovable-CDN herunterladen und als echte Dateien in `public/media/` ablegen. Dann werden sie vom VPS selbst ausgeliefert.
 
-1. **Datenstruktur auf Filialen umstellen** — neuer Export `FILIALEN`:
-   ```ts
-   { id: 'rathaus',  name: 'Rathaus',      address: '…', images: [ /* 3 bestehenden Rathaus-Bilder */ ] }
-   { id: 'riemke',   name: 'Riemke Markt', address: '…', images: [] }  // leer, später befüllen
+## Umsetzung (im Build-Modus)
+
+1. **Download**: Alle 7 Dateien vom CDN nach `public/media/` laden
    ```
-   Adressen ziehe ich aus `src/lib/locations.ts` (existiert bereits, wird gelesen bevor ich schreibe).
+   public/media/filiale-aussen.jpg
+   public/media/theorieraum.jpg
+   public/media/empfang.jpg
+   public/media/miro-drive-hero-v2.mp4
+   public/media/miro-drive-hero-v2-poster.jpg
+   public/media/miro-drive-hero.mp4
+   public/media/miro-drive-hero-poster.jpg
+   ```
 
-2. **Toggle-UI** über dem Grid:
-   - Segmented-Control mit zwei Pills (`Rathaus` / `Riemke Markt`), aktive Pill in `bg-primary text-primary-foreground`, inaktiv `bg-white border`.
-   - State: `const [active, setActive] = useState<'rathaus'|'riemke'>('rathaus')`.
+2. **`.asset.json` Pointer umschreiben** — jede der 7 JSON-Dateien in `src/assets/` bekommt `"url": "/media/<dateiname>"` statt der `/__l5e/...` URL. Vorteil: keine Änderung an Import-Code nötig, alles funktioniert weiter.
 
-3. **Rendering**:
-   - Wenn `images.length >= 3` → aktuelles Mosaik/Collage-Layout (Hero + 2 Kacheln).
-   - Wenn `images.length === 0` → Empty-State-Karte in gleicher Optik: gestrichelter Rahmen, MIRO-DRIVE Logo-Emblem dezent, Text „Bilder folgen in Kürze" + Filialname/Adresse. Keine Lightbox-Buttons.
-   - Lightbox nutzt jetzt `activeImages` statt globalen `FILIALE_IMAGES`.
+3. **Push nach GitHub** durch Lovable's Auto-Sync.
 
-4. **Späteres Nachreichen** ist ein Ein-Zeilen-Edit: die 3 Riemke-Bilder in `FILIALEN.riemke.images` als Objekte im gleichen Schema einfügen — kein weiterer Code nötig.
+## Deploy auf VPS (danach)
+```bash
+cd /pfad/zur/app
+git pull
+bun install         # oder npm install
+bun run build       # oder npm run build
+pm2 restart mirodrive
+```
 
-5. **Backwards compat**: `FILIALE_IMAGES` bleibt als Alias auf `FILIALEN.rathaus.images` exportiert, falls andere Stellen darauf referenzieren (grep vorab).
+Nach dem Deploy sind alle Bilder + das Hero-Video sichtbar wie in der Lovable-Preview.
 
-## Verifikation
-- `tsgo` / Build sauber.
-- Playwright bei 390×844 und 1280×1800: beide Buttons klickbar, Wechsel zeigt Rathaus-Bilder bzw. Riemke-Platzhalter.
+**Hinweis:** Die MP4s sind ca. 5 MB groß und landen im git-Repo. Das ist ok für ein einmaliges Setup, aber falls du sie später oft änderst, wäre ein separater CDN/S3 sauberer. Für jetzt reicht `public/media/`.
+
+Sag „los" und ich mach das im nächsten Schritt.
