@@ -1,9 +1,5 @@
-## Änderungen in `src/components/site/FilialeGallery.tsx`
+## Neues Auto-Bild hinzufügen
 
-1. **Bilder reduzieren im Autos-Tab**: Nur `auto-2.jpg` (Heckansicht) und `auto-5.jpg` (Auf der Straße) behalten. Die anderen 4 Einträge entfernen.
-
-2. **Caption-Overlay entfernen**: Da bei 2 Bildern die aktuelle Mosaik-Logik (`images.length >= 3`) sonst den EmptyState zeigen würde, das Grid so anpassen, dass es auch bei 2 Bildern funktioniert – zwei gleich große Kacheln nebeneinander (Desktop) bzw. gestapelt/2-Spalten (Mobil).
-
-3. **Untere Bildbeschreibung entfernen**: Den dunklen Gradient-Overlay mit Kicker + Caption in der `Tile`-Komponente ausblendbar machen (neuer Prop `showCaption`, default `true`), und für den Autos-Tab auf `false` setzen. Rathaus/Riemke bleiben unverändert mit Overlay.
-
-4. Lightbox bleibt funktionsfähig (Klick öffnet Bild groß, Beschreibung nur dort sichtbar).
+1. Upload via `lovable-assets create` aus `/mnt/user-uploads/2841F223-042E-4B66-8406-5C391B3595F6.jpg` → Pointer nach `src/assets/auto-vogelperspektive.jpg.asset.json`.
+2. In `src/components/site/FilialeGallery.tsx` das neue Bild als drittes Auto-Bild ergänzen (Kennzeichen BO FM 623, Vogelperspektive mit Logo auf Motorhaube).
+3. Bei 3 Bildern greift automatisch das bestehende Mosaik-Layout (Hero + 2 kleine) – ohne Caption-Overlay (`showCaption={false}` bleibt via `active.id === "autos"`).
