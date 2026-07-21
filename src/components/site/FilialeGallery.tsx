@@ -63,10 +63,12 @@ function Tile({
   img,
   aspect,
   onClick,
+  showCaption = true,
 }: {
   img: FilialeImage;
   aspect: string;
   onClick: () => void;
+  showCaption?: boolean;
 }) {
   return (
     <button
@@ -80,17 +82,20 @@ function Tile({
         loading="eager"
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
       />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-4 sm:p-5">
-        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/80">
-          {img.kicker}
+      {showCaption && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-4 sm:p-5">
+          <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/80">
+            {img.kicker}
+          </div>
+          <div className="mt-0.5 font-display text-base text-white sm:text-lg">
+            {img.caption}
+          </div>
         </div>
-        <div className="mt-0.5 font-display text-base text-white sm:text-lg">
-          {img.caption}
-        </div>
-      </div>
+      )}
     </button>
   );
 }
+
 
 function Lightbox({
   images,
