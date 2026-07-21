@@ -43,6 +43,7 @@ export const FILIALEN: Filiale[] = [
     name: "Unsere Autos",
     icon: "car",
     images: [
+      { src: "/media/autos/auto-vogelperspektive.jpg", caption: "Vogelperspektive", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen von oben mit Logo auf der Motorhaube, Kennzeichen BO FM 623" },
       { src: "/media/autos/auto-2.jpg", caption: "Heckansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen Heckansicht mit Kennzeichen BO FM 621" },
       { src: "/media/autos/auto-5.jpg", caption: "Auf der Straße", kicker: "Fahrpraxis", alt: "MIRO-DRIVE Fahrschulauto während der Fahrstunde im Tunnel" },
     ],
