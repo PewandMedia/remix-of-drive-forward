@@ -51,9 +51,9 @@ function GoogleLogo({ className }: { className?: string }) {
   );
 }
 
-function Stars({ size = 18 }: { size?: number }) {
+function Stars({ size = 18, className }: { size?: number; className?: string }) {
   return (
-    <div className="flex gap-0.5">
+    <div className={`flex gap-0.5 ${className ?? ""}`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star key={i} size={size} className="fill-primary text-primary" />
       ))}
@@ -90,7 +90,8 @@ export function ReviewsSection() {
             <span className="font-display text-5xl tracking-tight text-foreground sm:text-6xl">
               {CONTACT.googleRating}
             </span>
-            <Stars size={22} />
+            <Stars size={22} className="sm:hidden" />
+            <Stars size={28} className="hidden sm:flex" />
           </div>
           <h2 className="mt-4 text-2xl sm:mt-5 md:text-5xl">
             Bochums bestbewertete Fahrschule – mit über{" "}
@@ -123,7 +124,8 @@ export function ReviewsSection() {
               </div>
               <p className="mt-1 text-sm text-muted-foreground">{featured.when}</p>
               <div className="mt-2 flex sm:mt-3">
-                <Stars size={18} />
+                <Stars size={18} className="sm:hidden" />
+                <Stars size={22} className="hidden sm:flex" />
               </div>
             </div>
           </div>
@@ -158,7 +160,8 @@ export function ReviewsSection() {
                 <GoogleLogo className="hidden h-4 w-4 shrink-0 sm:block" />
               </div>
               <div className="mt-2 sm:mt-3">
-                <Stars size={11} />
+                <Stars size={11} className="sm:hidden" />
+                <Stars size={14} className="hidden sm:flex" />
               </div>
               <p className="mt-2 line-clamp-3 text-[11px] leading-snug text-foreground/80 sm:mt-3 sm:line-clamp-4 sm:text-sm sm:leading-relaxed">
                 „{r.text}"
