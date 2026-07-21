@@ -1,14 +1,45 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
 import filialeAussen from "@/assets/filiale-aussen.jpg.asset.json";
 import theorieraum from "@/assets/theorieraum.jpg.asset.json";
 import empfang from "@/assets/empfang.jpg.asset.json";
 
-export const FILIALE_IMAGES = [
-  { src: filialeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum – Außenansicht der Filiale" },
-  { src: theorieraum.url, caption: "Theorieraum", kicker: "Unterricht", alt: "MIRO-DRIVE Bochum – moderner Theorieraum mit Großbildschirm" },
-  { src: empfang.url, caption: "Empfang & Beratung", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum – Empfang und Beratungsbereich" },
-] as const;
+export type FilialeImage = {
+  src: string;
+  caption: string;
+  kicker: string;
+  alt: string;
+};
+
+export type Filiale = {
+  id: "rathaus" | "riemke";
+  name: string;
+  address: string;
+  images: FilialeImage[];
+};
+
+export const FILIALEN: Filiale[] = [
+  {
+    id: "rathaus",
+    name: "Rathaus",
+    address: "Brückstraße 53, 44787 Bochum",
+    images: [
+      { src: filialeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Rathaus – Außenansicht der Filiale" },
+      { src: theorieraum.url, caption: "Theorieraum", kicker: "Unterricht", alt: "MIRO-DRIVE Bochum Rathaus – moderner Theorieraum mit Großbildschirm" },
+      { src: empfang.url, caption: "Empfang & Beratung", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum Rathaus – Empfang und Beratungsbereich" },
+    ],
+  },
+  {
+    id: "riemke",
+    name: "Riemke Markt",
+    address: "Herner Straße 365, 44807 Bochum",
+    // Bilder folgen – hier später die 3 Riemke-Bilder eintragen (gleiches Schema wie oben).
+    images: [],
+  },
+];
+
+// Backwards-Compat: alte Importe zeigen weiter auf die Rathaus-Bilder.
+export const FILIALE_IMAGES = FILIALEN[0].images;
 
 type Props = {
   eyebrow?: string;
@@ -22,7 +53,7 @@ function Tile({
   aspect,
   onClick,
 }: {
-  img: (typeof FILIALE_IMAGES)[number];
+  img: FilialeImage;
   aspect: string;
   onClick: () => void;
 }) {
@@ -51,18 +82,20 @@ function Tile({
 }
 
 function Lightbox({
+  images,
   index,
   onClose,
   onPrev,
   onNext,
 }: {
+  images: FilialeImage[];
   index: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
 }) {
   const touchStartX = useRef<number | null>(null);
-  const img = FILIALE_IMAGES[index];
+  const img = images[index];
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -88,6 +121,8 @@ function Lightbox({
     if (Math.abs(dx) > 50) (dx < 0 ? onNext : onPrev)();
     touchStartX.current = null;
   };
+
+  if (!img) return null;
 
   return (
     <div
@@ -135,7 +170,7 @@ function Lightbox({
         />
         <div className="mt-4 text-center text-white">
           <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">
-            {img.kicker} · {index + 1} / {FILIALE_IMAGES.length}
+            {img.kicker} · {index + 1} / {images.length}
           </div>
           <div className="mt-1 font-display text-lg">{img.caption}</div>
         </div>
@@ -144,61 +179,135 @@ function Lightbox({
   );
 }
 
+function EmptyState({ filiale }: { filiale: Filiale }) {
+  return (
+    <div className="relative overflow-hidden rounded-3xl border-2 border-dashed border-slate-300 bg-gradient-to-br from-slate-50 to-white p-10 text-center sm:p-16">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:radial-gradient(color-mix(in_oklab,var(--foreground)_10%,transparent)_1px,transparent_1px)] [background-size:22px_22px]" />
+      <div className="relative mx-auto flex max-w-md flex-col items-center">
+        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+          <ImageIcon className="h-7 w-7" />
+        </div>
+        <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">Bilder folgen</span>
+        <h3 className="mt-2 font-display text-2xl text-slate-900 sm:text-3xl">
+          Filiale {filiale.name}
+        </h3>
+        <p className="mt-3 text-sm text-slate-600 sm:text-base">
+          Wir bereiten aktuell die Fotos unserer Filiale {filiale.name} für dich vor. Schau bald wieder vorbei –
+          bis dahin freuen wir uns auf deinen persönlichen Besuch.
+        </p>
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm">
+          <MapPin className="h-3.5 w-3.5 text-primary" />
+          {filiale.address}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function FilialeGallery({
-  eyebrow = "Unsere Filiale",
+  eyebrow = "Unsere Filialen",
   title = "So sieht deine Fahrschule in Bochum aus",
   subtitle = "Modern, hell und mitten in Bochum – schau dir schon vorab an, wo du deine Theorie lernst und beraten wirst.",
   compact = false,
 }: Props) {
+  const [activeId, setActiveId] = useState<Filiale["id"]>("rathaus");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [hero, top, bottom] = FILIALE_IMAGES;
+
+  const active = useMemo(
+    () => FILIALEN.find((f) => f.id === activeId) ?? FILIALEN[0],
+    [activeId],
+  );
+  const images = active.images;
 
   const open = useCallback((i: number) => setOpenIndex(i), []);
   const close = useCallback(() => setOpenIndex(null), []);
   const prev = useCallback(
-    () => setOpenIndex((i) => (i == null ? i : (i - 1 + FILIALE_IMAGES.length) % FILIALE_IMAGES.length)),
-    [],
+    () => setOpenIndex((i) => (i == null || images.length === 0 ? i : (i - 1 + images.length) % images.length)),
+    [images.length],
   );
   const next = useCallback(
-    () => setOpenIndex((i) => (i == null ? i : (i + 1) % FILIALE_IMAGES.length)),
-    [],
+    () => setOpenIndex((i) => (i == null || images.length === 0 ? i : (i + 1) % images.length)),
+    [images.length],
   );
+
+  const switchTo = (id: Filiale["id"]) => {
+    setActiveId(id);
+    setOpenIndex(null);
+  };
+
+  const [hero, top, bottom] = images;
 
   return (
     <section className={`bg-white ${compact ? "py-10" : "py-16 sm:py-20"}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {!compact && (
-          <div className="mb-10 max-w-2xl">
+          <div className="mb-8 max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">{eyebrow}</span>
             <h2 className="mt-2 font-display text-3xl sm:text-4xl">{title}</h2>
             {subtitle && <p className="mt-3 text-muted-foreground">{subtitle}</p>}
           </div>
         )}
 
-        {/* Mobile: Mosaik, alle Bilder sofort sichtbar, gleiche Ratios */}
-        <div className="grid grid-cols-2 gap-2 sm:hidden">
-          <div className="col-span-2">
-            <Tile img={hero} aspect="aspect-[4/3]" onClick={() => open(0)} />
-          </div>
-          <Tile img={top} aspect="aspect-square" onClick={() => open(1)} />
-          <Tile img={bottom} aspect="aspect-square" onClick={() => open(2)} />
-          <div className="col-span-2 mt-1 text-center text-[11px] text-muted-foreground">
-            Tippen zum Vergrößern
-          </div>
+        {/* Filial-Umschalter */}
+        <div
+          role="tablist"
+          aria-label="Filiale wählen"
+          className="mb-6 inline-flex w-full flex-wrap gap-1 rounded-full border border-slate-200 bg-slate-50 p-1 shadow-sm sm:w-auto"
+        >
+          {FILIALEN.map((f) => {
+            const isActive = f.id === activeId;
+            return (
+              <button
+                key={f.id}
+                role="tab"
+                aria-selected={isActive}
+                type="button"
+                onClick={() => switchTo(f.id)}
+                className={`flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-all sm:flex-none sm:px-6 ${
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <span className="flex items-center justify-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5" />
+                  {f.name}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Desktop: Collage – links Hero 4/5, rechts zwei Kacheln 5/4 = gleiche Gesamthöhe */}
-        <div className="hidden sm:grid sm:grid-cols-2 sm:gap-4 lg:gap-5">
-          <Tile img={hero} aspect="aspect-[4/5]" onClick={() => open(0)} />
-          <div className="grid grid-rows-2 gap-4 lg:gap-5">
-            <Tile img={top} aspect="h-full" onClick={() => open(1)} />
-            <Tile img={bottom} aspect="h-full" onClick={() => open(2)} />
-          </div>
-        </div>
+        {images.length >= 3 ? (
+          <>
+            {/* Mobile Mosaik */}
+            <div className="grid grid-cols-2 gap-2 sm:hidden">
+              <div className="col-span-2">
+                <Tile img={hero} aspect="aspect-[4/3]" onClick={() => open(0)} />
+              </div>
+              <Tile img={top} aspect="aspect-square" onClick={() => open(1)} />
+              <Tile img={bottom} aspect="aspect-square" onClick={() => open(2)} />
+              <div className="col-span-2 mt-1 text-center text-[11px] text-muted-foreground">
+                Tippen zum Vergrößern
+              </div>
+            </div>
+
+            {/* Desktop Collage */}
+            <div className="hidden sm:grid sm:grid-cols-2 sm:gap-4 lg:gap-5">
+              <Tile img={hero} aspect="aspect-[4/5]" onClick={() => open(0)} />
+              <div className="grid grid-rows-2 gap-4 lg:gap-5">
+                <Tile img={top} aspect="h-full" onClick={() => open(1)} />
+                <Tile img={bottom} aspect="h-full" onClick={() => open(2)} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <EmptyState filiale={active} />
+        )}
       </div>
 
-      {openIndex !== null && (
-        <Lightbox index={openIndex} onClose={close} onPrev={prev} onNext={next} />
+      {openIndex !== null && images.length > 0 && (
+        <Lightbox images={images} index={openIndex} onClose={close} onPrev={prev} onNext={next} />
       )}
     </section>
   );
