@@ -1,13 +1,28 @@
 ## Ziel
-Auf der Handy-Ansicht der Startseite (`/`) das Video früher sichtbar machen und den TÜV-Badge entfernen.
+Filialen-Umschalter in `FilialeGallery`: zwei Buttons („Rathaus" / „Riemke Markt"). Rathaus zeigt die 3 bestehenden Fotos, Riemke zeigt einen sauberen „Bilder folgen"-Platzhalter, bis Bilder nachgeliefert werden.
 
-## Änderungen in `src/routes/index.tsx`
+## Änderungen in `src/components/site/FilialeGallery.tsx`
 
-1. **Eyebrow „MIRO-DRIVE · Fahrschule in Bochum" komplett entfernen** (Zeilen 77–80). Damit rutschen H1, Text, Buttons und das Video-Panel nach oben.
-2. **Vertikales Padding der Hero-Sektion reduzieren**, damit auf Mobil noch mehr Inhalt (inkl. Video) above the fold sichtbar wird: `py-16 sm:py-20` → `py-8 sm:py-16 lg:py-24` (Zeile 74).
-3. **TÜV-geprüft Badge entfernen** (Zeilen 127–130 im Trust-Row).
+1. **Datenstruktur auf Filialen umstellen** — neuer Export `FILIALEN`:
+   ```ts
+   { id: 'rathaus',  name: 'Rathaus',      address: '…', images: [ /* 3 bestehenden Rathaus-Bilder */ ] }
+   { id: 'riemke',   name: 'Riemke Markt', address: '…', images: [] }  // leer, später befüllen
+   ```
+   Adressen ziehe ich aus `src/lib/locations.ts` (existiert bereits, wird gelesen bevor ich schreibe).
 
-Sterne / „5.0 · über 500 Bewertungen" bleiben unverändert – der User hat nur TÜV genannt.
+2. **Toggle-UI** über dem Grid:
+   - Segmented-Control mit zwei Pills (`Rathaus` / `Riemke Markt`), aktive Pill in `bg-primary text-primary-foreground`, inaktiv `bg-white border`.
+   - State: `const [active, setActive] = useState<'rathaus'|'riemke'>('rathaus')`.
+
+3. **Rendering**:
+   - Wenn `images.length >= 3` → aktuelles Mosaik/Collage-Layout (Hero + 2 Kacheln).
+   - Wenn `images.length === 0` → Empty-State-Karte in gleicher Optik: gestrichelter Rahmen, MIRO-DRIVE Logo-Emblem dezent, Text „Bilder folgen in Kürze" + Filialname/Adresse. Keine Lightbox-Buttons.
+   - Lightbox nutzt jetzt `activeImages` statt globalen `FILIALE_IMAGES`.
+
+4. **Späteres Nachreichen** ist ein Ein-Zeilen-Edit: die 3 Riemke-Bilder in `FILIALEN.riemke.images` als Objekte im gleichen Schema einfügen — kein weiterer Code nötig.
+
+5. **Backwards compat**: `FILIALE_IMAGES` bleibt als Alias auf `FILIALEN.rathaus.images` exportiert, falls andere Stellen darauf referenzieren (grep vorab).
 
 ## Verifikation
-Kurzer Playwright-Screenshot bei 390×844, um zu bestätigen, dass das Video im initialen Viewport sichtbar ist und der Eyebrow / TÜV-Badge weg sind.
+- `tsgo` / Build sauber.
+- Playwright bei 390×844 und 1280×1800: beide Buttons klickbar, Wechsel zeigt Rathaus-Bilder bzw. Riemke-Platzhalter.
