@@ -147,9 +147,34 @@ function PricesAdmin() {
     mutationFn: async (ids: string[]) => { const { error } = await supabase.from("prices").delete().in("id", ids); if (error) throw error; },
     onSuccess: () => { invalidateAll(); toast.success("Gelöscht"); },
   });
-  const toggleActive = useMutation({
-    mutationFn: async (p: { ids: string[]; active: boolean }) => { const { error } = await supabase.from("prices").update({ active: p.active }).in("id", p.ids); if (error) throw error; },
-    onSuccess: () => { invalidateAll(); },
+  const toggleOffer = useMutation({
+    mutationFn: async (p: { rows: any[]; on: boolean }) => {
+      if (p.on) {
+        // Aktion einschalten: aktuellen Preis als old_price sichern, falls leer
+        await Promise.all(p.rows.map(async (r) => {
+          const patch: any = { offer_active: true };
+          if (!r.old_price) patch.old_price = r.price;
+          const { error } = await supabase.from("prices").update(patch).eq("id", r.id);
+          if (error) throw error;
+        }));
+      } else {
+        // Aktion ausschalten: Preis auf old_price zurücksetzen und Angebotsfelder leeren
+        await Promise.all(p.rows.map(async (r) => {
+          const patch: any = {
+            offer_active: false,
+            offer_label: null,
+            offer_note: null,
+            offer_valid_from: null,
+            offer_valid_until: null,
+          };
+          if (r.old_price) { patch.price = r.old_price; patch.old_price = null; }
+          const { error } = await supabase.from("prices").update(patch).eq("id", r.id);
+          if (error) throw error;
+        }));
+      }
+    },
+    onSuccess: () => { invalidateAll(); toast.success("Angebot aktualisiert"); },
+    onError: (e: any) => toast.error(e.message),
   });
 
   return (
