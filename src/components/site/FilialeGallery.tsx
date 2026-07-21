@@ -34,8 +34,9 @@ export const FILIALEN: Filiale[] = [
     id: "riemke",
     name: "Riemke Markt",
     address: "Herner Straße 365, 44807 Bochum",
-    // Bilder folgen – hier später die 3 Riemke-Bilder eintragen (gleiches Schema wie oben).
-    images: [],
+    images: [
+      { src: filialeRiemkeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Riemke – Außenansicht der Filiale an der Herner Straße" },
+    ],
   },
 ];
 
