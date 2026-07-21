@@ -122,9 +122,8 @@ function HeroSection() {
               <span>· über 500 Bewertungen</span>
             </div>
           </div>
-
-          </div>
         </div>
+
 
         {/* RECHTS: Video-Karte */}
         <div className="animate-fade-up relative mx-auto w-full max-w-xl lg:max-w-none" style={{ animationDelay: "0.35s" }}>
