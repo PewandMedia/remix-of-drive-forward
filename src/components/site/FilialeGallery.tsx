@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
+import { Car, ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
 import filialeAussen from "@/assets/filiale-aussen.jpg.asset.json";
 import theorieraum from "@/assets/theorieraum.jpg.asset.json";
 import empfang from "@/assets/empfang.jpg.asset.json";
@@ -12,9 +12,10 @@ export type FilialeImage = {
 };
 
 export type Filiale = {
-  id: "rathaus" | "riemke";
+  id: "rathaus" | "riemke" | "autos";
   name: string;
-  address: string;
+  address?: string;
+  icon?: "map" | "car";
   images: FilialeImage[];
 };
 
@@ -23,6 +24,7 @@ export const FILIALEN: Filiale[] = [
     id: "rathaus",
     name: "Rathaus",
     address: "Brückstraße 53, 44787 Bochum",
+    icon: "map",
     images: [
       { src: filialeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Rathaus – Außenansicht der Filiale" },
       { src: theorieraum.url, caption: "Theorieraum", kicker: "Unterricht", alt: "MIRO-DRIVE Bochum Rathaus – moderner Theorieraum mit Großbildschirm" },
@@ -33,8 +35,21 @@ export const FILIALEN: Filiale[] = [
     id: "riemke",
     name: "Riemke Markt",
     address: "Herner Straße 365, 44807 Bochum",
-    // Bilder folgen – hier später die 3 Riemke-Bilder eintragen (gleiches Schema wie oben).
+    icon: "map",
     images: [],
+  },
+  {
+    id: "autos",
+    name: "Unsere Autos",
+    icon: "car",
+    images: [
+      { src: "/media/autos/auto-1.jpg", caption: "Mercedes A-Klasse", kicker: "Fuhrpark", alt: "MIRO-DRIVE Fahrschulwagen Mercedes weiß Frontansicht" },
+      { src: "/media/autos/auto-3.jpg", caption: "Frontansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulauto weiß mit Logo auf der Motorhaube" },
+      { src: "/media/autos/auto-2.jpg", caption: "Heckansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen Heckansicht mit Kennzeichen BO FM 621" },
+      { src: "/media/autos/auto-4.jpg", caption: "Seitenprofil", kicker: "Design", alt: "MIRO-DRIVE Fahrschulwagen Seitenansicht" },
+      { src: "/media/autos/auto-5.jpg", caption: "Auf der Straße", kicker: "Fahrpraxis", alt: "MIRO-DRIVE Fahrschulauto während der Fahrstunde im Tunnel" },
+      { src: "/media/autos/auto-6.jpg", caption: "Neonlicht", kicker: "Style", alt: "MIRO-DRIVE Fahrschulwagen unter roten Neonlichtern" },
+    ],
   },
 ];
 
