@@ -1,44 +1,22 @@
-Ziel: Den fehlenden „Grundbetrag 299 €“ als ersten Preis-Eintrag ergänzen und die Darstellung auf der Startseite sowie der Preis-Unterseite optisch aufwerten.
+Ziel: Preistabelle im Admin auf die 5 offiziellen Positionen reduzieren und den Toggle als Angebots-Schalter (rot = Aktion aktiv) mit automatischem Rückfall auf den Ursprungspreis nutzen.
 
-Annahmen (bitte bestätigen/korrigieren):
-- Der Grundbetrag gilt für alle drei Klassen (B, B197, B78), da die Seite bisher „identische Preise“ kommuniziert.
-- Die gewünschte Reihenfolge ist: Grundbetrag → Lernprogramm → Übungsstunde → Theorieprüfung → Praxisprüfung.
+1. Datenbank aufräumen
+   - `Sonderfahrten`, `Übungsstunde (Automatik)`, `Schaltkompetenz-Fahrten` aus `prices` löschen (alle Klassen).
+   - Übrig bleiben nur: Grundbetrag, Lernprogramm, Übungsstunde, Vorstellung Theorieprüfung, Vorstellung Praxisprüfung — identisch zur Startseite und `/preise`.
+   - Tool: `supabase--insert` (DELETE).
 
-Schritte:
+2. Admin-Toggle umfunktionieren (`src/routes/_authenticated/admin.tsx`, `PricesAdmin`)
+   - Spalte „Aktiv" → „Angebot" (der bestehende „Angebot"-Info-Spaltentext wandert als Sublabel darunter oder entfällt).
+   - Toggle schaltet jetzt `offer_active` statt `active`:
+     - AN: `offer_active=true`; wenn `old_price` leer ist, wird der aktuelle Preis in `old_price` gesichert. Button rot (Switch bekommt `data-state=checked` mit primary-Farbe – bereits so gestylt).
+     - AUS: `offer_active=false`; falls `old_price` gesetzt war, wird `price` auf `old_price` zurückgesetzt, `old_price`, `offer_label`, `offer_note`, `offer_valid_from`, `offer_valid_until` werden auf `null` gesetzt.
+   - `active` bleibt für sichtbare Positionen stets `true` (kein UI dafür mehr in der Tabelle).
+   - Neue Mutation `toggleOffer` ersetzt `toggleActive` und wendet die Logik auf alle IDs einer Gruppe (Klasse B/B197/B78) gleichzeitig an.
 
-1. Datenbank: Grundbetrag anlegen
-   - In `prices` je einen aktiven Datensatz pro Kategorie (Klasse B, Klasse B197, Klasse B78) einfügen:
-     - title: „Grundbetrag"
-     - price: „299 €"
-     - description: „Einmalig – Anmeldung & Verwaltung"
-     - sort_order: 1 (vor Lernprogramm)
-     - active: true
-   - Tool: `supabase--insert`
-
-2. Preis-Unterseite `/preise` verbessern
-   - `STANDARD_ROWS` um „Grundbetrag" als ersten Eintrag erweitern.
-   - Reihenfolge sicherstellen: Grundbetrag, Lernprogramm, Übungsstunde, Theorieprüfung, Praxisprüfung.
-   - Visuelles Highlight für den Grundbetrag: z. B. leicht abgesetzter Hintergrund, „Einmalig"-Badge oder fettere Typografie, damit er als Fixkosten-Position sofort erkennbar ist.
-   - Optional: Kleine „Gesamtkosten-Beispiel"-Zeile oder Info-Box unter der Tabelle, die Grundbetrag + Übungsstunden erklärt.
-
-3. Startseiten-Preis-Teaser verbessern
-   - `SNEAK_ROWS` ebenfalls um „Grundbetrag" als ersten Eintrag erweitern.
-   - Gleiche Reihenfolge wie auf `/preise`.
-   - Grundbetrag optisch hervorheben (z. B. roter Akzent, Badge „Einmalig").
-   - Teaser-Karte aufhübschen: bessere Whitespace, klare Trennung zwischen einmaligem Grundbetrag und wiederkehrenden Positionen, CTA „Vollständige Preisliste ansehen" beibehalten.
-
-4. Validierung
-   - Build laufen lassen.
-   - Im Preview prüfen:
-     - `/preise` zeigt Grundbetrag 299 € an erster Stelle.
-     - Startseiten-Preisteaser zeigt Grundbetrag an erster Stelle.
-     - Mobile & Desktop sehen sauber aus.
+3. Validierung
+   - Preview `/admin`: nur 5 Zeilen, Toggle rot bei aktivem Angebot, Deaktivieren stellt Ursprungspreis wieder her.
+   - `/preise` und Startseiten-Teaser bleiben unverändert korrekt.
 
 Technische Details:
-- Betroffene Dateien:
-  - `src/routes/preise.tsx`
-  - `src/routes/index.tsx`
-  - Datenbank-Tabelle `prices`
-- Keine Schema-Änderungen nötig; reine Daten-Einfügung plus UI-Anpassung.
-
-Falls der Grundbetrag nur für eine bestimmte Klasse gelten soll oder du andere Verbesserungen im Sinn hast (z. B. Farbe, Layout, zusätzliche Info-Box), sag kurz Bescheid.
+- Betroffene Dateien: `src/routes/_authenticated/admin.tsx`.
+- Keine Schema-Änderung, nur Datenlöschung + UI-Logik.
