@@ -1,20 +1,24 @@
-## Bewertungs-Sektion mobil lesbar machen
+## Ziel
+Auf `/kontakt` sollen die direkten Kontaktmöglichkeiten (WhatsApp, Telefon, E-Mail, Instagram, TikTok) sofort oben sichtbar sein – nicht erst nach dem Filialen-Block ganz unten.
 
-Aktuell wurde das Desktop-Layout (3 Spalten nebeneinander, Bild links neben Text) 1:1 auf mobil gezwungen. Auf 393px Breite wird dadurch der Text winzig und abgeschnitten – genau wie im Screenshot zu sehen.
+## Änderungen in `src/routes/kontakt.tsx`
 
-### Änderungen in `src/components/site/ReviewsSection.tsx`
+1. **Kontakt-Grid nach oben verschieben**
+   - Der aktuelle 5-Karten-Grid (WhatsApp, Telefon, E-Mail, Instagram, TikTok) wird direkt unter den `PageHero` gezogen, noch vor dem Anmeldungs-Tipp-Banner und den `LocationCard`s.
+   - WhatsApp bekommt visuelles Gewicht (größere Karte / volle Breite auf Mobil), damit die Haupt-Aktion sofort ins Auge fällt.
 
-**Featured-Karte (oben):**
-- Mobil: Bild zentriert oben, Text darunter (stacked), große lesbare Schrift
-- Ab `md:`: horizontal (Bild links, Text rechts) wie im Referenzbild
+2. **Layout-Feinschliff**
+   - Mobil: WhatsApp + Telefon groß und prominent oben (2 Karten volle Breite bzw. 1-spaltig gestapelt), danach E-Mail/Instagram/TikTok kompakter.
+   - Desktop: 5-spaltiges Grid bleibt, aber mit klarer Hierarchie (WhatsApp hebt sich hervor).
+   - Konsistente Semantic-Tokens statt hartkodierter Farben, wo möglich (bestehende Marken-Farben wie WhatsApp-Grün bleiben).
 
-**Drei Karten darunter:**
-- Mobil: 1 Spalte untereinander mit voller Breite und normaler Schriftgröße (lesbar)
-- Ab `sm:`: 3 Spalten nebeneinander
+3. **Reihenfolge auf der Seite danach**
+   1. Hero
+   2. Direkt-Kontakt-Karten (neu oben)
+   3. Anmeldungs-Tipp-Banner
+   4. Filial-Karten (`LocationCard`)
+   5. `FilialeGallery`
 
-**Textgrößen & Padding:**
-- Featured-Zitat: `text-xl` mobil → `md:text-2xl`
-- Karten-Padding: `p-5` mobil → `md:p-6`
-- Kartentext: `text-sm` mobil (statt gequetschtes text-xs)
-
-So bleibt der Desktop-Look erhalten, aber mobil ist alles vollständig lesbar wie im Referenzbild.
+## Nicht geändert
+- Keine Business-Logik, keine Daten, keine anderen Seiten.
+- `WhatsAppFloat` bleibt unverändert.
