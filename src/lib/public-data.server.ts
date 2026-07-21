@@ -21,9 +21,16 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 export function serverPublicClient() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) throw new Error("Backend server env missing");
+  const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const key = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) {
+    const missing = [
+      ...(!url ? ["SUPABASE_URL"] : []),
+      ...(!key ? ["SUPABASE_PUBLISHABLE_KEY"] : []),
+    ];
+    console.error(`[public-data.server] Missing env: ${missing.join(", ")}`);
+    throw new Error("Backend server env missing");
+  }
   return createClient<Database>(url, key, {
     global: {
       fetch: createSupabaseFetch(key),
