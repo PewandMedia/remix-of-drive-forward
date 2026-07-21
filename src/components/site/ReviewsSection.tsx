@@ -92,12 +92,12 @@ export function ReviewsSection() {
             </span>
             <Stars size={28} />
           </div>
-          <h2 className="mt-5 text-5xl">
+          <h2 className="mt-5 text-3xl md:text-5xl">
             Bochums bestbewertete Fahrschule – mit über{" "}
             <span className="text-primary">{CONTACT.googleReviewCount}</span>{" "}
             Google-Bewertungen.
           </h2>
-          <p className="mt-5 text-lg text-muted-foreground">
+          <p className="mt-5 text-base md:text-lg text-muted-foreground">
             5,0 Sterne sprechen für sich. Unsere Fahrschüler vertrauen uns – und du kannst dich selbst überzeugen.
           </p>
         </div>
@@ -105,42 +105,42 @@ export function ReviewsSection() {
         {/* Featured review */}
         <article
           key={featured.name}
-          className="mx-auto mt-14 max-w-4xl rounded-3xl border border-black/5 bg-white p-10 shadow-xl shadow-primary/5 transition-all duration-500"
+          className="mx-auto mt-14 max-w-4xl rounded-3xl border border-black/5 bg-white p-6 md:p-10 shadow-xl shadow-primary/5 transition-all duration-500"
         >
-          <div className="flex flex-row items-center gap-6">
+          <div className="flex flex-col items-center text-center gap-4 md:flex-row md:items-center md:text-left md:gap-6">
             <img
               src={featured.image}
               alt={featured.name}
               width={96}
               height={96}
               loading="lazy"
-              className="h-24 w-24 shrink-0 rounded-full object-cover ring-4 ring-primary/10"
+              className="h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-full object-cover ring-4 ring-primary/10"
             />
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3">
-                <p className="truncate font-display text-2xl text-foreground">{featured.name}</p>
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <p className="truncate font-display text-xl md:text-2xl text-foreground">{featured.name}</p>
                 <GoogleLogo className="h-5 w-5 shrink-0" />
               </div>
               <p className="mt-1 text-sm text-muted-foreground">{featured.when}</p>
-              <div className="mt-3">
+              <div className="mt-3 flex justify-center md:justify-start">
                 <Stars size={22} />
               </div>
             </div>
           </div>
-          <p className="mt-6 text-xl leading-relaxed text-foreground/85">
+          <p className="mt-6 text-lg md:text-xl leading-relaxed text-foreground/85">
             „{featured.text}"
           </p>
         </article>
 
         {/* Three switchable reviews */}
-        <div className="mt-8 grid grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           {others.map((r, i) => (
             <button
               key={r.name}
               type="button"
               onClick={() => promote(i + 1)}
               aria-label={`Bewertung von ${r.name} nach oben holen`}
-              className="group flex h-full flex-col rounded-2xl border border-black/5 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="group flex h-full flex-col rounded-2xl border border-black/5 bg-white p-5 md:p-6 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <div className="flex items-center gap-3">
                 <img
@@ -152,20 +152,21 @@ export function ReviewsSection() {
                   className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-black/5 transition-all group-hover:ring-primary/30"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="truncate text-sm font-bold text-foreground">{r.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">{r.when}</p>
+                  <p className="truncate text-base sm:text-sm font-bold text-foreground">{r.name}</p>
+                  <p className="truncate text-sm sm:text-xs text-muted-foreground">{r.when}</p>
                 </div>
                 <GoogleLogo className="h-4 w-4 shrink-0" />
               </div>
               <div className="mt-3">
                 <Stars size={14} />
               </div>
-              <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-foreground/80">
+              <p className="mt-3 sm:line-clamp-4 text-sm leading-relaxed text-foreground/80">
                 „{r.text}"
               </p>
             </button>
           ))}
         </div>
+
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
           <a
