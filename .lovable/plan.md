@@ -1,11 +1,25 @@
-Aktuell steht auf der Startseite unter der Überschrift „So einfach ist die Anmeldung.“ der Text „Für den Antrag beim Straßenverkehrsamt benötigst du nur drei Unterlagen.“ mit den Karten Passbild, Sehtest und Erste-Hilfe. Das wirkt so, als müsste der Kunde diese drei Dinge schon vor der Anmeldung erledigen.
+Ziel: Die Bewertungs-Sektion auf der Startseite soll auf Mobilgeräten genau dasselbe Layout haben wie auf Desktop.
 
-Änderungen in `src/routes/index.tsx` (Zeilen ~454–462):
+Geänderte Datei: `src/components/site/ReviewsSection.tsx`
 
-1. **Eyebrow** ändern von „Führerscheinantrag“ zu „Nach der Anmeldung“.
-2. **Headline** ändern von „So einfach ist die Anmeldung.“ zu „Das brauchst du für den Antrag.“ oder „So geht es nach der Anmeldung weiter.“
-3. **Untertitel** anpassen, z. B.: „Melde dich online an. Die drei Unterlagen für den Antrag beim Straßenverkehrsamt kannst du danach in Ruhe besorgen – wir helfen dir dabei.“
-4. Optional: Die Karten-Texte leicht umschreiben, damit sie als „nach der Anmeldung zu erledigen“ gelesen werden.
-5. **CTA-Box** darunter belassen, aber prüfen, ob der Satz „Wir reichen die Antragsunterlagen unserer Fahrschüler beim Straßenverkehrsamt ein“ konsistent bleibt.
+Anpassungen:
+1. **Featured-Bewertung (oben)**
+   - Entferne den Breakpoint, der das Bild und den Namen/ Sterne auf mobilen Geräten untereinander stellt.
+   - Bild bleibt links, Name, Zeitpunkt und Sterne rechts daneben – auch auf kleinsten Viewports.
 
-Ziel: Die Sektion kommuniziert klar, dass die Online-Anmeldung der erste Schritt ist und die drei Unterlagen erst danach für den offiziellen Antrag benötigt werden.
+2. **Drei untere Karten**
+   - Entferne den responsiven Wechsel von `grid-cols-1` (mobil) auf `grid-cols-3` (Desktop).
+   - Die drei Karten werden auf allen Viewports nebeneinander in 3 Spalten dargestellt.
+   - Karten-Text wird mit `line-clamp` und `truncate` begrenzt, damit nichts umbricht oder überläuft.
+
+3. **Sterne / Avatar / Abstände**
+   - Avatar- und Sterngrößen sowie Padding bleiben über alle Breakpoints hinweg konstant, damit das Erscheinungsbirk identisch ist.
+   - Falls nötig, werden sehr lange Namen mit `truncate` abgeschnitten.
+
+4. **Validierung**
+   - Build (`bun run build` bzw. automatischer Build) läuft sauber durch.
+   - Visueller Check im Preview auf Desktop- und Mobile-Ansicht, um sicherzustellen, dass die Sektion auf beiden Viewports identisch aussieht.
+
+Technische Details:
+- Tailwind-Klassen wie `sm:flex-row`, `sm:grid-cols-3`, `sm:p-10` etc. werden auf feste Werte (`flex-row`, `grid-cols-3`, `p-10`) umgestellt.
+- Keine neuen Abhängigkeiten nötig.
