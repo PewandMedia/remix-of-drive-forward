@@ -255,10 +255,14 @@ function Index() {
       {
         queryKey: ["first_aid_info"],
         queryFn: () => getFirstAidInfo(),
+        staleTime: 0,
+        refetchOnMount: "always" as const,
       },
       {
         queryKey: ["first_aid_dates_upcoming"],
         queryFn: () => getUpcomingFirstAidDates(),
+        staleTime: 0,
+        refetchOnMount: "always" as const,
       },
     ],
   });

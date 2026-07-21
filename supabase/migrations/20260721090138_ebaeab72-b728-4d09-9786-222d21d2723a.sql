@@ -1,0 +1,2 @@
+CREATE TRIGGER set_updated_at_first_aid_info BEFORE UPDATE ON public.first_aid_info FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
+CREATE TRIGGER set_updated_at_first_aid_dates BEFORE UPDATE ON public.first_aid_dates FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();

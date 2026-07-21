@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -632,6 +632,7 @@ function TeamDialog({ initial }: { initial?: any }) {
 /* ============== FIRST AID ============== */
 function FirstAidAdmin() {
   const qc = useQueryClient();
+  const router = useRouter();
   const { data } = useQuery({
     queryKey: ["admin-first-aid"],
     queryFn: async () => { const { data, error } = await supabase.from("first_aid_info").select("*").order("updated_at", { ascending: false }).limit(1); if (error) throw error; return data?.[0] ?? null; },
@@ -643,12 +644,17 @@ function FirstAidAdmin() {
         price: String(form.get("price") || "") || null,
         duration: String(form.get("duration") || "") || null,
         dates: String(form.get("dates") || "") || null,
-        active: form.get("active") === "on",
+        active: true,
       };
       if (data) { const { error } = await supabase.from("first_aid_info").update(row).eq("id", data.id); if (error) throw error; }
       else { const { error } = await supabase.from("first_aid_info").insert(row); if (error) throw error; }
     },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-first-aid"] }); qc.invalidateQueries({ queryKey: ["first_aid_info"] }); toast.success("Gespeichert"); },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-first-aid"] });
+      qc.invalidateQueries({ queryKey: ["first_aid_info"] });
+      router.invalidate();
+      toast.success("Gespeichert");
+    },
     onError: (e: any) => toast.error(e.message),
   });
   return (
@@ -662,7 +668,6 @@ function FirstAidAdmin() {
           <div><Label>Dauer (Start- & Unterseite)</Label><Input name="duration" defaultValue={data?.duration ?? ""} placeholder="z. B. 8 Stunden" /></div>
           <div><Label>Termin-Hinweis (Unterseite)</Label><Input name="dates" defaultValue={data?.dates ?? ""} placeholder="Zusatzhinweis unter Terminen" /></div>
         </div>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={data?.active ?? true} /> Aktiv</label>
         <Button type="submit" className="rounded-full">Speichern</Button>
       </form>
       <FirstAidDatesAdmin />
@@ -672,6 +677,7 @@ function FirstAidAdmin() {
 
 function FirstAidDatesAdmin() {
   const qc = useQueryClient();
+  const router = useRouter();
   const { data = [] } = useQuery({
     queryKey: ["admin-first-aid-dates"],
     queryFn: async () => {
@@ -684,6 +690,7 @@ function FirstAidDatesAdmin() {
     qc.invalidateQueries({ queryKey: ["admin-first-aid-dates"] });
     qc.invalidateQueries({ queryKey: ["first_aid_dates_upcoming"] });
     qc.invalidateQueries({ queryKey: ["home-first-aid-dates"] });
+    router.invalidate();
   };
   const del = useMutation({
     mutationFn: async (id: string) => { const { error } = await supabase.from("first_aid_dates").delete().eq("id", id); if (error) throw error; },

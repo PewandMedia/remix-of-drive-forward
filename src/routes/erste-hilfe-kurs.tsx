@@ -12,11 +12,15 @@ import ersteHilfeImg from "@/assets/erste-hilfe-hero.jpg";
 const faQuery = queryOptions({
   queryKey: ["first_aid_info"],
   queryFn: () => getFirstAidInfo(),
+  staleTime: 0,
+  refetchOnMount: "always" as const,
 });
 
 const datesQuery = queryOptions({
   queryKey: ["first_aid_dates_upcoming"],
   queryFn: () => getUpcomingFirstAidDates(),
+  staleTime: 0,
+  refetchOnMount: "always" as const,
 });
 
 export const Route = createFileRoute("/erste-hilfe-kurs")({

@@ -49,7 +49,6 @@ export const getFirstAidInfo = createServerFn({ method: "GET" }).handler(async (
   const { data, error } = await supabase
     .from("first_aid_info")
     .select("*")
-    .eq("active", true)
     .order("updated_at", { ascending: false })
     .limit(1);
   if (error) throw new Error(error.message);
