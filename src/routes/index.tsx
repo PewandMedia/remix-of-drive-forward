@@ -454,10 +454,10 @@ function Index() {
       {/* FÜHRERSCHEINANTRAG */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="mb-10 max-w-2xl">
-          <span className="text-xs font-bold uppercase tracking-wider text-primary">Führerscheinantrag</span>
-          <h2 className="mt-2 text-4xl sm:text-5xl">So einfach ist die Anmeldung.</h2>
+          <span className="text-xs font-bold uppercase tracking-wider text-primary">Nach der Anmeldung</span>
+          <h2 className="mt-2 text-4xl sm:text-5xl">Das brauchst du für den Antrag.</h2>
           <p className="mt-4 text-muted-foreground">
-            Für den Antrag beim Straßenverkehrsamt benötigst du nur drei Unterlagen. Den Rest erledigen wir für dich.
+            Melde dich zuerst online an. Die drei Unterlagen für den Antrag beim Straßenverkehrsamt besorgst du danach in Ruhe – wir helfen dir dabei.
           </p>
         </div>
 
