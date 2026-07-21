@@ -287,7 +287,7 @@ export function FilialeGallery({
                 }`}
               >
                 <span className="flex items-center justify-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5" />
+                  {f.icon === "car" ? <Car className="h-3.5 w-3.5" /> : <MapPin className="h-3.5 w-3.5" />}
                   {f.name}
                 </span>
               </button>
