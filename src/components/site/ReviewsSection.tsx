@@ -87,17 +87,17 @@ export function ReviewsSection() {
           </span>
           <div className="mt-6 flex items-center justify-center gap-3">
             <GoogleLogo className="h-9 w-9" />
-            <span className="font-display text-5xl tracking-tight text-foreground sm:text-6xl">
+            <span className="font-display text-6xl tracking-tight text-foreground">
               {CONTACT.googleRating}
             </span>
             <Stars size={28} />
           </div>
-          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 text-5xl">
             Bochums bestbewertete Fahrschule – mit über{" "}
             <span className="text-primary">{CONTACT.googleReviewCount}</span>{" "}
             Google-Bewertungen.
           </h2>
-          <p className="mt-5 text-base text-muted-foreground sm:text-lg">
+          <p className="mt-5 text-lg text-muted-foreground">
             5,0 Sterne sprechen für sich. Unsere Fahrschüler vertrauen uns – und du kannst dich selbst überzeugen.
           </p>
         </div>
@@ -105,21 +105,21 @@ export function ReviewsSection() {
         {/* Featured review */}
         <article
           key={featured.name}
-          className="mx-auto mt-14 max-w-4xl rounded-3xl border border-black/5 bg-white p-6 shadow-xl shadow-primary/5 transition-all duration-500 sm:p-10"
+          className="mx-auto mt-14 max-w-4xl rounded-3xl border border-black/5 bg-white p-10 shadow-xl shadow-primary/5 transition-all duration-500"
         >
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-6">
+          <div className="flex flex-row items-center gap-6">
             <img
               src={featured.image}
               alt={featured.name}
               width={96}
               height={96}
               loading="lazy"
-              className="h-20 w-20 rounded-full object-cover ring-4 ring-primary/10 sm:h-24 sm:w-24"
+              className="h-24 w-24 shrink-0 rounded-full object-cover ring-4 ring-primary/10"
             />
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3">
-                <p className="font-display text-xl text-foreground sm:text-2xl">{featured.name}</p>
-                <GoogleLogo className="h-5 w-5" />
+                <p className="truncate font-display text-2xl text-foreground">{featured.name}</p>
+                <GoogleLogo className="h-5 w-5 shrink-0" />
               </div>
               <p className="mt-1 text-sm text-muted-foreground">{featured.when}</p>
               <div className="mt-3">
@@ -127,20 +127,20 @@ export function ReviewsSection() {
               </div>
             </div>
           </div>
-          <p className="mt-6 text-lg leading-relaxed text-foreground/85 sm:text-xl">
+          <p className="mt-6 text-xl leading-relaxed text-foreground/85">
             „{featured.text}"
           </p>
         </article>
 
         {/* Three switchable reviews */}
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-3 sm:gap-6">
+        <div className="mt-8 grid grid-cols-3 gap-6">
           {others.map((r, i) => (
             <button
               key={r.name}
               type="button"
               onClick={() => promote(i + 1)}
               aria-label={`Bewertung von ${r.name} nach oben holen`}
-              className="group flex h-full flex-col rounded-2xl border border-black/5 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:p-6"
+              className="group flex h-full flex-col rounded-2xl border border-black/5 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <div className="flex items-center gap-3">
                 <img
@@ -149,11 +149,11 @@ export function ReviewsSection() {
                   width={48}
                   height={48}
                   loading="lazy"
-                  className="h-12 w-12 rounded-full object-cover ring-2 ring-black/5 transition-all group-hover:ring-primary/30"
+                  className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-black/5 transition-all group-hover:ring-primary/30"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="truncate text-sm font-bold text-foreground">{r.name}</p>
-                  <p className="text-xs text-muted-foreground">{r.when}</p>
+                  <p className="truncate text-xs text-muted-foreground">{r.when}</p>
                 </div>
                 <GoogleLogo className="h-4 w-4 shrink-0" />
               </div>
