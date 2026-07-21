@@ -1,27 +1,27 @@
 ## Ziel
-`/kontakt` auf Mobil kompakter machen – weniger Scrollen, wichtigste Aktionen sofort sichtbar.
+Die letzten Änderungen an der Kontaktseite betreffen aktuell auch die Desktop-Ansicht (z. B. kleinere Icon-Padding, reduzierte Gaps, kleinere Textgrößen in den Kontakt-Karten). Der User will: Desktop bleibt **exakt wie vorher**, nur Mobil wird kompakter.
 
 ## Änderungen in `src/routes/kontakt.tsx`
 
-1. **Header schlanker auf Mobil**
-   - H1 auf `text-2xl` reduzieren, Subtitle auf `text-xs`, `mb-6` → `mb-4`.
-   - Eyebrow-Zeile weglassen auf Mobil (`hidden sm:block`).
+1. **Header**
+   - Mobil: `text-2xl`, kein Eyebrow, `mb-4`, kleiner Untertitel.
+   - Ab `sm`: wieder Original – Eyebrow sichtbar, H1 `text-4xl`, Untertitel `text-base`, `mb-6`.
 
-2. **Anmeldungs-Tipp kompakter**
-   - Auf Mobil nur eine schmale Zeile mit „Online anmelden →“-Link statt Button-Block.
+2. **Anmeldungs-Tipp**
+   - Mobil: kompakte Zeile mit kleinem "Anmelden →"-Pill.
+   - Ab `sm`: originales Padding (`px-4 py-3`), normaler Button-Style, wie vor der Verdichtung.
 
-3. **Direkt-Kontakt-Karten mobil dichter**
-   - WhatsApp bleibt prominent (etwas kleiner: `p-3.5`, Text `text-base`).
-   - Telefon / E-Mail / Instagram / TikTok: auf Mobil in einem 2×2-Grid mit minimalem Padding (`p-3`), Icons kleiner, nur Label + Wert.
-   - Reihenabstand `gap-2.5` statt `gap-3`.
+3. **Kontakt-Karten (WhatsApp + 2×2 Grid)**
+   - WhatsApp-Karte: Mobil `p-3.5`, Text `text-base`; ab `sm` zurück auf `p-4`/`text-lg` und Original-Icon-Padding (`p-2.5`).
+   - Telefon / E-Mail / Instagram / TikTok:
+     - Mobil: 2×2 Grid, `p-3`, kleine Icons (`h-3.5 w-3.5`), Text `text-xs`, Icon-Bubble `p-1.5`.
+     - Ab `sm`: wieder Original – volle Breite pro Karte (1 Spalte im linken Bereich), `p-4`, Icon `h-5 w-5`, Text `text-sm`, Icon-Bubble `p-2.5`.
+   - Reihenabstand: mobil `gap-2.5`, ab `sm` `gap-3`.
 
-4. **Reihenfolge auf Mobil**
-   - Kontakt-Karten kommen VOR den Standort-Karten (bereits so). Standort-Karten werden mobil kompakter dargestellt (`LocationCard` selbst unverändert, nur Container-Abstand).
-
-5. **Vertikale Abstände reduzieren**
-   - `pt-8` → `pt-5` auf Mobil, `pb-12` → `pb-8`.
-   - Zwischen-Sections `mt-8` → `mt-6`.
+4. **Vertikale Container-Abstände**
+   - Mobil: `pt-5 pb-8`, Section-Abstände `mt-6`.
+   - Ab `sm`: Original `pt-10 pb-12`, `mt-8`.
 
 ## Nicht geändert
-- Desktop-Layout bleibt wie es ist.
-- `LocationCard`, `FilialeGallery`, Daten und Business-Logik unverändert.
+- Desktop-Layout / Zwei-Spalten-Grid (Kontakt links, Standorte rechts) bleibt.
+- `LocationCard`, `FilialeGallery`, Business-Logik, Kontaktdaten.
