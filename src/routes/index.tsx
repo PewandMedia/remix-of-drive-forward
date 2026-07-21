@@ -573,7 +573,10 @@ function Index() {
         </div>
       </section>
 
+      <FleetSection />
+
       <FilialeGallery />
+
 
       {/* TEAM TEASER */}
       {team.length > 0 && (
