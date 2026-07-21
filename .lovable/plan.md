@@ -1,20 +1,9 @@
-## Ziel
-Die Bewertungssektion soll auf Mobilgeräten wieder wie die Desktop-Ansicht wirken: eine große Bewertung oben, darunter drei kleinere Bewertungen nebeneinander, damit man weniger scrollen muss. Gleichzeitig soll der Text lesbar bleiben und nicht so stark gequetscht werden.
+## Änderungen in `src/components/site/FilialeGallery.tsx`
 
-## Plan
-1. **Mobile Layout auf Desktop-Logik zurückstellen**
-   - Featured-Bewertung oben bleibt als große Karte.
-   - Die drei kleineren Bewertungen darunter werden auch auf Mobil in einer 3er-Reihe angezeigt.
+1. **Bilder reduzieren im Autos-Tab**: Nur `auto-2.jpg` (Heckansicht) und `auto-5.jpg` (Auf der Straße) behalten. Die anderen 4 Einträge entfernen.
 
-2. **Mobile Lesbarkeit verbessern**
-   - Die drei kleinen Karten werden deutlich kompakter: kleinere Portraits, weniger Padding, kürzere sichtbare Review-Texte.
-   - Namen/Zeit bleiben sichtbar, lange Texte werden begrenzt statt die Karten extrem hoch zu machen.
-   - Die große Bewertung oben bekommt weiterhin genug Platz für lesbaren Text.
+2. **Caption-Overlay entfernen**: Da bei 2 Bildern die aktuelle Mosaik-Logik (`images.length >= 3`) sonst den EmptyState zeigen würde, das Grid so anpassen, dass es auch bei 2 Bildern funktioniert – zwei gleich große Kacheln nebeneinander (Desktop) bzw. gestapelt/2-Spalten (Mobil).
 
-3. **Weniger Scrollen**
-   - Vertikale Abstände in der Bewertungssektion mobil reduzieren.
-   - Buttons und Hinweistext unten kompakter darstellen.
+3. **Untere Bildbeschreibung entfernen**: Den dunklen Gradient-Overlay mit Kicker + Caption in der `Tile`-Komponente ausblendbar machen (neuer Prop `showCaption`, default `true`), und für den Autos-Tab auf `false` setzen. Rathaus/Riemke bleiben unverändert mit Overlay.
 
-4. **Desktop unverändert lassen**
-   - Desktop-Ansicht bleibt wie aktuell/gut.
-   - Änderungen werden nur über mobile Klassen umgesetzt.
+4. Lightbox bleibt funktionsfähig (Klick öffnet Bild groß, Beschreibung nur dort sichtbar).

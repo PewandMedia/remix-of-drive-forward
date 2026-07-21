@@ -43,12 +43,8 @@ export const FILIALEN: Filiale[] = [
     name: "Unsere Autos",
     icon: "car",
     images: [
-      { src: "/media/autos/auto-1.jpg", caption: "Mercedes A-Klasse", kicker: "Fuhrpark", alt: "MIRO-DRIVE Fahrschulwagen Mercedes weiß Frontansicht" },
-      { src: "/media/autos/auto-3.jpg", caption: "Frontansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulauto weiß mit Logo auf der Motorhaube" },
       { src: "/media/autos/auto-2.jpg", caption: "Heckansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen Heckansicht mit Kennzeichen BO FM 621" },
-      { src: "/media/autos/auto-4.jpg", caption: "Seitenprofil", kicker: "Design", alt: "MIRO-DRIVE Fahrschulwagen Seitenansicht" },
       { src: "/media/autos/auto-5.jpg", caption: "Auf der Straße", kicker: "Fahrpraxis", alt: "MIRO-DRIVE Fahrschulauto während der Fahrstunde im Tunnel" },
-      { src: "/media/autos/auto-6.jpg", caption: "Neonlicht", kicker: "Style", alt: "MIRO-DRIVE Fahrschulwagen unter roten Neonlichtern" },
     ],
   },
 ];
