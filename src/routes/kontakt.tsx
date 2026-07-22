@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
-import { LOCATIONS } from "@/lib/locations";
 import { useLocationsWithHours } from "@/hooks/useLocationsWithHours";
 import { FilialeGallery } from "@/components/site/FilialeGallery";
 import { Phone, Mail, MessageCircle, AlertCircle } from "lucide-react";

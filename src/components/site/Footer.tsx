@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Phone, Mail, MapPin, Navigation } from "lucide-react";
 import { InstagramLogoIcon, TikTokIcon } from "@/components/icons/TikTokIcon";
 import { CONTACT, NAV_LINKS } from "@/lib/contact";
-import { LOCATIONS, navigationUrl, fullAddress } from "@/lib/locations";
+import { navigationUrl, fullAddress } from "@/lib/locations";
 import { useLocationsWithHours } from "@/hooks/useLocationsWithHours";
 
 function WhatsAppIcon({ className }: { className?: string }) {
