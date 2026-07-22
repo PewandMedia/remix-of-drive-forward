@@ -1,18 +1,22 @@
 ## Ziel
-Die vier hochgeladenen Fotos als Galerie zur Filiale „Riemke Markt" im Filial-Umschalter auf der Startseite hinzufügen (aktuell leer → zeigt Empty-State).
+DSGVO-konformen Cookie-Banner ergänzen. Da die Seite laut Datenschutzerklärung ausschließlich technisch notwendige Cookies nutzt (keine Analytics/Tracking), reicht ein schlanker Info-Banner mit Zustimmung — kein aufwendiger Consent-Manager mit Kategorien-Auswahl.
 
-## Schritte
+## Umsetzung
 
-1. **Assets anlegen**
-   Vier Uploads via `lovable-assets` CDN registrieren und als `.asset.json` Zeiger in `src/assets/` speichern:
-   - `riemke-aussen.jpg` (Außenansicht Fahrschule mit „FAHRSCHULE"-Schriftzug)
-   - `riemke-lounge.jpg` (Wartebereich mit Couchtisch/Deko)
-   - `riemke-weihnachten.jpg` (Roll-up Banner mit Weihnachtsbaum)
-   - `riemke-empfang.jpg` (Empfangstisch mit Visitenkarten & Google-Bewertungs-Karte)
+1. **Neue Komponente** `src/components/site/CookieBanner.tsx`
+   - Fixierter Banner unten (mobil full-width, Desktop rechts unten als Karte).
+   - Text: kurze Info zu technisch notwendigen Cookies + Link zur Datenschutzerklärung.
+   - Buttons: „Verstanden" (primary) und „Ablehnen" (ghost) — beide schließen den Banner. Da nur notwendige Cookies verwendet werden, wird die Auswahl nur als UI-Bestätigung gespeichert.
+   - Persistenz via `localStorage` (`miro-drive-cookie-consent` = `"accepted"` / `"declined"` + Timestamp).
+   - SSR-sicher: erst nach `useEffect` + Hydration einblenden (verhindert Layout-Shift & Hydration-Mismatch).
+   - Design: passt zum bestehenden System (weiß, rounded-2xl, border, shadow, primary-Rot für CTA, `font-display` für Titel).
+   - Slide-in Animation beim Erscheinen.
 
-2. **`src/components/site/FilialeGallery.tsx` aktualisieren**
-   - Die vier neuen Asset-JSONs importieren.
-   - Im `FILIALEN`-Array beim Eintrag `id: "riemke"` das leere `images: []` durch die vier `FilialeImage`-Objekte ersetzen (jeweils mit passendem `caption`, `kicker` und SEO-Alt-Text auf Deutsch).
+2. **Einbindung** in `src/routes/__root.tsx`
+   - Import `CookieBanner` und einmalig innerhalb des Root-Layouts unter `<Outlet />` rendern, damit er auf allen Seiten erscheint.
 
-## Ergebnis
-Klick auf den Tab „Riemke Markt" zeigt statt Empty-State das Mosaik-Layout (Hero + 2 Kacheln + 1 zusätzliche Reihe für das 4. Bild), voll integriert in bestehendes Lightbox-Verhalten. Keine anderen Änderungen.
+3. **Kein Backend / keine Cookies neu setzen** — nur `localStorage`, damit die Aussage der Datenschutzerklärung („nur technisch notwendige Cookies") wahr bleibt.
+
+## Nicht enthalten
+- Keine Kategorien-Auswahl (Marketing/Statistik), da keine solchen Cookies gesetzt werden.
+- Kein Consent-Reset-Link in Datenschutz/Footer (kann bei Bedarf nachgezogen werden).
