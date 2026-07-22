@@ -834,11 +834,41 @@ function InstagramAdmin() {
 function InstagramDialog({ initial }: { initial?: any }) {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>(initial?.image_url ?? "");
+  const [uploading, setUploading] = useState(false);
   const isEdit = !!initial;
+
+  async function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `posts/${crypto.randomUUID()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("instagram").upload(path, file, {
+        cacheControl: "31536000",
+        contentType: file.type || "image/jpeg",
+      });
+      if (upErr) throw upErr;
+      const { data: signed, error: sErr } = await supabase.storage
+        .from("instagram")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (sErr) throw sErr;
+      setImageUrl(signed.signedUrl);
+      toast.success("Bild hochgeladen");
+    } catch (err: any) {
+      toast.error(err.message || "Upload fehlgeschlagen");
+    } finally {
+      setUploading(false);
+    }
+  }
+
   const save = useMutation({
     mutationFn: async (form: FormData) => {
+      const finalUrl = imageUrl || String(form.get("image_url") || "");
+      if (!finalUrl) throw new Error("Bitte ein Bild hochladen oder URL angeben.");
       const row = {
-        image_url: String(form.get("image_url") || ""),
+        image_url: finalUrl,
         caption: String(form.get("caption") || "") || null,
         post_url: String(form.get("post_url") || "https://www.instagram.com/miro_drive/"),
         sort_order: Number(form.get("sort_order") || 0),
@@ -859,12 +889,25 @@ function InstagramDialog({ initial }: { initial?: any }) {
       <DialogContent>
         <DialogHeader><DialogTitle>{isEdit ? "Beitrag bearbeiten" : "Neuer Instagram-Beitrag"}</DialogTitle></DialogHeader>
         <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3">
-          <div><Label>Bild-URL</Label><Input name="image_url" required defaultValue={initial?.image_url} placeholder="https://…/bild.jpg" /></div>
+          <div>
+            <Label>Bild hochladen</Label>
+            <Input type="file" accept="image/*" onChange={onFileChange} disabled={uploading} />
+            {uploading && <p className="mt-1 text-xs text-muted-foreground">Wird hochgeladen…</p>}
+            {imageUrl && (
+              <div className="mt-2 aspect-square w-32 overflow-hidden rounded-lg border bg-muted">
+                <img src={imageUrl} alt="Vorschau" className="h-full w-full object-cover" />
+              </div>
+            )}
+          </div>
+          <div>
+            <Label>oder Bild-URL</Label>
+            <Input name="image_url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://…/bild.jpg" />
+          </div>
           <div><Label>Beschreibung / Caption</Label><Textarea name="caption" rows={2} defaultValue={initial?.caption ?? ""} placeholder="z. B. Glückwunsch Lisa zur bestandenen Prüfung!" /></div>
           <div><Label>Instagram-Post-URL</Label><Input name="post_url" defaultValue={initial?.post_url ?? "https://www.instagram.com/miro_drive/"} placeholder="https://www.instagram.com/p/…" /></div>
           <div><Label>Sortierung (niedriger = weiter vorne)</Label><Input name="sort_order" type="number" defaultValue={initial?.sort_order ?? 0} /></div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
-          <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
+          <DialogFooter><Button type="submit" className="rounded-full" disabled={uploading}>Speichern</Button></DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
