@@ -91,3 +91,15 @@ export const getActiveInstagramPosts = createServerFn({ method: "GET" }).handler
   if (error) throw new Error(error.message);
   return data ?? [];
 });
+
+export const getLocationHours = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = serverPublicClient();
+  const { data, error } = await supabase
+    .from("location_hours")
+    .select("location_id,sort_order,day_label,time_label")
+    .order("location_id", { ascending: true })
+    .order("sort_order", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
