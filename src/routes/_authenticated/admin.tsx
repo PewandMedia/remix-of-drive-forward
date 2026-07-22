@@ -1184,6 +1184,30 @@ function InquiriesAdmin() {
   );
 }
 
+
+function ContractStatusBadge({ inquiry }: { inquiry: Inquiry }) {
+  if (inquiry.contract_error) {
+    return (
+      <span title={inquiry.contract_error} className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+        <AlertCircle className="h-3 w-3" /> Fehler
+      </span>
+    );
+  }
+  if (inquiry.contract_sent_at) {
+    return (
+      <span title={`Gesendet: ${new Date(inquiry.contract_sent_at).toLocaleString("de-DE")}`}
+        className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">
+        <CheckCircle2 className="h-3 w-3" /> Gesendet
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+      <Clock className="h-3 w-3" /> Ausstehend
+    </span>
+  );
+}
+
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex justify-between gap-4 border-b py-1.5 last:border-b-0">
@@ -1192,6 +1216,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
     </div>
   );
 }
+
 
 /* ============== LOCATION HOURS ============== */
 const LOCATION_META: { id: string; name: string }[] = [
