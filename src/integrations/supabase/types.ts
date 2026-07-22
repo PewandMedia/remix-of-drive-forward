@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      filiale_photos: {
+        Row: {
+          active: boolean
+          alt: string | null
+          caption: string | null
+          created_at: string
+          filiale_id: string
+          id: string
+          image_url: string
+          kicker: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          alt?: string | null
+          caption?: string | null
+          created_at?: string
+          filiale_id: string
+          id?: string
+          image_url: string
+          kicker?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          alt?: string | null
+          caption?: string | null
+          created_at?: string
+          filiale_id?: string
+          id?: string
+          image_url?: string
+          kicker?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       first_aid_dates: {
         Row: {
           active: boolean
