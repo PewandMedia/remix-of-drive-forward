@@ -35,50 +35,32 @@ export function InstagramSection() {
           </p>
         </div>
 
-        {(() => {
-          const n = posts.length;
-          const mobileCount = Math.floor(n / 3) * 3;
-          const desktopCount = Math.floor(n / 4) * 4;
-          return (
-            <div className="mt-10 grid grid-cols-3 gap-2 sm:mt-12 sm:gap-3 md:grid-cols-4">
-              {posts.map((p, idx) => {
-                const inMobile = idx < mobileCount;
-                const inDesktop = idx < desktopCount;
-                if (!inMobile && !inDesktop) return null;
-                const visibility =
-                  inMobile && inDesktop
-                    ? ""
-                    : inMobile
-                      ? "md:hidden"
-                      : "hidden md:block";
-                return (
-                  <a
-                    key={p.id}
-                    href={p.post_url || CONTACT.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`group relative block aspect-square overflow-hidden rounded-xl bg-muted shadow-sm transition-transform hover:-translate-y-1 ${visibility}`}
-                  >
-                    <img
-                      src={p.image_url}
-                      alt={p.caption ?? `Bestandene Führerscheinprüfung bei MIRO-DRIVE – Beitrag ${idx + 1}`}
-                      loading="eager"
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#833ab4]/80 via-[#fd1d1d]/60 to-[#fcb045]/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <Instagram className="h-8 w-8 drop-shadow" />
-                      <span className="mt-1 hidden items-center gap-1 text-[10px] font-bold uppercase tracking-wider sm:inline-flex">
-                        Ansehen <ExternalLink className="h-3 w-3" />
-                      </span>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          );
-        })()}
+        <div className="mt-10 grid grid-cols-3 gap-2 sm:mt-12 sm:gap-3 md:grid-cols-4">
+          {posts.map((p, idx) => (
+            <a
+              key={p.id}
+              href={p.post_url || CONTACT.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block aspect-square overflow-hidden rounded-xl bg-muted shadow-sm transition-transform hover:-translate-y-1"
+            >
+              <img
+                src={p.image_url}
+                alt={p.caption ?? `Bestandene Führerscheinprüfung bei MIRO-DRIVE – Beitrag ${idx + 1}`}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#833ab4]/80 via-[#fd1d1d]/60 to-[#fcb045]/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <Instagram className="h-8 w-8 drop-shadow" />
+                <span className="mt-1 hidden items-center gap-1 text-[10px] font-bold uppercase tracking-wider sm:inline-flex">
+                  Ansehen <ExternalLink className="h-3 w-3" />
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
 
         <div className="mt-12 flex justify-center">
           <a

@@ -87,7 +87,7 @@ export const getActiveInstagramPosts = createServerFn({ method: "GET" }).handler
     .select("id,image_url,post_url,caption,sort_order")
     .eq("active", true)
     .order("sort_order", { ascending: true })
-    .limit(8);
+    .limit(120);
   if (error) throw new Error(error.message);
   return data ?? [];
 });
