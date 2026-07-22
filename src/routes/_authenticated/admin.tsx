@@ -67,12 +67,14 @@ function AdminPage() {
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="first_aid">Erste-Hilfe</TabsTrigger>
             <TabsTrigger value="instagram">Instagram</TabsTrigger>
+            <TabsTrigger value="hours">Öffnungszeiten</TabsTrigger>
           </TabsList>
           <TabsContent value="inquiries"><InquiriesAdmin /></TabsContent>
           <TabsContent value="prices"><PricesAdmin /></TabsContent>
           <TabsContent value="team"><TeamAdmin /></TabsContent>
           <TabsContent value="first_aid"><FirstAidAdmin /></TabsContent>
           <TabsContent value="instagram"><InstagramAdmin /></TabsContent>
+          <TabsContent value="hours"><LocationHoursAdmin /></TabsContent>
         </Tabs>
       </div>
     </SiteLayout>
@@ -1137,3 +1139,136 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
     </div>
   );
 }
+
+/* ============== LOCATION HOURS ============== */
+const LOCATION_META: { id: string; name: string }[] = [
+  { id: "bochum-zentrum", name: "Filiale Rathaus (Brückstraße 53)" },
+  { id: "bochum-riemke", name: "Filiale Riemke (Herner Straße 365)" },
+];
+
+type HourRow = { id?: string; day_label: string; time_label: string; sort_order: number };
+
+function LocationHoursAdmin() {
+  return (
+    <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      {LOCATION_META.map((loc) => (
+        <LocationHoursCard key={loc.id} locationId={loc.id} name={loc.name} />
+      ))}
+    </div>
+  );
+}
+
+function LocationHoursCard({ locationId, name }: { locationId: string; name: string }) {
+  const qc = useQueryClient();
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["admin-location-hours", locationId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("location_hours")
+        .select("id,day_label,time_label,sort_order")
+        .eq("location_id", locationId)
+        .order("sort_order");
+      if (error) throw error;
+      return data as HourRow[];
+    },
+  });
+
+  const [rows, setRows] = useState<HourRow[]>([]);
+  useEffect(() => {
+    setRows(data.map((r) => ({ ...r })));
+  }, [data]);
+
+  const save = useMutation({
+    mutationFn: async (next: HourRow[]) => {
+      const cleaned = next
+        .map((r, i) => ({ ...r, sort_order: i }))
+        .filter((r) => r.day_label.trim() && r.time_label.trim());
+      const { error: delErr } = await supabase.from("location_hours").delete().eq("location_id", locationId);
+      if (delErr) throw delErr;
+      if (cleaned.length > 0) {
+        const { error: insErr } = await supabase.from("location_hours").insert(
+          cleaned.map((r) => ({
+            location_id: locationId,
+            day_label: r.day_label.trim(),
+            time_label: r.time_label.trim(),
+            sort_order: r.sort_order,
+          })),
+        );
+        if (insErr) throw insErr;
+      }
+    },
+    onSuccess: () => {
+      toast.success("Öffnungszeiten gespeichert");
+      qc.invalidateQueries({ queryKey: ["admin-location-hours", locationId] });
+      qc.invalidateQueries({ queryKey: ["location-hours"] });
+    },
+    onError: (e: any) => toast.error(e.message ?? "Fehler beim Speichern"),
+  });
+
+  function updateRow(idx: number, patch: Partial<HourRow>) {
+    setRows((prev) => prev.map((r, i) => (i === idx ? { ...r, ...patch } : r)));
+  }
+  function addRow() {
+    setRows((prev) => [...prev, { day_label: "", time_label: "", sort_order: prev.length }]);
+  }
+  function removeRow(idx: number) {
+    setRows((prev) => prev.filter((_, i) => i !== idx));
+  }
+  function move(idx: number, dir: -1 | 1) {
+    setRows((prev) => {
+      const next = [...prev];
+      const target = idx + dir;
+      if (target < 0 || target >= next.length) return prev;
+      [next[idx], next[target]] = [next[target], next[idx]];
+      return next;
+    });
+  }
+
+  return (
+    <div className="rounded-2xl border bg-white p-5">
+      <div className="mb-4">
+        <h3 className="font-display text-lg">{name}</h3>
+        <p className="text-xs text-muted-foreground">Diese Zeiten erscheinen auf Startseite, Kontakt, Footer und Erste-Hilfe-Kurs.</p>
+      </div>
+
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Wird geladen…</p>
+      ) : (
+        <div className="space-y-2">
+          {rows.map((r, i) => (
+            <div key={i} className="grid grid-cols-[1fr_1fr_auto] gap-2">
+              <Input
+                value={r.day_label}
+                onChange={(e) => updateRow(i, { day_label: e.target.value })}
+                placeholder="Mo. – Fr."
+              />
+              <Input
+                value={r.time_label}
+                onChange={(e) => updateRow(i, { time_label: e.target.value })}
+                placeholder="09:00 – 18:00 oder geschlossen"
+              />
+              <div className="flex items-center gap-1">
+                <Button type="button" size="icon" variant="ghost" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Nach oben">↑</Button>
+                <Button type="button" size="icon" variant="ghost" onClick={() => move(i, 1)} disabled={i === rows.length - 1} aria-label="Nach unten">↓</Button>
+                <Button type="button" size="icon" variant="ghost" onClick={() => removeRow(i)} aria-label="Entfernen"><Trash2 className="h-4 w-4" /></Button>
+              </div>
+            </div>
+          ))}
+          {rows.length === 0 && (
+            <p className="text-xs text-muted-foreground">Noch keine Zeilen. Füge die erste Zeile hinzu.</p>
+          )}
+        </div>
+      )}
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+        <Button type="button" size="sm" variant="outline" onClick={addRow} className="rounded-full">
+          <Plus className="h-4 w-4" /> Zeile hinzufügen
+        </Button>
+        <Button type="button" size="sm" onClick={() => save.mutate(rows)} disabled={save.isPending} className="rounded-full">
+          {save.isPending ? "Speichere…" : "Speichern"}
+        </Button>
+      </div>
+    </div>
+  );
+}
+

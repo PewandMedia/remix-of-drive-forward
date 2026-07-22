@@ -12,7 +12,7 @@ import { Car, Users, Clock, Euro, Heart, Sparkles, MessageCircle, ShieldCheck, G
 import heroVideo from "@/assets/miro-drive-hero-v2.mp4.asset.json";
 import heroPoster from "@/assets/miro-drive-hero-v2-poster.jpg.asset.json";
 import { LocationCard } from "@/components/site/LocationCard";
-import { LOCATIONS } from "@/lib/locations";
+import { useLocationsWithHours } from "@/hooks/useLocationsWithHours";
 import { TeamCard, type TeamMember } from "@/components/site/TeamCard";
 import { FilialeGallery } from "@/components/site/FilialeGallery";
 import { HeroCanvasVideo } from "@/components/site/HeroCanvasVideo";
@@ -709,7 +709,7 @@ function Index() {
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-          {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
+          {useLocationsWithHours().map((loc) => <LocationCard key={loc.id} location={loc} />)}
         </div>
       </section>
 

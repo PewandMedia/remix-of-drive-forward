@@ -5,7 +5,7 @@ import { getFirstAidInfo, getUpcomingFirstAidDates } from "@/lib/public-data.fun
 import { ErrorBox } from "@/components/site/QueryFallbacks";
 import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
-import { LOCATIONS } from "@/lib/locations";
+import { useLocationsWithHours } from "@/hooks/useLocationsWithHours";
 import { Heart, Calendar, Clock, FileText, GraduationCap, Phone, MapPin } from "lucide-react";
 import ersteHilfeImg from "@/assets/erste-hilfe-hero.jpg";
 
@@ -202,7 +202,7 @@ function FAPage() {
             Anmeldung direkt in einer unserer Filialen während der Bürozeiten.
           </p>
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
-            {LOCATIONS.map((loc) => (
+            {useLocationsWithHours().map((loc) => (
               <LocationCard key={loc.id} location={loc} />
             ))}
           </div>

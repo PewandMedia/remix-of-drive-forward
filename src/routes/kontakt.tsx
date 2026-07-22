@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
-import { LOCATIONS } from "@/lib/locations";
+import { useLocationsWithHours } from "@/hooks/useLocationsWithHours";
 import { FilialeGallery } from "@/components/site/FilialeGallery";
 import { Phone, Mail, MessageCircle, AlertCircle } from "lucide-react";
 import { InstagramLogoIcon, TikTokIcon } from "@/components/icons/TikTokIcon";
@@ -96,7 +96,7 @@ function ContactPage() {
           </div>
 
           <div className="grid gap-4 lg:col-span-7">
-            {LOCATIONS.map((loc) => (
+            {useLocationsWithHours().map((loc) => (
               <LocationCard key={loc.id} location={loc} />
             ))}
           </div>
