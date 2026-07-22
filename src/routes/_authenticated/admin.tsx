@@ -12,8 +12,8 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, LogOut, Eye } from "lucide-react";
-import { listInquiries, updateInquiryStatus, deleteInquiry } from "@/lib/inquiries.functions";
+import { Pencil, Trash2, Plus, LogOut, Eye, FileDown, Send, CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import { listInquiries, updateInquiryStatus, deleteInquiry, getContractDownloadUrl, resendContract } from "@/lib/inquiries.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin – MIRO-DRIVE" }, { name: "robots", content: "noindex" }] }),
@@ -978,6 +978,9 @@ type Inquiry = {
   status: "neu" | "in_bearbeitung" | "erledigt";
   contact_pref: string | null;
   created_at: string;
+  contract_url: string | null;
+  contract_sent_at: string | null;
+  contract_error: string | null;
 };
 
 const STATUS_LABEL: Record<Inquiry["status"], string> = {
