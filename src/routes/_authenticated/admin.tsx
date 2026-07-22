@@ -68,6 +68,7 @@ function AdminPage() {
             <TabsTrigger value="first_aid">Erste-Hilfe</TabsTrigger>
             <TabsTrigger value="instagram">Instagram</TabsTrigger>
             <TabsTrigger value="hours">Öffnungszeiten</TabsTrigger>
+            <TabsTrigger value="filiale">Filial-Galerie</TabsTrigger>
           </TabsList>
           <TabsContent value="inquiries"><InquiriesAdmin /></TabsContent>
           <TabsContent value="prices"><PricesAdmin /></TabsContent>
@@ -75,6 +76,7 @@ function AdminPage() {
           <TabsContent value="first_aid"><FirstAidAdmin /></TabsContent>
           <TabsContent value="instagram"><InstagramAdmin /></TabsContent>
           <TabsContent value="hours"><LocationHoursAdmin /></TabsContent>
+          <TabsContent value="filiale"><FilialePhotosAdmin /></TabsContent>
         </Tabs>
       </div>
     </SiteLayout>
