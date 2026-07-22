@@ -167,6 +167,36 @@ export type Database = {
         }
         Relationships: []
       }
+      location_hours: {
+        Row: {
+          created_at: string
+          day_label: string
+          id: string
+          location_id: string
+          sort_order: number
+          time_label: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          day_label: string
+          id?: string
+          location_id: string
+          sort_order?: number
+          time_label: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          day_label?: string
+          id?: string
+          location_id?: string
+          sort_order?: number
+          time_label?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       offers: {
         Row: {
           active: boolean
