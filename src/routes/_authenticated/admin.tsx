@@ -999,12 +999,40 @@ function InquiriesAdmin() {
   const list = useServerFn(listInquiries);
   const updateStatus = useServerFn(updateInquiryStatus);
   const del = useServerFn(deleteInquiry);
+  const getUrl = useServerFn(getContractDownloadUrl);
+  const resend = useServerFn(resendContract);
   const [selected, setSelected] = useState<Inquiry | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const { data = [], isLoading } = useQuery({
     queryKey: ["admin-inquiries"],
     queryFn: () => list() as Promise<Inquiry[]>,
   });
+
+  async function downloadContract(id: string) {
+    try {
+      setBusyId(id);
+      const { url } = await getUrl({ data: { id } });
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Download fehlgeschlagen");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function resendContractFor(id: string) {
+    try {
+      setBusyId(id);
+      await resend({ data: { id } });
+      toast.success("Vertrag erneut gesendet");
+      qc.invalidateQueries({ queryKey: ["admin-inquiries"] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Versand fehlgeschlagen");
+    } finally {
+      setBusyId(null);
+    }
+  }
 
   const statusMut = useMutation({
     mutationFn: (v: { id: string; status: Inquiry["status"] }) => updateStatus({ data: v }),
