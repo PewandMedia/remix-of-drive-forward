@@ -1,14 +1,16 @@
 import { Instagram, ArrowRight, ExternalLink } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { CONTACT } from "@/lib/contact";
-
-const POSTS = [
-  "/images/insta/bestanden-neu-1.jpg",
-  "/images/insta/bestanden-neu-2.jpg",
-  "/images/insta/bestanden-neu-3.jpg",
-  "/images/insta/bestanden-neu-4.jpg",
-];
+import { getActiveInstagramPosts } from "@/lib/public-data.functions";
 
 export function InstagramSection() {
+  const { data: posts = [] } = useQuery({
+    queryKey: ["instagram-posts"],
+    queryFn: () => getActiveInstagramPosts(),
+  });
+
+  if (posts.length === 0) return null;
+
   return (
     <section className="relative overflow-hidden bg-white py-20">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -34,17 +36,17 @@ export function InstagramSection() {
         </div>
 
         <div className="mt-10 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-5 md:grid-cols-3">
-          {POSTS.map((src, idx) => (
+          {posts.map((p, idx) => (
             <a
-              key={idx}
-              href={CONTACT.instagram}
+              key={p.id}
+              href={p.post_url || CONTACT.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="group relative block aspect-square overflow-hidden rounded-2xl bg-muted shadow-sm transition-transform hover:-translate-y-1"
             >
               <img
-                src={src}
-                alt={`Bestandene Führerscheinprüfung bei MIRO-DRIVE – Beitrag ${idx + 1}`}
+                src={p.image_url}
+                alt={p.caption ?? `Bestandene Führerscheinprüfung bei MIRO-DRIVE – Beitrag ${idx + 1}`}
                 loading="eager"
                 decoding="async"
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
