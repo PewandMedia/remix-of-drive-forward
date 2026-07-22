@@ -131,6 +131,11 @@ function PricesPage() {
     price: pool.find((p) => p.title === row.key) ?? null,
   })).filter((r) => r.price);
 
+  // External TÜV examination fees (separate from driving-school prices)
+  const externalFees = prices
+    .filter((p) => p.category === "Externe TÜV-Gebühren")
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+
   return (
     <SiteLayout>
       {/* Hero */}
