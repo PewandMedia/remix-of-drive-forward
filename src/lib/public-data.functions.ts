@@ -103,3 +103,15 @@ export const getLocationHours = createServerFn({ method: "GET" }).handler(async 
   return data ?? [];
 });
 
+export const getFilialePhotos = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = serverPublicClient();
+  const { data, error } = await supabase
+    .from("filiale_photos")
+    .select("id,filiale_id,image_url,kicker,caption,alt,sort_order")
+    .eq("active", true)
+    .order("filiale_id", { ascending: true })
+    .order("sort_order", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
