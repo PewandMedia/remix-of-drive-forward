@@ -3,6 +3,10 @@ import { Car, ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-rea
 import filialeAussen from "@/assets/filiale-aussen.jpg.asset.json";
 import theorieraum from "@/assets/theorieraum.jpg.asset.json";
 import empfang from "@/assets/empfang.jpg.asset.json";
+import riemkeAussen from "@/assets/riemke-aussen.jpg.asset.json";
+import riemkeLounge from "@/assets/riemke-lounge.jpg.asset.json";
+import riemkeWeihnachten from "@/assets/riemke-weihnachten.jpg.asset.json";
+import riemkeEmpfang from "@/assets/riemke-empfang.jpg.asset.json";
 
 export type FilialeImage = {
   src: string;
@@ -36,7 +40,12 @@ export const FILIALEN: Filiale[] = [
     name: "Riemke Markt",
     address: "Herner Straße 365, 44807 Bochum",
     icon: "map",
-    images: [],
+    images: [
+      { src: riemkeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Riemke – Außenansicht mit FAHRSCHULE-Schriftzug" },
+      { src: riemkeLounge.url, caption: "Wartebereich", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum Riemke – gemütlicher Wartebereich mit Couchtisch" },
+      { src: riemkeEmpfang.url, caption: "Empfang & Beratung", kicker: "Beratung", alt: "MIRO-DRIVE Bochum Riemke – Empfangstisch mit Visitenkarten und Google-Bewertungskarte" },
+      { src: riemkeWeihnachten.url, caption: "Unser Team-Spirit", kicker: "Atmosphäre", alt: "MIRO-DRIVE Bochum Riemke – Roll-up Banner mit weihnachtlicher Dekoration" },
+    ],
   },
   {
     id: "autos",

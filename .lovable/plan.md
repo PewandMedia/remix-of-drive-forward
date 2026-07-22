@@ -1,33 +1,18 @@
-# Plan: Externe TÜV-Gebühren in die Preisliste
-
 ## Ziel
-Auf der Preis-Seite `/preise` sollen die vom TÜV direkt erhobenen Prüfungsgebühren separat ausgewiesen werden:
-- Theorieprüfung: **24,99 €**
-- Praxisprüfung: **129,83 €**
+Die vier hochgeladenen Fotos als Galerie zur Filiale „Riemke Markt" im Filial-Umschalter auf der Startseite hinzufügen (aktuell leer → zeigt Empty-State).
 
-## Umsetzung
+## Schritte
 
-### 1. Datenbank: Neue Preiszeilen anlegen
-Ich lege zwei Einträge in der bestehenden `prices`-Tabelle an, Kategorie **„Externe TÜV-Gebühren“**:
-- Titel: „Theorieprüfung“ – 24,99 €
-- Titel: „Praxisprüfung“ – 129,83 €
+1. **Assets anlegen**
+   Vier Uploads via `lovable-assets` CDN registrieren und als `.asset.json` Zeiger in `src/assets/` speichern:
+   - `riemke-aussen.jpg` (Außenansicht Fahrschule mit „FAHRSCHULE"-Schriftzug)
+   - `riemke-lounge.jpg` (Wartebereich mit Couchtisch/Deko)
+   - `riemke-weihnachten.jpg` (Roll-up Banner mit Weihnachtsbaum)
+   - `riemke-empfang.jpg` (Empfangstisch mit Visitenkarten & Google-Bewertungs-Karte)
 
-Damit erscheinen sie automatisch auch im Admin-Panel unter „Preise“ und können dort später geändert werden, ohne Code anzufassen.
-
-### 2. Seite `/preise` erweitern
-Nach der zentralen Preistabelle füge ich einen neuen Abschnitt **„Externe TÜV-Gebühren“** ein.
-- Er zeigt alle Preise aus der Kategorie „Externe TÜV-Gebühren“ als Liste an.
-- Ein kurzer Hinweis erklärt, dass diese Beträge direkt an den TÜV gezahlt werden und nicht im Fahrschulpreis enthalten sind.
-- Styling passt sich an die bestehende Preistabelle an (weiße Karte, rote Akzente, klare Typografie).
-
-### 3. Admin-Panel
-Keine Änderung nötig. Die neuen Zeilen werden wie alle anderen Preise verwaltet.
-
-## Technische Details
-- **Migration**: `INSERT INTO public.prices (category, title, description, price, sort_order, active)`
-- **Frontend**: In `src/routes/preise.tsx` filtere ich `prices` nach `category === "Externe TÜV-Gebühren"` und rendere eine zusätzliche Sektion.
-- **Keine neuen Tabellen oder RLS-Änderungen** nötig, da `prices` bereits existiert und öffentlich lesbar ist.
+2. **`src/components/site/FilialeGallery.tsx` aktualisieren**
+   - Die vier neuen Asset-JSONs importieren.
+   - Im `FILIALEN`-Array beim Eintrag `id: "riemke"` das leere `images: []` durch die vier `FilialeImage`-Objekte ersetzen (jeweils mit passendem `caption`, `kicker` und SEO-Alt-Text auf Deutsch).
 
 ## Ergebnis
-- `/preise` zeigt nach den Fahrschulpreisen klar getrennt die TÜV-Gebühren.
-- Admin kann die Beträge später selbst anpassen.
+Klick auf den Tab „Riemke Markt" zeigt statt Empty-State das Mosaik-Layout (Hero + 2 Kacheln + 1 zusätzliche Reihe für das 4. Bild), voll integriert in bestehendes Lightbox-Verhalten. Keine anderen Änderungen.
