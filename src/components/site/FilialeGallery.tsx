@@ -234,9 +234,31 @@ export function FilialeGallery({
   const [activeId, setActiveId] = useState<Filiale["id"]>("rathaus");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  const { data: dbPhotos } = useQuery({
+    queryKey: ["filiale-photos"],
+    queryFn: () => getFilialePhotos(),
+    staleTime: 60_000,
+  });
+
+  const filialen = useMemo<Filiale[]>(() => {
+    if (!dbPhotos || dbPhotos.length === 0) return FILIALEN;
+    return FILIALEN_META.map((m) => {
+      const rows = dbPhotos.filter((p: any) => p.filiale_id === m.id);
+      const images: FilialeImage[] = rows.length
+        ? rows.map((r: any) => ({
+            src: r.image_url,
+            caption: r.caption ?? "",
+            kicker: r.kicker ?? "",
+            alt: r.alt ?? r.caption ?? m.name,
+          }))
+        : FALLBACK_IMAGES[m.id];
+      return { ...m, images };
+    });
+  }, [dbPhotos]);
+
   const active = useMemo(
-    () => FILIALEN.find((f) => f.id === activeId) ?? FILIALEN[0],
-    [activeId],
+    () => filialen.find((f) => f.id === activeId) ?? filialen[0],
+    [activeId, filialen],
   );
   const images = active.images;
 
