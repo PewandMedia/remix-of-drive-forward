@@ -16,6 +16,7 @@ import {
   Timer,
   CheckCircle2,
   Info,
+  Receipt,
 } from "lucide-react";
 import { isOfferLive, formatRemaining } from "@/lib/offer";
 import { useEffect, useState } from "react";
