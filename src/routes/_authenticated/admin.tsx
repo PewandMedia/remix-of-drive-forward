@@ -1274,3 +1274,162 @@ function LocationHoursCard({ locationId, name }: { locationId: string; name: str
   );
 }
 
+
+/* ============== FILIALE PHOTOS ============== */
+const FILIALE_OPTIONS = [
+  { id: "rathaus", label: "Rathaus" },
+  { id: "riemke", label: "Riemke Markt" },
+  { id: "autos", label: "Unsere Autos" },
+] as const;
+
+function FilialePhotosAdmin() {
+  const qc = useQueryClient();
+  const [activeId, setActiveId] = useState<"rathaus" | "riemke" | "autos">("rathaus");
+  const { data = [] } = useQuery({
+    queryKey: ["admin-filiale-photos"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("filiale_photos" as any).select("*").order("filiale_id").order("sort_order");
+      if (error) throw error;
+      return data as any[];
+    },
+  });
+  const del = useMutation({
+    mutationFn: async (id: string) => { const { error } = await supabase.from("filiale_photos" as any).delete().eq("id", id); if (error) throw error; },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-filiale-photos"] }); qc.invalidateQueries({ queryKey: ["filiale-photos"] }); toast.success("Gelöscht"); },
+    onError: (e: any) => toast.error(e.message),
+  });
+  const toggleActive = useMutation({
+    mutationFn: async (p: { id: string; active: boolean }) => { const { error } = await supabase.from("filiale_photos" as any).update({ active: p.active }).eq("id", p.id); if (error) throw error; },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-filiale-photos"] }); qc.invalidateQueries({ queryKey: ["filiale-photos"] }); },
+  });
+
+  const filtered = data.filter((r) => r.filiale_id === activeId);
+
+  return (
+    <div className="mt-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="inline-flex flex-wrap gap-1 rounded-full border border-slate-200 bg-slate-50 p-1">
+          {FILIALE_OPTIONS.map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setActiveId(f.id)}
+              className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-all ${activeId === f.id ? "bg-primary text-primary-foreground shadow" : "text-slate-600 hover:text-slate-900"}`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+        <FilialePhotoDialog filialeId={activeId} />
+      </div>
+      <p className="mb-3 text-xs text-muted-foreground">Bilder werden in aufsteigender Reihenfolge angezeigt. Deaktivierte Bilder erscheinen nicht auf der Website.</p>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {filtered.map((p) => (
+          <div key={p.id} className="rounded-xl border bg-white p-4">
+            <div className="aspect-[4/3] overflow-hidden rounded-lg bg-muted">
+              {p.image_url ? <img src={p.image_url} alt={p.alt ?? ""} className="h-full w-full object-cover" /> : null}
+            </div>
+            <div className="mt-3 flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-primary">{p.kicker ?? "—"}</p>
+                <p className="truncate font-medium">{p.caption ?? "—"}</p>
+              </div>
+              <Switch checked={p.active} onCheckedChange={(v) => toggleActive.mutate({ id: p.id, active: v })} />
+            </div>
+            <p className="mt-1 text-[10px] text-muted-foreground">Sortierung: {p.sort_order}</p>
+            <div className="mt-3 flex justify-end gap-2">
+              <FilialePhotoDialog filialeId={activeId} initial={p} />
+              <Button size="icon" variant="ghost" onClick={() => { if (confirm("Foto wirklich löschen?")) del.mutate(p.id); }}><Trash2 className="h-4 w-4" /></Button>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="col-span-full rounded-xl border border-dashed p-10 text-center text-sm text-muted-foreground">Noch keine Fotos für diese Filiale.</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function FilialePhotoDialog({ filialeId, initial }: { filialeId: "rathaus" | "riemke" | "autos"; initial?: any }) {
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>(initial?.image_url ?? "");
+  const [uploading, setUploading] = useState(false);
+  const isEdit = !!initial;
+
+  async function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${filialeId}/${crypto.randomUUID()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("filiale").upload(path, file, {
+        cacheControl: "31536000",
+        contentType: file.type || "image/jpeg",
+      });
+      if (upErr) throw upErr;
+      const { data: signed, error: sErr } = await supabase.storage
+        .from("filiale")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (sErr) throw sErr;
+      setImageUrl(signed.signedUrl);
+      toast.success("Bild hochgeladen");
+    } catch (err: any) {
+      toast.error(err.message || "Upload fehlgeschlagen");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  const save = useMutation({
+    mutationFn: async (form: FormData) => {
+      if (!imageUrl) throw new Error("Bitte zuerst ein Bild hochladen.");
+      const row = {
+        filiale_id: filialeId,
+        image_url: imageUrl,
+        kicker: String(form.get("kicker") || "") || null,
+        caption: String(form.get("caption") || "") || null,
+        alt: String(form.get("alt") || "") || null,
+        sort_order: Number(form.get("sort_order") || 0),
+        active: form.get("active") === "on",
+      };
+      if (isEdit) { const { error } = await supabase.from("filiale_photos" as any).update(row).eq("id", initial.id); if (error) throw error; }
+      else { const { error } = await supabase.from("filiale_photos" as any).insert(row); if (error) throw error; }
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-filiale-photos"] }); qc.invalidateQueries({ queryKey: ["filiale-photos"] }); toast.success("Gespeichert"); setOpen(false); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {isEdit
+          ? <Button size="icon" variant="ghost"><Pencil className="h-4 w-4" /></Button>
+          : <Button className="rounded-full"><Plus className="h-4 w-4" /> Foto</Button>}
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader><DialogTitle>{isEdit ? "Foto bearbeiten" : "Neues Foto hinzufügen"}</DialogTitle></DialogHeader>
+        <form onSubmit={(e) => { e.preventDefault(); save.mutate(new FormData(e.currentTarget)); }} className="space-y-3">
+          <div>
+            <Label>Bild hochladen (JPG / PNG)</Label>
+            <Input type="file" accept="image/*" onChange={onFileChange} disabled={uploading} />
+            {uploading && <p className="mt-1 text-xs text-muted-foreground">Wird hochgeladen…</p>}
+            {imageUrl && (
+              <div className="mt-2 aspect-[4/3] w-40 overflow-hidden rounded-lg border bg-muted">
+                <img src={imageUrl} alt="Vorschau" className="h-full w-full object-cover" />
+              </div>
+            )}
+          </div>
+          <div><Label>Kicker (kleine Überschrift)</Label><Input name="kicker" defaultValue={initial?.kicker ?? ""} placeholder="z. B. Filiale" /></div>
+          <div><Label>Bildunterschrift</Label><Input name="caption" defaultValue={initial?.caption ?? ""} placeholder="z. B. Außenansicht" /></div>
+          <div><Label>Alt-Text (Barrierefreiheit / SEO)</Label><Input name="alt" defaultValue={initial?.alt ?? ""} placeholder="Beschreibe das Bild kurz" /></div>
+          <div><Label>Sortierung (niedriger = weiter vorne)</Label><Input name="sort_order" type="number" defaultValue={initial?.sort_order ?? 0} /></div>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
+          <DialogFooter><Button type="submit" className="rounded-full" disabled={uploading || save.isPending}>Speichern</Button></DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
