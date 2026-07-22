@@ -40,7 +40,12 @@ export const FILIALEN: Filiale[] = [
     name: "Riemke Markt",
     address: "Herner Straße 365, 44807 Bochum",
     icon: "map",
-    images: [],
+    images: [
+      { src: riemkeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Riemke – Außenansicht mit FAHRSCHULE-Schriftzug" },
+      { src: riemkeLounge.url, caption: "Wartebereich", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum Riemke – gemütlicher Wartebereich mit Couchtisch" },
+      { src: riemkeEmpfang.url, caption: "Empfang & Beratung", kicker: "Beratung", alt: "MIRO-DRIVE Bochum Riemke – Empfangstisch mit Visitenkarten und Google-Bewertungskarte" },
+      { src: riemkeWeihnachten.url, caption: "Unser Team-Spirit", kicker: "Atmosphäre", alt: "MIRO-DRIVE Bochum Riemke – Roll-up Banner mit weihnachtlicher Dekoration" },
+    ],
   },
   {
     id: "autos",
