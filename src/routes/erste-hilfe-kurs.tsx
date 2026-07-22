@@ -203,7 +203,7 @@ function FAPage() {
             Anmeldung direkt in einer unserer Filialen während der Bürozeiten.
           </p>
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
-            {LOCATIONS.map((loc) => (
+            {useLocationsWithHours().map((loc) => (
               <LocationCard key={loc.id} location={loc} />
             ))}
           </div>

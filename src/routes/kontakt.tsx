@@ -97,7 +97,7 @@ function ContactPage() {
           </div>
 
           <div className="grid gap-4 lg:col-span-7">
-            {LOCATIONS.map((loc) => (
+            {useLocationsWithHours().map((loc) => (
               <LocationCard key={loc.id} location={loc} />
             ))}
           </div>

@@ -710,7 +710,7 @@ function Index() {
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-          {LOCATIONS.map((loc) => <LocationCard key={loc.id} location={loc} />)}
+          {useLocationsWithHours().map((loc) => <LocationCard key={loc.id} location={loc} />)}
         </div>
       </section>
 
