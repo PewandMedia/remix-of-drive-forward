@@ -16,6 +16,7 @@ import {
   Timer,
   CheckCircle2,
   Info,
+  Receipt,
 } from "lucide-react";
 import { isOfferLive, formatRemaining } from "@/lib/offer";
 import { useEffect, useState } from "react";
@@ -129,6 +130,11 @@ function PricesPage() {
     row,
     price: pool.find((p) => p.title === row.key) ?? null,
   })).filter((r) => r.price);
+
+  // External TÜV examination fees (separate from driving-school prices)
+  const externalFees = prices
+    .filter((p) => p.category === "Externe TÜV-Gebühren")
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
 
   return (
     <SiteLayout>
@@ -274,6 +280,64 @@ function PricesPage() {
             </div>
           </div>
         </section>
+
+        {/* External TÜV fees */}
+        {externalFees.length > 0 && (
+          <section className="relative mt-16">
+            <div className="pointer-events-none absolute -left-3 -top-3 h-8 w-8 border-l-2 border-t-2 border-slate-300" />
+            <div className="pointer-events-none absolute -right-3 -top-3 h-8 w-8 border-r-2 border-t-2 border-slate-300" />
+            <div className="pointer-events-none absolute -bottom-3 -left-3 h-8 w-8 border-b-2 border-l-2 border-slate-300" />
+            <div className="pointer-events-none absolute -bottom-3 -right-3 h-8 w-8 border-b-2 border-r-2 border-slate-300" />
+
+            <div className="rounded-[28px] border border-slate-200 bg-white p-6 sm:p-10 lg:p-12">
+              <div className="flex flex-col items-center border-b border-slate-200 pb-6 text-center">
+                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500">
+                  <span className="h-px w-6 bg-slate-300" />
+                  Zusatzkosten
+                  <span className="h-px w-6 bg-slate-300" />
+                </div>
+                <h2 className="mt-3 font-display text-2xl font-light tracking-tight text-slate-900 sm:text-3xl">
+                  Externe TÜV-Gebühren
+                </h2>
+                <p className="mt-2 max-w-lg text-sm text-slate-500">
+                  Diese Gebühren werden direkt an den TÜV entrichtet und sind nicht im Fahrschulpreis enthalten.
+                </p>
+              </div>
+
+              <ul className="mt-4 divide-y divide-slate-100">
+                {externalFees.map((fee, idx) => (
+                  <li
+                    key={fee.id}
+                    className="grid grid-cols-[auto_1fr_auto] items-baseline gap-4 py-5 sm:gap-6 sm:py-6"
+                  >
+                    <span className="font-display text-xs tabular-nums text-slate-400 sm:text-sm">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="font-display text-lg font-normal text-slate-900 sm:text-xl">
+                        {fee.title}
+                      </p>
+                      {fee.description && (
+                        <p className="mt-1 text-xs text-slate-500 sm:text-sm">{fee.description}</p>
+                      )}
+                    </div>
+                    <span className="shrink-0 font-display text-3xl font-light tabular-nums leading-none text-slate-900 sm:text-4xl">
+                      {fee.price}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6 flex items-start gap-3 rounded-2xl bg-slate-50 px-5 py-4 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                <Receipt className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <p>
+                  <span className="font-semibold text-slate-900">Hinweis:</span> Die TÜV-Gebühren können
+                  sich ändern. Aktuelle Preise findest du auf der Webseite des TÜV.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Class comparison */}
         <section className="mt-20">
