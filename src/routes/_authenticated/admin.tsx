@@ -1147,6 +1147,13 @@ function InquiriesAdmin() {
               <Row label="Typ">{selected.type}</Row>
               <Row label="Status">{STATUS_LABEL[selected.status]}</Row>
               <Row label="Eingegangen">{new Date(selected.created_at).toLocaleString("de-DE")}</Row>
+              <Row label="Vertrag"><ContractStatusBadge inquiry={selected} /></Row>
+              {selected.contract_error && (
+                <div className="rounded-xl bg-red-50 p-3 text-xs text-red-700">
+                  <div className="font-semibold">Vertrag-Fehler</div>
+                  <div className="mt-1 break-words">{selected.contract_error}</div>
+                </div>
+              )}
               {selected.message && (
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Nachricht</div>
