@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Navigation } from "lucide-react";
 import { InstagramLogoIcon, TikTokIcon } from "@/components/icons/TikTokIcon";
 import { CONTACT, NAV_LINKS } from "@/lib/contact";
 import { LOCATIONS, navigationUrl, fullAddress } from "@/lib/locations";
+import { useLocationsWithHours } from "@/hooks/useLocationsWithHours";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -13,6 +14,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 export function Footer() {
+  const locations = useLocationsWithHours();
   return (
     <footer className="mt-24 bg-[#0a0a0a] text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:px-8">
@@ -59,7 +61,7 @@ export function Footer() {
         <div className="lg:col-span-4">
           <h3 className="text-sm font-bold tracking-wider text-white">Unsere Standorte</h3>
           <div className="mt-4 space-y-4">
-            {LOCATIONS.map((loc) => (
+            {locations.map((loc) => (
               <div key={loc.id} className="rounded-xl border border-white/10 p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
