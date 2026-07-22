@@ -1068,12 +1068,13 @@ function InquiriesAdmin() {
                 <th className="px-4 py-3">Klasse</th>
                 <th className="px-4 py-3">Kontakt</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Vertrag</th>
                 <th className="px-4 py-3 text-right">Aktion</th>
               </tr>
             </thead>
             <tbody>
               {data.length === 0 && (
-                <tr><td colSpan={7} className="px-4 py-10 text-center text-muted-foreground">Noch keine Anmeldungen.</td></tr>
+                <tr><td colSpan={8} className="px-4 py-10 text-center text-muted-foreground">Noch keine Anmeldungen.</td></tr>
               )}
               {data.map((i) => (
                 <tr key={i.id} className="border-t">
@@ -1098,10 +1099,29 @@ function InquiriesAdmin() {
                       <option value="erledigt">Erledigt</option>
                     </select>
                   </td>
+                  <td className="px-4 py-3">
+                    <ContractStatusBadge inquiry={i} />
+                  </td>
                   <td className="px-4 py-3 text-right">
-                    <Button size="sm" variant="ghost" onClick={() => setSelected(i)}>
-                      <Eye className="h-4 w-4" />
-                    </Button>
+                    <div className="flex justify-end gap-1">
+                      {i.contract_url && (
+                        <Button size="sm" variant="ghost" title="Vertrag herunterladen"
+                          disabled={busyId === i.id}
+                          onClick={() => downloadContract(i.id)}>
+                          <FileDown className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {i.email && (
+                        <Button size="sm" variant="ghost" title="Vertrag erneut senden"
+                          disabled={busyId === i.id}
+                          onClick={() => resendContractFor(i.id)}>
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      )}
+                      <Button size="sm" variant="ghost" onClick={() => setSelected(i)}>
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
