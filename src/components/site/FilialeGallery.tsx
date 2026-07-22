@@ -297,7 +297,7 @@ export function FilialeGallery({
           aria-label="Filiale wählen"
           className="mb-6 inline-flex w-full flex-wrap gap-1 rounded-full border border-slate-200 bg-slate-50 p-1 shadow-sm sm:w-auto"
         >
-          {FILIALEN.map((f) => {
+          {filialen.map((f) => {
             const isActive = f.id === activeId;
             return (
               <button
