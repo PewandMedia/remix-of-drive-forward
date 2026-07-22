@@ -585,15 +585,45 @@ function TeamAdmin() {
 function TeamDialog({ initial }: { initial?: any }) {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>(initial?.image_url ?? "");
+  const [fileName, setFileName] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
   const isEdit = !!initial;
+
+  async function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `members/${crypto.randomUUID()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("team").upload(path, file, {
+        cacheControl: "31536000",
+        contentType: file.type || "image/jpeg",
+      });
+      if (upErr) throw upErr;
+      const { data: signed, error: sErr } = await supabase.storage
+        .from("team")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (sErr) throw sErr;
+      setImageUrl(signed.signedUrl);
+      setFileName(file.name);
+      toast.success("Datei hochgeladen");
+    } catch (err: any) {
+      toast.error(err.message || "Upload fehlgeschlagen");
+    } finally {
+      setUploading(false);
+    }
+  }
+
   const save = useMutation({
     mutationFn: async (form: FormData) => {
+      if (!imageUrl) throw new Error("Bitte ein Bild oder eine Datei hochladen.");
       const row = {
         name: String(form.get("name") || ""),
         role: String(form.get("role") || ""),
         description: String(form.get("description") || "") || null,
-        bio: String(form.get("bio") || "") || null,
-        image_url: String(form.get("image_url") || "") || null,
+        image_url: imageUrl,
         sort_order: Number(form.get("sort_order") || 0),
         active: form.get("active") === "on",
       };
@@ -603,6 +633,9 @@ function TeamDialog({ initial }: { initial?: any }) {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-team"] }); qc.invalidateQueries({ queryKey: ["team_members"] }); toast.success("Gespeichert"); setOpen(false); },
     onError: (e: any) => toast.error(e.message),
   });
+
+  const isImage = imageUrl && !/\.pdf(\?|$)/i.test(imageUrl);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -616,18 +649,28 @@ function TeamDialog({ initial }: { initial?: any }) {
           <div><Label>Rolle</Label><Input name="role" required defaultValue={initial?.role} /></div>
           <div><Label>Beschreibung</Label><Textarea name="description" rows={3} defaultValue={initial?.description ?? ""} /></div>
           <div>
-            <Label>Bio (Rückseite der Karte)</Label>
-            <Textarea name="bio" rows={4} defaultValue={initial?.bio ?? ""} placeholder="z. B. Entspannter Fahrlehrer, der dich sicher & stressfrei zur Prüfung bringt." />
+            <Label>Bild oder Datei hochladen</Label>
+            <Input type="file" accept="image/*,application/pdf" onChange={onFileChange} disabled={uploading} />
+            {uploading && <p className="mt-1 text-xs text-muted-foreground">Wird hochgeladen…</p>}
+            {imageUrl && (
+              isImage ? (
+                <div className="mt-2 aspect-square w-32 overflow-hidden rounded-lg border bg-muted">
+                  <img src={imageUrl} alt="Vorschau" className="h-full w-full object-cover" />
+                </div>
+              ) : (
+                <p className="mt-2 text-xs text-muted-foreground">PDF hochgeladen{fileName ? `: ${fileName}` : ""}</p>
+              )
+            )}
           </div>
-          <div><Label>Bild-URL</Label><Input name="image_url" defaultValue={initial?.image_url ?? ""} placeholder="https://…" /></div>
           <div><Label>Sortierung</Label><Input name="sort_order" type="number" defaultValue={initial?.sort_order ?? 0} /></div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={initial?.active ?? true} /> Aktiv</label>
-          <DialogFooter><Button type="submit" className="rounded-full">Speichern</Button></DialogFooter>
+          <DialogFooter><Button type="submit" className="rounded-full" disabled={uploading}>Speichern</Button></DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
   );
 }
+
 
 /* ============== FIRST AID ============== */
 function FirstAidAdmin() {
