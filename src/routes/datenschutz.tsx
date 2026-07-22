@@ -175,8 +175,8 @@ function DatenschutzPage() {
           <h2 className="font-display text-lg text-foreground">8. WhatsApp-Kommunikation</h2>
           <p>
             Auf unserer Website finden Sie einen WhatsApp-Button, über den Sie uns unter{" "}
-            <a href={CONTACT.whatsAppUrl ?? "#"} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-              {CONTACT.whatsappDisplay ?? "unserer WhatsApp-Nummer"}
+            <a href={CONTACT.whatsapp} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+              {CONTACT.whatsappText}
             </a>{" "}
             direkt anschreiben können. Der Chat findet auf Servern von WhatsApp Ireland Ltd. bzw. Meta Platforms Inc.
             statt und unterliegt deren Datenschutzbestimmungen. Dabei kann es zu einer Übermittlung personenbezogener
