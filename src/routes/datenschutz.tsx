@@ -94,13 +94,9 @@ function DatenschutzPage() {
         <section className="mt-8 space-y-3">
           <h2 className="font-display text-lg text-foreground">4. Hosting</h2>
           <p>
-            Unsere Website wird auf einem Server in der Europäischen Union gehostet. Der Hosting-Anbieter verarbeitet
-            in unserem Auftrag die oben genannten Zugriffsdaten. Mit dem Anbieter besteht ein Vertrag zur
-            Auftragsverarbeitung gemäß Art. 28 DSGVO.
-          </p>
-          <p className="text-foreground/60">
-            <em>Hinweis für den Betreiber:</em> konkreter Hosting-Anbieter (Firma, Anschrift, Sitzland) wird hier
-            ergänzt.
+            Unsere Website wird von <strong>Strava</strong> gehostet. Der Anbieter verarbeitet in unserem Auftrag die
+            oben genannten Zugriffsdaten auf Servern innerhalb der Europäischen Union. Mit Strava besteht ein Vertrag
+            zur Auftragsverarbeitung gemäß Art. 28 DSGVO.
           </p>
         </section>
 
