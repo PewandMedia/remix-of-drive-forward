@@ -6,6 +6,7 @@ import { ErrorBox } from "@/components/site/QueryFallbacks";
 import { CONTACT } from "@/lib/contact";
 import { LocationCard } from "@/components/site/LocationCard";
 import { LOCATIONS } from "@/lib/locations";
+import { useLocationsWithHours } from "@/hooks/useLocationsWithHours";
 import { Heart, Calendar, Clock, FileText, GraduationCap, Phone, MapPin } from "lucide-react";
 import ersteHilfeImg from "@/assets/erste-hilfe-hero.jpg";
 
