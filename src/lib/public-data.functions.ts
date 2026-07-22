@@ -79,3 +79,15 @@ export const getUpcomingFirstAidDates = createServerFn({ method: "GET" }).handle
   if (error) throw new Error(error.message);
   return data ?? [];
 });
+
+export const getActiveInstagramPosts = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = serverPublicClient();
+  const { data, error } = await supabase
+    .from("instagram_posts")
+    .select("id,image_url,post_url,caption,sort_order")
+    .eq("active", true)
+    .order("sort_order", { ascending: true })
+    .limit(6);
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
