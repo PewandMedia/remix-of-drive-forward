@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Car, ChevronLeft, ChevronRight, ImageIcon, MapPin, X } from "lucide-react";
 import filialeAussen from "@/assets/filiale-aussen.jpg.asset.json";
 import theorieraum from "@/assets/theorieraum.jpg.asset.json";
@@ -7,6 +8,7 @@ import riemkeAussen from "@/assets/riemke-aussen.jpg.asset.json";
 import riemkeLounge from "@/assets/riemke-lounge.jpg.asset.json";
 import riemkeWeihnachten from "@/assets/riemke-weihnachten.jpg.asset.json";
 import riemkeEmpfang from "@/assets/riemke-empfang.jpg.asset.json";
+import { getFilialePhotos } from "@/lib/public-data.functions";
 
 export type FilialeImage = {
   src: string;
@@ -23,44 +25,35 @@ export type Filiale = {
   images: FilialeImage[];
 };
 
-export const FILIALEN: Filiale[] = [
-  {
-    id: "rathaus",
-    name: "Rathaus",
-    address: "Brückstraße 53, 44787 Bochum",
-    icon: "map",
-    images: [
-      { src: filialeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Rathaus – Außenansicht der Filiale" },
-      { src: theorieraum.url, caption: "Theorieraum", kicker: "Unterricht", alt: "MIRO-DRIVE Bochum Rathaus – moderner Theorieraum mit Großbildschirm" },
-      { src: empfang.url, caption: "Empfang & Beratung", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum Rathaus – Empfang und Beratungsbereich" },
-    ],
-  },
-  {
-    id: "riemke",
-    name: "Riemke Markt",
-    address: "Herner Straße 365, 44807 Bochum",
-    icon: "map",
-    images: [
-      { src: riemkeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Riemke – Außenansicht mit FAHRSCHULE-Schriftzug" },
-      { src: riemkeLounge.url, caption: "Wartebereich", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum Riemke – gemütlicher Wartebereich mit Couchtisch" },
-      { src: riemkeEmpfang.url, caption: "Empfang & Beratung", kicker: "Beratung", alt: "MIRO-DRIVE Bochum Riemke – Empfangstisch mit Visitenkarten und Google-Bewertungskarte" },
-      { src: riemkeWeihnachten.url, caption: "Unser Team-Spirit", kicker: "Atmosphäre", alt: "MIRO-DRIVE Bochum Riemke – Roll-up Banner mit weihnachtlicher Dekoration" },
-    ],
-  },
-  {
-    id: "autos",
-    name: "Unsere Autos",
-    icon: "car",
-    images: [
-      { src: "/media/autos/auto-vogelperspektive.jpg", caption: "Vogelperspektive", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen von oben mit Logo auf der Motorhaube, Kennzeichen BO FM 623" },
-      { src: "/media/autos/auto-2.jpg", caption: "Heckansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen Heckansicht mit Kennzeichen BO FM 621" },
-      { src: "/media/autos/auto-5.jpg", caption: "Auf der Straße", kicker: "Fahrpraxis", alt: "MIRO-DRIVE Fahrschulauto während der Fahrstunde im Tunnel" },
-    ],
-  },
+const FILIALEN_META: Omit<Filiale, "images">[] = [
+  { id: "rathaus", name: "Rathaus", address: "Brückstraße 53, 44787 Bochum", icon: "map" },
+  { id: "riemke", name: "Riemke Markt", address: "Herner Straße 365, 44807 Bochum", icon: "map" },
+  { id: "autos", name: "Unsere Autos", icon: "car" },
 ];
 
+const FALLBACK_IMAGES: Record<Filiale["id"], FilialeImage[]> = {
+  rathaus: [
+    { src: filialeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Rathaus – Außenansicht der Filiale" },
+    { src: theorieraum.url, caption: "Theorieraum", kicker: "Unterricht", alt: "MIRO-DRIVE Bochum Rathaus – moderner Theorieraum mit Großbildschirm" },
+    { src: empfang.url, caption: "Empfang & Beratung", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum Rathaus – Empfang und Beratungsbereich" },
+  ],
+  riemke: [
+    { src: riemkeAussen.url, caption: "Außenansicht", kicker: "Filiale", alt: "Fahrschule MIRO-DRIVE Bochum Riemke – Außenansicht mit FAHRSCHULE-Schriftzug" },
+    { src: riemkeLounge.url, caption: "Wartebereich", kicker: "Willkommen", alt: "MIRO-DRIVE Bochum Riemke – gemütlicher Wartebereich mit Couchtisch" },
+    { src: riemkeEmpfang.url, caption: "Empfang & Beratung", kicker: "Beratung", alt: "MIRO-DRIVE Bochum Riemke – Empfangstisch mit Visitenkarten und Google-Bewertungskarte" },
+    { src: riemkeWeihnachten.url, caption: "Unser Team-Spirit", kicker: "Atmosphäre", alt: "MIRO-DRIVE Bochum Riemke – Roll-up Banner mit weihnachtlicher Dekoration" },
+  ],
+  autos: [
+    { src: "/media/autos/auto-vogelperspektive.jpg", caption: "Vogelperspektive", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen von oben mit Logo auf der Motorhaube, Kennzeichen BO FM 623" },
+    { src: "/media/autos/auto-2.jpg", caption: "Heckansicht", kicker: "Fahrzeug", alt: "MIRO-DRIVE Fahrschulwagen Heckansicht mit Kennzeichen BO FM 621" },
+    { src: "/media/autos/auto-5.jpg", caption: "Auf der Straße", kicker: "Fahrpraxis", alt: "MIRO-DRIVE Fahrschulauto während der Fahrstunde im Tunnel" },
+  ],
+};
+
+export const FILIALEN: Filiale[] = FILIALEN_META.map((m) => ({ ...m, images: FALLBACK_IMAGES[m.id] }));
+
 // Backwards-Compat: alte Importe zeigen weiter auf die Rathaus-Bilder.
-export const FILIALE_IMAGES = FILIALEN[0].images;
+export const FILIALE_IMAGES = FALLBACK_IMAGES.rathaus;
 
 type Props = {
   eyebrow?: string;
