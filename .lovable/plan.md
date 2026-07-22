@@ -1,28 +1,22 @@
-# Instagram-Beiträge dynamisch verwalten
+## Ziel
+Instagram-Kacheln auf Mobil kompakter darstellen, damit die Seite nicht endlos lang wird — und Reihen bleiben immer vollständig gefüllt (keine einzelne Kachel am Ende).
 
-Aktuell sind die vier Instagram-Bilder in `src/components/site/InstagramSection.tsx` fest hinterlegt. Die Tabelle `instagram_posts` existiert bereits (Spalten: `image_url`, `post_url`, `caption`, `sort_order`, `active`), wird aber nirgends genutzt. Ziel: Beiträge im Admin-Panel hinzufügen / löschen / (de)aktivieren, Anzeige auf der Startseite kommt aus der DB.
+## Änderungen (`src/components/site/InstagramSection.tsx`)
 
-## Umsetzung
+- Grid-Spalten anheben:
+  - Mobil: `grid-cols-3` (statt 2) → kleinere Kacheln, mehr pro Reihe, deutlich kürzere Sektion.
+  - `sm:` bleibt `grid-cols-3`, `md:grid-cols-4` → auf Desktop 4 pro Reihe (harmoniert mit typischer Postanzahl).
+- Kachel-Größe: `aspect-square` bleibt, `rounded-xl` statt `rounded-2xl` für kompakteres Bild.
+- Abstände reduzieren: `gap-2 sm:gap-3` (statt `gap-3 sm:gap-5`).
+- Immer volle Reihen anzeigen:
+  - Auf Mobil (3 Spalten) nur Vielfaches von 3 Posts anzeigen (überzählige per `hidden`).
+  - Ab `md` (4 Spalten) nur Vielfaches von 4 (per `md:hidden` bzw. `md:block`).
+  - Umsetzung: pro Post Klassen berechnen — Indizes ≥ `Math.floor(n/3)*3` bekommen `hidden md:block` (nur auf Mobil weglassen), Indizes ≥ `Math.floor(n/4)*4` bekommen `md:hidden` bzw. werden komplett ausgeblendet.
+- `limit(6)` in `getActiveInstagramPosts` (`src/lib/public-data.functions.ts`) auf 8 anheben, damit auf Desktop zwei volle 4er-Reihen möglich sind.
 
-**1. Storage-Bucket `instagram` (öffentlich lesbar)**
-- Migration: Bucket anlegen + Policies (public read, admin write/delete).
+Kein Umbau der Admin- oder DB-Logik nötig.
 
-**2. Server-Funktionen** (`src/lib/instagram.functions.ts`)
-- `getActiveInstagramPosts` – public, liefert aktive Posts sortiert nach `sort_order` für die Startseite.
-- `listInstagramPostsAdmin` – `requireSupabaseAuth` + Admin-Check, liefert alle Posts.
-- `createInstagramPost({ image_url, post_url?, caption?, sort_order? })` – Admin.
-- `updateInstagramPost({ id, ... })` – Admin (aktiv/inaktiv, Reihenfolge, Link).
-- `deleteInstagramPost({ id })` – Admin, löscht Zeile und Storage-Datei (wenn im `instagram`-Bucket).
-
-**3. Startseite** (`InstagramSection.tsx`)
-- Bilder aus `getActiveInstagramPosts` via TanStack Query laden.
-- Fallback: wenn leer, Sektion ausblenden.
-- Jeder Kachel-Link nutzt `post_url` falls gesetzt, sonst `CONTACT.instagram`.
-
-**4. Admin-Panel** (`src/routes/_authenticated/admin.tsx`)
-- Neuer Tab „Instagram".
-- Grid mit vorhandenen Beiträgen (Vorschaubild, Caption, Aktiv-Toggle, Löschen-Button).
-- Upload-Formular: Datei auswählen → Upload in Storage-Bucket → `createInstagramPost` mit `publicUrl`. Optional Felder Caption, Post-URL, Sortierung.
-
-## Offene Punkte
-Keine – Reihenfolge über `sort_order` (Zahleneingabe), Drag-and-Drop nicht nötig.
+## Ergebnis
+- Mobil: 3 Bilder pro Reihe, kompakt, Seite deutlich kürzer.
+- Desktop: 4 Bilder pro Reihe.
+- Nie mehr eine „einsame" Kachel unten — Reihen sind immer voll.
