@@ -12,8 +12,8 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, LogOut, Eye } from "lucide-react";
-import { listInquiries, updateInquiryStatus, deleteInquiry } from "@/lib/inquiries.functions";
+import { Pencil, Trash2, Plus, LogOut, Eye, FileDown, Send, CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import { listInquiries, updateInquiryStatus, deleteInquiry, getContractDownloadUrl, resendContract } from "@/lib/inquiries.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin – MIRO-DRIVE" }, { name: "robots", content: "noindex" }] }),
@@ -978,6 +978,9 @@ type Inquiry = {
   status: "neu" | "in_bearbeitung" | "erledigt";
   contact_pref: string | null;
   created_at: string;
+  contract_url: string | null;
+  contract_sent_at: string | null;
+  contract_error: string | null;
 };
 
 const STATUS_LABEL: Record<Inquiry["status"], string> = {
@@ -996,12 +999,40 @@ function InquiriesAdmin() {
   const list = useServerFn(listInquiries);
   const updateStatus = useServerFn(updateInquiryStatus);
   const del = useServerFn(deleteInquiry);
+  const getUrl = useServerFn(getContractDownloadUrl);
+  const resend = useServerFn(resendContract);
   const [selected, setSelected] = useState<Inquiry | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const { data = [], isLoading } = useQuery({
     queryKey: ["admin-inquiries"],
     queryFn: () => list() as Promise<Inquiry[]>,
   });
+
+  async function downloadContract(id: string) {
+    try {
+      setBusyId(id);
+      const { url } = await getUrl({ data: { id } });
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Download fehlgeschlagen");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function resendContractFor(id: string) {
+    try {
+      setBusyId(id);
+      await resend({ data: { id } });
+      toast.success("Vertrag erneut gesendet");
+      qc.invalidateQueries({ queryKey: ["admin-inquiries"] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Versand fehlgeschlagen");
+    } finally {
+      setBusyId(null);
+    }
+  }
 
   const statusMut = useMutation({
     mutationFn: (v: { id: string; status: Inquiry["status"] }) => updateStatus({ data: v }),
@@ -1037,12 +1068,13 @@ function InquiriesAdmin() {
                 <th className="px-4 py-3">Klasse</th>
                 <th className="px-4 py-3">Kontakt</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Vertrag</th>
                 <th className="px-4 py-3 text-right">Aktion</th>
               </tr>
             </thead>
             <tbody>
               {data.length === 0 && (
-                <tr><td colSpan={7} className="px-4 py-10 text-center text-muted-foreground">Noch keine Anmeldungen.</td></tr>
+                <tr><td colSpan={8} className="px-4 py-10 text-center text-muted-foreground">Noch keine Anmeldungen.</td></tr>
               )}
               {data.map((i) => (
                 <tr key={i.id} className="border-t">
@@ -1067,10 +1099,29 @@ function InquiriesAdmin() {
                       <option value="erledigt">Erledigt</option>
                     </select>
                   </td>
+                  <td className="px-4 py-3">
+                    <ContractStatusBadge inquiry={i} />
+                  </td>
                   <td className="px-4 py-3 text-right">
-                    <Button size="sm" variant="ghost" onClick={() => setSelected(i)}>
-                      <Eye className="h-4 w-4" />
-                    </Button>
+                    <div className="flex justify-end gap-1">
+                      {i.contract_url && (
+                        <Button size="sm" variant="ghost" title="Vertrag herunterladen"
+                          disabled={busyId === i.id}
+                          onClick={() => downloadContract(i.id)}>
+                          <FileDown className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {i.email && (
+                        <Button size="sm" variant="ghost" title="Vertrag erneut senden"
+                          disabled={busyId === i.id}
+                          onClick={() => resendContractFor(i.id)}>
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      )}
+                      <Button size="sm" variant="ghost" onClick={() => setSelected(i)}>
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -1096,6 +1147,13 @@ function InquiriesAdmin() {
               <Row label="Typ">{selected.type}</Row>
               <Row label="Status">{STATUS_LABEL[selected.status]}</Row>
               <Row label="Eingegangen">{new Date(selected.created_at).toLocaleString("de-DE")}</Row>
+              <Row label="Vertrag"><ContractStatusBadge inquiry={selected} /></Row>
+              {selected.contract_error && (
+                <div className="rounded-xl bg-red-50 p-3 text-xs text-red-700">
+                  <div className="font-semibold">Vertrag-Fehler</div>
+                  <div className="mt-1 break-words">{selected.contract_error}</div>
+                </div>
+              )}
               {selected.message && (
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Nachricht</div>
@@ -1133,6 +1191,30 @@ function InquiriesAdmin() {
   );
 }
 
+
+function ContractStatusBadge({ inquiry }: { inquiry: Inquiry }) {
+  if (inquiry.contract_error) {
+    return (
+      <span title={inquiry.contract_error} className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+        <AlertCircle className="h-3 w-3" /> Fehler
+      </span>
+    );
+  }
+  if (inquiry.contract_sent_at) {
+    return (
+      <span title={`Gesendet: ${new Date(inquiry.contract_sent_at).toLocaleString("de-DE")}`}
+        className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">
+        <CheckCircle2 className="h-3 w-3" /> Gesendet
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+      <Clock className="h-3 w-3" /> Ausstehend
+    </span>
+  );
+}
+
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex justify-between gap-4 border-b py-1.5 last:border-b-0">
@@ -1141,6 +1223,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
     </div>
   );
 }
+
 
 /* ============== LOCATION HOURS ============== */
 const LOCATION_META: { id: string; name: string }[] = [

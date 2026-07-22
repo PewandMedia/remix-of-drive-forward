@@ -17,33 +17,94 @@ const registrationSchema = z.object({
 
 export type RegistrationInput = z.infer<typeof registrationSchema>;
 
-export const submitRegistration = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => registrationSchema.parse(data))
-  .handler(async ({ data }) => {
-    // Use admin client to bypass anon RLS constraints on optional fields cleanly.
+async function generateStoreAndSendContract(
+  inquiryId: string,
+  data: RegistrationInput,
+  createdAt: string,
+): Promise<{ path: string | null; error: string | null }> {
+  try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const fullName = `${data.firstName} ${data.lastName}`.trim();
-    const { error } = await supabaseAdmin.from("inquiries").insert({
-      type: "anmeldung",
-      name: fullName,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      birth_date: data.birthDate,
+    const { generateContractPdf } = await import("./contract-pdf.server");
+    const { sendContractEmail } = await import("./contract-email.server");
+
+    const pdfBytes = await generateContractPdf({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      birthDate: data.birthDate,
       address: data.address,
-      postal_code: data.postalCode,
+      postalCode: data.postalCode,
       city: data.city,
       phone: data.phone,
       email: data.email,
-      license_class: data.licenseClass,
-      message: data.message || null,
-      first_aid_interest: data.licenseClass === "Erste-Hilfe",
-      contact_pref: "email",
-      status: "neu",
+      licenseClass: data.licenseClass,
+      message: data.message ?? null,
+      inquiryId,
+      createdAt,
     });
-    if (error) throw new Error(error.message);
 
-    // TODO: Sobald die Domain eingerichtet ist, E-Mail an info@mirodrive.de senden.
-    // await sendRegistrationEmail("info@mirodrive.de", { ...data });
+    const safeLast = data.lastName.replace(/[^A-Za-z0-9._-]+/g, "_") || "Anmeldung";
+    const path = `${inquiryId}/MIRO-DRIVE_Vertrag_${safeLast}.pdf`;
+
+    const uploadRes = await supabaseAdmin.storage
+      .from("contracts")
+      .upload(path, pdfBytes, { contentType: "application/pdf", upsert: true });
+    if (uploadRes.error) throw new Error(`Upload: ${uploadRes.error.message}`);
+
+    await sendContractEmail({
+      to: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      licenseClass: data.licenseClass,
+      pdfBytes,
+      inquiryId,
+    });
+
+    return { path, error: null };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[contract] fail", msg);
+    return { path: null, error: msg };
+  }
+}
+
+export const submitRegistration = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => registrationSchema.parse(data))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const fullName = `${data.firstName} ${data.lastName}`.trim();
+    const { data: inserted, error } = await supabaseAdmin
+      .from("inquiries")
+      .insert({
+        type: "anmeldung",
+        name: fullName,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        birth_date: data.birthDate,
+        address: data.address,
+        postal_code: data.postalCode,
+        city: data.city,
+        phone: data.phone,
+        email: data.email,
+        license_class: data.licenseClass,
+        message: data.message || null,
+        first_aid_interest: data.licenseClass === "Erste-Hilfe",
+        contact_pref: "email",
+        status: "neu",
+      })
+      .select("id, created_at")
+      .single();
+    if (error || !inserted) throw new Error(error?.message ?? "Speichern fehlgeschlagen");
+
+    // Vertrag erzeugen, speichern & mailen. Fehler blockieren die Anmeldung NICHT.
+    const result = await generateStoreAndSendContract(inserted.id, data, inserted.created_at);
+    await supabaseAdmin
+      .from("inquiries")
+      .update({
+        contract_url: result.path,
+        contract_sent_at: result.path && !result.error ? new Date().toISOString() : null,
+        contract_error: result.error,
+      })
+      .eq("id", inserted.id);
 
     return { ok: true } as const;
   });
@@ -82,5 +143,67 @@ export const deleteInquiry = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase.from("inquiries").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
+    return { ok: true } as const;
+  });
+
+// Signierte Download-URL für Admin (60 min gültig)
+export const getContractDownloadUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .handler(async ({ data, context }) => {
+    const { data: row, error } = await context.supabase
+      .from("inquiries")
+      .select("contract_url")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!row?.contract_url) throw new Error("Kein Vertrag hinterlegt");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const signed = await supabaseAdmin.storage.from("contracts").createSignedUrl(row.contract_url, 60 * 60);
+    if (signed.error || !signed.data?.signedUrl) {
+      throw new Error(signed.error?.message ?? "Signierung fehlgeschlagen");
+    }
+    return { url: signed.data.signedUrl } as const;
+  });
+
+// Vertrag erneut erzeugen & senden
+export const resendContract = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .handler(async ({ data, context }) => {
+    const { data: row, error } = await context.supabase
+      .from("inquiries")
+      .select("*")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!row) throw new Error("Anmeldung nicht gefunden");
+    if (!row.email) throw new Error("Keine E-Mail-Adresse hinterlegt");
+
+    const input: RegistrationInput = {
+      firstName: row.first_name ?? row.name?.split(" ")[0] ?? "",
+      lastName: row.last_name ?? row.name?.split(" ").slice(1).join(" ") ?? "",
+      birthDate: row.birth_date ?? "1970-01-01",
+      address: row.address ?? "",
+      postalCode: row.postal_code ?? "",
+      city: row.city ?? "",
+      phone: row.phone ?? "",
+      email: row.email,
+      licenseClass: (row.license_class as RegistrationInput["licenseClass"]) ?? "B",
+      message: row.message ?? "",
+    };
+
+    const result = await generateStoreAndSendContract(row.id, input, row.created_at);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await supabaseAdmin
+      .from("inquiries")
+      .update({
+        contract_url: result.path ?? row.contract_url,
+        contract_sent_at: result.error ? row.contract_sent_at : new Date().toISOString(),
+        contract_error: result.error,
+      })
+      .eq("id", row.id);
+    if (result.error) throw new Error(result.error);
     return { ok: true } as const;
   });

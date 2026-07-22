@@ -119,6 +119,9 @@ export type Database = {
           birth_date: string | null
           city: string | null
           contact_pref: string | null
+          contract_error: string | null
+          contract_sent_at: string | null
+          contract_url: string | null
           created_at: string
           email: string | null
           first_aid_interest: boolean
@@ -138,6 +141,9 @@ export type Database = {
           birth_date?: string | null
           city?: string | null
           contact_pref?: string | null
+          contract_error?: string | null
+          contract_sent_at?: string | null
+          contract_url?: string | null
           created_at?: string
           email?: string | null
           first_aid_interest?: boolean
@@ -157,6 +163,9 @@ export type Database = {
           birth_date?: string | null
           city?: string | null
           contact_pref?: string | null
+          contract_error?: string | null
+          contract_sent_at?: string | null
+          contract_url?: string | null
           created_at?: string
           email?: string | null
           first_aid_interest?: boolean
