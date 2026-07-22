@@ -1,16 +1,26 @@
 ## Ziel
-Auf der Startseite sollen im Instagram-Bereich **alle aktiven Posts** angezeigt werden — mobil immer in 3er-Reihen untereinander, Desktop in 4er-Reihen. Aktuell werden nur die ersten 3 (mobil) bzw. 4 (Desktop) gezeigt, damit die Reihen „voll" sind. Das wird entfernt.
+Im Admin-Panel beim Anlegen/Bearbeiten eines Fahrlehrers (TeamDialog):
+1. Feld „Bio (Rückseite der Karte)" komplett entfernen.
+2. Feld „Bild-URL" durch einen Datei-Upload ersetzen (Bild oder PDF), analog zum Instagram-Dialog.
 
 ## Änderungen
 
-### `src/lib/public-data.functions.ts`
-- `getActiveInstagramPosts`: Limit von 8 entfernen (bzw. auf z. B. 60 anheben), damit alle aktiven Posts geladen werden.
+### Neuer Storage-Bucket `team`
+- Privater Bucket (wie `instagram`), Admin-Uploads, öffentlicher Lesezugriff via signierter Langzeit-URL.
+- RLS-Policies auf `storage.objects`:
+  - `SELECT` für `anon`/`authenticated` (Bilder werden öffentlich auf der Team-Seite gezeigt).
+  - `INSERT`/`UPDATE`/`DELETE` nur für Admins (`public.has_role(auth.uid(),'admin')`).
 
-### `src/components/site/InstagramSection.tsx`
-- Slice-/Trim-Logik entfernen, die überzählige Kacheln pro Breakpoint ausblendet.
-- Grid bleibt `grid-cols-3 md:grid-cols-4` — dadurch fließen alle Posts automatisch in vollständige 3er- bzw. 4er-Reihen; unvollständige letzte Reihe wird akzeptiert (statt alles auszublenden).
-- Keine künstliche Obergrenze mehr; alle im Admin als aktiv markierten Posts erscheinen.
+### `src/routes/_authenticated/admin.tsx` – `TeamDialog`
+- Bio-Textarea (Label + `Textarea name="bio"`) entfernen.
+- `bio` aus dem `row`-Objekt der Mutation entfernen (Spalte bleibt in der DB unangetastet).
+- Bild-URL-Input entfernen, ersetzen durch:
+  - `<Input type="file" accept="image/*,application/pdf" onChange={onFileChange} />` mit Upload in Bucket `team`, danach 10-Jahre-Signed-URL, gespeichert in `team_members.image_url`.
+  - Vorschau: Bild bei `image/*`, sonst Datei-Icon + Dateiname bei PDF.
+  - `uploading`-State deaktiviert den Speichern-Button.
+- Kein URL-Eingabefeld mehr — Upload ist die einzige Quelle.
 
-### Nicht Teil dieses Plans
-- Admin-Upload-Flow, RLS, Storage-Bucket bleiben unverändert.
-- Keine Änderung am Kachel-Design oder Aspect-Ratio.
+### Nicht Teil des Plans
+- Datenbank-Spalte `bio` bleibt erhalten (nur UI-Feld entfernt) — kein Datenverlust.
+- Instagram-Dialog, andere Bereiche unverändert.
+- Anzeige der Team-Karten auf `/team` und Startseite unverändert (nutzt weiterhin `image_url`).
