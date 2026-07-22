@@ -70,11 +70,15 @@ async function generateStoreAndSendContract(
 export const submitRegistration = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => registrationSchema.parse(data))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { serverPublicClient } = await import("./public-data.server");
+    const supabasePublic = serverPublicClient();
+    const inquiryId = crypto.randomUUID();
+    const createdAt = new Date().toISOString();
     const fullName = `${data.firstName} ${data.lastName}`.trim();
-    const { data: inserted, error } = await supabaseAdmin
+    const { error } = await supabasePublic
       .from("inquiries")
       .insert({
+        id: inquiryId,
         type: "anmeldung",
         name: fullName,
         first_name: data.firstName,
@@ -90,21 +94,26 @@ export const submitRegistration = createServerFn({ method: "POST" })
         first_aid_interest: data.licenseClass === "Erste-Hilfe",
         contact_pref: "email",
         status: "neu",
-      })
-      .select("id, created_at")
-      .single();
-    if (error || !inserted) throw new Error(error?.message ?? "Speichern fehlgeschlagen");
+        created_at: createdAt,
+      });
+    if (error) throw new Error(error.message);
 
     // Vertrag erzeugen, speichern & mailen. Fehler blockieren die Anmeldung NICHT.
-    const result = await generateStoreAndSendContract(inserted.id, data, inserted.created_at);
-    await supabaseAdmin
-      .from("inquiries")
-      .update({
-        contract_url: result.path,
-        contract_sent_at: result.path && !result.error ? new Date().toISOString() : null,
-        contract_error: result.error,
-      })
-      .eq("id", inserted.id);
+    const result = await generateStoreAndSendContract(inquiryId, data, createdAt);
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { error: updateError } = await supabaseAdmin
+        .from("inquiries")
+        .update({
+          contract_url: result.path,
+          contract_sent_at: result.path && !result.error ? new Date().toISOString() : null,
+          contract_error: result.error,
+        })
+        .eq("id", inquiryId);
+      if (updateError) console.error("[contract] status update failed", updateError.message);
+    } catch (e) {
+      console.error("[contract] status update skipped", e instanceof Error ? e.message : String(e));
+    }
 
     return { ok: true } as const;
   });
